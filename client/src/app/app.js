@@ -6,13 +6,38 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 // need to look at react-router-native for mobile routing
 import { Route, Switch, Redirect } from 'react-router';
 
+// our packages
 
 // our components
-import { default as Home, Main, Other, Single } from '../components/Home';
+import Home from '../components/Home';
 import NotFound from '../components/NotFound';
 
+const Other = function() {
+  return (
+    <div>
+      <h2>Others Here</h2>
+    </div>
+  );
+};
+
+const Main = function() {
+  return (
+    <div>
+      <h1>Kanjingo</h1>
+    </div>
+  );
+};
+
+const Single = function() {
+  return (
+    <div>
+      <h1>Single page</h1>
+    </div>
+  );
+};
+
 // render on page
-const app = () => (
+export default () => (
   <Router>
     <div>
       <Route path="/" component={Main} />
@@ -24,6 +49,7 @@ const app = () => (
       </ul>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route path="/other" component={Other} />
         <Route path="/view/:postId" component={Single} />
         <Redirect from="/old-other" to="/other" />
         <Route component={NotFound} />
@@ -31,5 +57,3 @@ const app = () => (
     </div>
   </Router>
 );
-
-export default app;
