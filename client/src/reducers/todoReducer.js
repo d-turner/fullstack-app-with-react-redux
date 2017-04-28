@@ -1,4 +1,4 @@
-function todos(state = [], action) {
+function todoReducer(state = [], action) {
   switch (action.type) {
     case 'ADD_TODO':
       return state.concat([{ text: action.text, completed: false }]);
@@ -13,4 +13,4 @@ function todos(state = [], action) {
   }
 }
 
-export default todos;
+export default todoReducer;
