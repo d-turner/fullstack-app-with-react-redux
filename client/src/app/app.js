@@ -11,6 +11,7 @@ import { Route, Switch, Redirect } from 'react-router';
 // our components
 import Home from '../components/Home';
 import NotFound from '../components/NotFound';
+import ProjectContainer from '../components/ProjectContainer';
 
 const Other = function() {
   return (
@@ -37,7 +38,7 @@ const Single = function() {
 };
 
 // render on page
-export default () => (
+export default (
   <Router>
     <div>
       <Route path="/" component={Main} />
@@ -46,11 +47,13 @@ export default () => (
         <li><Link to="/other">Other</Link></li>
         <li><Link to="/old-other">Other that will redirect</Link></li>
         <li><Link to="/view/123">Post 123</Link></li>
+        <li><Link to="/projects">Project List</Link></li>
       </ul>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/other" component={Other} />
         <Route path="/view/:postId" component={Single} />
+        <Route path="/projects" component={ProjectContainer} />
         <Redirect from="/old-other" to="/other" />
         <Route component={NotFound} />
       </Switch>

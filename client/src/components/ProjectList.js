@@ -1,24 +1,21 @@
+/* eslint arrow-body-style: 0 */  // --> OFF
+/* eslint react/prop-types: 0 */  // --> OFF
+
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export default class ProjectList extends React.Component {
-  createListItem(project) {
-    return (
-      <li key={this.project}>
-        <div>{project}</div>
-      </li>
-    );
-  }
-  render() {
-    return (
-      <ul className="project-list">
-        {this.props.projects.map(this.createListItem)}
-      </ul>
-    );
-  }
-
+export default function(props) {
+  return (
+    <div className="data-list">
+      {props.projects.map((project, index) => {
+        return (
+          <div>
+            <div key={project.id.toString()} value={index} className="data-list-item">
+              {project.title}
+            </div>
+            <button onClick={props.addProject.bind(null, 3, 'third', 'des', 'dt')}>Add New Project</button>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
-
-ProjectList.PropTypes = {
-  projects: PropTypes.array.isRequired,
-};
