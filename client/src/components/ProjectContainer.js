@@ -7,19 +7,13 @@ import store from '../store';
 import ProjectList from './ProjectList';
 import * as actionCreators from '../actions/actionCreators';
 
-class ProjectContainer extends React.Component {
-  componentDidMount() {
-    store.dispatch({
-      type: 'POP_PROJECTS',
-      projects: [
-        { id: 0, title: 'first', description: 'description 1', author: 'author 1' },
-        { id: 1, title: 'second', description: 'description 2', author: 'author 2' },
-      ],
-    });
-  }
-  render() {
-    return <ProjectList projects={this.props.projects} addProject={this.props.addProject} />;
-  }
+function ProjectContainer(props) {
+  return (
+    <div>
+      <ProjectList {...props} />
+      <AddProject {...props} />
+    </div>
+  );
 }
 
 ProjectContainer.propTypes = {
