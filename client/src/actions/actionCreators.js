@@ -11,9 +11,9 @@ export function addProject(id, title, description, author) {
   };
 }
 // remove project
-export function removeProject(index) {
+export function removeProject(id) {
   return {
     type: 'REMOVE_PROJECT',
-    index,
+    id,
   };
 }
