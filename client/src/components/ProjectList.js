@@ -1,18 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function(props) {
+export default function ProjectList(props) {
+  const removeProject = (event) => {
+    const id = event.target.value;
+    props.removeProject(id);
+  };
+
+  const renderProject = (project, index) =>
+    (
+      <div key={project.id.toString()} value={index} className="data-list-item">
+        <span>{project.title}, </span>
+        <span>{project.description}, </span>
+        <span>{project.author}</span>
+        <button onClick={removeProject} aria-label="Remove project" value={project.id}>
+        Remove project
+        </button>
+      </div>
+    );
+
   return (
     <div className="data-list">
-      {props.projects.map((project, index) => {
-        return (
-          <div>
-            <div key={project.id.toString()} value={index} className="data-list-item">
-              {project.title}
-            </div>
-            <button onClick={props.addProject.bind(null, 3, 'third', 'des', 'dt')}>Add New Project</button>
-          </div>
-        );
-      })}
+      {props.projects.map(renderProject)}
     </div>
   );
 }
