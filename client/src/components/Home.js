@@ -4,7 +4,7 @@ export default class Home extends React.Component {
   constructor() {
     super();
 
-    this.state = {world: 'world'};
+    this.state = { world: 'world' };
   }
 
   render() {
