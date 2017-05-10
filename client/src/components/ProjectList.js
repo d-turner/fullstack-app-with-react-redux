@@ -1,6 +1,3 @@
-/* eslint arrow-body-style: 0 */  // --> OFF
-/* eslint react/prop-types: 0 */  // --> OFF
-
 import React from 'react';
 
 export default function(props) {
@@ -19,3 +16,8 @@ export default function(props) {
     </div>
   );
 }
+
+ProjectList.propTypes = {
+  removeProject: PropTypes.func.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
