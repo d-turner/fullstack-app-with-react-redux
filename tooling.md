@@ -2,26 +2,27 @@
 1. React    => Frontend Framework
 2. Redux    => React data control system
 3. Webpack  => Component bundler and task runner
-4. Babel    => View rules include stage-0 
+4. Babel    => View rules include stage-0  
             => Will be using es6 syntax
 5. Eslint   => Code style guide and syntax highlighter
-6. Karma + Jasmine + PhantomJS 
+6. Karma + Jasmine + PhantomJS  
             => Testing Framework
 
 ### Notes
-Seperate data-fetching and rendering i.e. Presentational and Container 
+Seperate data-fetching and rendering  
+i.e. Presentational and Container  
 Component should be reusable 
 
 #### Containers
-Containers fetch and store the data that is required by a Component
+Containers fetch and store the data that is required by a Component  
 
 #### Components
-Components display data
-Components should state what they expect using PropTypes, this is good for Markup 
+Components display data  
+Components should state what they expect using PropTypes, this is good for Markup   
 Components should break silently if the data received is not what is expected 
 
-Example
-```
+#### Example
+```js
 class CommentListContainer extends React.Component {
   state = { comments: [] };
   componentDidMount() {
