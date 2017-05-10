@@ -6,19 +6,20 @@ const intialState = {
 const projectReducer = function(state = intialState, action) {
   switch (action.type) {
     case 'POP_PROJECTS':
-      return Object.assign({}, state, { projects: state.projects.concat(action.projects) });
+      return Object.assign({}, state, { projects: action.projects });
     case 'ADD_PROJECT':
-      console.log(action);
-      console.log(state);
+      const project = action.project;
+      if (project.title === '') {
+        return state;
+      }
       return {
         ...state,
         projects: [...state.projects, action.project],
       };
     case 'REMOVE_PROJECT':
-      return Object.assign({}, state, { projects: [
-        ...state.projects.slice(0, action.index),
-        ...state.projects.slice(action.index + 1),
-      ] });
+      return {
+        ...state, projects: state.projects.filter(({ id }) => id.toString() !== action.id),
+      };
     default:
       return state;
   }
