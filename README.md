@@ -35,9 +35,9 @@ Webpack is also configured to minify and compile all the sourece files into a si
 ### Style
 
 * It is highly recommended to use an javascript linter 
-* the project uses eslint for styling
-* the configuration is based on the AirBnB plugin 
-* setting this up is different for every editor, for Visual Studio Code just install the eslint extension
+* The project uses eslint for styling
+* The configuration is based on the AirBnB plugin 
+* Setting this up is different for every editor, for Visual Studio Code just install the eslint extension
 
 ### Testing
 
