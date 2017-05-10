@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const SegmentList = (props) => {
-  const renderSegment = (project, index) =>
+  const link = {
+    color: 'black',
+    textDecoration: 'none',
+    padding: '8',
+  };
+
+  const renderSegment = (segment, index) =>
     (
-      <div key={project.id.toString()} value={index} className="data-list-item">
-        <span>{project.title}, </span>
-        <span>{project.description}, </span>
-        <span>{project.author}</span>
+      <div key={segment.id.toString()} value={index} className="data-list-item">
+        <Link to="/" style={link}>
+          <div><span>Segment: {segment.id + 1}</span></div>
+          <div><span>{segment.description}</span></div>
+        </Link>
       </div>
     );
 
@@ -19,7 +27,6 @@ const SegmentList = (props) => {
 };
 
 SegmentList.propTypes = {
-  // removeProject: PropTypes.func.isRequired,
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
