@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import store from '../store';
 import ProjectList from './ProjectList';
+import AddProject from './AddProject';
 import * as actionCreators from '../actions/actionCreators';
 
 function ProjectContainer(props) {
@@ -16,18 +15,18 @@ function ProjectContainer(props) {
   );
 }
 
-ProjectContainer.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-
-const mapStateToProps = function() {
+const mapStateToProps = function(state) {
+  // get the required reducer(s) from the state
+  const { projectReducer } = state;
+  const { projects } = projectReducer;
+  // return what we want available in the props
   return {
-    projects: store.getState().projectReducer.projects,
+    projects,
   };
 };
 
 const mapDispatchToProps = function(dispatch) {
+  // get the available dispatch actions
   return bindActionCreators(actionCreators, dispatch);
 };
 
