@@ -13,6 +13,7 @@ import Home from '../components/Home';
 import NotFound from '../components/NotFound';
 import ProjectContainer from '../components/ProjectContainer';
 import Segments from '../components/Segments';
+import Segment from '../components/Segments/Segment';
 
 const Other = function() {
   return (
@@ -56,7 +57,8 @@ export default (
         <Route path="/other" component={Other} />
         <Redirect from="/old-other" to="/other" />
         <Route path="/view/:postId" component={Single} />
-        <Route path="/segments" component={Segments} />
+        <Route path="/segments/:segmentId" component={Segment} />
+        <Route exact path="/segments" component={Segments} />
         <Route path="/projects" component={ProjectContainer} />
         <Route component={NotFound} />
       </Switch>
