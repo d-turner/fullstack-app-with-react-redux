@@ -1,4 +1,4 @@
-const intialState = {
+const initialState = {
   segments: [{
     id: 0,
     title: 'First',
@@ -13,7 +13,7 @@ const intialState = {
     description: 'Tempor laboris cillum dolor cillum esse officia nulla non elit.',
     source: 'Officia laborum esse nisi laboris.',
     mt: 'Sunt laboris mollit nisi sit.',
-    target: '',
+    target: 'Sunt laboris mollit nisi sit.',
   },
   {
     id: 2,
@@ -21,13 +21,25 @@ const intialState = {
     description: 'Sit exercitation sint ea ullamco est reprehenderit proident reprehenderit ipsum et.',
     source: 'Nisi deserunt consectetur cillum sunt deserunt dolor duis dolor labore sint excepteur do elit nostrud.',
     mt: 'Eiusmod est aliqua id fugiat laboris deserunt in cillum occaecat duis.',
-    target: '',
+    target: 'Eiusmod est aliqua id fugiat laboris deserunt in cillum occaecat duis.',
   },
   ],
 };
 
-const segmentReducer = function(state = intialState, action) {
+const reduceSegment = (segment, action) => {
+  if (segment.id !== action.segment.id) {
+    return segment;
+  }
+  return Object.assign({}, segment, { target: action.segment.target });
+};
+
+const segmentReducer = function(state = initialState, action) {
   switch (action.type) {
+    case 'UPDATE_TARGET':
+      return {
+        ...state,
+        segments: state.segments.map(segment => reduceSegment(segment, action)),
+      };
     default:
       return state;
   }
