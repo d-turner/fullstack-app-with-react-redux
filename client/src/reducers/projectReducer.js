@@ -8,8 +8,7 @@ const projectReducer = function(state = intialState, action) {
     case 'POP_PROJECTS':
       return Object.assign({}, state, { projects: action.projects });
     case 'ADD_PROJECT':
-      const project = action.project;
-      if (project.title === '') {
+      if (action.project.title === '') {
         return state;
       }
       return {
