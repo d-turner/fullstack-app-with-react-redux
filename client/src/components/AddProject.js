@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
 
 class AddProject extends React.Component {
@@ -52,5 +53,9 @@ class AddProject extends React.Component {
     );
   }
 }
+
+AddProject.propTypes = {
+  addProject: PropTypes.func.isRequired,
+};
 
 export default AddProject;
