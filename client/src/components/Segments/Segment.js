@@ -9,11 +9,13 @@ import * as actionCreators from '../../actions/segmentActions';
 class Segment extends React.Component {
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    this.onChange = (event) => {
-      const target = event.target.value;
-      props.updateSegment(parseInt(this.props.match.params.segmentId, 10), target);
-    };
+  handleChange(event) {
+    event.preventDefault();
+    const target = event.target.value;
+    this.props.updateSegment(parseInt(this.props.match.params.segmentId, 10), target);
   }
 
   render() {
@@ -48,7 +50,7 @@ class Segment extends React.Component {
           <div style={wrapper}>
             <textarea
               style={{ maxWidth: '490px', width: '490px', marginLeft: '8px', fontSize: '18px' }}
-              value={segment.target} onChange={this.onChange}
+              value={segment.target} onChange={this.handleChange}
             />
           </div>
         </div>
@@ -57,8 +59,11 @@ class Segment extends React.Component {
   }
 }
 
+/* eslint react/forbid-prop-types: 0 */
 Segment.propTypes = {
-
+  match: PropTypes.object.isRequired,
+  updateSegment: PropTypes.func.isRequired,
+  segments: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 
