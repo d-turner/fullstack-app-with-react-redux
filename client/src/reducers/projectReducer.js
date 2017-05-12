@@ -17,7 +17,7 @@ const projectReducer = function(state = intialState, action) {
       };
     case 'REMOVE_PROJECT':
       return {
-        ...state, projects: state.projects.filter(({ id }) => id.toString() !== action.id),
+        ...state, projects: state.projects.filter(({ id }) => id !== action.id),
       };
     default:
       return state;
