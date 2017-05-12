@@ -26,7 +26,7 @@ const initialState = {
   ],
 };
 
-const reduceSegment = (segment, action) => {
+const updateSegmentTarget = (segment, action) => {
   if (segment.id !== action.segment.id) {
     return segment;
   }
@@ -38,7 +38,7 @@ const segmentReducer = function(state = initialState, action) {
     case 'UPDATE_TARGET':
       return {
         ...state,
-        segments: state.segments.map(segment => reduceSegment(segment, action)),
+        segments: state.segments.map(segment => updateSegmentTarget(segment, action)),
       };
     default:
       return state;
