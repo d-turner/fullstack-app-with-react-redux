@@ -9,22 +9,18 @@ import * as actionCreators from '../../actions/segmentActions';
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-    const segmentId = this.props.match.params.segmentId;
-    const segmentIndex = this.props.segments.findIndex(segment => segment.id === parseInt(segmentId, 10));
-    const segment = this.props.segments[segmentIndex];
-    const segmentSource = segment.source;
-    const segmentMt = segment.mt;
-    const segmentTarget = segment.target;
-    this.onChange = event => this.setState({ segmentTarget: event.target.value });
-    this.state = {
-      segmentId,
-      segmentSource,
-      segmentMt,
-      segmentTarget,
+
+    this.onChange = (event) => {
+      const target = event.target.value;
+      props.updateSegment(parseInt(this.props.match.params.segmentId, 10), target);
     };
   }
 
   render() {
+    const id = this.props.match.params.segmentId;
+    const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
+    const segment = this.props.segments[i];
+
     const wrapper = {
       backgroundColor: 'lightblue',
       marginRight: '0px',
@@ -38,21 +34,21 @@ class Segment extends React.Component {
 
     return (
       <div className="data-list" style={format}>
-        <div>Segment: {parseInt(this.state.segmentId, 10) + 1}</div>
+        <div>Segment: {parseInt(segment.id, 10) + 1}</div>
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
-          <div style={wrapper}>{this.state.segmentSource}</div>
+          <div style={wrapper}>{segment.source}</div>
         </div>
         <div style={{ marginTop: '20px' }}>
           <span>Machine Translation:</span>
-          <div style={wrapper}>{this.state.segmentMt}</div>
+          <div style={wrapper}>{segment.mt}</div>
         </div>
         <div style={{ marginTop: '20px' }}>
           <span>Target:</span>
           <div style={wrapper}>
             <textarea
               style={{ maxWidth: '490px', width: '490px', marginLeft: '8px', fontSize: '18px' }}
-              value={this.state.segmentTarget} onChange={this.onChange}
+              value={segment.target} onChange={this.onChange}
             />
           </div>
         </div>
