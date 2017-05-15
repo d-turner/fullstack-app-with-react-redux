@@ -2,11 +2,11 @@
 
 Welcome to Kanjingo-React-Redux, a flexible web-based CAT tool for post editing machine translations.
 
-### Quickstart
+## Quickstart
 
 The frontend is built entirely with JavaScript, using the [React](https://github.com/reactjs) view engine and community tools.     
 
-## Installation    
+### Installation    
 
 1. Install Node and NPM if you don't already have them:
   ```
@@ -15,7 +15,7 @@ The frontend is built entirely with JavaScript, using the [React](https://github
 2. Run `npm install` from the client directory (`kanjingo-react-redux/client/`)
 3. Start the development server with `npm run start` from the client directory (`kanjingo-react-redux/client/`)
 
-## Development
+### Development
 
 The development server uses webpack and babel to compile es6 code into browser compatable code.  
 
@@ -25,7 +25,7 @@ Webpack is also configured to minify and compile all the sourece files into a si
 
 Webpack uses 'cheap-module-source-map' to map the code in the single distribution file back to the original file.
 
-## Production
+### Production
 
 1. Install Node and NPM if you don't already have them:
   ```
