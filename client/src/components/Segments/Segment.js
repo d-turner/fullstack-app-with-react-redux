@@ -2,14 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Editor, EditorState, RichUtils } from 'draft-js';
 
 import * as actionCreators from '../../actions/segmentActions';
-
+import styles from './segment.css';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { editorState: EditorState.createEmpty() };
     this.handleChange = this.handleChange.bind(this);
+
+    this.onChange = editorState => this.setState({ editorState });
+
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.toggleBlockType = type => this._toggleBlockType(type);
+    this.toggleInlineStyle = style => this._toggleInlineStyle(style);
   }
 
   handleChange(event) {
