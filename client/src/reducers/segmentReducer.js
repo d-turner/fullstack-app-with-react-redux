@@ -1,3 +1,5 @@
+import { EditorState, ContentState, convertFromRaw } from 'draft-js';
+
 const initialState = {
   segments: [{
     id: 0,
@@ -6,6 +8,9 @@ const initialState = {
     source: 'Reprehenderit qui minim consequat minim occaecat.',
     mt: 'Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.',
     target: 'Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.',
+    editorState: EditorState.createWithContent(
+      ContentState.createFromText('Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.'),
+    ),
   },
   {
     id: 1,
@@ -14,6 +19,9 @@ const initialState = {
     source: 'Officia laborum esse nisi laboris.',
     mt: 'Sunt laboris mollit nisi sit.',
     target: 'Sunt laboris mollit nisi sit.',
+    editorState: EditorState.createWithContent(
+      ContentState.createFromText('Sunt laboris mollit nisi sit.'),
+    ),
   },
   {
     id: 2,
@@ -22,6 +30,9 @@ const initialState = {
     source: 'Nisi deserunt consectetur cillum sunt deserunt dolor duis dolor labore sint excepteur do elit nostrud.',
     mt: 'Eiusmod est aliqua id fugiat laboris deserunt in cillum occaecat duis.',
     target: 'Eiusmod est aliqua id fugiat laboris deserunt in cillum occaecat duis.',
+    editorState: EditorState.createWithContent(
+      ContentState.createFromText('Eiusmod est aliqua id fugiat laboris deserunt in cillum occaecat duis.'),
+    ),
   },
   ],
 };
@@ -30,7 +41,10 @@ const updateSegmentTarget = (segment, action) => {
   if (segment.id !== action.segment.id) {
     return segment;
   }
-  return Object.assign({}, segment, { target: action.segment.target });
+  return Object.assign({}, segment, {
+    target: action.segment.target,
+    editorState: EditorState.createWithContent(convertFromRaw(action.segment.target)),
+  });
 };
 
 const segmentReducer = function(state = initialState, action) {
