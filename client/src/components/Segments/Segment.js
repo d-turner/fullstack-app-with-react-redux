@@ -26,6 +26,33 @@ class Segment extends React.Component {
     this.props.updateSegment(parseInt(this.props.match.params.segmentId, 10), target);
   }
 
+  handleKeyCommand(command) {
+    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+    if (newState) {
+      this.onChange(newState);
+      return 'handled';
+    }
+    return 'not-handled';
+  }
+
+  _toggleBlockType(blockType) {
+    this.onChange(
+      RichUtils.toggleBlockType(
+        this.state.editorState,
+        blockType,
+      ),
+    );
+  }
+
+  _toggleInlineStyle(inlineStyle) {
+    this.onChange(
+      RichUtils.toggleInlineStyle(
+        this.state.editorState,
+        inlineStyle,
+      ),
+    );
+  }
+
   render() {
     const id = this.props.match.params.segmentId;
     const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
