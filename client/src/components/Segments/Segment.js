@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 
 import * as actionCreators from '../../actions/segmentActions';
 import styles from './segment.css';
@@ -20,10 +20,15 @@ class Segment extends React.Component {
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
   }
 
-  handleChange(event) {
-    event.preventDefault();
-    const target = event.target.value;
-    this.props.updateSegment(parseInt(this.props.match.params.segmentId, 10), target);
+  handleChange(editorState) {
+    // We need to continue updating the local state in order
+    // to get the latest selection position
+    this.setState({ editorState });
+
+    this.props.updateSegment(
+      parseInt(this.props.match.params.segmentId, 10),
+      convertToRaw(editorState.getCurrentContent()),
+    );
   }
 
   handleKeyCommand(command) {
@@ -57,7 +62,7 @@ class Segment extends React.Component {
     const id = this.props.match.params.segmentId;
     const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
     const segment = this.props.segments[i];
-
+    const editorState = segment.editorState;
     const wrapper = {
       backgroundColor: 'lightblue',
       marginRight: '0px',
@@ -88,18 +93,18 @@ class Segment extends React.Component {
           <div style={wrapper} >
             <div className={styles['RichEditor-root']}>
               <BlockStyleControls
-                editorState={this.state.editorState}
+                editorState={editorState}
                 onToggle={this.toggleBlockType}
               />
               <InlineStyleControls
-                editorState={this.state.editorState}
+                editorState={editorState}
                 onToggle={this.toggleInlineStyle}
               />
               <div className={styles['RichEditor-editor']}>
                 <Editor
-                  editorState={this.state.editorState}
+                  editorState={EditorState.acceptSelection(editorState, this.state.editorState.getSelection())}
                   handleKeyCommand={this.handleKeyCommand}
-                  onChange={this.onChange}
+                  onChange={this.handleChange}
                   spellCheck
                 />
               </div>
