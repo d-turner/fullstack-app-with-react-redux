@@ -72,21 +72,38 @@ class Segment extends React.Component {
     return (
       <div className="data-list" style={format}>
         <div>Segment: {parseInt(segment.id, 10) + 1}</div>
+
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
           <div style={wrapper}>{segment.source}</div>
         </div>
+
         <div style={{ marginTop: '20px' }}>
           <span>Machine Translation:</span>
-          <div style={wrapper}>{segment.mt}</div>
+          <div style={wrapper} dangerouslySetInnerHTML={{__html: segment.mt }} />
         </div>
+
         <div style={{ marginTop: '20px' }}>
           <span>Target:</span>
-          <div style={wrapper}>
-            <textarea
-              style={{ maxWidth: '490px', width: '490px', marginLeft: '8px', fontSize: '18px' }}
-              value={segment.target} onChange={this.handleChange}
-            />
+          <div style={wrapper} >
+            <div className={styles['RichEditor-root']}>
+              <BlockStyleControls
+                editorState={this.state.editorState}
+                onToggle={this.toggleBlockType}
+              />
+              <InlineStyleControls
+                editorState={this.state.editorState}
+                onToggle={this.toggleInlineStyle}
+              />
+              <div className={styles['RichEditor-editor']}>
+                <Editor
+                  editorState={this.state.editorState}
+                  handleKeyCommand={this.handleKeyCommand}
+                  onChange={this.onChange}
+                  spellCheck
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
