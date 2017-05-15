@@ -56,8 +56,8 @@ export default (
         <Route exact path="/" component={Home} />
         <Route path="/other" component={Other} />
         <Redirect from="/old-other" to="/other" />
-        <Route path="/view/:postId" component={Single} />
-        <Route path="/segments/:segmentId" component={Segment} />
+        <Route exact path="/view/:postId" component={Single} />
+        <Route exact path="/segments/:segmentId" component={Segment} />
         <Route exact path="/segments" component={Segments} />
         <Route path="/projects" component={ProjectContainer} />
         <Route component={NotFound} />
