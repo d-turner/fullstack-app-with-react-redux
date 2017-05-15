@@ -21,9 +21,9 @@ The development server uses webpack and babel to compile es6 code into browser c
 
 Webpack will fire up a server which watches all of the files in the repo, and automagically reloads whenever you change one of the components.  
 
-Webpack is also configured to minify and compile all the sourece files into a single distribution file.   
+Webpack is also configured to minify and compile all source files into a single distribution file.   
 
-Webpack uses 'cheap-module-source-map' to map the code in the single distribution file back to the original file.
+Webpack uses 'cheap-module-source-map' to map the code in the single distribution file back to the original source files.
 
 ### Production
 
