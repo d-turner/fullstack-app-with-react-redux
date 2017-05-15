@@ -37,7 +37,7 @@ describe('projectActions', () => {
       },
     };
 
-    expect(projectActions.addProject(id, title, description, author).toEqual(expectedAction));
+    expect(projectActions.addProject(id, title, description, author)).toEqual(expectedAction);
   });
 
   it('shoud have an action to remove a project', () => {
@@ -47,6 +47,6 @@ describe('projectActions', () => {
       id,
     };
 
-    expect(projectActions.removeProject(id).toEqual(expectedAction));
+    expect(projectActions.removeProject(id)).toEqual(expectedAction);
   });
 });
