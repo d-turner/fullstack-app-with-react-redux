@@ -5,8 +5,8 @@ const initialState = {
     id: 0,
     title: 'First',
     description: 'Consequat voluptate consectetur fugiat veniam consequat nulla ipsum eu sunt.',
-    source: 'Reprehenderit qui minim consequat minim occaecat.',
-    mt: 'Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.',
+    source: '<i>Reprehenderit qui minim</i> consequat minim occaecat.',
+    mt: '<b>Nostrud occaecat</b> aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.',
     target: 'Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.',
     editorState: EditorState.createWithContent(
       ContentState.createFromText('Nostrud occaecat aliqua eiusmod qui laboris eu dolore veniam sit reprehenderit.'),
