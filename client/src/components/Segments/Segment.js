@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Editor, RichUtils, convertToRaw } from 'draft-js';
+import { RichUtils, convertToRaw } from 'draft-js';
 
 import * as actionCreators from '../../actions/segmentActions';
 
-import styles from '../Editor/Editor.css';
-import BlockStyleControls from '../Editor/BlockStyleControls';
-import InlineStyleControls from '../Editor/InlineStyleControls';
+import CustomEditor from '../Editor/CustomEditor';
 
 class Segment extends React.Component {
   constructor(props) {
@@ -25,7 +23,7 @@ class Segment extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
 
-    this.focus = () => { this.refs.editor.focus(); };
+    this.focus = () => { this.refs.custom.refs.editor.focus(); };
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
@@ -95,32 +93,17 @@ class Segment extends React.Component {
           <div style={wrapper} dangerouslySetInnerHTML={{__html: this.state.segment.mt }} />
         </div>
 
-        <div style={{ marginTop: '20px' }} onClick={this.focus.bind(this)}>
+        <div style={{ marginTop: '20px' }}>
           <span>Target:</span>
-          <div style={wrapper}>
-            <div className={styles['RichEditor-root']}>
-              <BlockStyleControls
-                editorState={this.state.editorState}
-                onToggle={this.toggleBlockType}
-                className={styles['RichEditor-styleButton']}
-                activeClass={styles['RichEditor-activeButton']}
-              />
-              <InlineStyleControls
-                editorState={this.state.editorState}
-                onToggle={this.toggleInlineStyle}
-                className={styles['RichEditor-styleButton']}
-                activeClass={styles['RichEditor-activeButton']}
-              />
-              <div className={styles['RichEditor-editor']} >
-                <Editor
-                  onClick={this.focus}
-                  editorState={this.state.editorState}
-                  handleKeyCommand={this.handleKeyCommand}
-                  onChange={this.handleChange}
-                  ref="editor"
-                />
-              </div>
-            </div>
+          <div style={wrapper} onClick={this.focus} >
+            <CustomEditor
+              editorState={this.state.editorState}
+              toggleBlockType={this.toggleBlockType}
+              toggleInlineStyle={this.toggleInlineStyle}
+              handleKeyCommand={this.handleKeyCommand}
+              handleChange={this.handleChange}
+              ref="custom"
+            />
           </div>
         </div>
       </div>
