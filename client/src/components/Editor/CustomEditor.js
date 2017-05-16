@@ -6,11 +6,7 @@ import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.css';
 
-class CustomeEditor extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class CustomEditor extends React.Component {
   render() {
     return (
       <div className={styles['RichEditor-root']} >
@@ -31,7 +27,7 @@ class CustomeEditor extends React.Component {
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
             onChange={this.props.handleChange}
-            ref="editor"
+            ref={(ref) => { this.Editor = ref; }}
           />
         </div>
       </div>
@@ -39,8 +35,12 @@ class CustomeEditor extends React.Component {
   }
 }
 
-CustomeEditor.propTypes = {
+CustomEditor.propTypes = {
   editorState: PropTypes.objectOf(PropTypes.object).isRequired,
+  toggleBlockType: PropTypes.func.isRequired,
+  toggleInlineStyle: PropTypes.func.isRequired,
+  handleKeyCommand: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
-export default CustomeEditor;
+export default CustomEditor;

@@ -23,7 +23,7 @@ class Segment extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
 
-    this.focus = () => { this.refs.custom.refs.editor.focus(); };
+    this.focus = () => { this.CustomEditor.Editor.focus(); };
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
@@ -102,7 +102,7 @@ class Segment extends React.Component {
               toggleInlineStyle={this.toggleInlineStyle}
               handleKeyCommand={this.handleKeyCommand}
               handleChange={this.handleChange}
-              ref="custom"
+              ref={(ref) => { this.CustomEditor = ref; }}
             />
           </div>
         </div>
