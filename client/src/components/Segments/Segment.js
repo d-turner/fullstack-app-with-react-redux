@@ -42,17 +42,17 @@ class Segment extends React.Component {
     );
   }
 
-  handleKeyCommand(command) {
+  _handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
-      this.onChange(newState);
+      this.handleChange(newState);
       return 'handled';
     }
     return 'not-handled';
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(
+    this.handleChange(
       RichUtils.toggleBlockType(
         this.state.editorState,
         blockType,
@@ -61,7 +61,7 @@ class Segment extends React.Component {
   }
 
   _toggleInlineStyle(inlineStyle) {
-    this.onChange(
+    this.handleChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
         inlineStyle,
@@ -70,10 +70,6 @@ class Segment extends React.Component {
   }
 
   render() {
-    const id = this.props.match.params.segmentId;
-    const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
-    const segment = this.props.segments[i];
-    const editorState = segment.editorState;
     const wrapper = {
       backgroundColor: 'lightblue',
       marginRight: '0px',
@@ -87,36 +83,41 @@ class Segment extends React.Component {
 
     return (
       <div className="data-list" style={format}>
-        <div>Segment: {parseInt(segment.id, 10) + 1}</div>
+        <div>Segment: {parseInt(this.state.segment.id, 10) + 1}</div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
-          <div style={wrapper}>{segment.source}</div>
+          <div style={wrapper}>{this.state.segment.source}</div>
         </div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Machine Translation:</span>
-          <div style={wrapper} dangerouslySetInnerHTML={{__html: segment.mt }} />
+          <div style={wrapper} dangerouslySetInnerHTML={{__html: this.state.segment.mt }} />
         </div>
 
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '20px' }} onClick={this.focus.bind(this)}>
           <span>Target:</span>
-          <div style={wrapper} >
+          <div style={wrapper}>
             <div className={styles['RichEditor-root']}>
               <BlockStyleControls
-                editorState={editorState}
+                editorState={this.state.editorState}
                 onToggle={this.toggleBlockType}
+                className={styles['RichEditor-styleButton']}
+                activeClass={styles['RichEditor-activeButton']}
               />
               <InlineStyleControls
-                editorState={editorState}
+                editorState={this.state.editorState}
                 onToggle={this.toggleInlineStyle}
+                className={styles['RichEditor-styleButton']}
+                activeClass={styles['RichEditor-activeButton']}
               />
-              <div className={styles['RichEditor-editor']}>
+              <div className={styles['RichEditor-editor']} >
                 <Editor
-                  editorState={EditorState.acceptSelection(editorState, this.state.editorState.getSelection())}
+                  onClick={this.focus}
+                  editorState={this.state.editorState}
                   handleKeyCommand={this.handleKeyCommand}
                   onChange={this.handleChange}
-                  spellCheck
+                  ref="editor"
                 />
               </div>
             </div>
@@ -148,86 +149,6 @@ const mapStateToProps = function(state) {
 const mapDispatchToProps = function(dispatch) {
   // get the available dispatch actions
   return bindActionCreators(actionCreators, dispatch);
-};
-
-
-class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
-  }
-  render() {
-    let active = this.props.className;
-    if (this.props.active) {
-      active += ` ${styles['RichEditor-activeButton']}`;
-    }
-    return (
-      <span className={active} onMouseDown={this.onToggle}>
-        {this.props.label}
-      </span>
-    );
-  }
-}
-const BLOCK_TYPES = [
-  { label: 'H1', style: 'header-one' },
-  { label: 'H2', style: 'header-two' },
-  { label: 'H3', style: 'header-three' },
-  { label: 'H4', style: 'header-four' },
-  { label: 'H5', style: 'header-five' },
-  { label: 'H6', style: 'header-six' },
-  { label: 'Blockquote', style: 'blockquote' },
-  { label: 'UL', style: 'unordered-list-item' },
-  { label: 'OL', style: 'ordered-list-item' },
-  { label: 'Code Block', style: 'code-block' },
-];
-const BlockStyleControls = (props) => {
-  const { editorState } = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
-  return (
-    <div>
-      {BLOCK_TYPES.map(type =>
-        <StyleButton
-          className={styles['RichEditor-styleButton']}
-          key={type.label}
-          active={type.style === blockType}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />,
-      )}
-    </div>
-  );
-};
-
-const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
-  { label: 'Monospace', style: 'CODE' },
-];
-const InlineStyleControls = (props) => {
-  const currentStyle = props.editorState.getCurrentInlineStyle();
-  return (
-    <div>
-      {INLINE_STYLES.map(type =>
-        <StyleButton
-          className={styles['RichEditor-styleButton']}
-          key={type.label}
-          active={currentStyle.has(type.style)}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />,
-      )}
-    </div>
-  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Segment);
