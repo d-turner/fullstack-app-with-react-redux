@@ -2,20 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { Editor, RichUtils, convertToRaw } from 'draft-js';
 
 import * as actionCreators from '../../actions/segmentActions';
-import styles from './segment.css';
+
+import styles from '../Editor/Editor.css';
+import BlockStyleControls from '../Editor/BlockStyleControls';
+import InlineStyleControls from '../Editor/InlineStyleControls';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+
+    const id = this.props.match.params.segmentId;
+    const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
+    const segment = this.props.segments[i];
+    const editorState = segment.editorState;
+
+    this.state = {
+      editorState,
+      segment,
+    };
     this.handleChange = this.handleChange.bind(this);
 
-    this.onChange = editorState => this.setState({ editorState });
-
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.focus = () => { this.refs.editor.focus(); };
+    this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
   }
