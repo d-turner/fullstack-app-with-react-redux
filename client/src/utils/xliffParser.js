@@ -8,11 +8,11 @@ const xliffParser = (fileReader, $q, $log) => {
 
   return {
     readFile(file) {
+      const context = this;
       const promise = fileReader.readAsText(file);
-      // TODO: how to chain these properly?
       return promise.then((result) => {
-        console.log(result);
-        this.parseXML(result);
+        const parseXMLPromise = context.parseXML(result);
+        return parseXMLPromise;
       });
     },
     // parse an XLIFF file and return
@@ -20,7 +20,7 @@ const xliffParser = (fileReader, $q, $log) => {
       // TODO: different code paths for XLIFF 1.2 vs. 2.0 (this is the only way to support both)
       // Working - just return the Document object from this function
       const deferred = $q.defer();
-      const self = this;
+      const context = this;
 
       // a basic xliff wrapper tag:
       // <xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0"
@@ -77,7 +77,7 @@ const xliffParser = (fileReader, $q, $log) => {
       // for every segment, get its matching target mrk, if it exists - note: it may not exist
       const targetSegments = _.map(sourceSegments, (seg) => {
         if (seg.nodeName === 'mrk') {
-          return self.getMrkTarget(xml, seg);
+          return context.getMrkTarget(xml, seg);
         }
         // there's no mrks inside <target>, just a <target> -- TODO: do we require target nodes to exist?
         return seg.parentNode.querySelector('target');
@@ -92,7 +92,7 @@ const xliffParser = (fileReader, $q, $log) => {
         if (!seg[1]) {
           const mid = seg[0].getAttribute('mid');
           $log.info(`Target segment missing: ${mid}`);
-          seg[1] = self.createNewMrkTarget(Document.DOM, seg[0], '', targetLang);
+          seg[1] = context.createNewMrkTarget(Document.DOM, seg[0], '', targetLang);
         }
 
         const segPair = {
