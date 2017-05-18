@@ -1,67 +1,58 @@
-// begin fileReader with promises - three methods: onLoad, onError, and onProgress
+
 const fileReader = function($q) {
-  // Why are we passing in scope here? - Answer: because the resolution of the promise is called with scope.$apply
-  var onLoad = function(reader, deferred) {
+  const onLoad = function(reader, deferred) {
     return function() {
-      console.log(reader)
       deferred.resolve(reader.result);
     };
-    // return function () {
-    //   scope.$apply(function () {
-    //     deferred.resolve(reader.result);
-    //   });
-    // };
   };
 
-  var onError = function(reader, deferred) {
+  const onError = function(reader, deferred) {
     return function() {
-      deferred.reject(reader.result);
-      // scope.$apply(() => {
-      //   deferred.reject(reader.result);
-      // });
+      deferred.reject(new Error(`An error occurred for FileReader: ${reader.result}`));
     };
   };
 
+  const onProgress = function(event) {
+    return function() {
+      if (event.lengthComputable) {
+        const max = event.total;
+        const value = event.loaded;
+        console.log(`Max: ${max}, Value: ${value}`);
+      }
+    };
+  };
 
-  var getReader = function(deferred) {
+  const getReader = function(deferred) {
     const reader = new FileReader();
     reader.onload = onLoad(reader, deferred);
     reader.onerror = onError(reader, deferred);
+    reader.onprogress = onProgress;
     return reader;
   };
 
-  var readAsDataURL = function(file, scope) {
-    var deferred = $q.defer();
-
-    var reader = getReader(deferred, scope);
+  const readAsDataURL = function(file) {
+    const deferred = $q.defer();
+    const reader = getReader();
     reader.readAsDataURL(file);
-
     return deferred.promise;
   };
 
-  var readAsText = function(file) {
-    console.log(file);
-    var deferred = $q.defer();
-
-    // var reader = getReader(deferred, scope);
-    var reader = getReader(deferred);
+  const readAsText = function(file) {
+    const deferred = $q.defer();
+    const reader = getReader(deferred);
     reader.readAsText(file);
-
     return deferred.promise;
   };
 
-  // TODO: how to maintain document state as the user changes stuff?
-  var readAsXML = function(file, scope) {
-    var deferred = $q.defer();
-
-    var reader = getReader(deferred, scope);
+  const readAsXML = function(file) {
+    const deferred = $q.defer();
+    const reader = getReader();
     reader.readAsText(file);
-
     return deferred.promise;
   };
 
   return {
-    readAsDataUrl: readAsDataURL,
+    readAsDataURL,
     readAsText,
     readAsXML,
   };
