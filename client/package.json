@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "draft-js": "^0.10.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
     "q": "^1.5.0",
@@ -55,6 +56,8 @@
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.6.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "xmldom": "^0.1.27"
   }
 }
