@@ -95,7 +95,7 @@ class Segment extends React.Component {
 
         <div style={{ marginTop: '20px' }}>
           <span>Target:</span>
-          <div style={wrapper} onClick={this.focus} >
+          <div style={wrapper} onClick={this.focus} tabIndex={0} role={'Form'} >
             <CustomEditor
               editorState={this.state.editorState}
               toggleBlockType={this.toggleBlockType}
