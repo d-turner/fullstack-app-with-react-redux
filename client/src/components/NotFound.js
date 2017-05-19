@@ -1,4 +1,3 @@
-// import React for jsx
 import React from 'react';
 
 // pure function component

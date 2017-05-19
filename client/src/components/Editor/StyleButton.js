@@ -23,7 +23,7 @@ class StyleButton extends React.Component {
 }
 
 StyleButton.defaultProps = {
-  className: 'styeButton',
+  className: 'styleButton',
 };
 
 StyleButton.propTypes = {

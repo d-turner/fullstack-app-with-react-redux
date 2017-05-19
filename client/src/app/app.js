@@ -1,7 +1,7 @@
 // npm packages
 import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-// common imports (also avaialble in react-router-native)
+// common imports (also available in react-router-native)
 // react-router does not have BrowserRouter/HashRouter/MemoryRouter
 // need to look at react-router-native for mobile routing
 import { Route, Switch, Redirect } from 'react-router';

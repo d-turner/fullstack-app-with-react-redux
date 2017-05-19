@@ -1,11 +1,11 @@
 import * as actions from '../constants/actionTypes';
 
-const intialState = {
+const initialState = {
   projects: [
   ],
 };
 
-const projectReducer = function(state = intialState, action) {
+const projectReducer = function(state = initialState, action) {
   switch (action.type) {
 
     case actions.POP_PROJECTS:

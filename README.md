@@ -17,9 +17,9 @@ The frontend is built entirely with JavaScript, using the [React](https://github
 
 ### Development
 
-The development server uses webpack and babel to compile es6 code into browser compatable code.  
+The development server uses webpack and babel to compile es6 code into browser compatible code.  
 
-Webpack will fire up a server which watches all of the files in the repo, and automagically reloads whenever you change one of the components.  
+Webpack will fire up a server which watches all of the files in the project, and automagically reloads whenever you change one of the components.  
 
 Webpack is also configured to minify and compile all source files into a single distribution file.   
 
@@ -51,3 +51,17 @@ This ensures that objects don't get mutated and the reducers are pure functions.
 ### Building and Deploying
 
 ### Language Codes
+
+### TODO
+* Change editor controls from span tags to buttons for 'Accessible' reasons
+* Add 'Accessible' labels and attributes to tags
+* Extract components into Containers and Presentational
+* Restructure Folders + Add Description for each folder
+* Test UI
+* Handle upload XLIFF files (via form)
+* Concordance + Dictionary lookup
+* Control Spelling + Grammar Setting (Currently uses the browsers language setting)
+* Display list of Projects
+* Handle users
+* Database
+* Production level webpack and server

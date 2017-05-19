@@ -10,8 +10,8 @@ class AddProject extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // this is fine for testing, but need to let the server generate this
-    // for production
+    // this is fine for testing
+    // production let the database generate this
     const id = uniqueId();
     const title = this.title.value;
     const description = this.description.value;
