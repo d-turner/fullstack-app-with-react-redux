@@ -8,34 +8,9 @@ import * as actionCreators from '../../actions/segmentActions';
 
 import CustomEditor from '../Editor/CustomEditor';
 
-import axios from 'axios';
-import $q from 'q';
-import fileReader from '../../utils/fileReader';
-import xliffParser from '../../utils/xliffParser';
-
-
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-
-    const filePath = '/src/data/machines.xlf';
-    axios.get(filePath)
-      .then((res) => {
-        const reader = fileReader($q);
-        const parser = xliffParser(reader, $q, console);
-        const blob = new File([res.data], { type: 'application/xml' });
-        const func = parser.readFile(blob);
-        func
-          .then((result) => {
-            console.log(result);
-          })
-          .catch((error) => {
-            console.log('Error:', error);
-          })
-          .done(() => {
-            console.log('done');
-          });
-      });
 
     const id = this.props.match.params.segmentId;
     const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
