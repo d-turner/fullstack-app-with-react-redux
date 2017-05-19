@@ -14,6 +14,7 @@ import NotFound from '../components/NotFound';
 import ProjectContainer from '../components/ProjectContainer';
 import Segments from '../components/Segments';
 import Segment from '../components/Segments/Segment';
+import DocumentContainer from '../components/Document/Containers';
 
 const Other = function() {
   return (
@@ -51,6 +52,7 @@ export default (
         <li><Link to="/view/123">Post 123</Link></li>
         <li><Link to="/segments">Segment List</Link></li>
         <li><Link to="/projects">Project List</Link></li>
+        <li><Link to="/document">Document</Link></li>
       </ul>
       <Switch>
         <Route exact path="/" component={Home} />
@@ -60,6 +62,7 @@ export default (
         <Route exact path="/segments/:segmentId" component={Segment} />
         <Route exact path="/segments" component={Segments} />
         <Route path="/projects" component={ProjectContainer} />
+        <Route path="/document" component={DocumentContainer} />
         <Route component={NotFound} />
       </Switch>
     </div>
