@@ -1,4 +1,5 @@
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
+import * as actions from '../constants/actionTypes';
 
 const initialState = {
   segments: [{
@@ -49,11 +50,13 @@ const updateSegmentTarget = (segment, action) => {
 
 const segmentReducer = function(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_TARGET':
+
+    case actions.UPDATE_TARGET:
       return {
         ...state,
         segments: state.segments.map(segment => updateSegmentTarget(segment, action)),
       };
+
     default:
       return state;
   }
