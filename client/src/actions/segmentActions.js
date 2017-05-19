@@ -1,7 +1,9 @@
+import * as actions from '../constants/actionTypes';
+
 // update translation
 export function updateSegment(id, target) {
   return {
-    type: 'UPDATE_TARGET',
+    type: actions.UPDATE_TARGET,
     segment: {
       id,
       target,
