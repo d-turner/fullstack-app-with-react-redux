@@ -4,6 +4,7 @@ import todoReducer from './todoReducer';
 import userReducer from './userReducer';
 import projectReducer from './projectReducer';
 import segmentReducer from './segmentReducer';
+import documentReducer from '../components/Document/Reducers/DocumentReducer';
 
 // Reducer Root
 const reducerRoot = combineReducers({
@@ -11,6 +12,7 @@ const reducerRoot = combineReducers({
   userReducer,
   projectReducer,
   segmentReducer,
+  documentReducer,
 });
 
 export default reducerRoot;
