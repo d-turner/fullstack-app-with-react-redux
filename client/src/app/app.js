@@ -59,11 +59,11 @@ export default (
         <Route path="/other" component={Other} />
         <Redirect from="/old-other" to="/other" />
         <Route exact path="/view/:postId" component={Single} />
-        <Route exact path="/segments/:segmentId" component={Segment} />
-        <Route exact path="/segments" component={Segments} />
         <Route path="/projects" component={ProjectContainer} />
         <Route exact path="/documents" component={DocumentContainer} />
-        <Route exact path="/document/:documentId" component={Segments} />
+        <Route exact path="/documents/:documentId" component={Segments} />
+        <Route exact path="/documents/:documentId/segments" component={Segments} />
+        <Route exact path="/documents/:documentId/segments/:segmentId" component={Segment} />
         <Route component={NotFound} />
       </Switch>
     </div>
