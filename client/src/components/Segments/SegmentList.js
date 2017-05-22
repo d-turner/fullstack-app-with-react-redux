@@ -2,28 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+const linkBlock = {
+  padding: '10px',
+  width: '520px',
+  backgroundColor: 'lightcoral',
+};
+const link = {
+  color: 'black',
+  textDecoration: 'none',
+  fontSize: '18px',
+  backgroundColor: 'blue',
+};
+const wrapper = {
+  backgroundColor: 'lightblue',
+  marginRight: '0px',
+  width: '520px',
+};
+
 class SegmentList extends React.Component {
   constructor(props) {
     super(props);
   }
-  render() {
-    const linkBlock = {
-      padding: '10px',
-      width: '520px',
-      backgroundColor: 'lightcoral',
-    };
-    const link = {
-      color: 'black',
-      textDecoration: 'none',
-      fontSize: '18px',
-      backgroundColor: 'blue',
-    };
-    const wrapper = {
-      backgroundColor: 'lightblue',
-      marginRight: '0px',
-      width: '520px',
-    };
 
+  render() {
     const renderSegment = (segment, index) =>
     (
       <div key={segment.id.toString()} value={index} className="data-list-item" style={linkBlock}>
