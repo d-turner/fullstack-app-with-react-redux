@@ -5,11 +5,14 @@ import * as actions from '../../../constants/actionTypes';
 import fileReader from '../../../utils/fileReader';
 import xliffParser from '../../../utils/xliffParser';
 
+let documentId = 0;
+
 // fetch xliff document actions
 export function fetchDocument(documentName) {
   return {
     type: actions.FETCH_DOCUMENT,
     documentName,
+    id: documentId++,
   };
 }
 
@@ -59,7 +62,7 @@ export function requestDocument(documentName) {
             setTimeout(function () {
               dispatch(fetchDocumentSuc(documentName, result));
             },
-              10000,
+              100,
             );
           })
           .catch((error) => {
