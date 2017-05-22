@@ -19,7 +19,6 @@ const Document = function(state = blankDocument, action) {
         id: action.id,
       });
     case actions.FETCH_DOCUMENT_SUC:
-      console.log('State: ', state);
       return Object.assign({}, state, {
         isFetching: false,
         xliff: action.xliff,
