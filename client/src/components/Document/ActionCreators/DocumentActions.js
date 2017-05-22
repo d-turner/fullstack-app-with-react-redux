@@ -29,11 +29,22 @@ export function fetchDocumentSuc(documentName, xliff) {
   };
 }
 
-export function requestDocument(documentName) {
-  return function(dispatch) {
-    dispatch(fetchDocument(documentName));
+const shouldFetchDocument = (state, documentName) => {
+  const doc = state.documentReducer.documents[documentName];
+  if (!doc) {
+    return true;
+  } else if (doc.isFetching) {
+    return false;
+  }
+  return doc.didInvalidate;
+};
 
-    return fetch(`/src/data/${documentName}`)
+export function requestDocument(documentName) {
+  return (dispatch, getState) => {
+    if (shouldFetchDocument(getState(), documentName)) {
+      dispatch(fetchDocument(documentName));
+
+      return fetch(`/src/data/${documentName}`)
       .then((res) => {
         const blob = res.blob();
         return blob;
@@ -45,14 +56,20 @@ export function requestDocument(documentName) {
         const func = parser.readFile(file);
         func
           .then((result) => {
-            dispatch(fetchDocumentSuc(documentName, result));
+            setTimeout(function () {
+              dispatch(fetchDocumentSuc(documentName, result));
+            },
+              10000,
+            );
           })
           .catch((error) => {
             dispatch(fetchDocumentFail(documentName, error));
           })
           .done(() => {
-            console.log('done dispatching...');
+            //  console.log('done dispatching...');
           });
       });
+    }
+    return Promise.resolve();
   };
 }
