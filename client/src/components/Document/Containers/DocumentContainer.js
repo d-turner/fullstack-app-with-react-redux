@@ -25,14 +25,14 @@ class DocumentContainer extends React.Component {
   render() {
     const renderDocument = (key, index) =>
     (
-      <Link to={`/document/${this.props.documents[key].id}`}>
-        <div key={key} value={key}>
+      <div key={key} value={key}>
+        <Link to={`/documents/${this.props.documents[key].id}`}>
           <div style={documentClass}>
             Document: {index + 1}
             <Document documentName={key} document={this.props.documents[key]} />
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     );
 
     return (
