@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Document from '../Presentation/Document';
 
@@ -24,12 +25,14 @@ class DocumentContainer extends React.Component {
   render() {
     const renderDocument = (key, index) =>
     (
-      <div key={key} value={key}>
-        <div style={documentClass}>
-          Document: {index + 1}
-          <Document documentName={key} document={this.props.documents[key]} />
+      <Link to={`/document/${this.props.documents[key].id}`}>
+        <div key={key} value={key}>
+          <div style={documentClass}>
+            Document: {index + 1}
+            <Document documentName={key} document={this.props.documents[key]} />
+          </div>
         </div>
-      </div>
+      </Link>
     );
 
     return (
