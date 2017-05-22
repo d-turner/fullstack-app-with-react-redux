@@ -16,8 +16,10 @@ const Document = function(state = blankDocument, action) {
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false,
+        id: action.id,
       });
     case actions.FETCH_DOCUMENT_SUC:
+      console.log('State: ', state);
       return Object.assign({}, state, {
         isFetching: false,
         xliff: action.xliff,
@@ -41,7 +43,7 @@ const DocumentListReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         documents: {
           ...state.documents,
-          [action.documentName]: Document(state[action.documentName], action),
+          [action.documentName]: Document(state.documents[action.documentName], action),
         },
       });
     default:
