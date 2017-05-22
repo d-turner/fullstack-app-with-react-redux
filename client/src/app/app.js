@@ -52,7 +52,7 @@ export default (
         <li><Link to="/view/123">Post 123</Link></li>
         <li><Link to="/segments">Segment List</Link></li>
         <li><Link to="/projects">Project List</Link></li>
-        <li><Link to="/document">Document</Link></li>
+        <li><Link to="/documents">Document List</Link></li>
       </ul>
       <Switch>
         <Route exact path="/" component={Home} />
@@ -62,7 +62,8 @@ export default (
         <Route exact path="/segments/:segmentId" component={Segment} />
         <Route exact path="/segments" component={Segments} />
         <Route path="/projects" component={ProjectContainer} />
-        <Route path="/document" component={DocumentContainer} />
+        <Route exact path="/documents" component={DocumentContainer} />
+        <Route exact path="/document/:documentId" component={Segments} />
         <Route component={NotFound} />
       </Switch>
     </div>
