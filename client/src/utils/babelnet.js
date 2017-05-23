@@ -9,11 +9,16 @@ const BabelNet = {
 
   // returns babelnet synset ids for word
   // [ { "id": "bn:00615676n" }, { "id": "bn:03740610n" }, ... ]
-  getSynsetIds: (word, lang) => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${lang}&key=${key}`,
+  // Word   => Word to lookup
+  // lang   => language of the source word
+  // pos    => 'NOUN', 'VERB', etc
+  // source => 'WIKT', 'WIKIDATA', etc
+  getSynsetIds:
+  (word, lang, pos = 'NOUN') => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${lang}&pos=${pos}&key=${key}`,
 
 
 
-  // returns synset information
+  // returns babelnet senses for synset id
   /*
     [ { "lemma": "Apple_System_on_Chips", "simpleLemma": "Apple_System_on_Chips", "source": "WIKIRED",
        "sensekey": "", "sensenumber": 0,  "frequency": 0, "position": 1, "language": "EN", "pos": "NOUN",
@@ -26,7 +31,7 @@ const BabelNet = {
 
 
 
-  // return senses of a given word
+  // return babelnet senses of a given word
   /*
    [ { "lemma": "BabelNet", "simpleLemma": "BabelNet", "source": "WIKI", "sensekey": "", "sensenumber": 0,
        "frequency": 0, "position": 1, "language": "EN", "pos": "NOUN",
@@ -45,7 +50,7 @@ const BabelNet = {
   `https://babelnet.io/v4/getSynsetIdsFromResourceID?id=${word}&lang=${lang}&pos=${pos}&source=${source}&key=${key}`,
 
 
-  // return edges of babelnet synset
+  // return all neighbours of a specific BabelSynset
   /* [ { "language": "EN",
          "pointer": { "fSymbol": "r", "name": "Semantically related form", "shortName": "related",
                       "relationGroup": "OTHER", "isAutomatic": false },
@@ -86,3 +91,34 @@ export default function test() {
     });
   });
 }
+
+
+/*
+  BabelNet Readme:
+
+  BabelSynset
+  BabelSynsets (i.e. semantic interpretations) associated to a word or term.
+  You can add more languages to the lookup using:
+  'filterLangs=DE&filterLangs=FR' in the request
+
+  BabelSynsetId
+  Given a specific BabelSynset of home (bn:00000356n), the objective
+  is to retrieve all specific BabelSenses it includes.
+  Return object:
+  response['senses'] => list of sense objects
+  sense['lenna']     => sense value
+  sense['language]   => language
+  sense['source']    => source
+
+  Edges
+  Given a specific BabelSynset of home (bn:00044492n), the
+  objective is to retrieve all neighbouring BabelSynsets in the
+  semantic network.
+  Return object:
+  response           => list of 'edge' objects
+  edge['pointer']    => pointer object
+  pointer['target']  => id of target synset
+  pointer['name']    => relation name/description
+  pointer['group']   => relation group
+
+*/
