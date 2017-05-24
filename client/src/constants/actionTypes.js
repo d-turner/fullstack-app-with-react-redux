@@ -8,6 +8,7 @@ export const FETCH_DOCUMENT_SUC = 'FETCH_DOCUMENT_SUCCESS';
 
 // Segment Actions
 export const UPDATE_TARGET = 'UPDATE_TARGET';
+export const POP_SEGMENTS = 'POPULATE_SEGMENTS';
 
 // Project Actions
 export const ADD_PROJECT = 'ADD_PROJECT';
