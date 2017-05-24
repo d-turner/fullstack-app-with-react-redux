@@ -1,23 +1,29 @@
 import * as actions from '../../../constants/actionTypes';
 
 const initialState = {
-  documents: {},
+  documents: [],
 };
 
 const blankDocument = {
+  name: '',
   isFetching: false,
   didInvalidate: false,
   xliff: {},
 };
 
+const createNew = (id, name) => {
+  return Object.assign({}, blankDocument, {
+    id,
+    name,
+    isFetching: true,
+  });
+};
+
 const Document = function(state = blankDocument, action) {
+  if (state.name !== action.documentName) {
+    return state;
+  }
   switch (action.type) {
-    case actions.FETCH_DOCUMENT:
-      return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false,
-        id: action.id,
-      });
     case actions.FETCH_DOCUMENT_SUC:
       return Object.assign({}, state, {
         isFetching: false,
@@ -34,16 +40,28 @@ const Document = function(state = blankDocument, action) {
   }
 };
 
+const updateTarget = function(state = blankDocument, action) {
+  console.warn('Need to implements this function');
+  return state;
+};
+
 const DocumentListReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
+      return Object.assign({}, state, {
+        documents: [
+          ...state.documents,
+          createNew(action.id, action.documentName),
+        ],
+      });
     case actions.FETCH_DOCUMENT_SUC:
     case actions.FETCH_DOCUMENT_FAIL:
       return Object.assign({}, state, {
-        documents: {
-          ...state.documents,
-          [action.documentName]: Document(state.documents[action.documentName], action),
-        },
+        documents: state.documents.map(doc => Document(doc, action)),
+      });
+    case actions.UPDATE_TARGET:
+      return Object.assign({}, state, {
+        documents: state.documents.map(doc => updateTarget(doc, action)),
       });
     default:
       return state;

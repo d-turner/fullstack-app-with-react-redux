@@ -23,13 +23,13 @@ class DocumentContainer extends React.Component {
   }
 
   render() {
-    const renderDocument = (key, index) =>
+    const renderDocument = (doc, index) =>
     (
-      <div key={key} value={key}>
-        <Link to={`/documents/${this.props.documents[key].id}`}>
+      <div key={doc.id} value={doc.name}>
+        <Link to={`/documents/${this.props.documents[index].id}`}>
           <div style={documentClass}>
             Document: {index + 1}
-            <Document documentName={key} document={this.props.documents[key]} />
+            <Document documentName={doc.name} document={doc} />
           </div>
         </Link>
       </div>
@@ -37,7 +37,7 @@ class DocumentContainer extends React.Component {
 
     return (
       <div>
-        {Object.keys(this.props.documents).map(renderDocument)}
+        {this.props.documents.map((doc, index) => renderDocument(doc, index))}
       </div>
     );
   }
@@ -45,7 +45,7 @@ class DocumentContainer extends React.Component {
 
 DocumentContainer.propTypes = {
   requestDocument: PropTypes.func.isRequired,
-  documents: PropTypes.objectOf(PropTypes.object).isRequired,
+  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default DocumentContainer;

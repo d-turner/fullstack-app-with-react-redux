@@ -33,7 +33,7 @@ export function fetchDocumentSuc(documentName, xliff) {
 }
 
 const shouldFetchDocument = (state, documentName) => {
-  const doc = state.documentReducer.documents[documentName];
+  const doc = state.documentReducer.documents.find(x => x.name === documentName);
   if (!doc) {
     return true;
   } else if (doc.isFetching) {
@@ -46,7 +46,6 @@ export function requestDocument(documentName) {
   return (dispatch, getState) => {
     if (shouldFetchDocument(getState(), documentName)) {
       dispatch(fetchDocument(documentName));
-
       return fetch(`/src/data/${documentName}`)
       .then((res) => {
         const blob = res.blob();
