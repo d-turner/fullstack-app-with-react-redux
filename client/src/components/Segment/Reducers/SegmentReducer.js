@@ -1,5 +1,5 @@
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
-import * as actions from '../constants/actionTypes';
+import * as actions from '../../../constants/actionTypes';
 
 const initialState = {
   segments: [{

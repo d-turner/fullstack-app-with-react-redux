@@ -2,20 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { RichUtils, convertToRaw } from 'draft-js';
+import { EditorState, ContentState, RichUtils, convertToRaw } from 'draft-js';
 
-import * as actionCreators from '../../actions/segmentActions';
+import * as actionCreators from '../ActionCreators/SegmentActions';
 
-import CustomEditor from '../Editor/CustomEditor';
+import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
 
-    const id = this.props.match.params.segmentId;
-    const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
-    const segment = this.props.segments[i];
-    const editorState = segment.editorState;
+    const documentId = props.match.params.documentId;
+    const segmentId = props.match.params.segmentId;
+
+    let doc;
+    const keys = Object.keys(props.documents);
+    for (let i = 0; i < keys.length; i++) {
+      if (props.documents[keys[i]].id === parseInt(documentId, 10)) {
+        doc = props.documents[keys[i]];
+        console.warn('This is not good code!');
+        break;
+      }
+    }
+
+    const segment = doc.xliff.segments[segmentId];
+
+    // const id = this.props.match.params.segmentId;
+    // const i = this.props.segments.findIndex(segment => segment.id === parseInt(id, 10));
+    // const segment = this.props.segments[i];
+    const editorState = EditorState.createWithContent(
+      ContentState.createFromText(segment.target),
+    );
 
     this.state = {
       editorState,
@@ -81,7 +98,7 @@ class Segment extends React.Component {
 
     return (
       <div className="data-list" style={format}>
-        <div>Segment: {parseInt(this.state.segment.id, 10) + 1}</div>
+        <div>Segment: {parseInt(this.props.match.params.segmentId, 10) + 1}</div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
@@ -90,7 +107,7 @@ class Segment extends React.Component {
 
         <div style={{ marginTop: '20px' }}>
           <span>Machine Translation:</span>
-          <div style={wrapper} dangerouslySetInnerHTML={{__html: this.state.segment.mt }} />
+          <div style={wrapper} dangerouslySetInnerHTML={{__html: this.state.segment.target }} />
         </div>
 
         <div style={{ marginTop: '20px' }}>
@@ -111,21 +128,20 @@ class Segment extends React.Component {
   }
 }
 
-/* eslint react/forbid-prop-types: 0 */
 Segment.propTypes = {
-  match: PropTypes.object.isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
   updateSegment: PropTypes.func.isRequired,
-  segments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  documents: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
-  const { segmentReducer } = state;
-  const { segments } = segmentReducer;
+  const { documentReducer } = state;
+  const { documents } = documentReducer;
   // return what we want available in the props
   return {
-    segments,
+    documents,
   };
 };
 

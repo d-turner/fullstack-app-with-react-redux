@@ -27,10 +27,10 @@ class SegmentList extends React.Component {
   render() {
     const renderSegment = (segment, index) =>
     (
-      <div key={segment.id.toString()} value={index} className="data-list-item" style={linkBlock}>
+      <div key={index} value={index} className="data-list-item" style={linkBlock}>
         <div style={wrapper}>
-          <Link to={`/segments/${segment.id}`} style={link}>
-            <div><span>Segment: {segment.id + 1}</span></div>
+          <Link to={`/documents/${this.props.id}/segments/${index}`} style={link}>
+            <div><span>Segment: {index + 1}</span></div>
             <div><span>{segment.source}</span></div>
           </Link>
         </div>
@@ -47,6 +47,7 @@ class SegmentList extends React.Component {
 
 SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default SegmentList;

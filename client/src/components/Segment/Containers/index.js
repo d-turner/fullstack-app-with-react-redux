@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actionCreators from '../../actions/segmentActions';
+import * as actionCreators from '../ActionCreators/SegmentActions';
 import SegmentContainer from './SegmentContainer';
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
-  const { segmentReducer } = state;
-  const { segments } = segmentReducer;
+  const { documentReducer } = state;
   // return what we want available in the props
+  const { documents } = documentReducer;
   return {
-    segments,
+    documents,
   };
 };
 
