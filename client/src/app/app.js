@@ -9,11 +9,11 @@ import { Route, Switch, Redirect } from 'react-router';
 // our packages
 
 // our components
-import Home from '../components/Home';
-import NotFound from '../components/NotFound';
-import ProjectContainer from '../components/ProjectContainer';
-import Segments from '../components/Segments';
-import Segment from '../components/Segments/Segment';
+import Home from '../components/Home/Home';
+import NotFound from '../components/Error/NotFound';
+import ProjectContainer from '../components/Project/Containers/ProjectContainer';
+import Segments from '../components/Segment/Containers';
+import Segment from '../components/Segment/Containers/Segment';
 import DocumentContainer from '../components/Document/Containers';
 
 const Other = function() {
