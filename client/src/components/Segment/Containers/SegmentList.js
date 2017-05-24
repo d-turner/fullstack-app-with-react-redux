@@ -48,6 +48,7 @@ class SegmentList extends React.Component {
 SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
+  populateSegments: PropTypes.func.isRequired,
 };
 
 export default SegmentList;
