@@ -36,7 +36,8 @@ export const BabelNet = {
        "pronunciations": { "audios": [], "transcriptions": [] }
      }, ... ]
   */
-  getSynset: synsetId => `https://babelnet.io/v4/getSynset?id=${synsetId}&key=${key}`,
+  getSynset: (synsetId, lang1, lang2) =>
+  `https://babelnet.io/v4/getSynset?id=${synsetId}&filterLangs=${lang1}&filterLangs=${lang2}&key=${key}`,
 
 
 
@@ -102,8 +103,8 @@ const BabelApi = {
     });
   },
 
-  find: (json) => {
-    const url = BabelNet.getSynset(json[0].id);
+  find: (json, source, target) => {
+    const url = BabelNet.getSynset(json[0].id, source, target);
     return fetch(proxyUrl + url, {
       method: 'GET',
       compress: true,
