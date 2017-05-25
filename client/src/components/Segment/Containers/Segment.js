@@ -17,18 +17,23 @@ class Segment extends React.Component {
     const documentId = parseInt(props.match.params.documentId, 10);
     const segmentId = parseInt(props.match.params.segmentId, 10);
 
-    const i = props.documents.findIndex(doc => doc.id === documentId);
-    const doc = props.documents[i];
+    const documentIndex = props.documents.findIndex(doc => doc.id === documentId);
+    const doc = props.documents[documentIndex];
     const segment = doc.xliff.segments[segmentId];
-
-    const editorState = EditorState.createWithContent(
-      ContentState.createFromText(segment.target),
-    );
+    let editorState;
+    if (!segment.editorState) {
+      editorState = EditorState.createWithContent(
+        ContentState.createFromText(segment.target),
+      );
+    } else {
+      editorState = segment.editorState;
+    }
 
     this.state = {
       editorState,
       segmentId,
       documentId,
+      documentIndex,
       segment,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -86,12 +91,16 @@ class Segment extends React.Component {
   }
 
   _toggleBlockType(blockType) {
-    this.handleChange(
-      RichUtils.toggleBlockType(
-        this.state.editorState,
-        blockType,
-      ),
-    );
+    if (blockType === 'LOOKUP') {
+      this.dictionaryLookup(this.state.editorState);
+    } else {
+      this.handleChange(
+        RichUtils.toggleBlockType(
+          this.state.editorState,
+          blockType,
+        ),
+      );
+    }
   }
 
   _toggleInlineStyle(inlineStyle) {
@@ -106,7 +115,7 @@ class Segment extends React.Component {
   render() {
     return (
       <SegmentPresentation
-        segment={this.state.segment}
+        segment={this.props.documents[this.state.documentIndex].xliff.segments[this.state.segmentId]}
         editorState={this.state.editorState}
         toggleBlockType={this.toggleBlockType}
         toggleInlineStyle={this.toggleInlineStyle}
