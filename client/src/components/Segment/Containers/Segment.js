@@ -10,6 +10,7 @@ import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import BabelApi from '../../../utils/babelnet';
 import SegmentPresentation from '../Presentation/Segment';
+import Lexicon from '../../Lexicon/Lexicon';
 
 class Segment extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Segment extends React.Component {
     }
 
     this.state = {
+      loading: false,
       editorState,
       segmentId,
       documentId,
@@ -66,14 +68,23 @@ class Segment extends React.Component {
     const start = selectionState.getStartOffset();
     const end = selectionState.getEndOffset();
     const selectedText = currentContentBlock.getText().slice(start, end);
+    let loading = true;
+    this.setState({ loading });
     if (selectedText) {
       const source = this.props.documents[this.state.documentIndex].xliff.sourceLang.toUpperCase();
       const target = this.props.documents[this.state.documentIndex].xliff.targetLang.toUpperCase();
       BabelApi.lookup(selectedText, 'EN', target).then((res) => {
         res.json().then((json) => {
-          BabelApi.find(json).then((resp) => {
+          if (json.length === 0) {
+            console.warn('need to implement this');
+            console.warn('lookup failed');
+            loading = false;
+            this.setState({ loading });
+          }
+          BabelApi.find(json, 'EN', target).then((resp) => {
             resp.json().then((data) => {
-              console.log(data);
+              loading = false;
+              this.setState({ data, loading });
             });
           });
         });
@@ -114,16 +125,19 @@ class Segment extends React.Component {
 
   render() {
     return (
-      <SegmentPresentation
-        segment={this.props.documents[this.state.documentIndex].xliff.segments[this.state.segmentId]}
-        editorState={this.state.editorState}
-        toggleBlockType={this.toggleBlockType}
-        toggleInlineStyle={this.toggleInlineStyle}
-        handleKeyCommand={this.handleKeyCommand}
-        handleChange={this.handleChange}
-        focus={this.focus}
-        ref={(ref) => { this.SegmentPresentation = ref; }}
-      />
+      <div>
+        <SegmentPresentation
+          segment={this.props.documents[this.state.documentIndex].xliff.segments[this.state.segmentId]}
+          editorState={this.state.editorState}
+          toggleBlockType={this.toggleBlockType}
+          toggleInlineStyle={this.toggleInlineStyle}
+          handleKeyCommand={this.handleKeyCommand}
+          handleChange={this.handleChange}
+          focus={this.focus}
+          ref={(ref) => { this.SegmentPresentation = ref; }}
+        />
+        <Lexicon data={this.state.data} loading={this.state.loading} />
+      </div>
     );
   }
 }
