@@ -1,5 +1,14 @@
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const key = 'ad58eca6-d462-4f61-8f11-cc07f82590c0';
-const BabelNet = {
+const headers = new Headers({
+  Origin: 'http://localhost:3000',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET',
+  'Accept-Encoding': 'gzip, deflate',
+  'Content-Type': 'application/json',
+});
+
+export const BabelNet = {
 
   // returns the current babelnet version
   // { "version": "V3_7" }
@@ -14,7 +23,7 @@ const BabelNet = {
   // pos    => 'NOUN', 'VERB', etc
   // source => 'WIKT', 'WIKIDATA', etc
   getSynsetIds:
-  (word, lang, pos = 'NOUN') => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${lang}&pos=${pos}&key=${key}`,
+  (word, lang1, lang2) => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${lang1}&langs=${lang2}&key=${key}`,
 
 
 
@@ -68,16 +77,7 @@ const BabelNet = {
   {"message":"Wrong parameters."}
 */
 
-export default function test() {
-  const headers = new Headers({
-    Origin: 'http://localhost:3000',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET',
-    'Accept-Encoding': 'gzip, deflate',
-    'Content-Type': 'application/json',
-  });
-
-  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+export function test() {
   const url = BabelNet.getSynset('bn:00005055n');
 
   fetch(proxyUrl + url, {
@@ -92,7 +92,27 @@ export default function test() {
   });
 }
 
+const BabelApi = {
+  lookup: (word, source, target) => {
+    const url = BabelNet.getSynsetIds(word, source, target);
+    return fetch(proxyUrl + url, {
+      method: 'GET',
+      compress: true,
+      headers,
+    });
+  },
 
+  find: (json) => {
+    const url = BabelNet.getSynset(json[0].id);
+    return fetch(proxyUrl + url, {
+      method: 'GET',
+      compress: true,
+      headers,
+    });
+  },
+};
+
+export default BabelApi;
 /*
   BabelNet Readme:
 
