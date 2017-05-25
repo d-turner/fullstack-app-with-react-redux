@@ -41,7 +41,18 @@ const Document = function(state = blankDocument, action) {
 };
 
 const updateTarget = function(state = blankDocument, action) {
-  console.warn('Need to implements this function');
+  if (state.id === action.segment.documentId) {
+    return {
+      ...state,
+      xliff: {
+        ...state.xliff,
+        segments: state.xliff.segments.map((segment, index) => {
+          if (index !== action.segment.segmentId) { return segment; }
+          return { ...segment, target: action.segment.plainText, editorState: action.segment.editorState };
+        }),
+      },
+    };
+  }
   return state;
 };
 
