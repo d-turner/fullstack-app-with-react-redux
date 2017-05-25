@@ -8,6 +8,7 @@ import { EditorState, ContentState, RichUtils, convertToRaw } from 'draft-js';
 // we do not need a seperate reducer of this component
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
+import BabelApi from '../../../utils/babelnet';
 import SegmentPresentation from '../Presentation/Segment';
 
 class Segment extends React.Component {
@@ -36,6 +37,7 @@ class Segment extends React.Component {
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+    this.dictionaryLookup = state => this._dictionaryLookup(state);
   }
 
   handleChange(editorState) {
@@ -47,8 +49,31 @@ class Segment extends React.Component {
       this.state.documentId,
       this.state.segmentId,
       this.state.editorState,
-      convertToRaw(editorState.getCurrentContent()),
+      this.state.editorState.getCurrentContent().getPlainText(),
+      convertToRaw(this.state.editorState.getCurrentContent()),
     );
+  }
+  _dictionaryLookup(state) {
+    const selectionState = state.getSelection();
+    const anchorKey = selectionState.getAnchorKey();
+    const currentContent = state.getCurrentContent();
+    const currentContentBlock = currentContent.getBlockForKey(anchorKey);
+    const start = selectionState.getStartOffset();
+    const end = selectionState.getEndOffset();
+    const selectedText = currentContentBlock.getText().slice(start, end);
+    if (selectedText) {
+      const source = this.props.documents[this.state.documentIndex].xliff.sourceLang.toUpperCase();
+      const target = this.props.documents[this.state.documentIndex].xliff.targetLang.toUpperCase();
+      BabelApi.lookup(selectedText, 'EN', target).then((res) => {
+        res.json().then((json) => {
+          BabelApi.find(json).then((resp) => {
+            resp.json().then((data) => {
+              console.log(data);
+            });
+          });
+        });
+      });
+    }
   }
 
   _handleKeyCommand(command) {
