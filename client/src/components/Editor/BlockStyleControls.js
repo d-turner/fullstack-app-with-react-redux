@@ -14,6 +14,7 @@ const BLOCK_TYPES = [
   { label: 'UL', style: 'unordered-list-item' },
   { label: 'OL', style: 'ordered-list-item' },
   { label: 'Code Block', style: 'code-block' },
+  { label: 'Dictionary', style: 'LOOKUP' },
 ];
 const BlockStyleControls = (props) => {
   const { editorState } = props;
