@@ -45,7 +45,7 @@ Webpack uses 'cheap-module-source-map' to map the code in the single distributio
 ### Testing
 
 Jest is used as the testing framework as recommended by React.  
-For testing it is recommended to use 'deep-freeze' on objects that are passed to reducers.  
+For testing it is recommended to use [deep-freeze](https://www.npmjs.com/package/deep-freeze) on objects that are passed to reducers.  
 This ensures that objects don't get mutated and the reducers are pure functions.
 
 ### Building and Deploying
