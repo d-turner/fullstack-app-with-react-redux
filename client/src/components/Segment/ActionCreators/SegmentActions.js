@@ -1,13 +1,14 @@
 import * as actions from '../../../constants/actionTypes';
 
 // update translation
-export function updateSegment(documentId, segmentId, editorState, target) {
+export function updateSegment(documentId, segmentId, editorState, plainText, target) {
   return {
     type: actions.UPDATE_TARGET,
     segment: {
       documentId,
       segmentId,
       editorState,
+      plainText,
       target,
     },
   };
