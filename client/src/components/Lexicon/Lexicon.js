@@ -10,6 +10,13 @@ function findFirstSense(lang, array) {
   return '';
 }
 
+function findFirstGloss(lang, array) {
+  for (let x = 0; x < array.length; x++) {
+    if (array[x].language === lang) return array[x].gloss;
+  }
+  return '';
+}
+
 class Lexicon extends React.Component {
   constructor(props) {
     super(props);
@@ -20,11 +27,15 @@ class Lexicon extends React.Component {
     if (nextProps.data) {
       const word = findFirstSense(nextProps.data.filterLangs[0], nextProps.data.senses);
       const translation = findFirstSense(nextProps.data.filterLangs[1], nextProps.data.senses);
-      this.setState({ word, translation });
+
+      const sourceGloss = findFirstGloss(nextProps.data.filterLangs[0], nextProps.data.glosses);
+      const targetGloss = findFirstGloss(nextProps.data.filterLangs[1], nextProps.data.glosses);
+      this.setState({ word, translation, sourceGloss, targetGloss });
     }
   }
 
   render() {
+    console.log(this.props.data);
     if (this.props.loading) {
       return (
         <div>
@@ -34,16 +45,18 @@ class Lexicon extends React.Component {
       );
     } else if (this.props.data) {
       return (
-        <div>
+        <div style={{ display: 'block', width: '700px' }}>
           <h3>Lexicon</h3>
           <div>
-            <div style={{ display: 'inline-block' }}>
+            <div style={{ display: 'inline-block', width: '300px' }}>
               <div>{this.props.data.filterLangs[0]}</div>
               <div>{this.state.word}</div>
+              <div><p>{this.state.sourceGloss}</p></div>
             </div>
-            <div style={{ display: 'inline-block', marginLeft: '60px' }}>
+            <div style={{ display: 'inline-block', marginLeft: '60px', width: '300px' }}>
               <div>{this.props.data.filterLangs[1]}</div>
               <div>{this.state.translation}</div>
+              <div><p>{this.state.targetGloss}</p></div>
             </div>
           </div>
         </div>
@@ -59,6 +72,7 @@ class Lexicon extends React.Component {
 
 Lexicon.propTypes = {
   data: PropTypes.objectOf(PropTypes.any),
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Lexicon;
