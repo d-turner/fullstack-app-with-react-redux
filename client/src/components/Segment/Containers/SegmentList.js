@@ -30,7 +30,7 @@ class SegmentList extends React.Component {
       <div key={index} value={index} className="data-list-item" style={linkBlock}>
         <div style={wrapper}>
           <Link to={`/documents/${this.props.id}/segments/${index}`} style={link}>
-            <div><span>Segment: {index + 1}</span></div>
+            <div><span>Segment: {index}</span></div>
             <div><span>{segment.source}</span></div>
           </Link>
         </div>

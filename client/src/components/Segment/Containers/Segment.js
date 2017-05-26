@@ -135,6 +135,7 @@ class Segment extends React.Component {
           handleChange={this.handleChange}
           focus={this.focus}
           ref={(ref) => { this.SegmentPresentation = ref; }}
+          segmentId={this.props.match.params.segmentId}
         />
         <Lexicon data={this.state.data} loading={this.state.loading} />
       </div>
