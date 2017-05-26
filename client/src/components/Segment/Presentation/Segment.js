@@ -15,14 +15,10 @@ const format = {
 };
 
 class Segment extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="data-list" style={format}>
-        <div>Segment: {'Need to update this with id'}</div>
+        <div>Segment: {this.props.segmentId}</div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
@@ -60,6 +56,7 @@ Segment.propTypes = {
   handleChange: PropTypes.func.isRequired,
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
+  segmentId: PropTypes.string.isRequired,
 };
 
 export default Segment;
