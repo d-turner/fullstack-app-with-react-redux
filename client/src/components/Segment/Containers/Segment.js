@@ -8,9 +8,9 @@ import { EditorState, ContentState, RichUtils, convertToRaw } from 'draft-js';
 // we do not need a seperate reducer of this component
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
-import BabelApi from '../../../utils/babelnet';
+import styles from '../../../constants/main.css';
 import SegmentPresentation from '../Presentation/Segment';
-import Lexicon from '../../Lexicon/Lexicon';
+import Sidebar from '../../Sidebar';
 
 class Segment extends React.Component {
   constructor(props) {
@@ -31,7 +31,6 @@ class Segment extends React.Component {
     }
 
     this.state = {
-      loading: false,
       editorState,
       segmentId,
       documentId,
@@ -68,28 +67,7 @@ class Segment extends React.Component {
     const start = selectionState.getStartOffset();
     const end = selectionState.getEndOffset();
     const selectedText = currentContentBlock.getText().slice(start, end);
-    let loading = true;
-    this.setState({ loading });
-    if (selectedText) {
-      const source = this.props.documents[this.state.documentIndex].xliff.sourceLang.toUpperCase();
-      const target = this.props.documents[this.state.documentIndex].xliff.targetLang.toUpperCase();
-      BabelApi.lookup(selectedText, 'EN', target).then((res) => {
-        res.json().then((json) => {
-          if (json.length === 0) {
-            console.warn('need to implement this');
-            console.warn('lookup failed');
-            loading = false;
-            this.setState({ loading });
-          }
-          BabelApi.find(json, 'EN', target).then((resp) => {
-            resp.json().then((data) => {
-              loading = false;
-              this.setState({ data, loading });
-            });
-          });
-        });
-      });
-    }
+    this.props.lookupLexicon(selectedText);
   }
 
   _handleKeyCommand(command) {
@@ -125,7 +103,7 @@ class Segment extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.segmentWrapper}>
         <SegmentPresentation
           segment={this.props.documents[this.state.documentIndex].xliff.segments[this.state.segmentId]}
           editorState={this.state.editorState}
@@ -137,7 +115,7 @@ class Segment extends React.Component {
           ref={(ref) => { this.SegmentPresentation = ref; }}
           segmentId={this.props.match.params.segmentId}
         />
-        <Lexicon data={this.state.data} loading={this.state.loading} />
+        <Sidebar />
       </div>
     );
   }
@@ -145,8 +123,9 @@ class Segment extends React.Component {
 
 Segment.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
-  updateSegment: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updateSegment: PropTypes.func.isRequired,
+  lookupLexicon: PropTypes.func.isRequired,
 };
 
 
