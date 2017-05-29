@@ -1,0 +1,47 @@
+.wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.colwrapper {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.segmentWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+typeahead {
+    font-family: 'ff-tisa-web-pro', serif;
+    padding: 0 6.25px;
+    border: 2px solid #ced6d6;
+    outline: none;
+}
+
+.input {
+    border-radius: 4px;
+    display: block;
+    outline: none;
+    font-size: 0.8rem;
+    width: 100%;
+    padding: 6.25px 12.5px;
+    border: 1px solid #ced6d6;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 300;
+    color: #323234;
+    background-color: #ffffff;
+}
+
+.flexItem {
+  margin-left: auto;
+}
+
+.lexiconItem {
+  padding-bottom: 20px;
+}
+
+.lexicon {
+  padding-right: 50px; 
+}
