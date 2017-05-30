@@ -9,21 +9,13 @@ function SegmentContainer(props) {
   const doc = props.documents[i];
 
   return (
-    <div>
-      <SegmentList
-        segments={doc.xliff.segments} id={id}
-        populateSegments={props.populateSegments}
-        updateSegment={props.updateSegment}
-      />
-    </div>
+    <SegmentList segments={doc.xliff.segments} id={id} />
   );
 }
 
 SegmentContainer.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   documents: PropTypes.arrayOf(PropTypes.object).isRequired,
-  populateSegments: PropTypes.func.isRequired,
-  updateSegment: PropTypes.func.isRequired,
 };
 
 export default SegmentContainer;

@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as actionCreators from '../../Segment/ActionCreators/SegmentActions';
 import SegmentContainer from './SegmentContainer';
 
 const mapStateToProps = function(state) {
@@ -14,9 +12,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  // get the available dispatch actions
-  return bindActionCreators(actionCreators, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SegmentContainer);
+export default connect(mapStateToProps)(SegmentContainer);

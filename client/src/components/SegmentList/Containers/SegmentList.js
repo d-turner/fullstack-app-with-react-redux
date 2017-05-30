@@ -2,22 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const linkBlock = {
-  padding: '10px',
-  width: '520px',
-  backgroundColor: 'lightcoral',
-};
-const link = {
-  color: 'black',
-  textDecoration: 'none',
-  fontSize: '18px',
-  backgroundColor: 'blue',
-};
-const wrapper = {
-  backgroundColor: 'lightblue',
-  marginRight: '0px',
-  width: '520px',
-};
+import styles from '../styles.css';
 
 class SegmentList extends React.Component {
   constructor(props) {
@@ -27,9 +12,9 @@ class SegmentList extends React.Component {
   render() {
     const renderSegment = (segment, index) =>
     (
-      <div key={index} value={index} className="data-list-item" style={linkBlock}>
-        <div style={wrapper}>
-          <Link to={`/documents/${this.props.id}/segments/${index}`} style={link}>
+      <div key={index} value={index} className={styles.linkBlock}>
+        <div className={styles.wrapper}>
+          <Link to={`/documents/${this.props.id}/segments/${index}`} className={styles.link}>
             <div><span>Segment: {index}</span></div>
             <div><span>{segment.source}</span></div>
           </Link>
@@ -48,7 +33,6 @@ class SegmentList extends React.Component {
 SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
-  populateSegments: PropTypes.func.isRequired,
 };
 
 export default SegmentList;
