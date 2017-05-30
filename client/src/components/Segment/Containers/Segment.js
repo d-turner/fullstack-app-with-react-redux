@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux';
 import { EditorState, ContentState, RichUtils, convertToRaw } from 'draft-js';
 
 // import the actions from the document reducer,
-// we do not need a seperate reducer of this component
+// we do not need a separate reducer of this component
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
-import styles from '../../../constants/main.css';
+import styles from '../styles.css';
 import SegmentPresentation from '../Presentation/Segment';
 import Sidebar from '../../Sidebar';
 
@@ -21,6 +21,7 @@ class Segment extends React.Component {
     const documentIndex = props.documents.findIndex(doc => doc.id === documentId);
     const doc = props.documents[documentIndex];
     const segment = doc.xliff.segments[segmentId];
+
     let editorState;
     if (!segment.editorState) {
       editorState = EditorState.createWithContent(
@@ -37,9 +38,9 @@ class Segment extends React.Component {
       documentIndex,
       segment,
     };
-    this.handleChange = this.handleChange.bind(this);
 
-    this.focus = () => { this.SegmentPresentation.CustomEditor.Editor.focus(); };
+    this.handleChange = this.handleChange.bind(this);
+    this.focus = () => this.SegmentPresentation.CustomEditor.Editor.focus();
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
@@ -59,6 +60,7 @@ class Segment extends React.Component {
       convertToRaw(this.state.editorState.getCurrentContent()),
     );
   }
+
   _dictionaryLookup(state) {
     const selectionState = state.getSelection();
     const anchorKey = selectionState.getAnchorKey();
@@ -73,10 +75,11 @@ class Segment extends React.Component {
   _handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
+      console.log('handled');
       this.handleChange(newState);
-      return 'handled';
+    } else {
+      console.log('not-handled');
     }
-    return 'not-handled';
   }
 
   _toggleBlockType(blockType) {

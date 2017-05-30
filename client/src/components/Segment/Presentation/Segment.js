@@ -1,40 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styles from '../styles.css';
 import CustomEditor from '../../Editor/CustomEditor';
-
-const wrapper = {
-  backgroundColor: 'lightblue',
-  marginRight: '0px',
-  width: '520px',
-  padding: '5px',
-  marginTop: '5px',
-};
-const format = {
-  fontSize: '18px',
-  flexFlow: 'column nowrap',
-  width: '100%',
-};
 
 class Segment extends React.Component {
   render() {
     return (
-      <div className="data-list" style={format}>
+      <div className={styles.format}>
         <div>Segment: {this.props.segmentId}</div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
-          <div style={wrapper}>{this.props.segment.source}</div>
+          <div className={styles.wrapper}>{this.props.segment.source}</div>
         </div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Machine Translation:</span>
-          <div style={wrapper} dangerouslySetInnerHTML={{__html: this.props.segment.target }} />
+          <div className={styles.wrapper} dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
         </div>
 
         <div style={{ marginTop: '20px' }}>
           <span>Target:</span>
-          <div style={wrapper} onClick={this.props.focus} tabIndex={0} role={'Form'} >
+          <div className={styles.wrapper} onClick={this.props.focus} tabIndex={0} role={'textbox'} >
             <CustomEditor
               editorState={this.props.editorState}
               toggleBlockType={this.props.toggleBlockType}

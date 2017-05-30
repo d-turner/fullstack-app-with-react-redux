@@ -14,14 +14,6 @@ export function updateSegment(documentId, segmentId, editorState, plainText, tar
   };
 }
 
-// initialise segment reducer
-export function populateSegments(segmentArray) {
-  return {
-    type: actions.POP_SEGMENTS,
-    segments: segmentArray,
-  };
-}
-
 // lexicon lookup
 export function lookupLexicon(lexicon) {
   return {
