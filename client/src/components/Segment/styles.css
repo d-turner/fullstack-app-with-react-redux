@@ -1,0 +1,18 @@
+.segmentWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.wrapper {
+  background-color: lightblue;
+  margin-right: 0px;
+  width: 520px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.format {
+  font-size: 18px;
+  flex-flow: column nowrap;
+  width: 100%;
+};

@@ -10,11 +10,6 @@
   justify-content: flex-start;
 }
 
-.segmentWrapper {
-  display: flex;
-  flex-flow: row nowrap;
-}
-
 typeahead {
   font-family: 'ff-tisa-web-pro', serif;
   padding: 0 6.25px;
