@@ -21,3 +21,11 @@ export function populateSegments(segmentArray) {
     segments: segmentArray,
   };
 }
+
+// lexicon lookup
+export function lookupLexicon(lexicon) {
+  return {
+    type: actions.LOOKUP,
+    lexicon,
+  };
+}

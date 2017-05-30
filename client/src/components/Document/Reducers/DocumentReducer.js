@@ -2,6 +2,7 @@ import * as actions from '../../../constants/actionTypes';
 
 const initialState = {
   documents: [],
+  lexicon: '',
 };
 
 const blankDocument = {
@@ -74,6 +75,11 @@ const DocumentListReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         documents: state.documents.map(doc => updateTarget(doc, action)),
       });
+    case actions.LOOKUP:
+      return {
+        ...state,
+        lexicon: action.lexicon,
+      };
     default:
       return state;
   }

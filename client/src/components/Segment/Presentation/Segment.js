@@ -12,6 +12,8 @@ const wrapper = {
 };
 const format = {
   fontSize: '18px',
+  flexFlow: 'column nowrap',
+  width: '100%',
 };
 
 class Segment extends React.Component {

@@ -12,7 +12,7 @@ import { Route, Switch, Redirect } from 'react-router';
 import Home from '../components/Home/Home';
 import NotFound from '../components/Error/NotFound';
 import ProjectContainer from '../components/Project/Containers/ProjectContainer';
-import Segments from '../components/Segment/Containers';
+import Segments from '../components/SegmentList/Containers';
 import Segment from '../components/Segment/Containers/Segment';
 import DocumentContainer from '../components/Document/Containers';
 

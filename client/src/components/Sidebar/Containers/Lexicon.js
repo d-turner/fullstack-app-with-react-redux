@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Loader from '../Loader/Loader';
+import Loader from '../../Loader/Loader';
 
 function findFirstSense(lang, array) {
   for (let x = 0; x < array.length; x++) {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actionCreators from '../ActionCreators/SegmentActions';
+import * as actionCreators from '../../Segment/ActionCreators/SegmentActions';
 import SegmentContainer from './SegmentContainer';
 
 const mapStateToProps = function(state) {
