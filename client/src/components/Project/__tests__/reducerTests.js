@@ -163,3 +163,20 @@ describe('project reducer', () => {
     expect(reducer(stateBefore, action)).toEqual(stateAfter);
   });
 });
+
+describe('project reducer populate projects', () => {
+  /*
+   * undefined state and undefined action
+   */
+  it('should return a populated state', () => {
+    const action = {
+      type: types.POP_PROJECTS,
+      projects: [1, 2, 3],
+    };
+    expect(reducer(undefined, action)).toEqual(
+      {
+        projects: [1, 2, 3],
+      },
+    );
+  });
+});

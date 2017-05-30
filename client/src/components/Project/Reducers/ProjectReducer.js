@@ -12,9 +12,6 @@ const projectReducer = function(state = initialState, action) {
       return Object.assign({}, state, { projects: action.projects });
 
     case actions.ADD_PROJECT:
-      if (action.project.title === '') {
-        return state;
-      }
       return {
         ...state,
         projects: [...state.projects, action.project],
