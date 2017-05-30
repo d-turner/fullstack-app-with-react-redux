@@ -7,15 +7,32 @@ import * as types from '../../../constants/actionTypes';
 describe('segmentActions', () => {
   it('should have an action to update the target of a translation segment', () => {
     const target = 'New target translation text';
-    const id = 0;
+    const documentId = 0;
+    const segmentId = 0;
+    const editorState = '';
+    const plainText = '';
     const expectedAction = {
       type: types.UPDATE_TARGET,
       segment: {
-        id,
+        documentId,
+        segmentId,
+        editorState,
+        plainText,
         target,
       },
     };
 
-    expect(segmentActions.updateSegment(id, target)).toEqual(expectedAction);
+    expect(segmentActions.updateSegment(documentId, segmentId, editorState, plainText, target)).toEqual(expectedAction);
+  });
+
+
+  it('should have an action to lookup a lexicon', () => {
+    const lexicon = 'Hello';
+    const expectedAction = {
+      type: types.LOOKUP,
+      lexicon,
+    };
+
+    expect(segmentActions.lookupLexicon(lexicon)).toEqual(expectedAction);
   });
 });
