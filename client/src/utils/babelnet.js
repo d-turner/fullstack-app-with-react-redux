@@ -23,7 +23,7 @@ export const BabelNet = {
   // pos    => 'NOUN', 'VERB', etc
   // source => 'WIKT', 'WIKIDATA', etc
   getSynsetIds:
-  (word, lang1, lang2) => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${lang1}&langs=${lang2}&key=${key}`,
+  (word, sourceLang, lang2) => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
 
 
 
@@ -50,7 +50,7 @@ export const BabelNet = {
        "freebaseId": "0n5v3cj"
   }, ... ]
   */
-  getSenses: (word, lang) => `https://babelnet.io/v4/getSenses?word=${word}&lang=${lang}&key=${key}`,
+  getSenses: (word, sourceLang, lang2) => `https://babelnet.io/v4/getSenses?word=${word}&lang=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
 
 
 
@@ -95,7 +95,7 @@ export function test() {
 
 const BabelApi = {
   lookup: (word, source, target) => {
-    const url = BabelNet.getSynsetIds(word, source, target);
+    const url = BabelNet.getSynsetIds(word, target, source);
     return fetch(proxyUrl + url, {
       method: 'GET',
       compress: true,
@@ -104,7 +104,17 @@ const BabelApi = {
   },
 
   find: (json, source, target) => {
-    const url = BabelNet.getSynset(json[0].id, source, target);
+    const url = BabelNet.getSynset(json[0].id, target, source);
+    return fetch(proxyUrl + url, {
+      method: 'GET',
+      compress: true,
+      headers,
+    });
+  },
+
+  lookupWord: (word, target, source) => {
+    const url = BabelNet.getSenses(word, target, source);
+    console.log(url);
     return fetch(proxyUrl + url, {
       method: 'GET',
       compress: true,
