@@ -115,7 +115,10 @@ class Segment extends React.Component {
           ref={(ref) => { this.SegmentPresentation = ref; }}
           segmentId={this.props.match.params.segmentId}
         />
-        <Sidebar />
+        <Sidebar
+          sourceLang={this.props.documents[this.state.documentIndex].xliff.sourceLang}
+          targetLang={this.props.documents[this.state.documentIndex].xliff.targetLang}
+        />
       </div>
     );
   }
