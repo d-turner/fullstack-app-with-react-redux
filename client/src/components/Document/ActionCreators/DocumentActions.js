@@ -58,11 +58,7 @@ export function requestDocument(documentName) {
         const func = parser.readFile(file);
         func
           .then((result) => {
-            setTimeout(function () {
-              dispatch(fetchDocumentSuc(documentName, result));
-            },
-              100,
-            );
+            dispatch(fetchDocumentSuc(documentName, result));
           })
           .catch((error) => {
             dispatch(fetchDocumentFail(documentName, error));
