@@ -9,6 +9,7 @@ import { Route, Switch, Redirect } from 'react-router';
 // our packages
 
 // our components
+import NavBar from '../components/NavBar/Containers/NavBar';
 import Home from '../components/Home/Home';
 import NotFound from '../components/Error/NotFound';
 import ProjectContainer from '../components/Project/Containers/ProjectContainer';
@@ -16,18 +17,12 @@ import Segments from '../components/SegmentList/Containers';
 import Segment from '../components/Segment/Containers/Segment';
 import DocumentContainer from '../components/Document/Containers';
 
+import styles from '../constants/main.css';
+
 const Other = function() {
   return (
     <div>
       <h2>Others Here</h2>
-    </div>
-  );
-};
-
-const Main = function() {
-  return (
-    <div>
-      <h1>Kanjingo</h1>
     </div>
   );
 };
@@ -44,16 +39,7 @@ const Single = function() {
 export default (
   <Router>
     <div>
-      <Route path="/" component={Main} />
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/other">Other</Link></li>
-        <li><Link to="/old-other">Other that will redirect</Link></li>
-        <li><Link to="/view/123">Post 123</Link></li>
-        <li><Link to="/segments">Segment List</Link></li>
-        <li><Link to="/projects">Project List</Link></li>
-        <li><Link to="/documents">Document List</Link></li>
-      </ul>
+      <NavBar to={'/'} label={'Kanjingo'} className={styles.headingItem} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/other" component={Other} />
