@@ -17,6 +17,7 @@
         "import/prefer-default-export": "off",
         "react/jsx-filename-extension": "off",
         "no-plusplus": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "arrow-body-style": "off"
     }
 }
