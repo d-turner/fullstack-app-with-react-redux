@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Loader from '../../Loader/Loader';
-import styles from '../../../constants/main.css';
+import styles from '../styles.css';
 import isoLangs from '../../../utils/isoLangs';
 import BabelApi from '../../../utils/babelnet';
 
@@ -92,42 +92,44 @@ class Sidebar extends React.Component {
   }
   render() {
     return (
-      <div className={`${styles.flexItem} ${styles.lexicon}`}>
-        <h3>Lexicon</h3>
-        <form onSubmit={this.onSubmit}>
-          <label htmlFor="searchCheckbox">{this.state.sourceLang}</label>
-          <label className={styles.switch} htmlFor="searchCheckbox">
-            <input type="checkbox" id="searchCheckbox" name="searchCheckbox" />
-            <div className={`${styles.slider} ${styles.round}`} />
-          </label>
-          <label htmlFor="searchCheckbox">{this.state.targetLang}</label>
-          <input
-            type="text" className={`${styles.typeahead}  ${styles.input}`}
-            autoComplete="off" placeholder="Enter a word to search..."
-            autoFocus="" aria-autocomplete="list" aria-owns="typeahead-2583-2457"
-          />
-        </form>
-        <div className={styles.wrapper}>
-          <div className={styles.flexItem}>
-            <div className={styles.colwrapper}>
-              <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
-                {this.state.sourceLang}
-              </div>
-              <div className={styles.lexiconTranslation}>
-                {this.state.sourceLemma}
-              </div>
-            </div>
-          </div>
-          <div className={styles.flexItem}>
-            <div className={styles.colwrapper}>
-              <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
-                {this.state.targetLang}
-              </div>
-              <div className={styles.lexiconTranslation}>
-                {this.state.targetLemma}
+      <div className={styles.parent}>
+        <div className={`${styles.flexItem} ${styles.lexicon}`}>
+          <h3>Lexicon</h3>
+          <form onSubmit={this.onSubmit}>
+            <label htmlFor="searchCheckbox">{this.state.sourceLang}</label>
+            <label className={styles.switch} htmlFor="searchCheckbox">
+              <input type="checkbox" id="searchCheckbox" name="searchCheckbox" />
+              <div className={`${styles.slider} ${styles.round}`} />
+            </label>
+            <label htmlFor="searchCheckbox">{this.state.targetLang}</label>
+            <input
+              type="text" className={`${styles.typeahead}  ${styles.input}`}
+              autoComplete="off" placeholder="Enter a word to search..."
+              autoFocus="" aria-autocomplete="list" aria-owns="typeahead-2583-2457"
+            />
+          </form>
+          <div className={styles.wrapper}>
+            <div className={styles.flexItem}>
+              <div className={styles.colwrapper}>
+                <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
+                  {this.state.sourceLang}
+                </div>
+                <div className={styles.lexiconTranslation}>
+                  {this.state.sourceLemma}
+                </div>
               </div>
             </div>
-            {this.renderSpinner()}
+            <div className={styles.flexItem}>
+              <div className={styles.colwrapper}>
+                <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
+                  {this.state.targetLang}
+                </div>
+                <div className={styles.lexiconTranslation}>
+                  {this.state.targetLemma}
+                </div>
+              </div>
+              {this.renderSpinner()}
+            </div>
           </div>
         </div>
       </div>

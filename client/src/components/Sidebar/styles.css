@@ -40,8 +40,8 @@ typeahead {
 }
 
 .flexItem {
- width: 100%;
- margin-right: 20px;
+  min-width: 150px;
+  margin-right: 20px;
 }
 
 .lexiconItem {
@@ -49,12 +49,17 @@ typeahead {
   width: 100%;
 }
 
-.lexicon {
-  margin-left: 10px;
+.parent {
   padding-left: 22px;
-  width: 100%;
-  border-left: 1px solid #ced6d6;
-  border-bottom: 1px solid #ced6d6;
+  border-color: #ced6d6;
+  border-style: solid;
+  border-width: 1px 0 1px 1px;
+  min-width: 365px;
+}
+
+.lexicon {
+  width: inherit;
+  position: fixed
 }
 
 .lexicon > h3 {
