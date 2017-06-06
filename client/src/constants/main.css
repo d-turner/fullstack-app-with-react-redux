@@ -8,39 +8,6 @@ body {
   flex-flow: row nowrap;
 }
 
-.heading {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
-  align-items: baseline;
-  background-color: #f8b345;
-}
-
-.headingItem {
-  padding: 0 15px 0 15px;
-  -webkit-margin-before: 1em;
-  -webkit-margin-after: 1em; 
-  -webkit-margin-start: 0px; 
-  -webkit-margin-end: 0px;
-}
-
-.headingItemActive {
-  background-color: #f8b345;
-}
-
-.heading > a {
-  display: block;
-  text-decoration: none;
-  color: black;
-  border-style: solid;
-  border-width: 0 1px 0 1px;
-}
-
-.kanjingo {
-  
-  font-weight: bold;
-}
-
 .colwrapper {
   display: flex;
   flex-flow: column nowrap;
