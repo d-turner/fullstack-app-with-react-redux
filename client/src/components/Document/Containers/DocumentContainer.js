@@ -1,16 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import Document from '../Presentation/Document';
-
-
-const documentClass = {
-  margin: '10px',
-  padding: '10px',
-  width: '520px',
-  backgroundColor: 'lightcoral',
-};
+import styles from '../documents.css';
 
 class DocumentContainer extends React.Component {
   constructor(props) {
@@ -23,21 +15,46 @@ class DocumentContainer extends React.Component {
   }
 
   render() {
-    const renderDocument = (doc, index) =>
+    const renderDocument = doc =>
     (
-      <div key={doc.id} value={doc.name}>
-        <Link to={`/documents/${this.props.documents[index].id}`}>
-          <div style={documentClass}>
-            Document: {index + 1}
-            <Document documentName={doc.name} document={doc} />
-          </div>
-        </Link>
-      </div>
+      <Document documentName={doc.name} document={doc} key={doc.id} value={doc.name} />
     );
 
     return (
-      <div>
-        {this.props.documents.map((doc, index) => renderDocument(doc, index))}
+      <div className={styles.wrapper}>
+        <table id="documentList" className={styles.table}>
+          <thead>
+            <tr>
+              <th className={styles.thPadding}>
+                <div className={styles['enforce-height']}>
+                  <span className="document-selected checkbox-wrapper">
+                    <input id="all_selected" type="checkbox" />
+                    <label htmlFor="all_selected" />
+                  </span>
+                </div>
+              </th>
+              <th className={`${styles.thDocumentTitle} ${styles.thPadding}`}>
+                <div className="document-list-utility" />
+                <div className="th-document-ellipsis">Document name</div>
+              </th>
+              <th className={styles.thPadding}>
+                <div className="document-list-utility" />
+                <div className="th-document-ellipsis">Segments</div>
+              </th>
+              <th className={styles.thPadding}>
+                <div className="document-list-utility" />
+                <div className="th-document-ellipsis">Completed</div>
+              </th>
+              <th className={styles.thPadding}>
+                <div className="document-list-utility" />
+                <div className="th-document-ellipsis">Words</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.documents.map((doc, index) => renderDocument(doc, index))}
+          </tbody>
+        </table>
       </div>
     );
   }
