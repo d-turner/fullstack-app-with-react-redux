@@ -1,7 +1,7 @@
 import React from 'react';
 
 import NavPill from '../Presentation/NavPill';
-import styles from '../../../constants/main.css';
+import styles from '../styles.css';
 
 const NavBar = () => {
   return (
