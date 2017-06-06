@@ -17,7 +17,8 @@ import Segments from '../components/SegmentList/Containers';
 import Segment from '../components/Segment/Containers/Segment';
 import DocumentContainer from '../components/Document/Containers';
 
-import styles from '../constants/main.css';
+// import default styles (body, p, div, etc)
+require('../constants/main.css');
 
 const Other = function() {
   return (
@@ -39,7 +40,7 @@ const Single = function() {
 export default (
   <Router>
     <div>
-      <NavBar to={'/'} label={'Kanjingo'} className={styles.headingItem} />
+      <NavBar to={'/'} label={'Kanjingo'} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/other" component={Other} />
