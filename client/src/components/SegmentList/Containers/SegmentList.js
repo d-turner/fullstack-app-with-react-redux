@@ -1,30 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import styles from '../styles.css';
+import Segment from '../../../components/Segment/Containers/Segment';
 
 class SegmentList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const renderSegment = (segment, index) =>
     (
-      <div key={index} value={index} className={styles.linkBlock}>
-        <div className={styles.wrapper}>
-          <Link to={`/documents/${this.props.id}/segments/${index}`} className={styles.link}>
-            <div><span>Segment: {index}</span></div>
-            <div><span>{segment.source}</span></div>
-          </Link>
+      <div key={index} value={index} className={styles.block}>
+        <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
+          <div className={styles.segmentId}>{index}</div>{/* segment number*/}
+          <Segment match={this.props.match} segmentId={index} />
         </div>
       </div>
     );
 
     return (
-      <div className="data-list">
-        {this.props.segments.map(renderSegment)}
+      <div className={styles.segmentList}>
+        <div className={styles.wrapper}>
+          {this.props.segments.map(renderSegment)}
+        </div>
       </div>
     );
   }

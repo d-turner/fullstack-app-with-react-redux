@@ -1,3 +1,13 @@
+.mainContent {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+}
+
+.segmentList {
+  background-color: #F0F2F2
+}
+
 .linkBlock {
   padding: 10px;
   width: 520px;
@@ -7,12 +17,34 @@
 .link {
   color: black;
   text-decoration: none;
-  font-size: 18px;
-  background-color: blue;
 }
 
 .wrapper {
-  background-color: lightblue;
-  margin-right: 0px;
-  width: 520px;
+  display: flex;
+  flex-flow: column nowrap
+}
+
+.block {
+  margin: 40px 200px 10px 50px;
+  max-width: 550px;
+  font-size: 1.5rem;
+  color: black;
+}
+
+.segmentWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.segmentId {
+  align-self: flex-end;
+  margin: 10px 30px;
+}
+
+.segment {
+  margin: 0 20px;
+}
+
+.something {
+  margin: 10px 10px;
 }

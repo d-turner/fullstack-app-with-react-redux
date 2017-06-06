@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SegmentList from './SegmentList';
+import Sidebar from '../../Sidebar';
+import styles from '../styles.css';
 
 function SegmentContainer(props) {
   const id = props.match.params.documentId;
@@ -9,7 +11,13 @@ function SegmentContainer(props) {
   const doc = props.documents[i];
 
   return (
-    <SegmentList segments={doc.xliff.segments} id={id} />
+    <div className={styles.mainContent}>
+      <SegmentList segments={doc.xliff.segments} id={id} match={props.match} />
+      <Sidebar
+        sourceLang={props.documents[i].xliff.sourceLang}
+        targetLang={props.documents[i].xliff.targetLang}
+      />
+    </div>
   );
 }
 
