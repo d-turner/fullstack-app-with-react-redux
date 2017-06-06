@@ -8,8 +8,6 @@ class Segment extends React.Component {
   render() {
     return (
       <div className={styles.format}>
-        <div>Segment: {this.props.segmentId}</div>
-
         <div style={{ marginTop: '20px' }}>
           <span>Source:</span>
           <div className={styles.wrapper}>{this.props.segment.source}</div>
@@ -46,7 +44,7 @@ Segment.propTypes = {
   handleChange: PropTypes.func.isRequired,
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
-  segmentId: PropTypes.string.isRequired,
+  segmentId: PropTypes.number.isRequired,
 };
 
 export default Segment;

@@ -4,11 +4,10 @@
 }
 
 .wrapper {
-  background-color: lightblue;
+  background-color: white;
   margin-right: 0px;
-  width: 520px;
-  padding: 5px;
   margin-top: 5px;
+  line-height: 1.24em;
 }
 
 .format {

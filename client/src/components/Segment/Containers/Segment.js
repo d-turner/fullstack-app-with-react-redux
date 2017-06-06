@@ -10,13 +10,12 @@ import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import styles from '../styles.css';
 import SegmentPresentation from '../Presentation/Segment';
-import Sidebar from '../../Sidebar';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
     const documentId = parseInt(props.match.params.documentId, 10);
-    const segmentId = parseInt(props.match.params.segmentId, 10);
+    const segmentId = props.segmentId;
 
     const documentIndex = props.documents.findIndex(doc => doc.id === documentId);
     const doc = props.documents[documentIndex];
@@ -108,7 +107,7 @@ class Segment extends React.Component {
     return (
       <div className={styles.segmentWrapper}>
         <SegmentPresentation
-          segment={this.props.documents[this.state.documentIndex].xliff.segments[this.state.segmentId]}
+          segment={this.props.documents[this.state.documentIndex].xliff.segments[this.props.segmentId]}
           editorState={this.state.editorState}
           toggleBlockType={this.toggleBlockType}
           toggleInlineStyle={this.toggleInlineStyle}
@@ -116,11 +115,7 @@ class Segment extends React.Component {
           handleChange={this.handleChange}
           focus={this.focus}
           ref={(ref) => { this.SegmentPresentation = ref; }}
-          segmentId={this.props.match.params.segmentId}
-        />
-        <Sidebar
-          sourceLang={this.props.documents[this.state.documentIndex].xliff.sourceLang}
-          targetLang={this.props.documents[this.state.documentIndex].xliff.targetLang}
+          segmentId={this.props.segmentId}
         />
       </div>
     );
