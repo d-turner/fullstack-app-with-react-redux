@@ -24,11 +24,21 @@
   flex-flow: column nowrap
 }
 
+.selected {
+  border: solid 1px #3eafbc !important;
+}
+
 .block {
-  margin: 40px 200px 10px 50px;
+  margin: 20px 50px 20px 50px;
   max-width: 550px;
   font-size: 1.5rem;
   color: black;
+  padding: 20px;
+  border: solid 1px #ced6d6;
+}
+
+.block:hover {
+  border-color: #f8b345;
 }
 
 .segmentWrapper {
@@ -37,8 +47,8 @@
 }
 
 .segmentId {
-  align-self: flex-end;
-  margin: 10px 30px;
+  padding-top: 4px;
+  padding-right: 8px;
 }
 
 .segment {
