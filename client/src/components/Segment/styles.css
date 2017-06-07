@@ -8,6 +8,13 @@
   margin-right: 0px;
   margin-top: 5px;
   line-height: 1.24em;
+  padding: 6px 8px;
+}
+
+.editorWrapper {
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.24em;
 }
 
 .format {
