@@ -1,8 +1,11 @@
+import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 
 const initialState = {
   documents: [],
   lexicon: '',
+  selectedSegment: 0,
+  editorState: EditorState.createEmpty(),
 };
 
 const blankDocument = {
@@ -49,7 +52,10 @@ const updateTarget = function(state = blankDocument, action) {
         ...state.xliff,
         segments: state.xliff.segments.map((segment, index) => {
           if (index !== action.segment.segmentId) { return segment; }
-          return { ...segment, target: action.segment.plainText, editorState: action.segment.editorState };
+          return { ...segment,
+            target: action.segment.editorState.getCurrentContent().getPlainText(),
+            editorState: action.segment.editorState,
+          };
         }),
       },
     };
