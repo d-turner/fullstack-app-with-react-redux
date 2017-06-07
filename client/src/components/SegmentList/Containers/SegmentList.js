@@ -5,16 +5,32 @@ import styles from '../styles.css';
 import Segment from '../../../components/Segment/Containers/Segment';
 
 class SegmentList extends React.Component {
+  selected(index) {
+    this.props.updateSelectedSegment(this.props.documentId, index);
+  }
+
   render() {
-    const renderSegment = (segment, index) =>
-    (
-      <div key={index} value={index} className={styles.block}>
-        <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
-          <div className={styles.segmentId}>{index}</div>{/* segment number*/}
-          <Segment match={this.props.match} segmentId={index} />
+    const renderSegment = (segment, index) => {
+      if (index === this.props.selectedSegment) {
+        return (
+          <div key={index} value={index} className={`${styles.block} ${styles.selected}`}>
+            <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
+              <div className={styles.segmentId}>{index}</div>{/* segment number*/}
+              <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div key={index} value={index} className={styles.block} onClick={() => this.selected(index)} tabIndex={0} role={'textbox'}>
+          <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
+            <div className={styles.segmentId}>{index}</div>{/* segment number*/}
+            <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     return (
       <div className={styles.segmentList}>
@@ -28,7 +44,10 @@ class SegmentList extends React.Component {
 
 SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  id: PropTypes.string.isRequired,
+  documentId: PropTypes.number.isRequired,
+  updateSelectedSegment: PropTypes.func.isRequired,
+  editorState: PropTypes.objectOf(PropTypes.any).isRequired,
+  selectedSegment: PropTypes.number.isRequired,
 };
 
 export default SegmentList;
