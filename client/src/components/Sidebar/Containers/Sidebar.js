@@ -96,17 +96,21 @@ class Sidebar extends React.Component {
         <div className={`${styles.flexItem} ${styles.lexicon}`}>
           <h3>Lexicon</h3>
           <form onSubmit={this.onSubmit}>
-            <label htmlFor="searchCheckbox">{this.state.sourceLang}</label>
-            <label className={styles.switch} htmlFor="searchCheckbox">
-              <input type="checkbox" id="searchCheckbox" name="searchCheckbox" />
+            <label htmlFor="search with source language">{this.state.sourceLang}</label>
+            <label className={styles.switch} htmlFor="language switch">
+              <input
+                type="checkbox" id="searchLanguageSwitch" name="searchLanguageSwitch"
+                aria-label="Switch between Source and target language for searching. Defaults to source language"
+                title="searchLanguageSwitch" />
               <div className={`${styles.slider} ${styles.round}`} />
             </label>
-            <label htmlFor="searchCheckbox">{this.state.targetLang}</label>
+            <label htmlFor="search with target language">{this.state.targetLang}</label>
             <input
               type="text" className={`${styles.typeahead}  ${styles.input}`}
               autoComplete="off" placeholder="Enter a word to search..."
-              autoFocus="" aria-autocomplete="list" aria-owns="typeahead-2583-2457"
-            />
+              autoFocus="" aria-autocomplete="none"
+              aria-label="Input box used for searching a token"
+              title="searchTextInput" />
           </form>
           <div className={styles.wrapper}>
             <div className={styles.flexItem}>
