@@ -5,7 +5,12 @@ import styles from '../styles.css';
 import Segment from '../../../components/Segment/Containers/Segment';
 
 class SegmentList extends React.Component {
-  selected(index) {
+  componentWillMount() {
+    this.props.updateSelectedSegment(this.props.documentId, 0);
+  }
+
+  selected(event, index) {
+    console.log(event);
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
 
@@ -23,12 +28,16 @@ class SegmentList extends React.Component {
       }
 
       return (
-        <div key={index} value={index} className={styles.block} onClick={() => this.selected(index)} tabIndex={0} role={'textbox'}>
+        <button
+          onClick={event => this.selected(event, index)}
+          key={index} value={index} className={styles.block}
+          aria-label="Active the selected segment"
+          role={'textbox'}>
           <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
             <div className={styles.segmentId}>{index}</div>{/* segment number*/}
             <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
           </div>
-        </div>
+        </button>
       );
     };
 
