@@ -117,6 +117,7 @@ const DocumentListReducer = function(state = initialState, action) {
       };
     case actions.SPLIT:
       return Object.assign({}, state, {
+        editorState: EditorState.createEmpty(),
         documents: state.documents.map(doc => splitSegment(doc, action)),
       });
     case actions.UPDATE_SELECTED:
