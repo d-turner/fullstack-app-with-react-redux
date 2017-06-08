@@ -21,7 +21,7 @@ class Segment extends React.Component {
       );
     }
     return (
-      <div />
+      <div className={styles.wrapper} dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
     );
   }
 
@@ -30,13 +30,6 @@ class Segment extends React.Component {
       <div className={`${styles.format}`}>
         {/* <span>Source:</span> */}
         <div className={styles.wrapper}>{this.props.segment.source}</div>
-
-        {/*
-        <div style={{ marginTop: '20px' }}>
-          {/* <span>Machine Translation:</span> /}
-          <div className={styles.wrapper} dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
-        </div>
-        */}
 
         <div style={{ marginTop: '20px' }}>
           {/* <span>Target:</span> */}
