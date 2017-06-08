@@ -6,39 +6,14 @@ import Loader from '../../Loader/Loader';
 import styles from '../documents.css';
 
 export default function Document(props) {
-  if (props.document && props.document.isFetching) {
-    return (
-      <tr className={styles.rowWrapper} key={props.document.id} value={props.document.name}>
-        <td className={styles.documentSelect}>
-          <div className={styles['enforce-height']}>
-            <span className="document-selected checkbox-wrapper">
-              <input id={props.document.id} type="checkbox" />
-              <label htmlFor="checked_45986" />
-            </span>
-            <span className="document-deselected">
-              <span className="icon-circle" />
-            </span>
-          </div>
-        </td>
-        <td className="documentTitle">
-          <div className="hint--top">
-            <div className="title">
-              <Loader />
-            </div>
-          </div>
-        </td>
-        <td className="document-details-meta document-details-segments">
-          <span className="ng-binding"><strong /></span>
-        </td>
-      </tr>
-    );
-  }
   return (
     <tr className={styles.rowWrapper}>
       <td className={styles.documentSelect}>
         <div className={styles['enforce-height']}>
           <span className="document-selected checkbox-wrapper">
-            <input id={props.document.id} type="checkbox" />
+            <input id={props.document.id} type="checkbox"
+              aria-label="Select Document"
+              title="Select Document" />
             <label htmlFor="checked_45986" />
           </span>
           <span className="document-deselected">
@@ -54,7 +29,9 @@ export default function Document(props) {
         </div>
       </td>
       <td className="document-details-meta document-details-segments">
-        <span className="ng-binding"><strong>{props.document.xliff.segments.length}</strong></span>
+        <span className="ng-binding">
+          <strong>{props.document.isFetching ? (<Loader />) : props.document.xliff.segments.length}</strong>
+        </span>
       </td>
       <td className="document-details-meta document-details-segments">
         <span className="ng-binding"><strong>4</strong></span>
