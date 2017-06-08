@@ -16,6 +16,13 @@
   padding: 0px;
   margin: 0px;
   line-height: 1.24em;
+  text-align: inherit;
+  cursor: inherit;
+  color: inherit;
+  background-color: inherit;
+  box-sizing: inherit;
+  border: inherit;
+  align-items: inherit;
 }
 
 .format {
