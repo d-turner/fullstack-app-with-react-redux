@@ -9,6 +9,7 @@
   margin-top: 5px;
   line-height: 1.24em;
   padding: 6px 8px;
+  border: 1px solid #ddd;
 }
 
 .editorWrapper {
