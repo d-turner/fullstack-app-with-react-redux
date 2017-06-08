@@ -120,9 +120,6 @@ const DocumentListReducer = function(state = initialState, action) {
         documents: state.documents.map(doc => splitSegment(doc, action)),
       });
     case actions.UPDATE_SELECTED:
-      if (state.selectedSegment === action.segmentId) {
-        return state;
-      }
       return {
         ...state,
         selectedSegment: action.segmentId,
