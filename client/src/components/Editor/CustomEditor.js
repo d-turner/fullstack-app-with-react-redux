@@ -7,6 +7,10 @@ import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.css';
 
 class CustomEditor extends React.Component {
+  componentDidMount() {
+    this.Editor.focus();
+  }
+
   render() {
     return (
       <div className={styles['RichEditor-root']} >
