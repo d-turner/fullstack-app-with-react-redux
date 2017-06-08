@@ -23,31 +23,42 @@ class DocumentContainer extends React.Component {
     return (
       <div className={styles.wrapper}>
         <table id="documentList" className={styles.table}>
+          <caption>Users Document List</caption>
           <thead>
             <tr>
               <th className={styles.thPadding}>
                 <div className={styles['enforce-height']}>
                   <span className="document-selected checkbox-wrapper">
-                    <input id="all_selected" type="checkbox" />
+                    <input id="all_selected" type="checkbox"
+                      aria-label="Select All. On selection all documents will be selected."
+                      title="Select All. On selection all documents will be selected." />
                     <label htmlFor="all_selected" />
                   </span>
                 </div>
               </th>
-              <th className={`${styles.thDocumentTitle} ${styles.thPadding}`}>
+              <th
+                scope="col"
+                className={`${styles.thDocumentTitle} ${styles.thPadding}`}>
                 <div className="document-list-utility" />
                 <div className="th-document-ellipsis">Document name</div>
               </th>
-              <th className={styles.thPadding}>
+              <th
+                scope="col"
+                className={styles.thPadding}>
                 <div className="document-list-utility" />
-                <div className="th-document-ellipsis">Segments</div>
+                <div className="th-document-ellipsis">Segment Count</div>
               </th>
-              <th className={styles.thPadding}>
+              <th
+                scope="col"
+                className={styles.thPadding}>
                 <div className="document-list-utility" />
-                <div className="th-document-ellipsis">Completed</div>
+                <div className="th-document-ellipsis">Completed Segments</div>
               </th>
-              <th className={styles.thPadding}>
+              <th
+                scope="col"
+                className={styles.thPadding}>
                 <div className="document-list-utility" />
-                <div className="th-document-ellipsis">Words</div>
+                <div className="th-document-ellipsis">Word Count</div>
               </th>
             </tr>
           </thead>
