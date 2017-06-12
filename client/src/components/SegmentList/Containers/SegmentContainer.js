@@ -16,6 +16,7 @@ function SegmentContainer(props) {
       <Sidebar
         sourceLang={props.documents[id].xliff.sourceLang}
         targetLang={props.documents[id].xliff.targetLang}
+        documentId={id}
       />
     </div>
   );
