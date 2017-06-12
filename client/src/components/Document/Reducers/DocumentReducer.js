@@ -1,5 +1,6 @@
-import { EditorState, ContentState } from 'draft-js';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
+import { FINDREPLACEREDUCER } from '../../FindReplace/Reducers/FindReplaceReducer';
 
 const initialState = {
   documents: [],
@@ -54,7 +55,6 @@ const updateTarget = function(state = blankDocument, action) {
           if (index !== action.segment.segmentId) { return segment; }
           return { ...segment,
             target: action.segment.editorState.getCurrentContent().getPlainText(),
-            editorState: action.segment.editorState,
           };
         }),
       },
@@ -69,12 +69,10 @@ const splitSegment = function(state, action) {
     const newSegment1 = Object.assign({}, oldSegment, {
       source: oldSegment.source.substring(0, action.cursorPosition),
       target: '',
-      editorState: EditorState.createEmpty(),
     });
     const newSegment2 = Object.assign({}, oldSegment, {
       source: oldSegment.source.substring(action.cursorPosition),
       target: '',
-      editorState: EditorState.createEmpty(),
     });
     const newSegments = [newSegment1, newSegment2];
     const before = state.xliff.segments.slice(0, action.segmentId);
@@ -91,7 +89,7 @@ const splitSegment = function(state, action) {
   return state;
 };
 
-const DocumentListReducer = function(state = initialState, action) {
+const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
       return Object.assign({}, state, {
@@ -125,12 +123,20 @@ const DocumentListReducer = function(state = initialState, action) {
         ...state,
         selectedSegment: action.segmentId,
         editorState: EditorState.createWithContent(ContentState.createFromText(
-          state.documents[action.documentId].xliff.segments[action.segmentId].target,
+          state.documents[action.documentId].xliff.segments[action.segmentId].target.replace(/(<([^>]+)>)/ig, ''),
         )),
+      };
+    case actions.FIND_NEXT:
+    case actions.FIND_PREV:
+    case actions.REPLACE_TEXT:
+    case actions.REPLACE_ALL:
+      return {
+        ...state,
+        documents: state.documents.map(doc => FINDREPLACEREDUCER(doc, action)),
       };
     default:
       return state;
   }
 };
 
-export default DocumentListReducer;
+export default DocumentReducer;
