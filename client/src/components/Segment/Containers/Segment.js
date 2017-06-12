@@ -22,11 +22,7 @@ class Segment extends React.Component {
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
     this.dictionaryLookup = state => this._dictionaryLookup(state);
     this.splitSegment = state => this._splitSegment(state);
-  }
-
-  componentWillUpdate(newProps) {
-    // console.log('here');
-    // console.log(newProps);
+    this.findReplace = state => this._findReplace(state);
   }
 
   handleChange(editorState) {
@@ -35,6 +31,17 @@ class Segment extends React.Component {
       this.props.segmentId,
       editorState,
     );
+  }
+
+  _findReplace() {
+    const selectionState = this.props.editorState.getSelection();
+    const anchorKey = selectionState.getAnchorKey();
+    const currentContent = this.props.editorState.getCurrentContent();
+    const currentContentBlock = currentContent.getBlockForKey(anchorKey);
+    const start = selectionState.getStartOffset();
+    const end = selectionState.getEndOffset();
+    const selectedText = currentContentBlock.getText().slice(start, end);
+    this.props.renderFindReplace(selectedText, this.props.segmentId, start);
   }
 
   _splitSegment() {
@@ -69,6 +76,8 @@ class Segment extends React.Component {
       this.dictionaryLookup(this.props.editorState);
     } else if (blockType === 'SPLIT') {
       this.splitSegment(this.props.editorState);
+    } else if (blockType === 'FIND-REPLACE') {
+      this.findReplace(this.props.editorState);
     } else {
       this.handleChange(
         RichUtils.toggleBlockType(
@@ -114,6 +123,7 @@ Segment.propTypes = {
   updateSegment: PropTypes.func.isRequired,
   lookupLexicon: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
+  renderFindReplace: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
