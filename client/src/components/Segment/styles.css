@@ -26,7 +26,6 @@
 }
 
 .format {
-  font-size: 18px;
   flex-flow: column nowrap;
   width: 100%;
 };
