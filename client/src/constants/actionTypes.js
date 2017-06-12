@@ -11,6 +11,7 @@ export const UPDATE_TARGET = 'UPDATE_TARGET';
 export const POP_SEGMENTS = 'POPULATE_SEGMENTS';
 export const LOOKUP = 'LOOKUP_LEXICON';
 export const SPLIT = 'SPLIT';
+export const FIND = 'FIND_REPLACE';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
@@ -19,6 +20,13 @@ export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
 export const ADD_PROJECT = 'ADD_PROJECT';
 export const REMOVE_PROJECT = 'REMOVE_PROJECT';
 export const POP_PROJECTS = 'POPULATE_PROJECTS';
+
+// Find-Replace Actions
+export const FIND_NEXT = 'FIND_NEXT';
+export const FIND_PREV = 'FIND_PREV';
+export const REPLACE_TEXT = 'REPLACE_TEXT';
+export const REPLACE_ALL = 'REPLACE_ALL';
+export const UPDATE_FIND_LOCATION = 'UPDATE_CURRENT_FIND_REPLACE_SEGMENT';
 
 /*
  * Another Example
