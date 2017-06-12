@@ -29,3 +29,13 @@ export function splitSegment(segmentId, documentId, cursorPosition) {
     cursorPosition,
   };
 }
+
+// initiate the render of the find and replace box
+export function renderFindReplace(word, currentSegment, cursorPosition) {
+  return {
+    type: actions.FIND,
+    word,
+    currentSegment,
+    cursorPosition,
+  };
+}
