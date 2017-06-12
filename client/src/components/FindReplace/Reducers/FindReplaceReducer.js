@@ -9,17 +9,25 @@ const initialState = {
 
 function updateNext(state, action) {
   // TODO: remove current style if needed
-  // Update current segment to next one found
-  let notFound = true;
-  let notLooped = true;
-  let index = action.location.segmentId + 1;
+  // TODO: Update current segment to next one found
+  // 1. remove current style on the current location
+  // 2. enter find next loop
+  // 3. Add style if found
+  // 4. update the position of the current segment/cursor
+  const oldTarget = state[action.location.segmentId].target.replace(/(<([^>]+)>)/ig, '');
+  const oldIndex = Object.assign({}, state[action.location.segmentId], {
+    target: oldTarget,
+  });
+
+  let notFound = true;  // while another occurrence
+  let notLooped = true; // and not looped back around
+  let index = action.location.segmentId + 1; // starting point is the next segment
   while (notFound && notLooped) {
     if (index >= state.length) index = 0;
     if (index === action.location.segmentId) {
       notLooped = false;
     }
-    const targetIndex = state[index].target.indexOf(action.text);
-    if (targetIndex !== -1) {
+    if (state[index].target.includes(action.text)) {
       notFound = false;
       const newTarget = state[index].target.replace(
         action.text,
@@ -28,14 +36,14 @@ function updateNext(state, action) {
       const newIndex = Object.assign({}, state[index], {
         target: newTarget,
       });
-      const oldTarget = state[action.location.segmentId].target.replace(/(<([^>]+)>)/ig, '');
-      const oldIndex = Object.assign({}, state[action.location.segmentId], {
-        target: oldTarget,
-      });
-      // remove styles from old find if the segments are different
-      if (index !== action.location.segmentId) {
-
+      // this does not take into account if the text appears twice in the same segment
+      if (index < action.location.segmentId) {
+        // return order newIndex, oldIndex
       }
+      if (index > action.location.segmentId) {
+        // return order oldIndex, newIndex
+      }
+      // otherwise they are the same and you can just return a single
       return [
         ...state.slice(0, index),
         newIndex,
@@ -72,7 +80,7 @@ const FindReplaceReducer = function(state = initialState, action) {
         render: true,
         word: action.word,
         currentSegment: action.currentSegment,
-        cursorPosition: action.cursorPosition,
+        wordIndex: action.index,
       });
     case actions.UPDATE_FIND_LOCATION:
       return Object.assign({}, state, {
