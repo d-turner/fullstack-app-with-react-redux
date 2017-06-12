@@ -3,6 +3,10 @@ body {
   font-family: sans-serif;
 }
 
+html {
+  
+}
+
 .wrapper {
   display: flex;
   flex-flow: row nowrap;
@@ -19,4 +23,8 @@ typeahead {
   padding: 0 6.25px;
   border: 2px solid #ced6d6;
   outline: none;
+}
+
+.highlight {
+  background-color:yellow;
 }
