@@ -31,11 +31,11 @@ export function splitSegment(segmentId, documentId, cursorPosition) {
 }
 
 // initiate the render of the find and replace box
-export function renderFindReplace(word, currentSegment, cursorPosition) {
+export function renderFindReplace(word, currentSegment, index) {
   return {
     type: actions.FIND,
     word,
     currentSegment,
-    cursorPosition,
+    index,
   };
 }
