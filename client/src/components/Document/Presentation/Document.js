@@ -24,7 +24,7 @@ export default function Document(props) {
       <td className={styles.documentTitle}>
         <div className="hint--top">
           <div className="title">
-            <Link to={`/documents/${props.document.id}`} className={styles.documentFilename}>{props.documentName}</Link>
+            <Link to={`/documents/${props.id}`} className={styles.documentFilename}>{props.documentName}</Link>
           </div>
         </div>
       </td>
@@ -45,5 +45,6 @@ export default function Document(props) {
 
 Document.propTypes = {
   document: PropTypes.objectOf(PropTypes.any).isRequired,
+  id: PropTypes.string.isRequired,
   documentName: PropTypes.string.isRequired,
 };
