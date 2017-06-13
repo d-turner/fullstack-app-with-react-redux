@@ -41,7 +41,8 @@ class Segment extends React.Component {
     const start = selectionState.getStartOffset();
     const end = selectionState.getEndOffset();
     const selectedText = currentContentBlock.getText().slice(start, end);
-    this.props.renderFindReplace(selectedText, this.props.segmentId, start);
+    const index = currentContentBlock.getText().indexOf(selectedText, start);
+    this.props.renderFindReplace(selectedText, this.props.segmentId, index);
   }
 
   _splitSegment() {
@@ -119,7 +120,7 @@ class Segment extends React.Component {
 
 Segment.propTypes = {
   documentId: PropTypes.number.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  documents: PropTypes.objectOf(PropTypes.object).isRequired,
   updateSegment: PropTypes.func.isRequired,
   lookupLexicon: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
