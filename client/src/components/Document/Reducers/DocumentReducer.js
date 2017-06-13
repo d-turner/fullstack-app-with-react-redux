@@ -21,28 +21,27 @@ const blankDocument = {
   xliff: {},
 };
 
-const createNew = (id, name) => {
-  return Object.assign({}, blankDocument, {
-    id,
-    name,
+const createNewDocumentEntry = (state = blankDocument, action) => {
+  return Object.assign({}, state, {
+    name: action.name,
     isFetching: true,
   });
 };
 
-const Document = function(state = blankDocument, action) {
-  if (state.name !== action.documentName) {
-    return state;
-  }
+const documentFetchResults = function(state = blankDocument, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT_SUC:
       return Object.assign({}, state, {
         isFetching: false,
+        didInvalidate: false,
         xliff: action.xliff,
+        error: undefined,
       });
     case actions.FETCH_DOCUMENT_FAIL:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true,
+        xliff: undefined,
         error: action.error,
       });
     default:
@@ -51,21 +50,18 @@ const Document = function(state = blankDocument, action) {
 };
 
 const updateTarget = function(state = blankDocument, action) {
-  if (state.id === action.segment.documentId) {
-    return {
-      ...state,
-      xliff: {
-        ...state.xliff,
-        segments: state.xliff.segments.map((segment, index) => {
-          if (index !== action.segment.segmentId) { return segment; }
-          return { ...segment,
-            target: action.segment.editorState.getCurrentContent().getPlainText(),
-          };
-        }),
-      },
-    };
-  }
-  return state;
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: state.xliff.segments.map((segment, index) => {
+        if (index !== action.segmentId) { return segment; }
+        return { ...segment,
+          target: action.editorState.getCurrentContent().getPlainText(),
+        };
+      }),
+    },
+  };
 };
 
 const splitSegment = function(state, action) {
@@ -97,21 +93,29 @@ const splitSegment = function(state, action) {
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
-      return Object.assign({}, state, {
-        documents: [
+      return {
+        ...state,
+        documents: {
           ...state.documents,
-          createNew(action.id, action.documentName),
-        ],
-      });
+          [action.id]: createNewDocumentEntry(state.documents[action.id], action),
+        },
+      };
     case actions.FETCH_DOCUMENT_SUC:
     case actions.FETCH_DOCUMENT_FAIL:
-      return Object.assign({}, state, {
-        documents: state.documents.map(doc => Document(doc, action)),
-      });
+      return {
+        ...state,
+        documents: {
+          ...state.documents,
+          [action.id]: documentFetchResults(state.documents[action.id], action),
+        },
+      };
     case actions.UPDATE_TARGET:
       return Object.assign({}, state, {
-        editorState: action.segment.editorState,
-        documents: state.documents.map(doc => updateTarget(doc, action)),
+        editorState: action.editorState,
+        documents: {
+          ...state.documents,
+          [action.documentId]: updateTarget(state.documents[action.documentId], action),
+        },
       });
     case actions.LOOKUP:
       return {
@@ -121,7 +125,10 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.SPLIT:
       return Object.assign({}, state, {
         editorState: EditorState.createEmpty(),
-        documents: state.documents.map(doc => splitSegment(doc, action)),
+        documents: {
+          ...state.documents,
+          [action.documentId]: splitSegment(state.documents[action.documentId], action),
+        },
       });
     case actions.UPDATE_SELECTED:
       return {
