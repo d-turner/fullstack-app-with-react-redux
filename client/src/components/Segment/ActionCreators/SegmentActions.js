@@ -4,11 +4,9 @@ import * as actions from '../../../constants/actionTypes';
 export function updateSegment(documentId, segmentId, editorState) {
   return {
     type: actions.UPDATE_TARGET,
-    segment: {
-      documentId,
-      segmentId,
-      editorState,
-    },
+    documentId,
+    segmentId,
+    editorState,
   };
 }
 
@@ -35,7 +33,6 @@ export function renderFindReplace(word, currentSegment, index) {
   return {
     type: actions.FIND,
     word,
-    currentSegment,
     index,
   };
 }
