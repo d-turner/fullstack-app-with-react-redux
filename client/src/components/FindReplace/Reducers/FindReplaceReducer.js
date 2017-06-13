@@ -1,3 +1,4 @@
+import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 import styles from '../../../constants/main.css';
 
