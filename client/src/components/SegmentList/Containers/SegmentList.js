@@ -6,6 +6,7 @@ import Segment from '../../../components/Segment/Containers/Segment';
 
 class SegmentList extends React.Component {
   componentWillMount() {
+    console.warn('Need to fix this so it wont null the first segment');
     this.props.updateSelectedSegment(this.props.documentId, 0);
   }
 

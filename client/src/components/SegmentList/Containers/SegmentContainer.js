@@ -24,7 +24,7 @@ function SegmentContainer(props) {
 
 SegmentContainer.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
-  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  documents: PropTypes.objectOf(PropTypes.object).isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
