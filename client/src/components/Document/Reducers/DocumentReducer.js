@@ -1,12 +1,17 @@
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
-import { FINDREPLACEREDUCER } from '../../FindReplace/Reducers/FindReplaceReducer';
+import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 
 const initialState = {
-  documents: [],
+  documents: {},
   lexicon: '',
   selectedSegment: 0,
   editorState: EditorState.createEmpty(),
+  findReplace: {
+    isFinding: false,
+    render: false,
+    word: '',
+  },
 };
 
 const blankDocument = {
@@ -126,14 +131,13 @@ const DocumentReducer = function(state = initialState, action) {
           state.documents[action.documentId].xliff.segments[action.segmentId].target.replace(/(<([^>]+)>)/ig, ''),
         )),
       };
+    // extracting all FindReplace actions to separate file
+    case actions.FIND:
     case actions.FIND_NEXT:
     case actions.FIND_PREV:
     case actions.REPLACE_TEXT:
     case actions.REPLACE_ALL:
-      return {
-        ...state,
-        documents: state.documents.map(doc => FINDREPLACEREDUCER(doc, action)),
-      };
+      return FindReplaceReducer(state, action);
     default:
       return state;
   }
