@@ -181,33 +181,70 @@ function updateNext(state, action) {
   return state;
 }
 
-export const FINDREPLACEREDUCER = (state, action) => {
-  // state contains a document
-  if (action.location.documentId === state.id) {
-    switch (action.type) {
-      case actions.FIND_NEXT:
-        return {
-          ...state,
+const findNext = (state, action) => {
+  const newIndex = state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment].target
+  .indexOf(action.text, state.findReplace.wordIndex + 1);
+  if (newIndex !== -1) {
+    // next occurrence is in the same segment
+    const newText = `<span id='findreplace' data-location=${state.findReplace.currentSegment} class=${styles.highlight}>${action.text}</span>`;
+    const segment = state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment];
+    const newTarget = replaceUsingRegex(segment, action.text, newText, newIndex);
+    const newSeg = Object.assign({}, segment, {
+      target: newTarget.replace(newText, action.text),
+    });
+    const updatedIndex = newSeg.target.indexOf(action.text, state.findReplace.wordIndex);
+    return {
+      ...state,
+      documents: {
+        ...state.documents,
+        [action.location.documentId]: {
+          ...state.documents[action.location.documentId],
           xliff: {
-            ...state.xliff,
-            segments: updateNext(state.xliff.segments, action),
+            ...state.documents[action.location.documentId].xliff,
+            segments: [
+              ...state.documents[action.location.documentId].xliff.segments.slice(0, state.findReplace.currentSegment),
+              newSeg,
+              ...state.documents[action.location.documentId].xliff.segments.slice(state.findReplace.currentSegment + 1),
+            ],
           },
-        };
-      default: return state;
-    }
+        },
+      },
+      findReplace: {
+        ...state.findReplace,
+        wordIndex: updatedIndex,
+      },
+    };
   }
-  return state;
+  // find the occurrence in the next segment
+  // TODO: send the correct state
+  return updateNext(state, action);
 };
 
-const FindReplaceReducer = function(state = initialState, action) {
+const FindReplaceReducer = function(state, action) {
   switch (action.type) {
     case actions.FIND:
       return Object.assign({}, state, {
-        render: true,
-        word: action.word,
-        currentSegment: action.currentSegment,
-        wordIndex: action.index,
+        findReplace: {
+          ...state.findReplace,
+          render: true,
+          word: action.word,
+          currentSegment: state.selectedSegment,
+          wordIndex: action.index,
+        },
       });
+    case actions.FIND_NEXT:
+      return findNext(state, action);
+    case actions.FIND_PREV:
+    case actions.REPLACE_TEXT:
+      return replaceText(state, action);
+    case actions.REPLACE_ALL:
+      // return Object.assign({}, state, {
+      //   render: true,
+      //   word: action.word,
+      //   currentSegment: action.currentSegment,
+      //   wordIndex: action.index,
+      // });
+      return state;
     case actions.UPDATE_FIND_LOCATION:
       return Object.assign({}, state, {
         currentSegment: action.location,
