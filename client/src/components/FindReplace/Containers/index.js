@@ -6,12 +6,12 @@ import DocumentContainer from './FindReplace';
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
-  const { documentReducer, FindReplaceReducer } = state;
+  const { documentReducer } = state;
   // return what we want available in the props
-  const { documents } = documentReducer;
+  const { documents, findReplace } = documentReducer;
   return {
     documents,
-    FindReplaceReducer,
+    findReplace,
   };
 };
 
