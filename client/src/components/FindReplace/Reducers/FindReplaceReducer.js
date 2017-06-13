@@ -97,26 +97,84 @@ function updateNext(state, action) {
       const newIndex = addHighlight(segments[index], action.text, index);
       const wordIndex = newIndex.target.indexOf(action.text);
       notFound = false;
-      const newTarget = state[index].target.replace(
-        action.text,
-        `<span id='findreplace' data-location=${index} class=${styles.highlight}>${action.text}</span>`,
-      );
-      const newIndex = Object.assign({}, state[index], {
-        target: newTarget,
-      });
       // this does not take into account if the text appears twice in the same segment
-      if (index < action.location.segmentId) {
+      if (index < state.findReplace.currentSegment) {
         // return order newIndex, oldIndex
+        return {
+          ...state,
+          documents: {
+            ...state.documents,
+            [action.location.documentId]: {
+              ...state.documents[action.location.documentId],
+              xliff: {
+                ...state.documents[action.location.documentId].xliff,
+                segments: [
+                  ...segments.slice(0, index),
+                  newIndex,
+                  ...segments.slice(index + 1, action.location.segmentId),
+                  oldIndex,
+                  ...segments.slice(action.location.segmentId + 1),
+                ],
+              },
+            },
+          },
+          findReplace: {
+            ...state.findReplace,
+            currentSegment: index,
+            wordIndex,
+          },
+        };
       }
-      if (index > action.location.segmentId) {
+      if (index > state.findReplace.currentSegment) {
         // return order oldIndex, newIndex
+        return {
+          ...state,
+          documents: {
+            ...state.documents,
+            [action.location.documentId]: {
+              ...state.documents[action.location.documentId],
+              xliff: {
+                ...state.documents[action.location.documentId].xliff,
+                segments: [
+                  ...segments.slice(0, action.location.segmentId),
+                  oldIndex,
+                  ...segments.slice(action.location.segmentId + 1, index),
+                  newIndex,
+                  ...segments.slice(index + 1),
+                ],
+              },
+            },
+          },
+          findReplace: {
+            ...state.findReplace,
+            currentSegment: index,
+            wordIndex,
+          },
+        };
       }
       // otherwise they are the same and you can just return a single
-      return [
-        ...state.slice(0, index),
-        newIndex,
-        ...state.slice(index + 1),
-      ];
+      return {
+        ...state,
+        documents: {
+          ...state.documents,
+          [action.location.documentId]: {
+            ...state.documents[action.location.documentId],
+            xliff: {
+              ...state.documents[action.location.documentId].xliff,
+              segments: [
+                ...segments.slice(0, index),
+                newIndex,
+                ...segments.slice(index + 1),
+              ],
+            },
+          },
+        },
+        findReplace: {
+          ...state.findReplace,
+          currentSegment: index,
+          wordIndex,
+        },
+      };
     }
     index++;
   }
