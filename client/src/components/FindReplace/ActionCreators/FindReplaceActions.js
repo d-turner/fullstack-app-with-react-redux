@@ -1,24 +1,24 @@
 import * as actions from '../../../constants/actionTypes';
 
-export function findNext(documentId, segmentId, cursorPosition, text) {
+export function findNext(documentId, segmentId, index, text) {
   return {
     type: actions.FIND_NEXT,
     location: {
       documentId,
       segmentId,
-      cursorPosition,
+      index,
     },
     text,
   };
 }
 
-export function findPrev(documentId, segmentId, segmentOffset, text) {
+export function findPrev(documentId, segmentId, index, text) {
   return {
     type: actions.FIND_PREV,
     location: {
       documentId,
       segmentId,
-      segmentOffset,
+      index,
     },
     text,
   };
