@@ -5,19 +5,15 @@ import Document from '../Presentation/Document';
 import styles from '../documents.css';
 
 class DocumentContainer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    this.props.requestDocument('machines.xlf');
-    this.props.requestDocument('en-jpExample.xlf');
+    this.props.requestDocument('123456');
+    this.props.requestDocument('123457');
   }
 
   render() {
-    const renderDocument = doc =>
+    const renderDocument = (doc, key) =>
     (
-      <Document documentName={doc.name} document={doc} key={doc.id} value={doc.name} />
+      <Document documentName={doc.name} document={doc} id={key} key={key} value={key} />
     );
 
     return (
@@ -63,7 +59,8 @@ class DocumentContainer extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.documents.map((doc, index) => renderDocument(doc, index))}
+            {/* this.props.documents.map((doc, index) => renderDocument(doc, index)) */}
+            { Object.keys(this.props.documents).map(key => renderDocument(this.props.documents[key], key))}
           </tbody>
         </table>
       </div>
@@ -73,7 +70,7 @@ class DocumentContainer extends React.Component {
 
 DocumentContainer.propTypes = {
   requestDocument: PropTypes.func.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  documents: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default DocumentContainer;
