@@ -76,26 +76,26 @@ function addHighlight(segment, text, index) {
 }
 
 function updateNext(state, action) {
+  const segments = state.documents[action.location.documentId].xliff.segments;
   // TODO: remove current style if needed
   // TODO: Update current segment to next one found
   // 1. remove current style on the current location
   // 2. enter find next loop
   // 3. Add style if found
   // 4. update the position of the current segment/cursor
-  const oldTarget = state[action.location.segmentId].target.replace(/(<([^>]+)>)/ig, '');
-  const oldIndex = Object.assign({}, state[action.location.segmentId], {
-    target: oldTarget,
-  });
+  const oldIndex = removeHighlight(segments[state.findReplace.currentSegment]);
 
   let notFound = true;  // while another occurrence
   let notLooped = true; // and not looped back around
-  let index = action.location.segmentId + 1; // starting point is the next segment
+  let index = state.findReplace.currentSegment + 1; // starting point is the next segment
   while (notFound && notLooped) {
-    if (index >= state.length) index = 0;
-    if (index === action.location.segmentId) {
+    if (index >= segments.length) index = 0;
+    if (index === state.findReplace.currentSegment) {
       notLooped = false;
     }
-    if (state[index].target.includes(action.text)) {
+    if (segments[index].target.includes(action.text)) {
+      const newIndex = addHighlight(segments[index], action.text, index);
+      const wordIndex = newIndex.target.indexOf(action.text);
       notFound = false;
       const newTarget = state[index].target.replace(
         action.text,
