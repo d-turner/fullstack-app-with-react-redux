@@ -10,8 +10,7 @@ class SegmentList extends React.Component {
     this.props.updateSelectedSegment(this.props.documentId, 0);
   }
 
-  selected(event, index) {
-    console.log(event);
+  selected(index) {
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
 
@@ -30,7 +29,7 @@ class SegmentList extends React.Component {
 
       return (
         <button
-          onClick={event => this.selected(event, index)}
+          onClick={() => this.selected(index)}
           key={index} value={index} className={styles.block}
           aria-label="Active the selected segment"
           role={'textbox'}>
