@@ -5,35 +5,35 @@ import * as actions from '../../../constants/actionTypes';
 import fileReader from '../../../utils/fileReader';
 import xliffParser from '../../../utils/xliffParser';
 
-let documentId = 0;
+let documentNumber = 0;
 
 // fetch xliff document actions
-export function fetchDocument(documentName) {
+export function fetchDocument(documentId) {
   return {
     type: actions.FETCH_DOCUMENT,
-    documentName,
-    id: documentId++,
+    id: documentId,
+    name: `Testing ${documentNumber++}`,
   };
 }
 
-export function fetchDocumentFail(documentName, error) {
+export function fetchDocumentFail(documentId, error) {
   return {
     type: actions.FETCH_DOCUMENT_FAIL,
     error,
-    documentName,
+    id: documentId,
   };
 }
 
-export function fetchDocumentSuc(documentName, xliff) {
+export function fetchDocumentSuc(documentId, xliff) {
   return {
     type: actions.FETCH_DOCUMENT_SUC,
     xliff,
-    documentName,
+    id: documentId,
   };
 }
 
-const shouldFetchDocument = (state, documentName) => {
-  const doc = state.documentReducer.documents.find(x => x.name === documentName);
+const shouldFetchDocument = (state, documentId) => {
+  const doc = state.documentReducer.documents[documentId];
   if (!doc) {
     return true;
   } else if (doc.isFetching) {
@@ -42,11 +42,11 @@ const shouldFetchDocument = (state, documentName) => {
   return doc.didInvalidate;
 };
 
-export function requestDocument(documentName) {
+export function requestDocument(documentId) {
   return (dispatch, getState) => {
-    if (shouldFetchDocument(getState(), documentName)) {
-      dispatch(fetchDocument(documentName));
-      return fetch(`/src/data/${documentName}`)
+    if (shouldFetchDocument(getState(), documentId)) {
+      dispatch(fetchDocument(documentId));
+      return fetch(`/src/data/${documentId}`)
       .then((res) => {
         const blob = res.blob();
         return blob;
@@ -58,10 +58,10 @@ export function requestDocument(documentName) {
         const func = parser.readFile(file);
         func
           .then((result) => {
-            dispatch(fetchDocumentSuc(documentName, result));
+            dispatch(fetchDocumentSuc(documentId, result));
           })
           .catch((error) => {
-            dispatch(fetchDocumentFail(documentName, error));
+            dispatch(fetchDocumentFail(documentId, error));
           })
           .done(() => {
             //  console.log('done dispatching...');
