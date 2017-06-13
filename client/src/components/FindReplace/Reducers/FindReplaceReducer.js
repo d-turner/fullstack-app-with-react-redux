@@ -2,11 +2,78 @@ import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 import styles from '../../../constants/main.css';
 
-const initialState = {
-  isFinding: false,
-  render: false,
-  word: '',
-};
+function replaceUsingRegex(segment, text, newText, wordIndex) {
+  const re = new RegExp(text, 'g');
+  const newTarget = segment.target.replace(re, (match, i) => {
+    console.log(i);
+    console.log(wordIndex);
+    return (i === wordIndex) ? newText : match;
+  });
+  return newTarget;
+}
+
+function replaceSegmentTarget(state, action) {
+  const segments = state.documents[action.location.documentId].xliff.segments;
+  const segment = segments[state.findReplace.currentSegment];
+  const newTarget = replaceUsingRegex(segment, action.text, action.newText, state.findReplace.wordIndex);
+  const newSegment = Object.assign({}, segment, {
+    target: newTarget,
+  });
+
+  return [
+    ...segments.slice(0, state.findReplace.currentSegment),
+    newSegment,
+    ...segments.slice(state.findReplace.currentSegment + 1),
+  ];
+}
+
+function replaceText(state, action) {
+  console.log(state);
+  console.log(action);
+  if (state.findReplace.currentSegment === state.selectedSegment) {
+    const newTarget = replaceUsingRegex(
+      state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment],
+      action.text,
+      action.newText,
+      state.findReplace.wordIndex,
+    );
+    return {
+      ...state,
+      editorState: EditorState.createWithContent(ContentState.createFromText(newTarget)),
+    };
+  }
+  return {
+    ...state,
+    documents: {
+      ...state.documents,
+      [action.location.documentId]: {
+        xliff: {
+          ...state.documents[action.location.documentId].xliff,
+          segments: replaceSegmentTarget(state, action),
+        },
+      },
+    },
+  };
+}
+
+function removeHighlight(segment) {
+  const highlightRemoved = segment.target.replace(/(<([^>]+)>)/ig, '');
+  const newSegment = Object.assign({}, segment, {
+    target: highlightRemoved,
+  });
+  return newSegment;
+}
+
+function addHighlight(segment, text, index) {
+  const highlightAdded = segment.target.replace(
+    text,
+    `<span id='findreplace' data-location=${index} class=${styles.highlight}>${text}</span>`,
+  );
+  const newSegment = Object.assign({}, segment, {
+    target: highlightAdded,
+  });
+  return newSegment;
+}
 
 function updateNext(state, action) {
   // TODO: remove current style if needed
