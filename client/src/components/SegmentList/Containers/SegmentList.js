@@ -50,10 +50,10 @@ class SegmentList extends React.Component {
       }
 
       return (
-        <div className={styles.segmentFlex}>
+        <div className={styles.segmentFlex} key={index} value={index}>
           <button
             onClick={() => this.selected(index)}
-            key={index} value={index} className={styles.block}
+            className={styles.block}
             aria-label="Activate the selected segment"
             role={'textbox'}>
             <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
@@ -67,9 +67,20 @@ class SegmentList extends React.Component {
                 data-rh="Comment"
                 data-rh-at="right"
                 aria-label="Add a Comment"
-                onClick={() => this.addComment(index)}>
+                onClick={event => this.renderComment(event, index)}>
                 <i className="tiny material-icons">chat_bubble</i>
               </button>
+              <ReactModal
+                isOpen={this.state.renderArray[index]}
+                contentLabel="Add Comment Modal"
+                overlayClassName={main.overlay}
+                style={{ content: {
+                  top: this.state.ycoord, left: this.state.xcoord, position: 'absolute', border: '1px solid #ccc',
+                  background: '#fff', outline: 'none', padding: '20px', width: '250px', height: '100px', zIndex: '101',
+                } }}
+              >
+                <CommentModal documentId={this.props.documentId} index={index} unrender={this.unrender.bind(this)} />
+              </ReactModal>
               <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
                 data-rh="Lexicon"
                 data-rh-at="right"
