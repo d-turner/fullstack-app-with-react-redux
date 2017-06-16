@@ -7,6 +7,7 @@ import isoLangs from '../../../utils/isoLangs';
 import BabelApi from '../../../utils/babelnet';
 
 import FindReplace from '../../FindReplace/Containers';
+import Comments from '../../Comments/Containers';
 
 function findFirstLemma(lang, array) {
   for (let x = 0; x < array.length; x++) {
@@ -133,6 +134,7 @@ class Sidebar extends React.Component {
               {this.renderSpinner()}
             </div>
           </div>
+          <Comments documentId={this.props.documentId} />
           <FindReplace documentId={this.props.documentId} />
         </div>
       </div>
