@@ -1,28 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHint from 'react-hint';
+import ReactModal from 'react-modal';
 import 'react-hint/css/index.css';
 
 import styles from '../styles.css';
-import Segment from '../..//Segment/Containers/Segment';
-import { addComment } from '../../Comments/ActionCreators/CommentActions';
-import store from '../../../store.js';
+import main from '../../../constants/main.css';
+import Segment from '../../Segment/Containers/Segment';
+import CommentModal from '../../Comments/Presentation/CommentModal';
 
 class SegmentList extends React.Component {
   constructor(props) {
     super(props);
     this.props.updateSelectedSegment(this.props.documentId, 0);
+    const renderArray = new Array(props.segments.length).fill(false);
+    this.state = { renderArray };
   }
 
   selected(index) {
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
 
-  addComment(index) {
-    const comment = 'this is an action test';
-    const user = 'Daniel Turner';
-    const time = Date.now();
-    store.dispatch(addComment(this.props.documentId, index, comment, user, time));
+  unrender(index, callback) {
+    const newArray = callback(index, this.state.renderArray);
+    this.setState({ renderArray: newArray });
+  }
+
+  renderComment(event, index) {
+    const xcoord = event.currentTarget.offsetLeft - 285;
+    const ycoord = event.currentTarget.offsetTop - 135;
+    const newArray = this.state.renderArray.map((value, i) => {
+      if (index === i) return true;
+      return false;
+    });
+    this.setState({ renderArray: newArray, xcoord, ycoord });
   }
 
   render() {
