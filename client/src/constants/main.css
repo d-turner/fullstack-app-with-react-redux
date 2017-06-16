@@ -28,3 +28,30 @@ typeahead {
 .highlight {
   background-color:yellow;
 }
+
+.overlay {
+    position          : absolute;
+    top               : 0;
+    left              : 0;
+    right             : 0;
+    bottom            : 0;
+    background-color   : rgba(0, 0, 0, 0);
+    color: black;
+  }
+
+.content {
+    position: absolute;
+    /* top: 40px; */
+    /* left: 40px; */
+    right: 24%;
+    bottom: 141px;
+    border: 1px solid #ccc;
+    background: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 4px;
+    outline: none;
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+}
