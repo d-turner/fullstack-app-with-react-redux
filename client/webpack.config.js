@@ -29,7 +29,7 @@ module.exports = {
       use: ['style-loader', 'css-loader'],
     }, {
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: /node_modules\/(?!react-modal)/,
       loader: 'babel-loader',
       options: {
         cacheDirectory: true,
