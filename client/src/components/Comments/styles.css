@@ -1,0 +1,14 @@
+.commentInput {
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.commentButtons {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.commentButton {
+  margin-right: 20px;
+}
