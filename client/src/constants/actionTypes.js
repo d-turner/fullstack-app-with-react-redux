@@ -28,6 +28,12 @@ export const REPLACE_TEXT = 'REPLACE_TEXT';
 export const REPLACE_ALL = 'REPLACE_ALL';
 export const UPDATE_FIND_LOCATION = 'UPDATE_CURRENT_FIND_REPLACE_SEGMENT';
 
+// Comment Actions
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const RESOLVE_COMMENT = 'RESOLVE_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
+
+
 /*
  * Another Example
  */
