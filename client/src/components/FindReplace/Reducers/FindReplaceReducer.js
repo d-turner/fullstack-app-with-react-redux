@@ -47,6 +47,7 @@ function replaceText(state, action) {
     documents: {
       ...state.documents,
       [action.location.documentId]: {
+        ...state.documents[action.location.documentId],
         xliff: {
           ...state.documents[action.location.documentId].xliff,
           segments: replaceSegmentTarget(state, action),
