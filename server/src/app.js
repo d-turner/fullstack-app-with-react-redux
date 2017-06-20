@@ -6,7 +6,7 @@ import session from 'express-session';
 
 // local packages
 import logger from './util/logger';
-import setupUserRoutes from './UserRoutes/user';
+import setupUserRoutes from './UserRoutes';
 import passport from './config/passport';
 
 // init app
