@@ -1,0 +1,45 @@
+{
+  "name": "kanjingo",
+  "version": "1.0.0",
+  "description": "Application server to facilitate post-editing of MT output",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "test": "eslint src/ && babel-node test/",
+    "eslint-test": "eslint src/",
+    "start:db": "sudo mysqld_safe --skip-syslog --log-error=/home/adapt/Documents/git/kanjingo-react-redux/client/logs/maria_error.log --port=8008"
+  },
+  "author": "Daniel Turner daniel.turne@adaptcentre.ie",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.2",
+    "babel-preset-es2015-node": "^6.1.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "nodemon": "^1.11.0",
+    "supertest": "^3.0.0",
+    "tape": "^4.6.3"
+  },
+  "babel": {
+    "presets": [
+      "es2015-node",
+      "stage-0"
+    ]
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-session": "^1.15.3",
+    "mariasql": "^0.2.6",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "winston": "^2.3.1"
+  }
+}
