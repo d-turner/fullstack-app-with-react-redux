@@ -6,10 +6,10 @@ import styles from '../styles.css';
 
 class CommentList extends React.Component {
   render() {
-    const renderComment = (comment, index) => {
+    const renderComment = (comment, segmentId, index) => {
       return (
         <div key={comment.id} value={comment.id}>
-          <Comment comment={comment} index={index} />
+          <Comment comment={comment} segmentId={segmentId} index={index} />
         </div>
       );
     };
@@ -18,7 +18,7 @@ class CommentList extends React.Component {
       <div className={styles.commentWrapper}>
         {Object.keys(this.props.comments[this.props.documentId]).map((segmentId) => {
           return (this.props.comments[this.props.documentId][segmentId]).map((comment, index) => {
-            return renderComment(this.props.comments[this.props.documentId][segmentId][index], index);
+            return renderComment(this.props.comments[this.props.documentId][segmentId][index], segmentId, index);
           });
         })}
       </div>
