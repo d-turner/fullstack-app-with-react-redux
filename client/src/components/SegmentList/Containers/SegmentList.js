@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactHint from 'react-hint';
+import ReactToolTip from 'react-tooltip';
 import ReactModal from 'react-modal';
 import 'react-hint/css/index.css';
 
@@ -21,9 +21,8 @@ class SegmentList extends React.Component {
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
 
-  unrender(index, callback) {
-    const newArray = callback(index, this.state.renderArray);
-    this.setState({ renderArray: newArray });
+  unrender(index) {
+    this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
   }
 
   renderComment(event, index) {
@@ -40,7 +39,7 @@ class SegmentList extends React.Component {
     const renderSegment = (segment, index) => {
       if (index === this.props.selectedSegment) {
         return (
-          <div key={index} value={index} className={`${styles.block} ${styles.selected}`}>
+          <div key={index} value={index} className={`${styles.selectedBlock} ${styles.selected}`}>
             <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
               <div className={styles.segmentId}>{index}</div>{/* segment number*/}
               <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
@@ -64,12 +63,14 @@ class SegmentList extends React.Component {
           <div className={`${styles['sidebar-handle']}`}>
             <div className={`${styles['sidebar-fixed']}`}>
               <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-rh="Comment"
-                data-rh-at="right"
+                data-tip data-for="Comment"
                 aria-label="Add a Comment"
                 onClick={event => this.renderComment(event, index)}>
                 <i className="tiny material-icons">chat_bubble</i>
               </button>
+              <ReactToolTip id="Comment">
+                <span>Comments</span>
+              </ReactToolTip>
               <ReactModal
                 isOpen={this.state.renderArray[index]}
                 contentLabel="Add Comment Modal"
@@ -82,17 +83,21 @@ class SegmentList extends React.Component {
                 <CommentModal documentId={this.props.documentId} index={index} unrender={this.unrender.bind(this)} />
               </ReactModal>
               <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-rh="Lexicon"
-                data-rh-at="right"
-                aria-label="">
+                data-tip data-for="Lexicon"
+                aria-label="Open Lexicon Sidebar">
                 <i className="small material-icons">translate</i>
               </button>
+              <ReactToolTip id="Lexicon">
+                <span>Lexicon</span>
+              </ReactToolTip>
               <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-rh="Search"
-                data-rh-at="right">
+                data-tip data-for="Search"
+                aria-label="Open Find and Replace ">
                 <i className="small material-icons">search</i>
               </button>
-              <ReactHint />
+              <ReactToolTip id="Search">
+                <span>Search</span>
+              </ReactToolTip>
             </div>
           </div>
         </div>
