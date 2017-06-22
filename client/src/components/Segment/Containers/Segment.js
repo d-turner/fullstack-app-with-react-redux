@@ -10,19 +10,22 @@ import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import styles from '../styles.css';
 import SegmentPresentation from '../Presentation/Segment';
+import SplitModal from '../../../components/SplitModal/Containers/Modal';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = { renderModal: false };
     this.handleChange = this.handleChange.bind(this);
     this.focus = () => this.SegmentPresentation.CustomEditor.Editor.focus();
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
     this.dictionaryLookup = state => this._dictionaryLookup(state);
-    this.splitSegment = state => this._splitSegment(state);
+    this.splitSegment = () => this._splitSegment();
+    this.mergeSegment = () => this._mergeSegment();
     this.findReplace = state => this._findReplace(state);
+    this.removeModal = () => this._removeModal();
   }
 
   handleChange(editorState) {
@@ -46,9 +49,15 @@ class Segment extends React.Component {
   }
 
   _splitSegment() {
-    const selectionState = this.props.editorState.getSelection();
-    const cursorEnd = selectionState.getEndOffset();
-    this.props.splitSegment(this.props.segmentId, this.props.documentId, cursorEnd);
+    this.setState({ renderModal: true });
+  }
+  _removeModal() {
+    this.setState({ renderModal: false });
+  }
+
+  _mergeSegment() {
+    console.log('Merging segments');
+    this.props.mergeSegment(this.props.segmentId, this.props.documentId);
   }
 
   _dictionaryLookup() {
@@ -76,7 +85,9 @@ class Segment extends React.Component {
     if (blockType === 'LOOKUP') {
       this.dictionaryLookup(this.props.editorState);
     } else if (blockType === 'SPLIT') {
-      this.splitSegment(this.props.editorState);
+      this.splitSegment();
+    } else if (blockType === 'MERGE') {
+      this.mergeSegment();
     } else if (blockType === 'FIND-REPLACE') {
       this.findReplace(this.props.editorState);
     } else {
@@ -101,6 +112,10 @@ class Segment extends React.Component {
   render() {
     return (
       <div className={styles.segmentWrapper}>
+        <SplitModal {...this.props}
+          content={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId].source}
+          renderModal={this.state.renderModal}
+          removeModal={this.removeModal} />
         <SegmentPresentation
           segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
           editorState={this.props.editorState}
@@ -124,6 +139,7 @@ Segment.propTypes = {
   updateSegment: PropTypes.func.isRequired,
   lookupLexicon: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
+  mergeSegment: PropTypes.func.isRequired,
   renderFindReplace: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
