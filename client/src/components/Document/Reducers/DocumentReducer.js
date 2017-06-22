@@ -1,4 +1,4 @@
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 
@@ -65,29 +65,55 @@ const updateTarget = function(state = blankDocument, action) {
 };
 
 const splitSegment = function(state, action) {
-  if (state.id === action.documentId) {
-    const oldSegment = state.xliff.segments[action.segmentId];
-    const newSegment1 = Object.assign({}, oldSegment, {
-      source: oldSegment.source.substring(0, action.cursorPosition),
-      target: '',
-    });
-    const newSegment2 = Object.assign({}, oldSegment, {
-      source: oldSegment.source.substring(action.cursorPosition),
-      target: '',
-    });
-    const newSegments = [newSegment1, newSegment2];
-    const before = state.xliff.segments.slice(0, action.segmentId);
-    const after = state.xliff.segments.slice(action.segmentId + 1, state.xliff.segments.length);
-    const newArr = before.concat(newSegments, after);
-    return {
-      ...state,
-      xliff: {
-        ...state.xliff,
-        segments: newArr,
-      },
-    };
-  }
-  return state;
+  console.warn(
+    'Need to fix comment structure after splitting',
+    'Need to fix xliff document structure',
+  );
+  const oldSegment = state.xliff.segments[action.segmentId];
+  const newSegment1 = Object.assign({}, oldSegment, {
+    source: oldSegment.source.substring(0, action.cursorPosition),
+    target: '',
+  });
+  const newSegment2 = Object.assign({}, oldSegment, {
+    source: oldSegment.source.substring(action.cursorPosition),
+    target: '',
+  });
+  const newSegments = [newSegment1, newSegment2];
+  const before = state.xliff.segments.slice(0, action.segmentId);
+  const after = state.xliff.segments.slice(action.segmentId + 1, state.xliff.segments.length);
+  const newArr = before.concat(newSegments, after);
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: newArr,
+    },
+  };
+};
+
+const mergeSegment = function(state, action) {
+  console.warn(
+    'Need to fix comment structure after splitting',
+    'Need to fix xliff document structure',
+  );
+  const currentSegment = state.xliff.segments[action.segmentId];
+  const nextSegment = state.xliff.segments[action.segmentId + 1];
+  const newSource = currentSegment.source.concat(nextSegment.source);
+  const newTarget = currentSegment.target.concat(nextSegment.target);
+  const before = state.xliff.segments.slice(0, action.segmentId);
+  const after = state.xliff.segments.slice(action.segmentId + 2, state.xliff.segments.length);
+  const newSegment = Object.assign({}, currentSegment, {
+    source: newSource,
+    target: newTarget,
+  });
+  const newArr = before.concat(newSegment, after);
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: newArr,
+    },
+  };
 };
 
 const DocumentReducer = function(state = initialState, action) {
@@ -128,6 +154,20 @@ const DocumentReducer = function(state = initialState, action) {
         documents: {
           ...state.documents,
           [action.documentId]: splitSegment(state.documents[action.documentId], action),
+        },
+      });
+    case actions.MERGE:
+      if (action.segmentId >= state.documents[action.documentId].xliff.segments.length - 1) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        editorState: EditorState.createWithContent(ContentState.createFromText(
+          state.documents[action.documentId].xliff.segments[action.segmentId].target
+          + state.documents[action.documentId].xliff.segments[action.segmentId + 1].target,
+        )),
+        documents: {
+          ...state.documents,
+          [action.documentId]: mergeSegment(state.documents[action.documentId], action),
         },
       });
     case actions.UPDATE_SELECTED:
