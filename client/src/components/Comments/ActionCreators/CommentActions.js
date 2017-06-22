@@ -13,7 +13,7 @@ export function addComment(documentId, segmentId, comment, author, time) {
 
 export function editComment(documentId, segmentId, comment, author, time) {
   return {
-    type: actions.ADD_COMMENT,
+    type: actions.EDIT_COMMENT,
     documentId,
     segmentId,
     comment,
