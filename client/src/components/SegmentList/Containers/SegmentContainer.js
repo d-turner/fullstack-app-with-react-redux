@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SegmentList from './SegmentList';
-import Sidebar from '../../Sidebar';
+import Sidebar from '../../Sidebar/Containers/Sidebar';
 import styles from '../styles.css';
 
 function SegmentContainer(props) {
@@ -14,8 +14,6 @@ function SegmentContainer(props) {
     <div className={styles.mainContent}>
       <SegmentList segments={doc.xliff.segments} documentId={id} editorState={props.editorState} {...props} />
       <Sidebar
-        sourceLang={props.documents[id].xliff.sourceLang}
-        targetLang={props.documents[id].xliff.targetLang}
         documentId={id}
       />
     </div>
