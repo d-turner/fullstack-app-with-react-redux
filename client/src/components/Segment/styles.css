@@ -23,6 +23,7 @@
   box-sizing: inherit;
   border: inherit;
   align-items: inherit;
+  z-index: auto;
 }
 
 .format {
