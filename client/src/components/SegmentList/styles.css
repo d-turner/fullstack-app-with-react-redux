@@ -28,6 +28,19 @@
   border: solid 1px #3eafbc !important;
 }
 
+.selectedBlock {
+  background-color: inherit;
+  text-align: left;
+  cursor: inherit;
+  box-sizing: inherit;
+  margin: 20px 0px 20px 50px;
+  max-width: 550px;
+  font-size: 1.2rem;
+  color: black;
+  padding: 20px;
+  border: solid 1px #ced6d6;
+}
+
 .block {
   background-color: inherit;
   text-align: left;
@@ -39,6 +52,7 @@
   color: black;
   padding: 20px;
   border: solid 1px #ced6d6;
+  min-height: 77px;
 }
 
 .block:hover {
