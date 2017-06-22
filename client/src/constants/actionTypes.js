@@ -11,6 +11,7 @@ export const UPDATE_TARGET = 'UPDATE_TARGET';
 export const POP_SEGMENTS = 'POPULATE_SEGMENTS';
 export const LOOKUP = 'LOOKUP_LEXICON';
 export const SPLIT = 'SPLIT';
+export const MERGE = 'MERGE';
 export const FIND = 'FIND_REPLACE';
 
 // SegmentList Actions
