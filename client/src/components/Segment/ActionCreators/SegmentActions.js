@@ -28,6 +28,15 @@ export function splitSegment(segmentId, documentId, cursorPosition) {
   };
 }
 
+// split a segment a the current cursor position
+export function mergeSegment(segmentId, documentId) {
+  return {
+    type: actions.MERGE,
+    segmentId,
+    documentId,
+  };
+}
+
 // initiate the render of the find and replace box
 export function renderFindReplace(word, currentSegment, index) {
   return {
