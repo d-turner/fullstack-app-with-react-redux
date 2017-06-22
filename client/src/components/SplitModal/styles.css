@@ -1,0 +1,38 @@
+.overlay {
+  position          : fixed;
+  top               : 0;
+  left              : 0;
+  right             : 0;
+  bottom            : 0;
+  background-color   : rgba(0, 0, 0, .4);
+  overflow-x: hidden; 
+  overflow-y: auto;
+  color: black;
+}
+
+.content {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow-x: hidden; 
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 4px;
+  outline: none;
+  width: 60%;
+  max-width: 600px;
+  z-index: 10000;
+}
+
+.buttons {
+  margin: 20px 0px;
+}
+
+.buttons > button {
+  margin-right: 40px;
+}
+
+/* top: this.state.ycoord, left: this.state.xcoord, position: 'absolute', border: '1px solid #ccc',*/
+/* background: '#fff', outline: 'none', padding: '20px', width: '250px', height: '100px', zIndex: '101',*/
