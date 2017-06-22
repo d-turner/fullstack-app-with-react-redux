@@ -16,6 +16,7 @@ const BLOCK_TYPES = [
   { label: 'Code Block', style: 'code-block' },
   { label: 'Dictionary', style: 'LOOKUP' },
   { label: 'Split', style: 'SPLIT' },
+  { label: 'Merge', style: 'MERGE' },
   { label: 'Find/Replace', style: 'FIND-REPLACE' },
 ];
 const BlockStyleControls = (props) => {
