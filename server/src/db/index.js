@@ -1,7 +1,7 @@
 import MariaDB from 'mariasql';
 
 const host = '127.0.0.1';
-const port = 8008;
+const port = 3306;
 const user = 'adapt';
 const password = 'TeHQ5u2g';
 const db = 'testdb';

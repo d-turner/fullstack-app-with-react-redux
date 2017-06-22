@@ -1,6 +1,6 @@
 import User from '../db/user';
 import routes from './user';
-import logger from '../utils/logger';
+import logger from '../util/logger';
 
 const UserRoute = (app) => {
   app.get('/api/users/:id', (req, res) => {
