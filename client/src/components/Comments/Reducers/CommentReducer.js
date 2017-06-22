@@ -28,8 +28,6 @@ const initialState = {
 };
 
 function addComment(state, action) {
-  console.log(state);
-  console.log(action);
   if (state.comments[action.documentId][action.segmentId] === undefined) {
     return {
       ...state,
