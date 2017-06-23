@@ -28,6 +28,18 @@
   border: solid 1px #3eafbc !important;
 }
 
+.wrap {
+  display: flex;
+}
+
+.wrap > .sidebar-handle > .sidebar-fixed > .sidebar-wrapper {
+  border-left-color: #3eafbc;
+}
+
+.wrap > .sidebar-handle > .sidebar-fixed > .sidebar-wrapper:hover {
+  border-left-color: #f8b345;
+}
+
 .selectedBlock {
   background-color: inherit;
   text-align: left;
