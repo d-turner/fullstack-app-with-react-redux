@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactToolTip from 'react-tooltip';
-import ReactModal from 'react-modal';
-import 'react-hint/css/index.css';
 
 import styles from '../styles.css';
-import main from '../../../constants/main.css';
 import Segment from '../../Segment/Containers/Segment';
 import CommentModal from '../../Comments/Presentation/CommentModal';
 
@@ -15,13 +12,20 @@ class SegmentList extends React.Component {
     this.props.updateSelectedSegment(this.props.documentId, 0);
     const renderArray = new Array(props.segments.length).fill(false);
     this.state = { renderArray };
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.unrender = this.unrender.bind(this);
   }
 
   selected(index) {
+    this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
 
-  unrender(index) {
+  unrender() {
+    this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
+  }
+
+  handleCloseModal() {
     this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
   }
 
@@ -33,17 +37,64 @@ class SegmentList extends React.Component {
       return false;
     });
     this.setState({ renderArray: newArray, xcoord, ycoord });
+    this.props.renderComment();
+  }
+
+  renderSidebar(index) {
+    return (
+      <div className={`${styles['sidebar-handle']}`}>
+        <div className={`${styles['sidebar-fixed']}`}>
+          <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
+            data-tip data-for="Comment"
+            aria-label="Add a Comment"
+            onClick={event => this.renderComment(event, index)}>
+            <i className="tiny material-icons">chat_bubble</i>
+          </button>
+          <ReactToolTip id="Comment">
+            <span>Comments</span>
+          </ReactToolTip>
+          <CommentModal
+            documentId={this.props.documentId}
+            index={index}
+            unrender={this.unrender}
+            xcoord={this.state.xcoord} ycoord={this.state.ycoord}
+            handleCloseModal={this.handleCloseModal}
+            render={this.state.renderArray[index]} />
+          <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
+            data-tip data-for="Lexicon"
+            onClick={() => this.props.renderLexicon()}
+            aria-label="Open Lexicon Sidebar">
+            <i className="small material-icons">translate</i>
+          </button>
+          <ReactToolTip id="Lexicon">
+            <span>Lexicon</span>
+          </ReactToolTip>
+          <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
+            data-tip data-for="Search"
+            onClick={() => this.props.renderSearch()}
+            aria-label="Open Find and Replace ">
+            <i className="small material-icons">search</i>
+          </button>
+          <ReactToolTip id="Search">
+            <span>Search</span>
+          </ReactToolTip>
+        </div>
+      </div>
+    );
   }
 
   render() {
     const renderSegment = (segment, index) => {
       if (index === this.props.selectedSegment) {
         return (
-          <div key={index} value={index} className={`${styles.selectedBlock} ${styles.selected}`}>
-            <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
-              <div className={styles.segmentId}>{index}</div>{/* segment number*/}
-              <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
+          <div key={index} value={index} className={styles.wrap}>
+            <div className={`${styles.selectedBlock} ${styles.selected} ${styles.segmentFlex}`}>
+              <div className={styles.segmentWrapper}> {/* another wrapper for row flex*/}
+                <div className={styles.segmentId}>{index}</div>{/* segment number*/}
+                <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
+              </div>
             </div>
+            {this.renderSidebar(index)}
           </div>
         );
       }
@@ -60,46 +111,7 @@ class SegmentList extends React.Component {
               <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
             </div>
           </button>
-          <div className={`${styles['sidebar-handle']}`}>
-            <div className={`${styles['sidebar-fixed']}`}>
-              <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-tip data-for="Comment"
-                aria-label="Add a Comment"
-                onClick={event => this.renderComment(event, index)}>
-                <i className="tiny material-icons">chat_bubble</i>
-              </button>
-              <ReactToolTip id="Comment">
-                <span>Comments</span>
-              </ReactToolTip>
-              <ReactModal
-                isOpen={this.state.renderArray[index]}
-                contentLabel="Add Comment Modal"
-                overlayClassName={main.overlay}
-                style={{ content: {
-                  top: this.state.ycoord, left: this.state.xcoord, position: 'absolute', border: '1px solid #ccc',
-                  background: '#fff', outline: 'none', padding: '20px', width: '250px', height: '100px', zIndex: '101',
-                } }}
-              >
-                <CommentModal documentId={this.props.documentId} index={index} unrender={this.unrender.bind(this)} />
-              </ReactModal>
-              <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-tip data-for="Lexicon"
-                aria-label="Open Lexicon Sidebar">
-                <i className="small material-icons">translate</i>
-              </button>
-              <ReactToolTip id="Lexicon">
-                <span>Lexicon</span>
-              </ReactToolTip>
-              <button className={`${styles['sidebar-wrapper']} ${styles['sidebar-button']}`}
-                data-tip data-for="Search"
-                aria-label="Open Find and Replace ">
-                <i className="small material-icons">search</i>
-              </button>
-              <ReactToolTip id="Search">
-                <span>Search</span>
-              </ReactToolTip>
-            </div>
-          </div>
+          {this.renderSidebar(index)}
         </div>
       );
     };
@@ -120,6 +132,9 @@ SegmentList.propTypes = {
   updateSelectedSegment: PropTypes.func.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedSegment: PropTypes.number.isRequired,
+  renderComment: PropTypes.func.isRequired,
+  renderLexicon: PropTypes.func.isRequired,
+  renderSearch: PropTypes.func.isRequired,
 };
 
 export default SegmentList;
