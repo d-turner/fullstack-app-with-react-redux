@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 class FindReplace extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class FindReplace extends React.Component {
         this.props.documentId,
         this.props.findReplace.currentSegment,
         this.props.findReplace.wordIndex,
-        this.props.findReplace.word
+        this.props.findReplace.word,
       );
       setTimeout(() => {
         const location = document.getElementById('findreplace');
@@ -40,25 +40,27 @@ class FindReplace extends React.Component {
     console.log('Replace all');
     const text = 'text';
     const newText = 'newText';
-    this.props.findNext(this.props.documentId, this.props.segmentId, text, newText);
+    this.props.findNext(this.props.documentId, text, newText);
   }
 
   render() {
-    if (this.props.findReplace.render) {
-      return (
-        <div>
-          Find and Replace <br />
-          <div><input type="text" ref={(ref) => { this.replaceText = ref; }} /></div>
-          <button onClick={this.findNext}>Next</button>
-          <button onClick={this.replaceText}>Replace</button>
-          <button onClick={this.replaceAll}>Replace All</button>
-        </div>
-      );
-    }
     return (
-      <div />
+      <div>
+        Find and Replace <br />
+        <div><input type="text" ref={(ref) => { this.replaceText = ref; }} /></div>
+        <button onClick={this.findNext}>Next</button>
+        <button onClick={this.replaceText}>Replace</button>
+        <button onClick={this.replaceAll}>Replace All</button>
+      </div>
     );
   }
 }
+
+FindReplace.propTypes = {
+  documentId: PropTypes.number.isRequired,
+  findNext: PropTypes.func.isRequired,
+  findReplace: PropTypes.objectOf(PropTypes.any).isRequired,
+  replaceText: PropTypes.func.isRequired,
+};
 
 export default FindReplace;
