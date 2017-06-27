@@ -65,3 +65,7 @@ This ensures that objects don't get mutated and the reducers are pure functions.
 * Handle users
 * Database
 * Production level webpack and server
+* Build register / login page
+* link front-end to the backend
+* Add PET logging
+* Add server for Joss to access
