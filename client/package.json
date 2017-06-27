@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node serve.js",
-    "prod" : "NODE_ENV=production node serve.js",
+    "prod": "NODE_ENV=production node serve.js",
     "test": "jest --coverage",
     "test:watch": "npm test -- --watch",
     "build": "node node_modules/.bin/webpack --config webpack.config.prod.js"
@@ -40,6 +40,7 @@
     "json-loader": "^0.5.4",
     "lodash-webpack-plugin": "^0.11.4",
     "nock": "^9.0.13",
+    "normalize.css": "^7.0.0",
     "react-a11y": "^0.3.3",
     "react-hot-loader": "^3.0.0-beta.7",
     "redux-devtools": "^3.4.0",
