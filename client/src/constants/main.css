@@ -1,12 +1,3 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
-}
-
-html {
-  
-}
-
 .wrapper {
   display: flex;
   flex-flow: row nowrap;
@@ -19,7 +10,6 @@ html {
 }
 
 typeahead {
-  font-family: 'ff-tisa-web-pro', serif;
   padding: 0 6.25px;
   border: 2px solid #ced6d6;
   outline: none;

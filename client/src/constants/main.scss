@@ -1,0 +1,30 @@
+@import 'variables';
+
+body {
+  font: 100% $font-stack;
+  background-color: $background;
+  font-family: $font-stack;
+}
+
+nav {
+  /* position: absolute; if we  don't want it to scroll */
+  a {
+    padding: $tab-padding;
+    float: right;
+    color: $kanjbackground;
+    height: 100%;
+    img {
+      height: 100%;
+      width: $logo-nav-width;
+    }
+  }
+  a:first-child {
+    position: absolute;
+  }
+
+  background-color: $lightsilver;
+}
+
+.content {
+  padding: $padding-header 0 0;
+}
