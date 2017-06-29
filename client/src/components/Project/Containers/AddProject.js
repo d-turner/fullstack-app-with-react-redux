@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
 
+import styles from '../projects.scss';
+
 class AddProject extends React.Component {
   constructor(props) {
     super(props);
@@ -23,32 +25,45 @@ class AddProject extends React.Component {
   render() {
     return (
       <form ref={(f) => { this.form = f; }} onSubmit={this.handleSubmit}>
-        Title:
-        <input
-          ref={(t) => { this.title = t; }}
-          name="title"
-          type="text"
-          onChange={this.handleChange}
-          aria-label="Project title field"
-        />
-        Description:
-        <input
-          ref={(d) => { this.description = d; }}
-          name="description"
-          type="text"
-          onChange={this.handleChange}
-          aria-label="Project description field"
-        />
-        Author:
-        <input
-          ref={(a) => { this.author = a; }}
-          name="author"
-          type="text"
-          onChange={this.handleChange}
-          aria-label="Project author field"
-        />
-
-        <input type="submit" aria-label="Submit new project" />
+        <fieldset className="flex">
+          <label htmlFor="title">
+            <input
+              ref={(t) => { this.title = t; }}
+              id="title"
+              name="title"
+              type="text"
+              onChange={this.handleChange}
+              aria-label="Project title field"
+              placeholder="Project Title"
+            />
+          </label>
+          <label htmlFor="desc">
+            <input
+              ref={(d) => { this.description = d; }}
+              id="desc"
+              name="description"
+              type="text"
+              onChange={this.handleChange}
+              aria-label="Project description field"
+              placeholder="Project Description"
+            />
+          </label>
+          <label htmlFor="auth">
+            <input
+              ref={(a) => { this.author = a; }}
+              id="auth"
+              name="author"
+              type="text"
+              onChange={this.handleChange}
+              aria-label="Project author field"
+              placeholder="Project Author"
+            />
+          </label>
+          <div className="flex">
+            <button aria-label="Submit new project">Submit</button>
+            <button onClick={() => this.props.cancelAdd()}>Cancel</button>
+          </div>
+        </fieldset>
       </form>
     );
   }
@@ -56,6 +71,7 @@ class AddProject extends React.Component {
 
 AddProject.propTypes = {
   addProject: PropTypes.func.isRequired,
+  cancelAdd: PropTypes.func.isRequired,
 };
 
 export default AddProject;
