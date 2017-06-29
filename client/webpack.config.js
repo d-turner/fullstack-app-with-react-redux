@@ -15,6 +15,16 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.scss$/,
+      use: ['style-loader', {
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          sourceMap: true,
+        },
+      }, 'sass-loader'],
+      exclude: /node_modules/,
+    }, {
       test: /\.css$/,
       use: ['style-loader', {
         loader: 'css-loader',
