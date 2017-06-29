@@ -1,0 +1,49 @@
+@import '../../constants/variables';
+
+.wrapper {
+ padding: 0;
+}
+
+.home {
+  padding: $padding-header $padding-med $padding-large $padding-med;
+  background-color: $kanjbackground;
+  color: white;
+}
+.img {
+  width: $logo-size;
+  height: $logo-size;
+}
+
+.extend {
+  min-height: 86.6%;
+  background-color: $lightsilver;
+  color: $kanjbackground
+}
+
+.description {
+  padding: $padding-header 0;
+}
+
+.box {
+  padding-left: 2.5em;
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10em;
+    height: 10em;
+  }
+}
+
+.box1 {
+  padding-left: 2.5em;
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10em;
+    height: 8em;
+    padding-top: 2em;
+    margin-bottom: 2em;
+  }
+}

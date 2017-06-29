@@ -1,15 +1,44 @@
 import React from 'react';
+import styles from './home.scss';
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { world: 'world' };
+    this.state = { app: 'anjingo' };
   }
 
   render() {
     return (
-      <div className="home">
-        <h1>Hello {this.state.world}!</h1>
+      <div className={styles.wrapper}>
+        <div className={styles.home}>
+          <h1>
+            Welcome to <img src={'/assets/kanj-white.png'} alt="kanjingo logo" className={styles.img} />
+            {this.state.app}!
+          </h1>
+          <h2>A Post Editing Computer Assisted Translation Tool</h2>
+        </div>
+        <div className={styles.extend}>
+          <div className={`flex three center ${styles.description}`}>
+            <h3>A Smart, Unified Toolkit For Every Translation Workflow</h3>
+          </div>
+          <div className={'flex five center'}>
+            <div className={styles.box}>
+              <img src="/assets/features.png" alt="interface logo" />
+              <h4>Ergonomic Interface</h4>
+              <p>Accelerates the human translator. Choose the sleek web app built to cater for the modern user</p>
+            </div>
+            <div className={styles.box1}>
+              <img src="/assets/communication.png" alt="features logo" />
+              <h4>Interactive / Adaptive Machine Translation</h4>
+              <p>Learns as it's used. Integrated translation memory and terminology using XLIFF and TBX standards</p>
+            </div>
+            <div className={styles.box}>
+              <img src="/assets/discussion.png" alt="usage logo" />
+              <h4>Connectors</h4>
+              <p>An expressive, standards-based API with connectors</p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
