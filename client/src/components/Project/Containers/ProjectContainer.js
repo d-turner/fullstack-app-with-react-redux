@@ -1,33 +1,47 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import ProjectList from './ProjectList';
 import AddProject from './AddProject';
-import * as actionCreators from '../ActionCreators/ProjectActions';
+import SideContent from '../Presentation/SideContent';
 
-function ProjectContainer(props) {
-  return (
-    <div>
-      <ProjectList {...props} />
-      <AddProject {...props} />
-    </div>
-  );
+import styles from '../projects.scss';
+
+class ProjectContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { addProject: false };
+    this.addProject = this.addProject.bind(this);
+    this.cancelAdd = this.cancelAdd.bind(this);
+  }
+
+  addProject() {
+    this.setState({ addProject: true });
+  }
+
+  cancelAdd() {
+    this.setState({ addProject: false });
+  }
+
+  render() {
+    return (
+      <div className={`flex five ${styles.wrapper}`} >
+        <aside className={`fifth ${styles.sidebar}`} >
+          <SideContent addProject={this.addProject} />
+        </aside>
+        <div className={`four-fifth flex four ${styles.projects}`}>
+          {this.state.addProject ?
+            <div className="fifth">
+              <AddProject cancelAdd={this.cancelAdd} {...this.props} />
+            </div> :
+            ''
+          }
+          <article className="half">
+            <ProjectList {...this.props} />
+          </article>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = function(state) {
-  // get the required reducer(s) from the state
-  const { projectReducer } = state;
-  const { projects } = projectReducer;
-  // return what we want available in the props
-  return {
-    projects,
-  };
-};
-
-const mapDispatchToProps = function(dispatch) {
-  // get the available dispatch actions
-  return bindActionCreators(actionCreators, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectContainer);
+export default ProjectContainer;
