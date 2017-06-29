@@ -1,19 +1,21 @@
 import React from 'react';
-
 import NavPill from '../Presentation/NavPill';
-import styles from '../styles.css';
+
+require('../navbar.scss');
 
 const NavBar = () => {
   return (
-    <div className={styles.heading}>
-      <NavPill to={'/'} label={'Kanjingo'} className={`${styles.headingItem} ${styles.kanjingo}`} />
-      <NavPill to={'/other'} label={'Other'} className={styles.headingItem} />
-      <NavPill to={'/old-other'} label={'Other Redirect'} className={styles.headingItem} />
-      <NavPill to={'/view/123'} label={'View 123'} className={styles.headingItem} />
-      <NavPill to={'/segments'} label={'Segments'} className={styles.headingItem} />
-      <NavPill to={'/projects'} label={'Projects'} className={styles.headingItem} />
-      <NavPill to={'/documents'} label={'Documents'} className={styles.headingItem} />
-    </div>
+    <nav>
+      <NavPill to={'/'} label={'Kanjingo'} >
+        <img src={'/assets/kanj.png'} alt="kanjingo logo" className="img-responsive" />
+      </NavPill>
+      <NavPill to={'/other'} label={'Other'} />
+      <NavPill to={'/old-other'} label={'Other Redirect'} />
+      <NavPill to={'/view/123'} label={'View 123'} />
+      <NavPill to={'/segments'} label={'Segments'} />
+      <NavPill to={'/projects'} label={'Projects'} />
+      <NavPill to={'/documents'} label={'Documents'} />
+    </nav>
   );
 };
 
