@@ -42,6 +42,11 @@ Webpack uses 'cheap-module-source-map' to map the code in the single distributio
 * Use *two spaces* to indent javascript
 * Setting eslint is different for every editor, for Visual Studio Code just install the eslint extension
 
+### Sass
+
+This project uses SASS and [picnicss](https://picnicss.com) for styling the components. All Sass variables can be found in 'client/src/constants/variables.scss' and should be used instead of hard values wherever possible.  
+
+
 ### Testing
 
 Jest is used as the testing framework as recommended by React.  
