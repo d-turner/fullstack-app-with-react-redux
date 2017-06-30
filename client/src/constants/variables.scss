@@ -1,5 +1,7 @@
 $font-stack: sans-serif;
 
+$white: white;
+$black: black;
 $background: #eee;
 
 $salmon: #fb5f76;
@@ -8,21 +10,30 @@ $lightseagreen: #04bfaf;
 $mediumorchid: #c568d5;
 $darkslategrey: #2d3b55;
 $lightsilver: #e8e9ec;
+
 $kanjbackground: #4c566c;
 $logo: #333333;
+$link-hover: #483a66;
 
+$segmentText: black;
+
+$padding-mini: 0.4em;
+$padding-tiny: 12.5px;
 $padding-small: 32px;
-$padding-med: 80px;
 $padding-header: 48px;
+$padding-med: 80px;
 $padding: 100px;
 $padding-large: 140px;
 
+$margin-tiny: 0.6em;
+$margin-smaller: 6.25px;
 $margin-small: 12.5px;
+$margin-med: 24px;
 
 /* nav bar constants */
 $tab-padding: 1em 0.8em;
 $logo-nav-width: 18px;
-
+$padding-from-right-nav: 22.4px;
 /* home constants */
 $logo-size: 2em;
 
@@ -32,3 +43,6 @@ $logo-size: 2em;
 /* Sidebar constants*/
 $padding-border: 22px;
 $bordercolor: #ced6d6;
+$borderleft: 1px solid $bordercolor;
+$borderright: 1px solid $bordercolor;
+$borderBox: 1px solid $bordercolor;

@@ -4,27 +4,97 @@ body {
   font: 100% $font-stack;
   background-color: $background;
   font-family: $font-stack;
-}
-
-nav {
-  /* position: absolute; if we  don't want it to scroll */
-  a {
-    padding: $tab-padding;
-    float: right;
-    color: $kanjbackground;
-    height: 100%;
-    img {
-      height: 100%;
-      width: $logo-nav-width;
-    }
-  }
-  a:first-child {
-    position: absolute;
-  }
-
-  background-color: $lightsilver;
+  height: 100%;
 }
 
 .content {
   padding: $padding-header 0 0;
+}
+
+.centerContent {
+  padding-left: $padding-med;
+  padding-top: $padding-tiny;
+}
+
+.parentWidth {
+  max-width: 100%; 
+}
+
+.fixedWidth {
+  resize: vertical;
+}
+
+/* Just different types of borders*/
+.borderBox {
+  border: $borderBox
+}
+
+.borderBottom {
+  border-style: solid;
+  border-color: $bordercolor;
+  border-width: 0 0 1px 0;
+}
+
+.groupItem {
+  padding-left: $padding-tiny;
+  padding-bottom: $padding-mini;
+}
+
+/* used for making icons inline with  text*/
+.fixTop {
+  position: relative;
+  top: 6px;
+}
+
+.fixFont {
+  font-size: 1em;
+}
+
+.textInline {
+  display: inline;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.clearPadding {
+  padding: 0 0 0 0;
+}
+
+.clearPaddingBottom {
+  padding-bottom: 0;
+}
+
+.clearPaddingLeft {
+  padding-left: 0;
+}
+
+.clearMarginTop {
+  margin-top: 0;
+}
+
+.clearButton {
+  display: block;
+  margin: 0;
+  margin-bottom: inherit;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; 
+  box-sizing: inherit;
+}
+
+.buttonMargin {
+  margin-bottom: $margin-small;
+}
+
+.paddingInlineWithNavRight {
+  padding-right: $padding-from-right-nav
+}
+
+.whiteBackground {
+  background-color: $white;
+}
+
+.fixedSmallWidth {
+  width: 80px;
 }
