@@ -21,7 +21,7 @@ import DocumentContainer from '../components/Document/Containers';
 import styles from '../constants/main.scss';
 
 // import default styles (body, p, div, etc)
-require('../constants/main.css');
+require('../constants/main.scss');
 
 const Other = function() {
   return (
