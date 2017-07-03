@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import Lexicon from '../../Lexicon/Containers';
 import Comments from '../../Comments/Containers';
 import FindReplace from '../../FindReplace/Containers';
-import styles from '../styles.css';
+import styles from '../sidebar.scss';
 
 function Sidebar(props) {
   if (props.renderComment) {
     return (
       <div className={styles.parent}>
-        <div className={`${styles.flexItem} ${styles.fixedPosition}`}>
+        <div className={`${styles.fixedPosition}`}>
           <Comments documentId={props.documentId} />
         </div>
       </div>
@@ -18,7 +18,7 @@ function Sidebar(props) {
   } else if (props.renderLexicon) {
     return (
       <div className={styles.parent}>
-        <div className={`${styles.flexItem} ${styles.fixedPosition}`}>
+        <div className={`${styles.fixedPosition}`}>
           <Lexicon documentId={props.documentId} />
         </div>
       </div>
@@ -26,7 +26,7 @@ function Sidebar(props) {
   } else if (props.renderSearch) {
     return (
       <div className={styles.parent}>
-        <div className={`${styles.flexItem} ${styles.fixedPosition}`}>
+        <div className={`${styles.fixedPosition}`}>
           <FindReplace documentId={props.documentId} />
         </div>
       </div>
