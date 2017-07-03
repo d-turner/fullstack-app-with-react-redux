@@ -88,7 +88,7 @@ class SegmentList extends React.Component {
 
   renderSelected(index) {
     return (
-      <div className={`two-fifth ${styles.paddingInlineWithNavRight} ${styles.selected}`}>
+      <div className={`three-fifth two-fifth-1400 ${styles.paddingInlineWithNavRight} ${styles.selected}`}>
         {this.renderSingle(index)}
       </div>
     );
@@ -98,7 +98,7 @@ class SegmentList extends React.Component {
     return (
       <button
         onClick={() => this.selected(index)}
-        className={`two-fifth ${styles.block} ${styles.clearMarginTop}`}
+        className={`three-fifth two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
         aria-label="Activate the selected segment"
         role={'textbox'}>
         {this.renderSingle(index)}
