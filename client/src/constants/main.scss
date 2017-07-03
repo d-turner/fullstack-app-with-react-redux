@@ -11,6 +11,11 @@ body {
   padding: $padding-header 0 0;
 }
 
+.setPadding {
+  padding-left: $padding-med;
+  padding-top: $padding-med;
+}
+
 .centerContent {
   padding-left: $padding-med;
   padding-top: $padding-tiny;
