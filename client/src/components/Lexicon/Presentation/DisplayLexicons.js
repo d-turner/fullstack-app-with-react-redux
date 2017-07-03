@@ -7,7 +7,7 @@ function DisplayLexicon(props) {
   return (
     <div className="flex one">
       <h3>Lexicon</h3>
-      <form onSubmit={props.onSubmit}>
+      <form className={styles.form} onSubmit={props.onSubmit}>
         <label htmlFor="searchCheckbox">{props.sourceLang}</label>
         <label className={styles.switch} htmlFor="searchCheckbox">
           <input type="checkbox" id="searchCheckbox" name="searchCheckbox"
