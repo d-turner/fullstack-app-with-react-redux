@@ -1,0 +1,50 @@
+@import '../../constants/main.scss';
+
+.commentInput {
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.commentButtons {
+  float: left;
+  display: flex;
+}
+
+.commentButton {
+  margin-right: 20px;
+}
+
+.overflow {
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 500px;
+}
+
+.format {
+  margin-bottom: 20px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.commentGroup {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: $darkslategrey;
+  border-radius: 0;
+  margin-bottom: 20px;
+  padding: $padding-tiny
+}
+
+.commentBorder {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: $orange;
+  border-radius: 0;
+  padding-top: $padding-mini;
+}
+
+.fixWidth {
+  width: 24px;
+  padding: 6px 0 0 0;
+}
