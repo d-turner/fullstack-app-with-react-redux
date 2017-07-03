@@ -1,0 +1,32 @@
+@import  '../../constants/main';
+
+.selected {
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: $orange;
+}
+
+.block {
+  background-color: inherit;
+  text-align: left;
+  cursor: inherit;
+  box-sizing: inherit;
+  color: $segmentText;
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: $darkslategrey;
+  border-radius: 0;
+}
+
+.block:hover {
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: $mediumorchid;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.padNumber {
+  padding-top: 4px;
+}
+
