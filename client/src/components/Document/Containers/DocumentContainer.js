@@ -8,6 +8,7 @@ import styles from '../documents.scss';
 
 class DocumentContainer extends React.Component {
   componentDidMount() {
+    console.warn('Need to add api call here');
     this.props.requestDocument('123456');
     this.props.requestDocument('123457');
   }
