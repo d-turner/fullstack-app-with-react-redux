@@ -7,7 +7,7 @@ import styles from '../comment.scss';
 class CommentList extends React.Component {
   renderComment(comment, segmentId, index) {
     return (
-      <div className={styles.commentBorder} key={comment.id} value={comment.id}>
+      <div className={styles.commentBorder} key={comment.time + comment.id} value={comment.time + comment.id}>
         <Comment comment={comment} segmentId={segmentId} index={index} />
       </div>
     );
@@ -18,7 +18,7 @@ class CommentList extends React.Component {
       <div>
         {Object.keys(this.props.comments[this.props.documentId]).map((segmentId) => {
           return (
-            <div className={`flex five ${styles.commentGroup}`}>
+            <div className={`flex five ${styles.commentGroup}`} key={segmentId}>
               <div className={styles.fixWidth}>
                 <h3>#{segmentId}</h3>
               </div>
