@@ -8,7 +8,7 @@ class Segment extends React.Component {
   renderEditor() {
     if (this.props.selectedSegment === this.props.segmentId) {
       return (
-        <button className={styles.editorWrapper} onClick={this.props.focus}>
+        <div className={styles.editorWrapper} onClick={this.props.focus}>
           <CustomEditor
             editorState={this.props.editorState}
             toggleBlockType={this.props.toggleBlockType}
@@ -17,7 +17,7 @@ class Segment extends React.Component {
             handleChange={this.props.handleChange}
             ref={(ref) => { this.CustomEditor = ref; }}
           />
-        </button>
+        </div>
       );
     }
     return (
@@ -28,11 +28,11 @@ class Segment extends React.Component {
   render() {
     return (
       <div className={`${styles.format}`}>
-        {/* <span>Source:</span> */}
+        <h5>Source</h5>
         <div className={styles.wrapper}>{this.props.segment.source}</div>
 
-        <div style={{ marginTop: '20px' }}>
-          {/* <span>Target:</span> */}
+        <div style={{ marginTop: '10px' }}>
+          <h5>Target</h5>
           {this.renderEditor()}
         </div>
       </div>
