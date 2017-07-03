@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '../styles.css';
+import styles from '../lexicon.scss';
 
 function DisplayLexicon(props) {
   return (
-    <div>
+    <div className="flex one">
       <h3>Lexicon</h3>
       <form onSubmit={props.onSubmit}>
         <label htmlFor="searchCheckbox">{props.sourceLang}</label>
@@ -17,7 +17,7 @@ function DisplayLexicon(props) {
         </label>
         <label htmlFor="searchCheckbox">{props.targetLang}</label>
         <input
-          type="text" className={`${styles.typeahead}  ${styles.input}`}
+          type="text" className={styles.input}
           autoComplete="off" placeholder="Enter a word to search..."
           autoFocus="" aria-autocomplete="list" aria-owns="typeahead-2583-2457"
           aria-label="lexicon search input"

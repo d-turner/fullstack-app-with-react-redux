@@ -1,3 +1,4 @@
+
 .wrapper {
   margin: 12.5px 12.5px 6.25px 12.5px;
   display: flex;
@@ -10,33 +11,11 @@
   justify-content: flex-start;
 }
 
-typeahead {
-  font-family: 'sans-serif';
-  padding: 0 6.25px;
-  border: 2px solid #ced6d6;
-  outline: none;
-}
-
 .input {
-  margin: auto;
   margin-top: 10px;
   margin-bottom: 40px;
-  border-radius: 4px;
-  display: block;
-  outline: none;
-  font-size: 0.8rem;
   padding: 6.25px 12.5px;
-  border: 1px solid #ced6d6;
-  font-family: 'proxima-nova', sans-serif;
-  font-weight: 300;
-  color: #323234;
-  background-color: #ffffff;
-}
-
-form {
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  text-align: center;
+  width: 80%;
 }
 
 .flexItem {
