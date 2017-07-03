@@ -33,11 +33,7 @@ function Sidebar(props) {
     );
   }
   return (
-    <div className={styles.parent}>
-      <div className={`${styles.flexItem} ${styles.fixedPosition}`}>
-        Temp
-      </div>
-    </div>
+    <div />
   );
 }
 
