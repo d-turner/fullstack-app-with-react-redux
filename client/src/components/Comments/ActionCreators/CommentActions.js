@@ -1,13 +1,12 @@
 import * as actions from '../../../constants/actionTypes';
 
-export function addComment(documentId, segmentId, comment, author, time) {
+export function addComment(documentId, segmentId, comment, author) {
   return {
     type: actions.ADD_COMMENT,
     documentId,
     segmentId,
     comment,
     author,
-    time,
   };
 }
 
