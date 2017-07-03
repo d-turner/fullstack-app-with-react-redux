@@ -71,7 +71,7 @@ class SegmentList extends React.Component {
   }
   renderSegment(segment, index) {
     return (
-      <div className={`flex six ${styles.groupItem} ${styles.content}`} key={index} value={index}>
+      <div className={`flex one center ${styles.groupItem} ${styles.content}`} key={index} value={index}>
         { index === this.props.selectedSegment ?
           this.renderSelected(index) :
           this.renderButton(index)
@@ -88,7 +88,7 @@ class SegmentList extends React.Component {
 
   renderSelected(index) {
     return (
-      <div className={`three-fifth two-fifth-1400 ${styles.paddingInlineWithNavRight} ${styles.selected}`}>
+      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.paddingInlineWithNavRight} ${styles.selected}`}>
         {this.renderSingle(index)}
       </div>
     );
@@ -98,7 +98,7 @@ class SegmentList extends React.Component {
     return (
       <button
         onClick={() => this.selected(index)}
-        className={`three-fifth two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
+        className={`full three-fifth-700 two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
         aria-label="Activate the selected segment"
         role={'textbox'}>
         {this.renderSingle(index)}
@@ -117,7 +117,7 @@ class SegmentList extends React.Component {
 
   render() {
     return (
-      <div className={`four-fifth ${styles.centerContent}`}>
+      <div className={`two-third three-fourth-900 four-fifth-1200 center`}>
         {this.props.segments.map(this.renderSegment)}
       </div>
     );
