@@ -4,8 +4,8 @@ import ReactModal from 'react-modal';
 import { Editor, EditorState, ContentState } from 'draft-js';
 
 //  import * as actionCreators from '../ActionCreators/SegmentActions';
-import styles from '../styles.css';
-import EditorStyles from '../../Editor/Editor.css';
+import styles from '../split.scss';
+import EditorStyles from '../../Editor/Editor.scss';
 
 class Modal extends React.Component {
   constructor(props) {

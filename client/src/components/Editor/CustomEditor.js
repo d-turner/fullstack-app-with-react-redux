@@ -4,7 +4,7 @@ import { Editor } from 'draft-js';
 
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
-import styles from './Editor.css';
+import styles from './Editor.scss';
 
 class CustomEditor extends React.Component {
   componentDidMount() {
@@ -32,6 +32,7 @@ class CustomEditor extends React.Component {
             handleKeyCommand={this.props.handleKeyCommand}
             onChange={this.props.handleChange}
             ref={(ref) => { this.Editor = ref; }}
+            aria-label="Translation Input"
           />
         </div>
       </div>
