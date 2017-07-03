@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactModal from 'react-modal';
 
-import styles from '../styles.css';
-import main from '../../../constants/main.css';
+import styles from '../comment.scss';
 import { addComment } from '../../Comments/ActionCreators/CommentActions';
 import store from '../../../store';
 
@@ -18,27 +16,9 @@ export default class CommentModal extends React.Component {
   }
 
   render() {
-    return (
-      <ReactModal
-        isOpen={this.props.render}
-        contentLabel="Add Comment Modal"
-        overlayClassName={main.overlay}
-        shouldCloseOnOverlayClick
-        onRequestClose={this.props.handleCloseModal}
-        role="dialog"
-        style={{ content: {
-          top: this.props.ycoord,
-          left: this.props.xcoord,
-          position: 'absolute',
-          border: '1px solid #ccc',
-          background: '#fff',
-          outline: 'none',
-          padding: '20px',
-          width: '250px',
-          height: '100px',
-          zIndex: '101',
-        } }}>
-        <div>
+    if (this.props.render) {
+      return (
+        <div className="fifth">
           <div>Add Comment</div>
           <form onSubmit={event => this.addComment(event, this.props.index)}>
             <input className={styles.commentInput} autoComplete="false"
@@ -52,8 +32,9 @@ export default class CommentModal extends React.Component {
             </div>
           </form>
         </div>
-      </ReactModal>
-    );
+      );
+    }
+    return <div />;
   }
 }
 
@@ -67,7 +48,4 @@ CommentModal.propTypes = {
   index: PropTypes.number.isRequired,
   unrender: PropTypes.func.isRequired,
   render: PropTypes.bool.isRequired,
-  handleCloseModal: PropTypes.func.isRequired,
-  xcoord: PropTypes.number,
-  ycoord: PropTypes.number,
 };
