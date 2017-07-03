@@ -3,41 +3,38 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Loader from '../../Loader/Loader';
-import styles from '../documents.css';
+import styles from '../documents.scss';
 
 export default function Document(props) {
   return (
-    <tr className={styles.rowWrapper}>
-      <td className={styles.documentSelect}>
-        <div className={styles['enforce-height']}>
-          <span className="document-selected checkbox-wrapper">
-            <input id={props.document.id} type="checkbox"
+    <tr className={styles.tableBorder}>
+      <td className={styles.tableRowHeight}>
+        <div>
+          <span>
+            <input type="radio"
               aria-label="Select Document"
               title="Select Document" />
             <label htmlFor="checked_45986" />
           </span>
-          <span className="document-deselected">
-            <span className="icon-circle" />
-          </span>
         </div>
       </td>
-      <td className={styles.documentTitle}>
-        <div className="hint--top">
-          <div className="title">
+      <td>
+        <div>
+          <div>
             <Link to={`/documents/${props.id}`} className={styles.documentFilename}>{props.documentName}</Link>
           </div>
         </div>
       </td>
-      <td className="document-details-meta document-details-segments">
-        <span className="ng-binding">
+      <td>
+        <span >
           <strong>{props.document.isFetching ? (<Loader />) : props.document.xliff.segments.length}</strong>
         </span>
       </td>
-      <td className="document-details-meta document-details-segments">
-        <span className="ng-binding"><strong>4</strong></span>
+      <td>
+        <span><strong>4</strong></span>
       </td>
-      <td className="document-details-meta document-details-segments">
-        <span className="ng-binding"><strong>1112</strong></span>
+      <td>
+        <span><strong>1112</strong></span>
       </td>
     </tr>
   );
