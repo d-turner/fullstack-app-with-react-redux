@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '../styles.css';
+import styles from '../comment.scss';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -10,11 +10,13 @@ class Comment extends React.Component {
   render() {
     return (
       <div className={`${styles.format}`}>
-        <div>Comment: {this.props.comment.text}</div>
-        <div>Author: {this.props.comment.author}</div>
-        <div>Timestamp: {this.props.comment.time}</div>
-        <div>Segment: {this.props.segmentId}</div>
-        <div>Index: {this.props.index}</div>
+        <div className={styles.groupItem}>
+          <h4 className={styles.clearPaddingBottom}>{this.props.comment.author}</h4>
+          <h5 className={styles.clearPadding}>{this.props.comment.time}</h5>
+        </div>
+        <div className={styles.groupItem}>
+          <p>{this.props.comment.text}</p>
+        </div>
       </div>
     );
   }
