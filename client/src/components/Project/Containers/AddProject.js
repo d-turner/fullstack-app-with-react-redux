@@ -20,12 +20,15 @@ class AddProject extends React.Component {
     const author = this.author.value;
     this.props.addProject(id, title, description, author);
     this.form.reset();
+    console.warn("Need to connect this to the backend and add a on success callback");
+    this.props.cancelAdd();
   }
 
   render() {
     return (
-      <form ref={(f) => { this.form = f; }} onSubmit={this.handleSubmit}>
-        <fieldset className="flex">
+      <form ref={(f) => { this.form = f; }} onSubmit={this.handleSubmit} className={`fifth ${styles.form}`}>
+        <h3>Enter the project details</h3>
+        <fieldset>
           <label htmlFor="title">
             <input
               ref={(t) => { this.title = t; }}
@@ -38,7 +41,8 @@ class AddProject extends React.Component {
             />
           </label>
           <label htmlFor="desc">
-            <input
+            <textarea
+              className={`${styles.parentWidth} ${styles.fixedWidth}`}
               ref={(d) => { this.description = d; }}
               id="desc"
               name="description"
