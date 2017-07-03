@@ -34,8 +34,8 @@ export default class Home extends React.Component {
             </div>
             <div className={styles.box}>
               <img src="/assets/discussion.png" alt="usage logo" />
-              <h4>Connectors</h4>
-              <p>An expressive, standards-based API with connectors</p>
+              <h4>Accessible</h4>
+              <p>An expressive, standard based application with declarative components and intuitive interface</p>
             </div>
           </div>
         </div>
