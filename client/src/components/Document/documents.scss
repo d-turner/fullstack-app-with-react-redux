@@ -1,0 +1,20 @@
+@import '../../constants/main';
+
+.tableBorder {
+  border: $borderBox;
+}
+
+.tableRowHeight {
+  height: 50px;
+  width: 32px;
+}
+
+.documentFilename {
+  text-decoration: none;
+  color: $black;
+}
+
+.documentFilename:hover {
+  color: $link-hover;
+}
+
