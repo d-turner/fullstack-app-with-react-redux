@@ -30,9 +30,7 @@ class ProjectContainer extends React.Component {
         </aside>
         <div className={`four-fifth flex four ${styles.projects}`}>
           {this.state.addProject ?
-            <div className="fifth">
-              <AddProject cancelAdd={this.cancelAdd} {...this.props} />
-            </div> :
+            <AddProject cancelAdd={this.cancelAdd} {...this.props} /> :
             ''
           }
           <article className="half">
