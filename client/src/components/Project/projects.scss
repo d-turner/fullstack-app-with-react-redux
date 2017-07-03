@@ -1,8 +1,5 @@
-@import '../../constants/variables';
-
-.wrapper {
-
-}
+/*@import '../../constants/variables';*/
+@import '../../constants/main';
 
 .sidebar {
   padding-right: $padding-border;
@@ -34,9 +31,9 @@
     display: inline-block;
   }
 }
-form {
+.form {
   padding-left: $padding-small;
-  padding-top: $padding-header;
+  padding-top: $padding-tiny;
 }
 
 fieldset {
@@ -45,5 +42,13 @@ fieldset {
     margin-bottom: 0.6em;
     margin-right: 0px;
     float: left;
+  }
+  label {
+    input {
+      margin-bottom: $margin-tiny;
+    }
+    textarea {
+      margin-bottom: $margin-tiny 
+    }
   }
 }
