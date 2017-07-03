@@ -1,5 +1,24 @@
 @import '../../constants/variables';
 
+nav {
+  /* position: absolute; if we  don't want it to scroll */
+  a {
+    padding: $tab-padding;
+    float: right;
+    color: $kanjbackground;
+    height: 100%;
+    img {
+      height: $logo-nav-width;
+      width: $logo-nav-width;
+    }
+  }
+  a:first-child {
+    position: absolute;
+  }
+
+  background-color: $lightsilver;
+}
+
 .selected {
   border-bottom: 2px solid $mediumorchid;
   padding-bottom: 0.8em;
