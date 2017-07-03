@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import SegmentList from './SegmentList';
 import Sidebar from '../../Sidebar/Containers/Sidebar';
-import styles from '../styles.css';
 
 class SegmentContainer extends React.Component {
   constructor(props) {
@@ -12,7 +11,7 @@ class SegmentContainer extends React.Component {
     // const i = props.documents.findIndex(doc => doc.id === id);
     this.renderComment = this.renderComment.bind(this);
     this.renderLexicon = this.renderLexicon.bind(this);
-    this.renderComment = this.renderSearch.bind(this);
+    this.renderSearch = this.renderSearch.bind(this);
     this.state = {
       id,
       renderComment: false,
@@ -46,7 +45,7 @@ class SegmentContainer extends React.Component {
   }
   render() {
     return (
-      <div className={styles.mainContent}>
+      <div className="flex five">
         <SegmentList
           segments={this.props.documents[this.state.id].xliff.segments}
           documentId={this.state.id}
