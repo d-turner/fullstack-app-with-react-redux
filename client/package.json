@@ -4,7 +4,7 @@
   "description": "Application client to facilitate post-editing of MT output",
   "main": "index.js",
   "scripts": {
-    "start": "node serve.js",
+    "start": "pm2 start serve.js",
     "prod": "NODE_ENV=production node serve.js",
     "test": "jest --coverage",
     "test:watch": "npm test -- --watch",

@@ -55,6 +55,14 @@ This ensures that objects don't get mutated and the reducers are pure functions.
 
 ### Building and Deploying
 
+### Running the application for production
+
+On the server in production it is a good idea to use pm2 a process manager for node. This will auto restart the application if it crashes or fails.   
+```bash
+sudo npm install pm2 -g
+pm2 start serve.js
+```
+
 ### Language Codes
 
 ### TODO
