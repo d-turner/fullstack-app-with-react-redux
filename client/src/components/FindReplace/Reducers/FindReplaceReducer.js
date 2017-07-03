@@ -1,6 +1,6 @@
 import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
-import styles from '../../../constants/main.css';
+import styles from '../../../constants/main.scss';
 
 function replaceUsingRegex(segment, text, newText, wordIndex) {
   const re = new RegExp(text, 'g');
