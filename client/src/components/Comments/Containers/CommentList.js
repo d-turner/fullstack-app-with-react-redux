@@ -14,6 +14,13 @@ class CommentList extends React.Component {
   }
 
   render() {
+    if (Object.keys(this.props.comments[this.props.documentId]).length === 0) {
+      return (
+        <div>
+          <h4>No Comments available</h4>
+        </div>
+      );
+    }
     return (
       <div>
         {Object.keys(this.props.comments[this.props.documentId]).map((segmentId) => {
