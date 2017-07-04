@@ -8,7 +8,7 @@ class Segment extends React.Component {
   renderEditor() {
     if (this.props.selectedSegment === this.props.segmentId) {
       return (
-        <div className={styles.editorWrapper} onClick={this.props.focus}>
+        <div className={styles.editorWrapper} onClick={this.props.focus} tabIndex={0} role="Main">
           <CustomEditor
             editorState={this.props.editorState}
             toggleBlockType={this.props.toggleBlockType}
