@@ -76,7 +76,7 @@ class SegmentContainer extends React.Component {
 SegmentContainer.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
-  editorState: PropTypes.objectOf(PropTypes.any).isRequired,
+  editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
 };
 
 export default SegmentContainer;
