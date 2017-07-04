@@ -83,13 +83,38 @@ body {
   display: block;
   margin: 0;
   margin-bottom: inherit;
+  border-radius: 0;
+  box-sizing: inherit;
+}
+
+.clearButtonLeft {
+  display: block;
+  margin: 0;
+  margin-bottom: inherit;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0; 
   box-sizing: inherit;
 }
 
+.clearButtonRight {
+  display: block;
+  margin: 0;
+  margin-bottom: inherit;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; 
+  box-sizing: inherit;
+}
+
+.clearMarginRight {
+  margin-right: 0;
+}
+
 .buttonMargin {
   margin-bottom: $margin-small;
+}
+
+.smallMargin{
+  margin-right: $margin-small;
 }
 
 .paddingInlineWithNavRight {
@@ -102,4 +127,17 @@ body {
 
 .fixedSmallWidth {
   width: 80px;
+}
+
+.buttonList {
+  float: left;
+  margin-left: -66px;
+}
+
+.fixedPosition {
+  position: fixed;
+}
+
+label > h4 {
+  display: inline;
 }
