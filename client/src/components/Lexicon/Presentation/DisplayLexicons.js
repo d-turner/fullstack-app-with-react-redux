@@ -5,17 +5,17 @@ import styles from '../lexicon.scss';
 
 function DisplayLexicon(props) {
   return (
-    <div className="flex one">
+    <div style={{ height: '100%' }}>
       <h3>Lexicon</h3>
       <form className={styles.form} onSubmit={props.onSubmit}>
-        <label htmlFor="searchCheckbox">{props.sourceLang}</label>
+        <label htmlFor="searchCheckbox"><h4>{props.sourceLang}</h4></label>
         <label className={styles.switch} htmlFor="searchCheckbox">
           <input type="checkbox" id="searchCheckbox" name="searchCheckbox"
             aria-label="language selector switch"
           />
           <div className={`${styles.slider} ${styles.round}`} />
         </label>
-        <label htmlFor="searchCheckbox">{props.targetLang}</label>
+        <label htmlFor="searchCheckbox"><h4>{props.targetLang}</h4></label>
         <input
           type="text" className={styles.input}
           autoComplete="off" placeholder="Enter a word to search..."
