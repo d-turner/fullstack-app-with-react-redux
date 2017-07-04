@@ -6,7 +6,7 @@ const initialState = {
   documents: {},
   lexicon: '',
   selectedSegment: 0,
-  editorState: EditorState.createEmpty(),
+  editorState: '',
   findReplace: {
     isFinding: false,
     render: false,
@@ -72,7 +72,7 @@ const splitSegment = function(state, action) {
   const oldSegment = state.xliff.segments[action.segmentId];
   const newSegment1 = Object.assign({}, oldSegment, {
     source: oldSegment.source.substring(0, action.cursorPosition),
-    target: '',
+    target: oldSegment.target,
   });
   const newSegment2 = Object.assign({}, oldSegment, {
     source: oldSegment.source.substring(action.cursorPosition),
@@ -150,7 +150,6 @@ const DocumentReducer = function(state = initialState, action) {
       };
     case actions.SPLIT:
       return Object.assign({}, state, {
-        editorState: EditorState.createEmpty(),
         documents: {
           ...state.documents,
           [action.documentId]: splitSegment(state.documents[action.documentId], action),
