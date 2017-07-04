@@ -107,6 +107,9 @@ class SegmentList extends React.Component {
   }
 
   renderSingle(index) {
+    if (this.props.editorState === '') {
+      return <div />;
+    }
     return (
       <div> {/* another wrapper for row flex*/}
         <div className={styles.padNumber}>{index}</div>{/* segment number*/}
