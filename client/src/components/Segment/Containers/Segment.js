@@ -112,10 +112,13 @@ class Segment extends React.Component {
   render() {
     return (
       <div className={styles.segmentWrapper}>
-        <SplitModal {...this.props}
-          content={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId].source}
-          renderModal={this.state.renderModal}
-          removeModal={this.removeModal} />
+        {this.state.renderModal ?
+          <SplitModal {...this.props}
+            content={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId].source}
+            renderModal={this.state.renderModal}
+            removeModal={this.removeModal} /> :
+          <div />
+        }
         <SegmentPresentation
           segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
           editorState={this.props.editorState}
@@ -138,7 +141,6 @@ Segment.propTypes = {
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   updateSegment: PropTypes.func.isRequired,
   lookupLexicon: PropTypes.func.isRequired,
-  splitSegment: PropTypes.func.isRequired,
   mergeSegment: PropTypes.func.isRequired,
   renderFindReplace: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
