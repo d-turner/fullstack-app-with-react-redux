@@ -36,12 +36,3 @@ export function mergeSegment(segmentId, documentId) {
     documentId,
   };
 }
-
-// initiate the render of the find and replace box
-export function renderFindReplace(word, currentSegment, index) {
-  return {
-    type: actions.FIND,
-    word,
-    index,
-  };
-}

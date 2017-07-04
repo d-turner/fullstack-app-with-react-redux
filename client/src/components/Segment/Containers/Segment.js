@@ -24,7 +24,6 @@ class Segment extends React.Component {
     this.dictionaryLookup = state => this._dictionaryLookup(state);
     this.splitSegment = () => this._splitSegment();
     this.mergeSegment = () => this._mergeSegment();
-    this.findReplace = state => this._findReplace(state);
     this.removeModal = () => this._removeModal();
   }
 
@@ -34,18 +33,6 @@ class Segment extends React.Component {
       this.props.segmentId,
       editorState,
     );
-  }
-
-  _findReplace() {
-    const selectionState = this.props.editorState.getSelection();
-    const anchorKey = selectionState.getAnchorKey();
-    const currentContent = this.props.editorState.getCurrentContent();
-    const currentContentBlock = currentContent.getBlockForKey(anchorKey);
-    const start = selectionState.getStartOffset();
-    const end = selectionState.getEndOffset();
-    const selectedText = currentContentBlock.getText().slice(start, end);
-    const index = currentContentBlock.getText().indexOf(selectedText, start);
-    this.props.renderFindReplace(selectedText, this.props.segmentId, index);
   }
 
   _splitSegment() {
@@ -88,8 +75,6 @@ class Segment extends React.Component {
       this.splitSegment();
     } else if (blockType === 'MERGE') {
       this.mergeSegment();
-    } else if (blockType === 'FIND-REPLACE') {
-      this.findReplace(this.props.editorState);
     } else {
       this.handleChange(
         RichUtils.toggleBlockType(

@@ -17,7 +17,6 @@ const BLOCK_TYPES = [
   { label: 'Dictionary', style: 'LOOKUP' },
   { label: 'Split', style: 'SPLIT' },
   { label: 'Merge', style: 'MERGE' },
-  { label: 'Find/Replace', style: 'FIND-REPLACE' },
 ];
 const BlockStyleControls = (props) => {
   const { editorState } = props;
