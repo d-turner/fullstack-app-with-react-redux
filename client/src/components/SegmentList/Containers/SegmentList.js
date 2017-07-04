@@ -42,33 +42,12 @@ class SegmentList extends React.Component {
   renderSidebar(index) {
     return (
       <div className={`id ${styles.clearPadding} ${styles.fixedSmallWidth}`}>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
+        <button className={`${styles.clearButtonLeft} ${styles.buttonMargin}`}
           data-tip data-for="Comment"
           aria-label="Add a Comment"
           onClick={event => this.renderComment(event, index)}>
           <i className={`small material-icons ${styles.fixFont}`}>chat_bubble</i>
         </button>
-        <ReactToolTip id="Comment">
-          <span>Comments</span>
-        </ReactToolTip>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
-          data-tip data-for="Lexicon"
-          onClick={() => this.props.renderLexicon()}
-          aria-label="Open Lexicon Sidebar">
-          <i className={`small material-icons ${styles.fixFont}`}>translate</i>
-        </button>
-        <ReactToolTip id="Lexicon">
-          <span>Lexicon</span>
-        </ReactToolTip>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
-          data-tip data-for="Search"
-          onClick={() => this.props.renderSearch()}
-          aria-label="Open Find and Replace ">
-          <i className={`small material-icons ${styles.fixFont} ${styles.buttonPadding}`}>search</i>
-        </button>
-        <ReactToolTip id="Search">
-          <span>Search</span>
-        </ReactToolTip>
       </div>
     );
   }
@@ -137,8 +116,6 @@ SegmentList.propTypes = {
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
   selectedSegment: PropTypes.number.isRequired,
   renderComment: PropTypes.func.isRequired,
-  renderLexicon: PropTypes.func.isRequired,
-  renderSearch: PropTypes.func.isRequired,
 };
 
 export default SegmentList;
