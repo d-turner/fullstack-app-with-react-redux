@@ -23,6 +23,7 @@ export default class CommentModal extends React.Component {
           <form onSubmit={event => this.addComment(event, this.props.index)}>
             <input className={styles.commentInput} autoComplete="false"
               aria-label={`Comment input for segment ${this.props.index}`}
+              required
             />
             <div className={styles.commentButtons} >
               <button className={styles.commentButton} type="submit">Add</button>
@@ -41,11 +42,12 @@ export default class CommentModal extends React.Component {
 CommentModal.defaultProps = {
   xcoord: 0,
   ycoord: 0,
+  render: false,
 };
 
 CommentModal.propTypes = {
   documentId: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   unrender: PropTypes.func.isRequired,
-  render: PropTypes.bool.isRequired,
+  render: PropTypes.bool,
 };
