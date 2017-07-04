@@ -15,37 +15,15 @@ class SegmentContainer extends React.Component {
     store.dispatch(requestDocument(id));
     // const i = props.documents.findIndex(doc => doc.id === id);
     this.renderComment = this.renderComment.bind(this);
-    this.renderLexicon = this.renderLexicon.bind(this);
-    this.renderSearch = this.renderSearch.bind(this);
     this.state = {
       id,
       renderComment: false,
-      renderLexicon: false,
-      renderSearch: false,
     };
   }
 
   renderComment() {
     this.setState({
       renderComment: true,
-      renderLexicon: false,
-      renderSearch: false,
-    });
-  }
-
-  renderLexicon() {
-    this.setState({
-      renderComment: false,
-      renderLexicon: true,
-      renderSearch: false,
-    });
-  }
-
-  renderSearch() {
-    this.setState({
-      renderComment: false,
-      renderLexicon: false,
-      renderSearch: true,
     });
   }
 
@@ -58,15 +36,10 @@ class SegmentContainer extends React.Component {
             documentId={this.state.id}
             editorState={this.props.editorState}
             renderComment={this.renderComment}
-            renderLexicon={this.renderLexicon}
-            renderSearch={this.renderSearch}
             {...this.props} />
         ) : (<div className={styles.setPadding}><Loader /></div>)}
         <Sidebar
           documentId={this.state.id}
-          renderComment={this.state.renderComment}
-          renderLexicon={this.state.renderLexicon}
-          renderSearch={this.state.renderSearch}
         />
       </div>
     );
