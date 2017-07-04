@@ -6,35 +6,47 @@ import Comments from '../../Comments/Containers';
 import FindReplace from '../../FindReplace/Containers';
 import styles from '../sidebar.scss';
 
-function Sidebar(props) {
-  if (props.renderComment) {
+class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { width: '0', height: '0' };
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+  }
+
+  renderSwitch() {
+    if (this.props.renderComment) {
+      return <Comments documentId={this.props.documentId} />;
+    } else if (this.props.renderLexicon) {
+      return <Lexicon documentId={this.props.documentId} />;
+    } else if (this.props.renderSearch) {
+      return <FindReplace documentId={this.props.documentId} />;
+    }
     return (
-      <div className={styles.parent}>
-        <div className={`${styles.fixedPosition}`}>
-          <Comments documentId={props.documentId} />
-        </div>
-      </div>
+      <div />
     );
-  } else if (props.renderLexicon) {
+  }
+  render() {
     return (
       <div className={styles.parent}>
-        <div className={`${styles.fixedPosition}`}>
-          <Lexicon documentId={props.documentId} />
-        </div>
-      </div>
-    );
-  } else if (props.renderSearch) {
-    return (
-      <div className={styles.parent}>
-        <div className={`${styles.fixedPosition}`}>
-          <FindReplace documentId={props.documentId} />
+        <div className={styles.fixedPosition} style={{ height: this.state.height - 66 }}>
+          {this.renderSwitch()}
         </div>
       </div>
     );
   }
-  return (
-    <div />
-  );
 }
 
 Sidebar.defaultProps = {
