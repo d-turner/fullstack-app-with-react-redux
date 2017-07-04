@@ -9,13 +9,16 @@ import CommentModal from '../../Comments/Presentation/CommentModal';
 class SegmentList extends React.Component {
   constructor(props) {
     super(props);
-    this.props.updateSelectedSegment(this.props.documentId, 0);
     const renderArray = new Array(props.segments.length).fill(false);
     this.state = { renderArray };
 
     this.renderSegment = this.renderSegment.bind(this);
     this.renderSingle = this.renderSingle.bind(this);
     this.unrender = this.unrender.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.updateSelectedSegment(this.props.documentId, 0);
   }
 
   selected(index) {
@@ -131,7 +134,7 @@ SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
   documentId: PropTypes.number.isRequired,
   updateSelectedSegment: PropTypes.func.isRequired,
-  editorState: PropTypes.objectOf(PropTypes.any).isRequired,
+  editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
   selectedSegment: PropTypes.number.isRequired,
   renderComment: PropTypes.func.isRequired,
   renderLexicon: PropTypes.func.isRequired,
