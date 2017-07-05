@@ -7,6 +7,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const config = require('./webpack.config.js');
+const request = require('request');
 
 const app = express();
 
@@ -96,9 +97,22 @@ app.use(express.static(__dirname));
 app.use(express.static('dist'));
 
 app.get('*.js', (req, res, next) => {
-  req.url = req.url + '.gz';
+  req.url += '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
+});
+
+app.use('/api/*', (req, res) => {
+  console.log('Here 1 ', req.baseUrl);
+  const url = `http://localhost:8080${req.baseUrl}`;
+  let r = null;
+  if (req.method === 'POST') {
+    r = request.post({uri: url, json: req.body});
+  } else {
+    r = request(url);
+  }
+
+  req.pipe(r).pipe(res);
 });
 
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
