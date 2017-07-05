@@ -141,3 +141,7 @@ body {
 label > h4 {
   display: inline;
 }
+
+.error {
+  color: darken($error, 20%);
+}
