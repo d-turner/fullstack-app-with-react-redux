@@ -64,8 +64,8 @@ class AddProject extends React.Component {
             />
           </label>
           <div className="flex">
-            <button aria-label="Submit new project">Submit</button>
-            <button onClick={() => this.props.cancelAdd()}>Cancel</button>
+            <button aria-label="Submit new project" className={styles.formatButton}>Submit</button>
+            <button onClick={() => this.props.cancelAdd()} className={styles.formatButton}>Cancel</button>
           </div>
         </fieldset>
       </form>
