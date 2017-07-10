@@ -13,7 +13,7 @@ The frontend is built entirely with JavaScript, using the [React](https://github
   $ sudo apt install npm
   ```
 2. Run `npm install` from the client directory (`kanjingo-react-redux/client/`)
-3. Start the development server with `npm run start` from the client directory (`kanjingo-react-redux/client/`)
+3. Start the development server with `npm run dev` from the client directory (`kanjingo-react-redux/client/`)
 
 ### Development
 
@@ -31,12 +31,18 @@ Webpack uses 'cheap-module-source-map' to map the code in the single distributio
   ```
   $ sudo apt install npm
   ```
-2. Run `npm install` from the production directory (`kanjingo-react-redux/server/`) 
-3. start the production server with `npm run start` from the server directory
+2. Run `npm install` from the client directory (`kanjingo-react-redux/client/`) 
+3. start the production server with `npm run prod` from the server directory
+4. Run `npm install` from the server directory (`kanjingo-react-redux/server/`)
+5. Confirm that MariaDB is running and start the server with `npm run start`
+
+### MariaDB
+
+[MariaDB](https://mariadb.com/products/technology/server) is the chosen database for this application, make sure it is running before starting the server
 
 ### Style
 
-* It is highly recommended to use a JavaScript linter 
+* It is highly recommended to use a JavaScript linter
 * This project uses eslint for styling
 * The configuration is based on AirBnB's eslint plugin
 * Use *two spaces* to indent javascript
@@ -60,7 +66,7 @@ This ensures that objects don't get mutated and the reducers are pure functions.
 On the server in production it is a good idea to use pm2 a process manager for node. This will auto restart the application if it crashes or fails.   
 ```bash
 sudo npm install pm2 -g
-pm2 start serve.js
+npm run start
 ```
 
 ### Language Codes
