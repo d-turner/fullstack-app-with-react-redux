@@ -102,19 +102,6 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-app.use('/api/*', (req, res) => {
-  console.log('Here 1 ', req.baseUrl);
-  const url = `http://localhost:8080${req.baseUrl}`;
-  let r = null;
-  if (req.method === 'POST') {
-    r = request.post({uri: url, json: req.body});
-  } else {
-    r = request(url);
-  }
-
-  req.pipe(r).pipe(res);
-});
-
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.listen(3000, (err) => {
