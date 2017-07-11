@@ -1,18 +1,6 @@
-
-.wrapper {
-  margin: 12.5px 12.5px 6.25px 12.5px;
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.colwrapper {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-}
+@import '../../constants/main';
 
 .form {
-  padding-left: 22.2px;
   padding-top: 14px;
 }
 
@@ -20,13 +8,9 @@
   margin-top: 10px;
   margin-bottom: 22px;
   padding: 6.25px 12.5px;
-  width: 80%;
+  width: 100%;
 }
 
-.flexItem {
-  min-width: 150px;
-  margin-right: 20px;
-}
 
 .lexiconItem {
   margin-bottom: 10px;
