@@ -14,7 +14,6 @@ const BLOCK_TYPES = [
   { label: 'UL', style: 'unordered-list-item' },
   { label: 'OL', style: 'ordered-list-item' },
   { label: 'Code Block', style: 'code-block' },
-  { label: 'Dictionary', style: 'LOOKUP' },
   { label: 'Split', style: 'SPLIT' },
   { label: 'Merge', style: 'MERGE' },
 ];
