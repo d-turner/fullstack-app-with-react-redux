@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import crypto from 'crypto';
 
 import User from '../db/user';
+import * as resp from '../config/Responses';
 import logger from '../util/logger';
 
 const LEN = 256;
@@ -56,7 +57,7 @@ passport.deserializeUser((user, done) => {
   });
 });
 
-// Use local strategy
+// Use local strategy for login
 passport.use('login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
@@ -64,27 +65,68 @@ passport.use('login', new LocalStrategy({
 (username, password, cb) => {
   User.findByUsername(username, (err, result) => {
     const user = result[0];
-    if (err) { return cb(err); }
-    if (!user) { return cb(null, false); }
+    if (err) {
+      logger.error(`Database error ${err}`);
+      return cb(err, false, resp.somethingBad);
+    }
+    if (!user) { return cb(null, false, resp.noUserFound); }
     return hashPassword(password, user.salt, (hashErr, hash) => {
       if (hashErr) {
-        logger.error(hashErr);
-        return cb(hashErr, false);
+        logger.error(`Hashing error ${hashErr}`);
+        return cb(hashErr, false, resp.somethingBad);
       }
-      if (user.password !== hash) { return cb(null, false); }
-      logger.info('User authenticated...');
+      if (user.password !== hash) return cb(null, false, resp.loginFailed);
+      logger.debug('User in now authenticated');
       user.password = undefined;
       user.salt = undefined;
-      return cb(null, user);
+      return cb(null, user, resp.loginSuccess);
+    });
+  });
+},
+));
+
+// Use local strategy for register
+passport.use('register', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+},
+(username, password, cb) => {
+  User.findByUsername(username, (err, result) => {
+    const user = result[0];
+    if (err) {
+      logger.error(`Database error ${err}`);
+      return cb(err, false, resp.somethingBad);
+    }
+    if (user !== undefined) {
+      return cb(null, false, resp.emailExists);
+    }
+    return hashPassword(password, (hashErr, hash, salt) => {
+      if (hashErr) {
+        logger.error(`Hashing error ${hashErr}`);
+        return cb(hashErr, false, resp.somethingBad);
+      }
+      return User.register(username, hash, salt, (insertError, insertResult) => {
+        if (insertError) {
+          logger.error(`Database error ${insertError}`);
+          return cb(insertError, false, resp.somethingBad);
+        }
+        logger.debug('User in now authenticated');
+        logger.info('Insert Result ', insertResult);
+        return cb(null, user, resp.registerSuccess);
+      });
     });
   });
 },
 ));
 
 passport.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(200, `Test page for user: ${JSON.stringify(req.user)}`); }
-  if (req.user) { return next(200, `Test page for user: ${JSON.stringify(req.user)}`); }
-  return next(401, 'You are not authenticated...');
+  if (req.isAuthenticated() || req.user) {
+    return next(200, {
+      status: 'Authenticated',
+      data: `Test page for user: ${JSON.stringify(req.user)}`,
+    });
+  }
+  return next(401, { status: 'Not Authenticated' });
 };
 
 
