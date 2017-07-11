@@ -21,6 +21,18 @@ const blankDocument = {
   xliff: {},
 };
 
+const cleanText = (text, lowercaseBefore) => {
+  let newText = (text === undefined || text === null) ? '' : text;
+  if (lowercaseBefore) { newText = newText.toLowerCase(); }
+  newText = newText.replace(/\./g, '. ');
+  newText = newText.replace(/  +/g, ' ');
+  newText = newText.replace(/(<([^>]+)>)/ig, '');
+  newText = newText.split('.').map(data => data.trim()).join('. ');
+  return newText.toString().replace(/(^|\. *)([a-z])/g, (match, separator, char) => {
+    return separator + char.toUpperCase();
+  });
+};
+
 const createNewDocumentEntry = (state = blankDocument, action) => {
   return Object.assign({}, state, {
     name: action.name,
@@ -170,12 +182,11 @@ const DocumentReducer = function(state = initialState, action) {
         },
       });
     case actions.UPDATE_SELECTED:
+      const text = cleanText(state.documents[action.documentId].xliff.segments[action.segmentId].target);
       return {
         ...state,
         selectedSegment: action.segmentId,
-        editorState: EditorState.createWithContent(ContentState.createFromText(
-          state.documents[action.documentId].xliff.segments[action.segmentId].target.replace(/(<([^>]+)>)/ig, ''),
-        )),
+        editorState: EditorState.createWithContent(ContentState.createFromText(text)),
       };
     // extracting all FindReplace actions to separate file
     case actions.FIND:
