@@ -13,6 +13,7 @@ export const LOOKUP = 'LOOKUP_LEXICON';
 export const SPLIT = 'SPLIT';
 export const MERGE = 'MERGE';
 export const FIND = 'FIND_REPLACE';
+export const SPACES = 'CHECK_DOUBLE_SPACES';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
