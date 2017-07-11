@@ -112,7 +112,7 @@ passport.use('register', new LocalStrategy({
         }
         logger.debug('User in now authenticated');
         logger.info('Insert Result ', insertResult);
-        return cb(null, user, resp.registerSuccess);
+        return cb(null, false, resp.registerSuccess);
       });
     });
   });
@@ -120,7 +120,7 @@ passport.use('register', new LocalStrategy({
 ));
 
 passport.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated() || req.user) {
+  if (req.isAuthenticated() && req.user) {
     return next(200, {
       status: 'Authenticated',
       data: `Test page for user: ${JSON.stringify(req.user)}`,

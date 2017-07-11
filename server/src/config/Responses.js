@@ -17,5 +17,6 @@ export const found = 302;
 export const bad = 400;
 export const noAuth = 401;
 export const forbidden = 403;
+export const conflict = 409;
 export const unprocessable = 422;
 export const error = 500;
