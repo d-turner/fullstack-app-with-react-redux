@@ -36,3 +36,10 @@ export function mergeSegment(segmentId, documentId) {
     documentId,
   };
 }
+
+// check for double spaces
+export function checkSpaces() {
+  return {
+    type: actions.SPACES,
+  };
+}
