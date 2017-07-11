@@ -2,7 +2,6 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
 // local packages
@@ -24,10 +23,9 @@ app.use(morgan('combined', { stream: logger.stream }));
 // add body parsing
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser('anything'));
 
 // passport middleware
-app.use(session({ secret: 'anything' }));
+app.use(session({ secret: 'kanjingo-1486729324' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -49,7 +47,7 @@ setupUserRoutes(app);
 
 // catch all unhandled errors
 app.use((err, req, res, next) => {
-  logger.error('unhandled application error: ', err);
+  logger.error(`unhandled application error: ${err}`);
   res.status(500).send(err);
   next();
 });
