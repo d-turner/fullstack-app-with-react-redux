@@ -34,6 +34,7 @@ class Sidebar extends React.Component {
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
+
   renderComment() {
     this.setState({
       renderComment: true,
