@@ -1,5 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 
+import api from '../../utils/apiWrapper';
 import styles from './register.scss';
 
 export default class Register extends React.Component {
@@ -21,16 +23,21 @@ export default class Register extends React.Component {
 
   sendData() {
     console.log('sending....');
-    fetch(`http://localhost:3000/api/login`)
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error('Bad response from server');
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
+    api.register(data, (response) => {
+      if (response.data.error || response.status !== 200) {
+        // something went wrong with the register
+        if (response.status === 409) {
+          this.setState({ emailValid: false, emailError: response.data.error });
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
+      }
+      // registration successful redirect to login page
+      console.log('Registration Successful');
+    });
   }
 
   validateState() {
@@ -65,7 +72,7 @@ export default class Register extends React.Component {
     // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const result = re.test(email);
-    this.setState({ email, emailValid: result });
+    this.setState({ email, emailValid: result, emailError: null });
   }
 
   validatePassword(password) {
@@ -163,7 +170,7 @@ export default class Register extends React.Component {
               }}
               required />
             {this.state.emailValid ?
-              <div /> : this.renderError(' Please use a valid email address')
+              <div /> : this.renderError(this.state.emailError || ' Please use a valid email address')
             }
           </label>
 
