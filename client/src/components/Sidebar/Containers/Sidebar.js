@@ -72,13 +72,15 @@ class Sidebar extends React.Component {
   }
   render() {
     return (
-      <div className={`${styles.parent} ${styles.content}`} >
+      <div className={`third fourth-900 fifth-1200 ${styles.parent} ${styles.content}`} >
         <ButtonList
           renderComment={this.renderComment}
           renderLexicon={this.renderLexicon}
           renderSearch={this.renderSearch}
         />
-        <div className={styles.fixedPosition} style={{ height: this.state.height - 48, maxWidth: '100%' }}>
+        <div
+          className={`${styles.fixedPosition} ${styles.paddingInlineWithNavRight}`}
+          style={{ height: this.state.height - 48 }}>
           {this.renderSwitch()}
         </div>
       </div>
