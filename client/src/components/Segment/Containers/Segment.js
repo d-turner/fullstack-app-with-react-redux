@@ -21,7 +21,6 @@ class Segment extends React.Component {
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
-    this.dictionaryLookup = state => this._dictionaryLookup(state);
     this.splitSegment = () => this._splitSegment();
     this.mergeSegment = () => this._mergeSegment();
     this.removeModal = () => this._removeModal();
@@ -47,17 +46,6 @@ class Segment extends React.Component {
     this.props.mergeSegment(this.props.segmentId, this.props.documentId);
   }
 
-  _dictionaryLookup() {
-    const selectionState = this.props.editorState.getSelection();
-    const anchorKey = selectionState.getAnchorKey();
-    const currentContent = this.props.editorState.getCurrentContent();
-    const currentContentBlock = currentContent.getBlockForKey(anchorKey);
-    const start = selectionState.getStartOffset();
-    const end = selectionState.getEndOffset();
-    const selectedText = currentContentBlock.getText().slice(start, end);
-    this.props.lookupLexicon(selectedText);
-  }
-
   _handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(this.props.editorState, command);
     if (newState) {
@@ -69,9 +57,7 @@ class Segment extends React.Component {
   }
 
   _toggleBlockType(blockType) {
-    if (blockType === 'LOOKUP') {
-      this.dictionaryLookup(this.props.editorState);
-    } else if (blockType === 'SPLIT') {
+    if (blockType === 'SPLIT') {
       this.splitSegment();
     } else if (blockType === 'MERGE') {
       this.mergeSegment();
@@ -125,7 +111,6 @@ Segment.propTypes = {
   documentId: PropTypes.number.isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   updateSegment: PropTypes.func.isRequired,
-  lookupLexicon: PropTypes.func.isRequired,
   mergeSegment: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
