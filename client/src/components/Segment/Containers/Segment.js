@@ -127,7 +127,6 @@ Segment.propTypes = {
   updateSegment: PropTypes.func.isRequired,
   lookupLexicon: PropTypes.func.isRequired,
   mergeSegment: PropTypes.func.isRequired,
-  renderFindReplace: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
