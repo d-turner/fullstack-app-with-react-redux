@@ -6,7 +6,7 @@ import styles from '../lexicon.scss';
 function DisplayLexicon(props) {
   return (
     <div style={{ height: '100%' }}>
-      <h3>Lexicon</h3>
+      <h3 className={styles.clearMarginLeft}>Lexicon</h3>
       <form className={styles.form} onSubmit={props.onSubmit}>
         <label htmlFor="searchCheckbox"><h4>{props.sourceLang}</h4></label>
         <label className={styles.switch} htmlFor="searchCheckbox">
@@ -23,28 +23,24 @@ function DisplayLexicon(props) {
           aria-label="lexicon search input"
         />
       </form>
-      <div className={styles.wrapper}>
-        <div className={styles.flexItem}>
-          <div className={styles.colwrapper}>
-            <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
-              {props.sourceLang}
-            </div>
-            <div className={styles.lexiconTranslation}>
-              {props.sourceLemma}
-            </div>
+      <div className="flex two">
+        <div className="half">
+          <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
+            {props.sourceLang}
+          </div>
+          <div className={styles.lexiconTranslation}>
+            {props.sourceLemma}
           </div>
         </div>
-        <div className={styles.flexItem}>
-          <div className={styles.colwrapper}>
-            <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
-              {props.targetLang}
-            </div>
-            <div className={styles.lexiconTranslation}>
-              {props.targetLemma}
-            </div>
+        <div className="half">
+          <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
+            {props.targetLang}
           </div>
-          {props.renderSpinner()}
+          <div className={styles.lexiconTranslation}>
+            {props.targetLemma}
+          </div>
         </div>
+        {props.renderSpinner()}
       </div>
     </div>
   );
