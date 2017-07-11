@@ -1,8 +1,6 @@
 import passport from '../config/passport';
 import logger from '../util/logger';
-import User from '../db/user';
 import * as resp from '../config/Responses';
-
 
 function authenticatedCallback(err, user, info, req, res, next) {
   if (err) return next(err);
@@ -48,7 +46,10 @@ export default (app) => {
       res.status(resp.unprocessable).json(resp.badParameters);
     }
     passport.authenticate('register', (err, user, info) => {
-      authenticatedCallback(err, user, info, req, res, next);
+      // authenticatedCallback(err, user, info, req, res, next);
+      if (err) next(err);
+      if (info.error) res.status(resp.conflict).json(info);
+      res.status(resp.good).json(info);
     })(req, res, next);
   });
 
