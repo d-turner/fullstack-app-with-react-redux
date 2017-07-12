@@ -1,27 +1,35 @@
 @import  '../../constants/main';
 
+.clearPadding {
+  padding: 0px;
+}
+
 .selected {
-  border-width: 1px 0 1px 0;
+  @extend .clearPadding;
+  border-width: $fullborder;
   border-style: solid;
   border-color: $orange;
+
 }
 
 .block {
+  @extend .clearPadding;
   background-color: inherit;
   text-align: left;
   cursor: inherit;
   box-sizing: inherit;
   color: $segmentText;
-  border-width: 1px 0 1px 0;
+  border-width: $fullborder;
   border-style: solid;
-  border-color: $darkslategrey;
+  border-color: $lightsilver;
   border-radius: 0;
+  padding-left: 0px;
 }
 
 .block:hover {
-  border-width: 1px 0 1px 0;
+  border-width: $fullborder;
   border-style: solid;
-  border-color: $mediumorchid;
+  border-color: $darkslategrey;
   z-index: 100;
   cursor: pointer;
 }
