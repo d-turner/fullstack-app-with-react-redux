@@ -14,6 +14,7 @@ class CustomEditor extends React.Component {
   render() {
     return (
       <div className={styles['RichEditor-root']} >
+        <h6>Target</h6>
         <BlockStyleControls
           editorState={this.props.editorState}
           onToggle={this.props.toggleBlockType}
