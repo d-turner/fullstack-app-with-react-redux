@@ -1,29 +1,8 @@
-.segmentWrapper {
-  display: flex;
-  flex-flow: row nowrap;
-}
-
 .wrapper {
   background-color: white;
   margin-right: 0px;
-  margin-top: 5px;
-  line-height: 1.24em;
-  padding: 6px 8px;
+  padding: 15px;
   border: 1px solid #ddd;
-}
-
-.editorWrapper {
-  padding: 0px;
-  margin: 0px;
-  line-height: 1.24em;
-  text-align: inherit;
-  cursor: inherit;
-  color: inherit;
-  background-color: inherit;
-  box-sizing: inherit;
-  border: inherit;
-  align-items: inherit;
-  z-index: auto;
 }
 
 .format {
