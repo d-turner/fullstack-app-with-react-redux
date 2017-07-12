@@ -20,6 +20,7 @@ class Sidebar extends React.Component {
     this.renderComment = this.renderComment.bind(this);
     this.renderLexicon = this.renderLexicon.bind(this);
     this.renderSearch = this.renderSearch.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
