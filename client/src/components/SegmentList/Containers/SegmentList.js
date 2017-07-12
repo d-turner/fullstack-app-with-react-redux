@@ -70,7 +70,7 @@ class SegmentList extends React.Component {
 
   renderSelected(index) {
     return (
-      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.paddingInlineWithNavRight} ${styles.selected}`}>
+      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.selected}`}>
         {this.renderSingle(index)}
       </div>
     );
@@ -94,7 +94,6 @@ class SegmentList extends React.Component {
     }
     return (
       <div> {/* another wrapper for row flex*/}
-        <div className={styles.padNumber}>{index}</div>{/* segment number*/}
         <Segment documentId={this.props.documentId} segmentId={index} editorState={this.props.editorState} />
       </div>
     );
