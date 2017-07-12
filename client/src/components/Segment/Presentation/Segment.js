@@ -21,18 +21,22 @@ class Segment extends React.Component {
       );
     }
     return (
-      <div className={styles.wrapper} dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
+      <div className={styles.wrapper}>
+        <h6>Target</h6>
+        <span dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
+      </div>
     );
   }
 
   render() {
     return (
       <div className={`${styles.format}`}>
-        <h5>Source</h5>
-        <div className={styles.wrapper}>{this.props.segment.source}</div>
+        <div className={styles.wrapper}>
+          <h6>#{this.props.segmentId} Source</h6>
+          {this.props.segment.source}
+        </div>
 
         <div style={{ marginTop: '10px' }}>
-          <h5>Target</h5>
           {this.renderEditor()}
         </div>
       </div>
