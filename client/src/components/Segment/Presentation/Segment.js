@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '../styles.css';
+import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
-  renderEditor() {
-    if (this.props.selectedSegment === this.props.segmentId) {
+  renderEditor(selected) {
+    if (selected) {
       return (
-        <div className={styles.editorWrapper} onClick={this.props.focus} tabIndex={0} role="Main">
+        <div
+          style={{ marginTop: '10px' }}
+          className={styles.editorWrapper}
+          onClick={this.props.focus}
+          tabIndex={0}
+          role="Main"
+        >
           <CustomEditor
             editorState={this.props.editorState}
             toggleBlockType={this.props.toggleBlockType}
@@ -21,7 +27,7 @@ class Segment extends React.Component {
       );
     }
     return (
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} style={{ marginTop: '4px' }}>
         <h6>Target</h6>
         <span dangerouslySetInnerHTML={{ __html: this.props.segment.target }} />
       </div>
@@ -29,16 +35,17 @@ class Segment extends React.Component {
   }
 
   render() {
+    let selected = false;
+    if (this.props.selectedSegment === this.props.segmentId) {
+      selected = true;
+    }
     return (
       <div className={`${styles.format}`}>
-        <div className={styles.wrapper}>
+        <div className={selected ? `${styles.wrapper} ${styles.selected}` : `${styles.wrapper}`}>
           <h6>#{this.props.segmentId} Source</h6>
           {this.props.segment.source}
         </div>
-
-        <div style={{ marginTop: '10px' }}>
-          {this.renderEditor()}
-        </div>
+        {this.renderEditor(selected)}
       </div>
     );
   }
