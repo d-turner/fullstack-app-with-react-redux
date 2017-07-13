@@ -1,0 +1,25 @@
+@import '../../constants/variables';
+
+.wrapper {
+  background-color: white;
+  margin-right: 0px;
+  padding: 15px;
+  border: 1px solid $borderColor;
+}
+
+.format {
+  flex-flow: column nowrap;
+  width: 100%;
+};
+
+.selected {
+  border-width: 1px;
+  border-style: solid;
+  border-color: $borderSelected !important;
+}
+
+.wrapper:hover {
+  border-width: $fullborder;
+  border-style: solid;
+  border-color: $borderHover;
+}
