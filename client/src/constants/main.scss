@@ -134,7 +134,7 @@ body {
 
 .buttonList {
   float: left;
-  margin-left: -66px;
+  margin-left: -68px;
 }
 
 .fixedPosition {
@@ -147,4 +147,25 @@ label > h4 {
 
 .error {
   color: darken($error, 20%);
+}
+
+button:hover {
+  i {
+    border-width: 0 0 1px 0;
+    color: #4285f4;
+    border-color: #4285f4;
+  }
+}
+
+button {
+  i {
+    border: solid;
+    padding-bottom: 6px;
+    border-width: 0 0 1px 0;
+    border-color: rgba(0, 0, 0, 0.0);
+  }
+}
+button {
+  background: #eee;
+  color: #333333;
 }
