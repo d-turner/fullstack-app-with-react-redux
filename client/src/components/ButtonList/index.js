@@ -13,7 +13,7 @@ class ButtonList extends React.Component {
           onClick={() => this.props.renderComment()}>
           <i className={`small material-icons ${styles.fixFont}`}>chat_bubble</i>
         </button>
-        <ReactToolTip id="Comment">
+        <ReactToolTip place="left" id="Comment" effect="solid">
           <span>Comments</span>
         </ReactToolTip>
         <button className={`${styles.clearButton} ${styles.buttonMargin}`}
@@ -22,7 +22,7 @@ class ButtonList extends React.Component {
           aria-label="Open Lexicon Sidebar">
           <i className={`small material-icons ${styles.fixFont}`}>translate</i>
         </button>
-        <ReactToolTip id="Lexicon">
+        <ReactToolTip place="left" id="Lexicon" effect="solid">
           <span>Lexicon</span>
         </ReactToolTip>
         <button className={`${styles.clearButton} ${styles.buttonMargin}`}
@@ -31,7 +31,7 @@ class ButtonList extends React.Component {
           aria-label="Open Find and Replace ">
           <i className={`small material-icons ${styles.fixFont} ${styles.buttonPadding}`}>search</i>
         </button>
-        <ReactToolTip id="Search">
+        <ReactToolTip place="left" id="Search" effect="solid">
           <span>Search</span>
         </ReactToolTip>
       </div>
