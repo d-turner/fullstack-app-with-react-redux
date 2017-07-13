@@ -6,10 +6,6 @@
 
 .selected {
   @extend .clearPadding;
-  border-width: $fullborder;
-  border-style: solid;
-  border-color: $orange;
-
 }
 
 .block {
@@ -19,17 +15,11 @@
   cursor: inherit;
   box-sizing: inherit;
   color: $segmentText;
-  border-width: $fullborder;
-  border-style: solid;
-  border-color: $lightsilver;
   border-radius: 0;
   padding-left: 0px;
 }
 
 .block:hover {
-  border-width: $fullborder;
-  border-style: solid;
-  border-color: $darkslategrey;
   z-index: 100;
   cursor: pointer;
 }
@@ -38,3 +28,10 @@
   padding-top: 4px;
 }
 
+.selectedPadding {
+  padding: $padding-large 0;
+}
+
+.normalPadding {
+  padding: 10px 0;
+}
