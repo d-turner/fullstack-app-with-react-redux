@@ -52,8 +52,10 @@ class SegmentList extends React.Component {
     );
   }
   renderSegment(segment, index) {
+    let selected = styles.normalPadding;
+    if (index === this.props.selectedSegment) selected = styles.selectedPadding;
     return (
-      <div className={`flex one center ${styles.groupItem} ${styles.content}`} key={index} value={index}>
+      <div className={`flex one center ${selected}`} key={index} value={index}>
         { index === this.props.selectedSegment ?
           this.renderSelected(index) :
           this.renderButton(index)
