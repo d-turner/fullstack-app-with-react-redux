@@ -8,7 +8,6 @@ import { RichUtils } from 'draft-js';
 // we do not need a separate reducer of this component
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
-import styles from '../styles.css';
 import SegmentPresentation from '../Presentation/Segment';
 import SplitModal from '../../../components/SplitModal/Containers/Modal';
 
@@ -82,7 +81,7 @@ class Segment extends React.Component {
 
   render() {
     return (
-      <div className={styles.segmentWrapper}>
+      <div>
         {this.state.renderModal ?
           <SplitModal {...this.props}
             content={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId].source}
