@@ -4,18 +4,16 @@ import PropTypes from 'prop-types';
 import StyleButton from './StyleButton';
 
 const BLOCK_TYPES = [
-  { label: 'H1', style: 'header-one' },
-  { label: 'H2', style: 'header-two' },
-  { label: 'H3', style: 'header-three' },
-  { label: 'H4', style: 'header-four' },
-  { label: 'H5', style: 'header-five' },
-  { label: 'H6', style: 'header-six' },
-  { label: 'Blockquote', style: 'blockquote' },
-  { label: 'UL', style: 'unordered-list-item' },
-  { label: 'OL', style: 'ordered-list-item' },
-  { label: 'Code Block', style: 'code-block' },
-  { label: 'Split', style: 'SPLIT' },
-  { label: 'Merge', style: 'MERGE' },
+  { label: '<h1 style="font-size: 1.7em">H1</h1>', style: 'header-one' },
+  { label: '<h2>H2</h2>', style: 'header-two' },
+  { label: '<h3 style="margin-left: 0px">H3</h3>', style: 'header-three' },
+  { label: '<h4>H4</h4>', style: 'header-four' },
+  { label: '<h5>H5</h5>', style: 'header-five' },
+  { label: '<h6>H6</h6>', style: 'header-six' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">format_quote</i>', style: 'blockquote' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">list</i>', style: 'unordered-list-item' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">format_list_numbered</i>', style: 'ordered-list-item' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">code</i>', style: 'code-block' },
 ];
 const BlockStyleControls = (props) => {
   const { editorState } = props;

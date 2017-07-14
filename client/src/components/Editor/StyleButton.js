@@ -16,7 +16,7 @@ class StyleButton extends React.Component {
     }
     return (
       <span className={active} onMouseDown={this.onToggle}>
-        {this.props.label}
+        <span dangerouslySetInnerHTML={{ __html: this.props.label }} />
       </span>
     );
   }

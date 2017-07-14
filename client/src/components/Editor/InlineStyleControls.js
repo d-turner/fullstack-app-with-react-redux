@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import StyleButton from './StyleButton';
 
 const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">format_bold</i>', style: 'BOLD' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">format_italic</i>', style: 'ITALIC' },
+  { label: '<i style="font-size: 1.2em" class="material-icons">format_underlined</i>', style: 'UNDERLINE' },
   { label: 'Monospace', style: 'CODE' },
 ];
 const InlineStyleControls = (props) => {
