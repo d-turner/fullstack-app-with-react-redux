@@ -18,25 +18,6 @@ export function lookupLexicon(lexicon) {
   };
 }
 
-// split a segment a the current cursor position
-export function splitSegment(segmentId, documentId, cursorPosition) {
-  return {
-    type: actions.SPLIT,
-    segmentId,
-    documentId,
-    cursorPosition,
-  };
-}
-
-// split a segment a the current cursor position
-export function mergeSegment(segmentId, documentId) {
-  return {
-    type: actions.MERGE,
-    segmentId,
-    documentId,
-  };
-}
-
 // check for double spaces
 export function checkSpaces() {
   return {
