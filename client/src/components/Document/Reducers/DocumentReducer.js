@@ -110,8 +110,8 @@ const mergeSegment = function(state, action) {
   );
   const currentSegment = state.xliff.segments[action.segmentId];
   const nextSegment = state.xliff.segments[action.segmentId + 1];
-  const newSource = currentSegment.source.concat(nextSegment.source);
-  const newTarget = currentSegment.target.concat(nextSegment.target);
+  const newSource = currentSegment.source.concat(' ', nextSegment.source);
+  const newTarget = currentSegment.target.concat(' ', nextSegment.target);
   const before = state.xliff.segments.slice(0, action.segmentId);
   const after = state.xliff.segments.slice(action.segmentId + 2, state.xliff.segments.length);
   const newSegment = Object.assign({}, currentSegment, {
@@ -174,7 +174,7 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState: EditorState.createWithContent(ContentState.createFromText(
           state.documents[action.documentId].xliff.segments[action.segmentId].target
-          + state.documents[action.documentId].xliff.segments[action.segmentId + 1].target,
+          + ' ' + state.documents[action.documentId].xliff.segments[action.segmentId + 1].target,
         )),
         documents: {
           ...state.documents,
