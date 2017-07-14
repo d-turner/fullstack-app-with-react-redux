@@ -15,7 +15,15 @@ class Modal extends React.Component {
       editorState,
     };
     this.handleChange = state => this.setState({ editorState: state });
+    this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.splitSegment = () => this._splitSegment();
+  }
+
+  _handleKeyCommand(command) {
+    console.log(command);
+    if (command === 'split-block') {
+      this._splitSegment();
+    }
   }
 
   _splitSegment() {
@@ -29,6 +37,8 @@ class Modal extends React.Component {
     if (this.props.renderModal) {
       return (
         <ReactModal
+          role="Dialog"
+          tabIndex={0}
           isOpen={this.props.renderModal}
           contentLabel="Split segment at cursor index on source"
           overlayClassName={styles.overlay}
@@ -37,8 +47,11 @@ class Modal extends React.Component {
             <div>Split Segment {this.props.segmentId}</div>
             <div className={EditorStyles['RichEditor-editor']}>
               <Editor
+                role="Dialog"
+                tabIndex={0}
                 editorState={this.state.editorState}
                 onChange={this.handleChange}
+                handleKeyCommand={this.handleKeyCommand}
                 ref={(ref) => { this.Editor = ref; }}
               />
             </div>
