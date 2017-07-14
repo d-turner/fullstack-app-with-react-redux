@@ -7,16 +7,16 @@ class ButtonList extends React.Component {
   render() {
     return (
       <div className={`id ${styles.buttonList} ${styles.fixedPosition}`}>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
-          data-tip data-for="Comment"
+        <button className={`${styles.clearButton} ${styles.buttonMargin} ${styles.button}`}
+          data-tip data-for="CommentSide"
           aria-label="Add a Comment"
           onClick={() => this.props.renderComment()}>
           <i className={`small material-icons ${styles.fixFont}`}>chat_bubble</i>
         </button>
-        <ReactToolTip place="left" id="Comment" effect="solid">
+        <ReactToolTip place="left" id="CommentSide" effect="solid">
           <span>Comments</span>
         </ReactToolTip>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
+        <button className={`${styles.clearButton} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Lexicon"
           onClick={() => this.props.renderLexicon()}
           aria-label="Open Lexicon Sidebar">
@@ -25,7 +25,7 @@ class ButtonList extends React.Component {
         <ReactToolTip place="left" id="Lexicon" effect="solid">
           <span>Lexicon</span>
         </ReactToolTip>
-        <button className={`${styles.clearButton} ${styles.buttonMargin}`}
+        <button className={`${styles.clearButton} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Search"
           onClick={() => this.props.renderSearch()}
           aria-label="Open Find and Replace ">
