@@ -5,14 +5,34 @@ import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
+  dragStartHandler(event) {
+    event.dataTransfer.setData("text/plain", 'Hello');
+    console.log(event);
+  }
+
+  dragEndHandler(event) {
+    event.preventDefault();
+    console.log(event);
+  }
+
+  allowDrop(event) {
+    event.preventDefault();
+   // console.log('Drop: ', event);
+  }
+
   renderTile(word, index) {
     return (
-      <span className={styles.format} draggable>{word}</span>
+      <span className={styles.format}
+        draggable
+        onDragStart={event => this.dragStartHandler(event)}
+        onDragEnd={event => this.dragEndHandler(event)}>{word}</span>
     );
   }
 
   dropHandler(event) {
-    console.log(event);
+    event.preventDefault();
+    console.log('drop:', event);
+    console.log('drop:', event.target);
   }
 
   renderEditor(selected) {
@@ -20,6 +40,7 @@ class Segment extends React.Component {
       return (
         <div
           onDrop={event => this.dropHandler(event)}
+          onDragOver={event => this.allowDrop(event)}
           style={{ marginTop: '10px' }}
           className={styles.editorWrapper}
           onClick={this.props.focus}
