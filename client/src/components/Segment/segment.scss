@@ -7,9 +7,16 @@
   border: 1px solid $borderColor;
 }
 
+.format1 {
+  margin: 20px;
+  display: inline-block;
+};
+
 .format {
-  flex-flow: column nowrap;
-  width: 100%;
+  margin: 2px;
+  padding: 4px;
+  display: inline-block;
+  background-color: $background;
 };
 
 .selected {
