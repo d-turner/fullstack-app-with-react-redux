@@ -7,10 +7,12 @@ const initialState = {
   lexicon: '',
   selectedSegment: 0,
   editorState: '',
-  findReplace: {
+  find: {
     isFinding: false,
     render: false,
     word: '',
+    index: 0,
+    offset: 0,
   },
 };
 
@@ -172,10 +174,11 @@ const DocumentReducer = function(state = initialState, action) {
         return state;
       }
       return Object.assign({}, state, {
-        editorState: EditorState.createWithContent(ContentState.createFromText(
+        editorState: action.segmentId === state.selectedSegment ?
+        EditorState.createWithContent(ContentState.createFromText(
           state.documents[action.documentId].xliff.segments[action.segmentId].target
           + ' ' + state.documents[action.documentId].xliff.segments[action.segmentId + 1].target,
-        )),
+        )) : state.editorState,
         documents: {
           ...state.documents,
           [action.documentId]: mergeSegment(state.documents[action.documentId], action),
