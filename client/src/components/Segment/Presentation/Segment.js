@@ -5,10 +5,21 @@ import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
+  renderTile(word, index) {
+    return (
+      <span className={styles.format} draggable>{word}</span>
+    );
+  }
+
+  dropHandler(event) {
+    console.log(event);
+  }
+
   renderEditor(selected) {
     if (selected) {
       return (
         <div
+          onDrop={event => this.dropHandler(event)}
           style={{ marginTop: '10px' }}
           className={styles.editorWrapper}
           onClick={this.props.focus}
@@ -40,10 +51,13 @@ class Segment extends React.Component {
       selected = true;
     }
     return (
-      <div className={`${styles.format}`}>
+      <div>
         <div className={selected ? `${styles.wrapper} ${styles.selected}` : `${styles.wrapper}`}>
           <h6>#{this.props.segmentId} Source</h6>
           {this.props.segment.source}
+          <div className={styles.format1}>
+            {this.props.segment.source.split(' ').map((word, index) => this.renderTile(word, index))}
+          </div>
         </div>
         {this.renderEditor(selected)}
       </div>
