@@ -30,3 +30,26 @@
   border-style: solid;
   border-color: $borderHover;
 }
+
+#checkboxes input[type=checkbox]:checked + .whatever{
+    background-color: green;
+}
+
+.whatever{
+    background-color: red;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+
+.check {
+    display: none;
+}
+
+.check:checked + .format{
+    background-color: $orange;
+}
+
+.inlineBlock {
+  display: inline-block;
+}

@@ -6,8 +6,22 @@ import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
   dragStartHandler(event) {
-    event.dataTransfer.setData("text/plain", 'Hello');
-    console.log(event);
+    let data = '';
+    const wrapper = document.getElementById('wordTiles1');
+    const tiles = wrapper.getElementsByTagName('div');
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i];
+      const input = tile.getElementsByTagName('input')[0];
+      const label = tile.getElementsByTagName('label')[0];
+      const span = label.getElementsByTagName('span')[0];
+      if (input.checked) {
+        data += span.innerText + ' ';
+      }
+    }
+    if (data === '') {
+      data = event.target.innerText;
+    }
+    event.dataTransfer.setData('text/plain', data);
   }
 
   dragEndHandler(event) {
@@ -22,10 +36,17 @@ class Segment extends React.Component {
 
   renderTile(word, index) {
     return (
-      <span className={styles.format}
-        draggable
-        onDragStart={event => this.dragStartHandler(event)}
-        onDragEnd={event => this.dragEndHandler(event)}>{word}</span>
+      <div className={styles.inlineBlock}>
+        <input aria-label="select word for dragging" type="checkbox" name="rGroup" value="1" id={`drag${word}${index}`} className={styles.check} />
+        <label className={styles.format} htmlFor={`drag${word}${index}`} >
+          <span
+            draggable
+            onDragStart={event => this.dragStartHandler(event)}
+            onDragEnd={event => this.dragEndHandler(event)}>
+            {word}
+          </span>
+        </label>
+      </div>
     );
   }
 
@@ -76,7 +97,7 @@ class Segment extends React.Component {
         <div className={selected ? `${styles.wrapper} ${styles.selected}` : `${styles.wrapper}`}>
           <h6>#{this.props.segmentId} Source</h6>
           {this.props.segment.source}
-          <div className={styles.format1}>
+          <div className={styles.format1} id={"wordTiles" + this.props.segmentId}>
             {this.props.segment.source.split(' ').map((word, index) => this.renderTile(word, index))}
           </div>
         </div>
