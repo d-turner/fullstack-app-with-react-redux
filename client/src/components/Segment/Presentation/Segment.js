@@ -44,6 +44,7 @@ class Segment extends React.Component {
             onDragStart={event => this.dragStartHandler(event)}
             onDragEnd={event => this.dragEndHandler(event)}
             onTouchStart={event => this.dragStartHandler(event)}
+            onTouchMove={event => this.dragEndHandler(event)}
             onTouchEnd={event => this.dragEndHandler(event)}>
             {word}
           </span>
