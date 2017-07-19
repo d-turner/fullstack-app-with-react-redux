@@ -42,7 +42,9 @@ class Segment extends React.Component {
           <span
             draggable
             onDragStart={event => this.dragStartHandler(event)}
-            onDragEnd={event => this.dragEndHandler(event)}>
+            onDragEnd={event => this.dragEndHandler(event)}
+            onTouchStart={event => this.dragStartHandler(event)}
+            onTouchEnd={event => this.dragEndHandler(event)}>
             {word}
           </span>
         </label>
