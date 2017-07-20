@@ -47,8 +47,21 @@ function collect(connect, monitor) {
 }
 
 class SourceTiles extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMound() {
+    const { connectDragPreview } = this.props;
+    return connectDragPreview(
+      <div style={{
+        width: '60px',
+        height: '58px',
+      }} />,
+    );
+  }
+
   render() {
-    const { connectDragSource, connectDragPreview, isDragging, source, index } = this.props;
+    const { connectDragSource, isDragging, source, index } = this.props;
     return connectDragSource(
       <div className={styles.inlineBlock}>
         <input aria-label="select word for dragging" type="checkbox" id={`drag${source}${index}`} className={styles.check} />
@@ -57,10 +70,6 @@ class SourceTiles extends React.Component {
             opacity: isDragging ? 0.5 : 1,
             cursor: 'move' }}>
           <span>{source}</span>
-          {connectDragPreview(<div style={{
-            width: '0px',
-            height: '0px',
-          }} />)}
         </label>
       </div>,
     );
