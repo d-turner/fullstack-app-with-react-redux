@@ -14,7 +14,7 @@
 
 .format {
   margin: 2px;
-  padding: 4px;
+  padding: 8px;
   display: inline-block;
   background-color: $background;
 };
@@ -52,4 +52,8 @@
 
 .inlineBlock {
   display: inline-block;
+}
+
+.inserted {
+  background-color: $orange;
 }
