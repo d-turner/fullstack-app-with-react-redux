@@ -41,6 +41,11 @@ const tileTarget = {
     // Time to actually perform the action
     props.moveTile(dragIndex, hoverIndex, item.word, isBefore);
   },
+
+  drop(props, monitor, component) {
+    console.log('Dropping: ', props);
+    console.log('Sending update....');
+  },
 };
 
 function collect(connect, monitor) {
