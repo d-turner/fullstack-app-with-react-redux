@@ -17,6 +17,7 @@ class SegmentTiles extends React.Component {
     super(props);
     this.state = { placeholder: false };
     this.moveTile = this.moveTile.bind(this);
+    this.endDrag = this.endDrag.bind(this);
   }
   moveTile(dragIndex, hoverIndex, word, isBefore) {
     this.setState({
@@ -27,6 +28,13 @@ class SegmentTiles extends React.Component {
     });
     // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
   }
+  endDrag(word) {
+    console.log('Firing...');
+    store.dispatch(
+      actions.insertWord(this.state.hoverIndex, this.state.word, this.state.isBefore, this.props.segmentId),
+    );
+    this.setState({ placeholder: false });
+  }
 
   render() {
     const { segment } = this.props;
@@ -36,7 +44,7 @@ class SegmentTiles extends React.Component {
           <h6>#{this.props.segmentId} Source</h6>
           {segment.source.split(' ').map((word, index) => {
             if (word === '') return <div key={word + index} />;
-            return <SourceTiles source={word} index={index} moveTile={this.moveTile} key={word + index} />;
+            return <SourceTiles source={word} index={index} moveTile={this.moveTile} key={word + index} endDrag={this.endDrag} />;
           })}
         </div>
         <div className={`${styles.wrapper} ${styles.selected}`} style={{ marginTop: '4px' }}>

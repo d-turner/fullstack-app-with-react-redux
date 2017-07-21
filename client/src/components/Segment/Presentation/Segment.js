@@ -5,7 +5,6 @@ import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 
 class Segment extends React.Component {
-
   renderEditor(selected) {
     if (selected) {
       return (
