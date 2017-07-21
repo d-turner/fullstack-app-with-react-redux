@@ -32,6 +32,12 @@ const tileSource = {
     return item;
   },
 
+  endDrag(props, monitor, component) {
+    console.log('End Dragging: ', props);
+    console.log('Sending update....');
+    props.endDrag(props.source);
+  },
+
 };
 
 function collect(connect, monitor) {
@@ -47,19 +53,6 @@ function collect(connect, monitor) {
 }
 
 class SourceTiles extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMound() {
-    const { connectDragPreview } = this.props;
-    return connectDragPreview(
-      <div style={{
-        width: '60px',
-        height: '58px',
-      }} />,
-    );
-  }
-
   render() {
     const { connectDragSource, isDragging, source, index } = this.props;
     return connectDragSource(
