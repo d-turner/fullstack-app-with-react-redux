@@ -130,6 +130,30 @@ const mergeSegment = function(state, action) {
   };
 };
 
+const insertWord = function(state, action) {
+  const segments = state.xliff.segments;
+  const newTarget = segments[action.segmentId].target.split(' ');
+  let word = action.word.toLowerCase();
+  if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
+    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+  }
+  if (action.isBefore) {
+    newTarget[action.index] = newTarget[action.index].toLowerCase();
+    newTarget.splice(action.index, 0, word);
+  } else {
+    newTarget.splice(action.index + 1, 0, word);
+  }
+  segments[action.segmentId].target = newTarget.join(' ');
+  return state;
+  // return {
+  //   ...state,
+  //   xliff: {
+  //     ...state.xliff,
+  //     segments,
+  //   },
+  // };
+};
+
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
@@ -191,6 +215,15 @@ const DocumentReducer = function(state = initialState, action) {
         selectedSegment: action.segmentId,
         editorState: EditorState.createWithContent(ContentState.createFromText(text)),
       };
+    case actions.INSERT_WORD:
+      const updatedState = insertWord(state.documents['123457'], action);
+      return Object.assign({}, state, {
+        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target)),
+        documents: {
+          ...state.documents,
+          ['123457']: updatedState,
+        },
+      });
     // extracting all FindReplace actions to separate file
     case actions.FIND:
     case actions.FIND_NEXT:
