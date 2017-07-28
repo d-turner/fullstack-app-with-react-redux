@@ -62,7 +62,9 @@ class Segment extends React.Component {
       return (
         <SegmentTiles
           segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
-          segmentId={this.props.segmentId} />
+          segmentId={this.props.segmentId}
+          documentId={this.props.documentId}
+        />
       );
     }
     return (
