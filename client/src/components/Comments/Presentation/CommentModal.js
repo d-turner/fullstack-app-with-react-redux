@@ -9,6 +9,7 @@ export default class CommentModal extends React.Component {
   addComment(event, index) {
     event.preventDefault();
     const comment = event.target[0].value;
+    console.warn('Need to insert actual username here');
     const user = 'Daniel Turner';
     const time = Date.now();
     store.dispatch(addComment(this.props.documentId, index, comment, user, time));

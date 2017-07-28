@@ -5,7 +5,7 @@ import Comment from '../Presentation/Comment';
 import styles from '../comment.scss';
 
 class CommentList extends React.Component {
-  renderComment(comment, segmentId, index) {
+  static renderComment(comment, segmentId, index) {
     return (
       <div className={styles.commentBorder} key={comment.time + comment.id} value={comment.time + comment.id}>
         <Comment comment={comment} segmentId={segmentId} index={index} />
@@ -14,7 +14,8 @@ class CommentList extends React.Component {
   }
 
   render() {
-    if (Object.keys(this.props.comments[this.props.documentId]).length === 0) {
+    const { comments, documentId } = this.props;
+    if (Object.keys(comments[documentId]).length === 0) {
       return (
         <div>
           <h4>No Comments available</h4>
@@ -23,16 +24,18 @@ class CommentList extends React.Component {
     }
     return (
       <div>
-        {Object.keys(this.props.comments[this.props.documentId]).map((segmentId) => {
+        {Object.keys(comments[documentId]).map((segmentId) => {
           return (
             <div className={`flex five ${styles.commentGroup}`} key={segmentId}>
               <div className={styles.fixWidth}>
                 <h3>#{segmentId}</h3>
               </div>
               <div className="four-fifth">
-                {(this.props.comments[this.props.documentId][segmentId]).map((comment, index) => {
-                  return this.renderComment(
-                    this.props.comments[this.props.documentId][segmentId][index], segmentId, index,
+                {(comments[documentId][segmentId]).map((comment, index) => {
+                  return CommentList.renderComment(
+                    comments[documentId][segmentId][index],
+                    segmentId,
+                    index,
                   );
                 })}
               </div>

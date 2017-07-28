@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import Sidebar from '../../SidebarLeft';
 import DocumentTable from '../Presentation/DocumentTable';
 
-import styles from '../documents.scss';
+// import styles from '../documents.scss';
+import main from '../../../constants/main.scss';
 
 class DocumentContainer extends React.Component {
   componentDidMount() {
@@ -17,8 +18,8 @@ class DocumentContainer extends React.Component {
     return (
       <div className="flex five">
         <Sidebar />
-        <div className={`four-fifth ${styles.clearPaddingBottom} ${styles.paddingInlineWithNavRight}`}>
 
+        <div className={`four-fifth ${main.clearPaddingBottom} ${main.paddingInlineWithNavRight}`}>
           <DocumentTable documents={this.props.documents} />
         </div>
       </div>

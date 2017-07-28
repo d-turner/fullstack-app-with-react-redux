@@ -10,14 +10,13 @@ export function addComment(documentId, segmentId, comment, author) {
   };
 }
 
-export function editComment(documentId, segmentId, comment, author, time) {
+export function editComment(documentId, segmentId, comment, author) {
   return {
     type: actions.EDIT_COMMENT,
     documentId,
     segmentId,
     comment,
     author,
-    time,
   };
 }
 
