@@ -2,59 +2,12 @@ import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 import styles from '../../../constants/main.scss';
 
-function replaceUsingRegex(segment, text, newText, wordIndex) {
+function replaceUsingRegex(target, text, newText, offset) {
   const re = new RegExp(text, 'g');
-  const newTarget = segment.target.replace(re, (match, i) => {
-    console.log(i);
-    console.log(wordIndex);
-    return (i === wordIndex) ? newText : match;
+  const newTarget = target.replace(re, (match, i) => {
+    return (i === offset) ? newText : match;
   });
   return newTarget;
-}
-
-function replaceSegmentTarget(state, action) {
-  const segments = state.documents[action.location.documentId].xliff.segments;
-  const segment = segments[state.findReplace.currentSegment];
-  const newTarget = replaceUsingRegex(segment, action.text, action.newText, state.findReplace.wordIndex);
-  const newSegment = Object.assign({}, segment, {
-    target: newTarget,
-  });
-
-  return [
-    ...segments.slice(0, state.findReplace.currentSegment),
-    newSegment,
-    ...segments.slice(state.findReplace.currentSegment + 1),
-  ];
-}
-
-function replaceText(state, action) {
-  console.log(state);
-  console.log(action);
-  if (state.findReplace.currentSegment === state.selectedSegment) {
-    const newTarget = replaceUsingRegex(
-      state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment],
-      action.text,
-      action.newText,
-      state.findReplace.wordIndex,
-    );
-    return {
-      ...state,
-      editorState: EditorState.createWithContent(ContentState.createFromText(newTarget)),
-    };
-  }
-  return {
-    ...state,
-    documents: {
-      ...state.documents,
-      [action.location.documentId]: {
-        ...state.documents[action.location.documentId],
-        xliff: {
-          ...state.documents[action.location.documentId].xliff,
-          segments: replaceSegmentTarget(state, action),
-        },
-      },
-    },
-  };
 }
 
 function removeHighlight(segment) {
@@ -65,174 +18,121 @@ function removeHighlight(segment) {
   return newSegment;
 }
 
-function addHighlight(segment, text, index) {
-  const highlightAdded = segment.target.replace(
-    text,
-    `<span id='findreplace' data-location=${index} class=${styles.highlight}>${text}</span>`,
-  );
-  const newSegment = Object.assign({}, segment, {
-    target: highlightAdded,
-  });
-  return newSegment;
-}
+function replaceText(state, action) {
+  // first remove the old style if present (if not present text does not exist)
+  const segments = state.documents[action.documentId].xliff.segments;
+  const oldSegment = removeHighlight(segments[state.find.index]);
 
-function updateNext(state, action) {
-  const segments = state.documents[action.location.documentId].xliff.segments;
-  // TODO: remove current style if needed
-  // TODO: Update current segment to next one found
-  // 1. remove current style on the current location
-  // 2. enter find next loop
-  // 3. Add style if found
-  // 4. update the position of the current segment/cursor
-  const oldIndex = removeHighlight(segments[state.findReplace.currentSegment]);
-
-  let notFound = true;  // while another occurrence
-  let notLooped = true; // and not looped back around
-  let index = state.findReplace.currentSegment + 1; // starting point is the next segment
-  while (notFound && notLooped) {
-    if (index >= segments.length) index = 0;
-    if (index === state.findReplace.currentSegment) {
-      notLooped = false;
+  if (state.selectedSegment === state.find.index) {
+    // the current target is selected / in editor mode
+  } else {
+    // the current target is plain text / not editor mode
+    // replace the text with the new text
+    let firstWord = false;
+    if (state.find.offset === 0) {
+      firstWord = true;
     }
-    if (segments[index].target.includes(action.text)) {
-      const newIndex = addHighlight(segments[index], action.text, index);
-      const wordIndex = newIndex.target.indexOf(action.text);
-      notFound = false;
-      // this does not take into account if the text appears twice in the same segment
-      if (index < state.findReplace.currentSegment) {
-        // return order newIndex, oldIndex
-        return {
-          ...state,
-          documents: {
-            ...state.documents,
-            [action.location.documentId]: {
-              ...state.documents[action.location.documentId],
-              xliff: {
-                ...state.documents[action.location.documentId].xliff,
-                segments: [
-                  ...segments.slice(0, index),
-                  newIndex,
-                  ...segments.slice(index + 1, action.location.segmentId),
-                  oldIndex,
-                  ...segments.slice(action.location.segmentId + 1),
-                ],
-              },
-            },
-          },
-          findReplace: {
-            ...state.findReplace,
-            currentSegment: index,
-            wordIndex,
-          },
-        };
-      }
-      if (index > state.findReplace.currentSegment) {
-        // return order oldIndex, newIndex
-        return {
-          ...state,
-          documents: {
-            ...state.documents,
-            [action.location.documentId]: {
-              ...state.documents[action.location.documentId],
-              xliff: {
-                ...state.documents[action.location.documentId].xliff,
-                segments: [
-                  ...segments.slice(0, action.location.segmentId),
-                  oldIndex,
-                  ...segments.slice(action.location.segmentId + 1, index),
-                  newIndex,
-                  ...segments.slice(index + 1),
-                ],
-              },
-            },
-          },
-          findReplace: {
-            ...state.findReplace,
-            currentSegment: index,
-            wordIndex,
-          },
-        };
-      }
-      // otherwise they are the same and you can just return a single
-      return {
-        ...state,
-        documents: {
-          ...state.documents,
-          [action.location.documentId]: {
-            ...state.documents[action.location.documentId],
-            xliff: {
-              ...state.documents[action.location.documentId].xliff,
-              segments: [
-                ...segments.slice(0, index),
-                newIndex,
-                ...segments.slice(index + 1),
-              ],
-            },
-          },
-        },
-        findReplace: {
-          ...state.findReplace,
-          currentSegment: index,
-          wordIndex,
-        },
-      };
-    }
-    index++;
-  }
-  return state;
-}
-
-const findNext = (state, action) => {
-  const newIndex = state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment].target
-  .indexOf(action.text, state.findReplace.wordIndex + 1);
-  if (newIndex !== -1) {
-    // next occurrence is in the same segment
-    const newText = `<span id='findreplace' data-location=${state.findReplace.currentSegment} class=${styles.highlight}>${action.text}</span>`;
-    const segment = state.documents[action.location.documentId].xliff.segments[state.findReplace.currentSegment];
-    const newTarget = replaceUsingRegex(segment, action.text, newText, newIndex);
-    const newSeg = Object.assign({}, segment, {
-      target: newTarget.replace(newText, action.text),
+    const newTarget = replaceUsingRegex(oldSegment.target, action.text, action.newText, firstWord ? 0 : state.find.offset - 1);
+    const newSeg = Object.assign({}, oldSegment, {
+      target: newTarget,
     });
-    const updatedIndex = newSeg.target.indexOf(action.text, state.findReplace.wordIndex);
     return {
       ...state,
       documents: {
         ...state.documents,
-        [action.location.documentId]: {
-          ...state.documents[action.location.documentId],
+        [action.documentId]: {
+          ...state.documents[action.documentId],
           xliff: {
-            ...state.documents[action.location.documentId].xliff,
+            ...state.documents[action.documentId].xliff,
             segments: [
-              ...state.documents[action.location.documentId].xliff.segments.slice(0, state.findReplace.currentSegment),
+              ...state.documents[action.documentId].xliff.segments.slice(0, state.find.index),
               newSeg,
-              ...state.documents[action.location.documentId].xliff.segments.slice(state.findReplace.currentSegment + 1),
+              ...state.documents[action.documentId].xliff.segments.slice(state.find.index + 1),
             ],
           },
         },
       },
-      findReplace: {
-        ...state.findReplace,
-        wordIndex: updatedIndex,
-      },
     };
   }
-  // find the occurrence in the next segment
-  // TODO: send the correct state
-  return updateNext(state, action);
+}
+
+const findNext = (state, action) => {
+  // first remove the old style if present
+  const segments = state.documents[action.documentId].xliff.segments;
+  const oldSegment = removeHighlight(segments[state.find.index]);
+
+  const currentSegment = segments[state.find.index];
+  const currentTarget = segments[state.find.index].target;
+
+  const textPresent = oldSegment.target.indexOf(action.text, state.find.offset);
+
+  if (textPresent !== -1) {
+    // text is found in the current target
+    if (state.selectedSegment === state.find.index) {
+      // the current target is selected / in editor mode
+    } else {
+      // the current target is plain text / not editor mode
+      // update the offset (textPresent)
+      // set the index (state.find.index)
+      // add style to the plain text
+      const newText = `<span id='find' class=${styles.highlight}>${action.text}</span>`;
+      const newTarget = replaceUsingRegex(oldSegment.target, action.text, newText, textPresent);
+      console.log(newTarget);
+      const newSeg = Object.assign({}, currentSegment, {
+        target: newTarget,
+      });
+      console.log(newSeg);
+      return {
+        ...state,
+        documents: {
+          ...state.documents,
+          [action.documentId]: {
+            ...state.documents[action.documentId],
+            xliff: {
+              ...state.documents[action.documentId].xliff,
+              segments: [
+                ...state.documents[action.documentId].xliff.segments.slice(0, state.find.index),
+                newSeg,
+                ...state.documents[action.documentId].xliff.segments.slice(state.find.index + 1),
+              ],
+            },
+          },
+        },
+        find: {
+          ...state.find,
+          offset: textPresent + 1,
+        },
+      };
+    }
+  } else {
+    // text was not found in this segment and need to update index and search again
+    const newState = Object.assign({}, state, {
+      documents: {
+        ...state.documents,
+        [action.documentId]: {
+          ...state.documents[action.documentId],
+          xliff: {
+            ...state.documents[action.documentId].xliff,
+            segments: [
+              ...state.documents[action.documentId].xliff.segments.slice(0, state.find.index),
+              oldSegment,
+              ...state.documents[action.documentId].xliff.segments.slice(state.find.index + 1),
+            ],
+          },
+        },
+      },
+      find: {
+        ...state.find,
+        index: state.find.index + 1,
+        offset: 0,
+      },
+    });
+    return findNext(newState, action);
+  }
 };
 
 const FindReplaceReducer = function(state, action) {
   switch (action.type) {
-    case actions.FIND:
-      return Object.assign({}, state, {
-        findReplace: {
-          ...state.findReplace,
-          render: true,
-          word: action.word,
-          currentSegment: state.selectedSegment,
-          wordIndex: action.index,
-        },
-      });
     case actions.FIND_NEXT:
       return findNext(state, action);
     case actions.FIND_PREV:
