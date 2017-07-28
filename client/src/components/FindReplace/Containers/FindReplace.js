@@ -1,22 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styles from '../../../constants/main.scss';
+
 class FindReplace extends React.Component {
   constructor(props) {
     super(props);
 
     this.findNext = this.findNext.bind(this);
-    this.replaceText = this.replaceText.bind(this);
+    this.replaceText = this.replace.bind(this);
     this.replaceAll = this.replaceAll.bind(this);
   }
 
-  findNext() {
-    if (this.props.findReplace.word !== '') {
+  findNext(event) {
+    event.preventDefault();
+    const find = this.findText.value;
+    if (find !== '') {
       this.props.findNext(
         this.props.documentId,
-        this.props.findReplace.currentSegment,
-        this.props.findReplace.wordIndex,
-        this.props.findReplace.word,
+        find,
       );
       setTimeout(() => {
         const location = document.getElementById('findreplace');
@@ -25,13 +27,13 @@ class FindReplace extends React.Component {
     }
   }
 
-  replaceText() {
+  replace(event) {
+    event.preventDefault();
+    const findText = this.findText.value;
     const newText = this.replaceText.value;
-    this.props.replaceText(
+    this.props.replace(
       this.props.documentId,
-      this.props.findReplace.currentSegment,
-      this.props.findReplace.wordIndex,
-      this.props.findReplace.word,
+      findText,
       newText,
     );
   }
@@ -45,12 +47,15 @@ class FindReplace extends React.Component {
 
   render() {
     return (
-      <div>
-        Find and Replace <br />
+      <div style={{ height: '100%' }}>
+        <h3 className={styles.clearMarginLeft}>Find and Replace</h3>
+        <h4>Find</h4>
+        <div><input type="text" ref={(ref) => { this.findText = ref; }} required /></div>
+        <h4>Replace</h4>
         <div><input type="text" ref={(ref) => { this.replaceText = ref; }} /></div>
-        <button onClick={this.findNext}>Next</button>
-        <button onClick={this.replaceText}>Replace</button>
-        <button onClick={this.replaceAll}>Replace All</button>
+        <button className={styles.smallMargin} onClick={event => this.findNext(event)}>Next</button>
+        <button className={styles.smallMargin} onClick={event => this.replace(event)}>Replace</button>
+        <button onClick={() => this.replaceAll()}>Replace All</button>
       </div>
     );
   }
@@ -59,8 +64,8 @@ class FindReplace extends React.Component {
 FindReplace.propTypes = {
   documentId: PropTypes.number.isRequired,
   findNext: PropTypes.func.isRequired,
-  findReplace: PropTypes.objectOf(PropTypes.any).isRequired,
-  replaceText: PropTypes.func.isRequired,
+  find: PropTypes.objectOf(PropTypes.any).isRequired,
+  replace: PropTypes.func.isRequired,
 };
 
 export default FindReplace;
