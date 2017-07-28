@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 
 import Loader from '../../Loader/Loader';
 import styles from '../documents.scss';
+import main from '../../../constants/main.scss';
 
 export default function Document(props) {
+  const { id, documentName } = props;
   return (
     <tr className={styles.tableBorder}>
       <td className={styles.tableRowHeight}>
@@ -21,7 +23,7 @@ export default function Document(props) {
       <td>
         <div>
           <div>
-            <Link to={`/documents/${props.id}`} className={styles.documentFilename}>{props.documentName}</Link>
+            <Link to={`/documents/${id}`} className={styles.documentFilename}>{documentName}</Link>
           </div>
         </div>
       </td>

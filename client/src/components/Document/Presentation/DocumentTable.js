@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Document from './Document';
-import styles from '../documents.scss';
+// import styles from '../documents.scss';
+import main from '../../../constants/main.scss';
 
 export default function DocumentTable(props) {
   const renderDocument = (doc, key) =>
     (<Document documentName={doc.name} document={doc} id={key} key={key} value={key} />);
 
   return (
-    <table id="documentList" className={styles.fullWidth}>
+    <table id="documentList" className={main.fullWidth}>
       <caption>
         <h3>Users Document List</h3>
       </caption>
@@ -48,3 +50,7 @@ export default function DocumentTable(props) {
     </table>
   );
 }
+
+DocumentTable.propTypes = {
+  documents: PropTypes.objectOf(PropTypes.any).isRequired,
+};
