@@ -44,6 +44,3 @@ export function updateCurrentLocation(location) {
     location,
   };
 }
-
-// function should be called when it gets unmounted
-export function resetToInitial() {}

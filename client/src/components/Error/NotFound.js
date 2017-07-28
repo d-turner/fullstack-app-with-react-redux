@@ -10,4 +10,4 @@ const NotFound = function() {
   );
 };
 
-export { NotFound };
+export default NotFound;

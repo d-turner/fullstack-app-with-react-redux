@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 
 import Loader from '../../Loader/Loader';
 import styles from '../documents.scss';
-import main from '../../../constants/main.scss';
 
 export default function Document(props) {
   const { id, documentName } = props;
+  if (props.document.error) {
+    return null;
+  }
   return (
     <tr className={styles.tableBorder}>
       <td className={styles.tableRowHeight}>

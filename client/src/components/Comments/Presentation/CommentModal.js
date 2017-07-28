@@ -9,6 +9,7 @@ export default class CommentModal extends React.Component {
   addComment(event, index) {
     event.preventDefault();
     const comment = event.target[0].value;
+    // TODO: ADD USER NAME HERE
     console.warn('Need to insert actual username here');
     const user = 'Daniel Turner';
     const time = Date.now();
@@ -36,7 +37,7 @@ export default class CommentModal extends React.Component {
         </div>
       );
     }
-    return <div />;
+    return null;
   }
 }
 

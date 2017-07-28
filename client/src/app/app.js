@@ -1,6 +1,6 @@
 // npm packages
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 // common imports (also available in react-router-native)
 // react-router does not have BrowserRouter/HashRouter/MemoryRouter
 // need to look at react-router-native for mobile routing
@@ -58,7 +58,7 @@ export default (
             <Route exact path="/documents/:documentId" component={Segments} />
             <Route exact path="/documents/:documentId/segments" component={Segments} />
             <Route exact path="/documents/:documentId/segments/:segmentId" component={Segment} />
-            <Route component={NotFound} />
+            <Route path="*" component={NotFound} />
           </Switch>
         </section>
       </main>

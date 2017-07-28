@@ -25,6 +25,8 @@ function replaceText(state, action) {
 
   if (state.selectedSegment === state.find.index) {
     // the current target is selected / in editor mode
+    // TODO: NEED to FIX WHAT IT DOES HERE
+    return state;
   } else {
     // the current target is plain text / not editor mode
     // replace the text with the new text
@@ -70,6 +72,8 @@ const findNext = (state, action) => {
     // text is found in the current target
     if (state.selectedSegment === state.find.index) {
       // the current target is selected / in editor mode
+      // TODO: NEED to FIX WHAT IT DOES HERE
+      return state;
     } else {
       // the current target is plain text / not editor mode
       // update the offset (textPresent)

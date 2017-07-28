@@ -5,6 +5,7 @@ import AddProject from './AddProject';
 import SideContent from '../Presentation/SideContent';
 
 import styles from '../projects.scss';
+import main from '../../../constants/main.scss';
 
 class ProjectContainer extends React.Component {
   constructor(props) {
@@ -24,14 +25,14 @@ class ProjectContainer extends React.Component {
 
   render() {
     return (
-      <div className={`flex five ${styles.wrapper}`} >
+      <div className={`flex five ${main.wrapper}`} >
         <aside className={`fifth ${styles.sidebar}`} >
           <SideContent addProject={this.addProject} />
         </aside>
         <div className={`four-fifth flex four ${styles.projects}`}>
           {this.state.addProject ?
             <AddProject cancelAdd={this.cancelAdd} {...this.props} /> :
-            ''
+            null
           }
           <article className="half">
             <ProjectList {...this.props} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 
 import SegmentList from './SegmentList';
 import Sidebar from '../../Sidebar/Containers/Sidebar';
@@ -28,13 +29,19 @@ class SegmentContainer extends React.Component {
   }
 
   render() {
+    const { documents, editorState } = this.props;
+    if (documents[this.state.id] && documents[this.state.id].error) {
+      return (
+        <Redirect to="/404" />
+      );
+    }
     return (
       <div className="flex four five-900">
-        {(this.props.documents[this.state.id] && !this.props.documents[this.state.id].isFetching) ? (
+        {(documents[this.state.id] && !documents[this.state.id].isFetching) ? (
           <SegmentList
-            segments={this.props.documents[this.state.id].xliff.segments}
+            segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
-            editorState={this.props.editorState}
+            editorState={editorState}
             renderComment={this.renderComment}
             {...this.props} />
         ) : (<div className={styles.setPadding}><Loader /></div>)}

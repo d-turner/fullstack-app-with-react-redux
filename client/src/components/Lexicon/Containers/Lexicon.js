@@ -23,9 +23,11 @@ function findFirstGloss(lang, array) {
 class Lexicon extends React.Component {
   constructor(props) {
     super(props);
-    const sourceLang = props.documents[props.documentId].xliff.sourceLang;
-    const targetLang = props.documents[props.documentId].xliff.targetLang;
+    const { documents, documentId } = props;
+    const sourceLang = documents[documentId].xliff.sourceLang;
+    const targetLang = documents[documentId].xliff.targetLang;
     this.parseLangs(sourceLang, targetLang);
+
     this.onSubmit = this.onSubmit.bind(this);
     this.lookup = this.lookup.bind(this);
     this.renderSpinner = this.renderSpinner.bind(this);

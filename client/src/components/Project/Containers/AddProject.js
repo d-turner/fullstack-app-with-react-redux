@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
 
 import styles from '../projects.scss';
+import main from '../../../constants/main.scss';
 
 class AddProject extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class AddProject extends React.Component {
     const author = this.author.value;
     this.props.addProject(id, title, description, author);
     this.form.reset();
-    console.warn("Need to connect this to the backend and add a on success callback");
+    console.warn('Need to connect this to the backend and add a on success callback');
     this.props.cancelAdd();
   }
 
@@ -42,7 +43,7 @@ class AddProject extends React.Component {
           </label>
           <label htmlFor="desc">
             <textarea
-              className={`${styles.parentWidth} ${styles.fixedWidth}`}
+              className={`${main.parentWidth} ${main.fixedWidth}`}
               ref={(d) => { this.description = d; }}
               id="desc"
               name="description"

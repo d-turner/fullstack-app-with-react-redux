@@ -30,7 +30,7 @@ export default class Home extends React.Component {
             <div className={styles.box1}>
               <img src="/assets/communication.png" alt="features logo" />
               <h4>Interactive / Adaptive Machine Translation</h4>
-              <p>Learns as it's used. Integrated translation memory and terminology using XLIFF and TBX standards</p>
+              <p>Learns as it&apos;s used. Integrated translation memory and terminology using XLIFF and TBX standards</p>
             </div>
             <div className={styles.box}>
               <img src="/assets/discussion.png" alt="usage logo" />
