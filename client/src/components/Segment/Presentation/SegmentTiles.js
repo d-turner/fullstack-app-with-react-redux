@@ -31,7 +31,7 @@ class SegmentTiles extends React.Component {
   endDrag(word) {
     console.log('Firing...');
     store.dispatch(
-      actions.insertWord(this.state.hoverIndex, this.state.word, this.state.isBefore, this.props.segmentId),
+      actions.insertWord(this.state.hoverIndex, this.state.word, this.state.isBefore, this.props.segmentId, this.props.documentId),
     );
     this.setState({ placeholder: false });
   }
@@ -77,6 +77,7 @@ class SegmentTiles extends React.Component {
 SegmentTiles.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
 };
 
 export default DragDropContext(TouchBackend({ enableMouseEvents: true }))(SegmentTiles);
