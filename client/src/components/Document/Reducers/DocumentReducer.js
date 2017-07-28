@@ -70,7 +70,8 @@ const updateTarget = function(state = blankDocument, action) {
       ...state.xliff,
       segments: state.xliff.segments.map((segment, index) => {
         if (index !== action.segmentId) { return segment; }
-        return { ...segment,
+        return {
+          ...segment,
           target: action.editorState.getCurrentContent().getPlainText(),
         };
       }),
@@ -78,29 +79,35 @@ const updateTarget = function(state = blankDocument, action) {
   };
 };
 
+function updateSegment(segment, newSource, newTarget) {
+  return Object.assign({}, segment, {
+    source: newSource,
+    target: newTarget,
+  });
+}
+
+function insertItem(array, index, item) {
+  return [
+    ...array.slice(0, index),
+    ...item,
+    ...array.slice(index + 1),
+  ];
+}
+
 const splitSegment = function(state, action) {
   console.warn(
     'Need to fix comment structure after splitting',
     'Need to fix xliff document structure',
   );
   const oldSegment = state.xliff.segments[action.segmentId];
-  const newSegment1 = Object.assign({}, oldSegment, {
-    source: oldSegment.source.substring(0, action.cursorPosition),
-    target: oldSegment.target,
-  });
-  const newSegment2 = Object.assign({}, oldSegment, {
-    source: oldSegment.source.substring(action.cursorPosition),
-    target: '',
-  });
-  const newSegments = [newSegment1, newSegment2];
-  const before = state.xliff.segments.slice(0, action.segmentId);
-  const after = state.xliff.segments.slice(action.segmentId + 1, state.xliff.segments.length);
-  const newArr = before.concat(newSegments, after);
+  const seg1 = updateSegment(oldSegment, oldSegment.source.substring(0, action.cursorPosition), oldSegment.target);
+  const seg2 = updateSegment(oldSegment, oldSegment.source.substring(action.cursorPosition), '');
+  const newSegments = [seg1, seg2];
   return {
     ...state,
     xliff: {
       ...state.xliff,
-      segments: newArr,
+      segments: insertItem(state.xliff.segments, action.segmentId, newSegments),
     },
   };
 };
@@ -116,10 +123,7 @@ const mergeSegment = function(state, action) {
   const newTarget = currentSegment.target.concat(' ', nextSegment.target);
   const before = state.xliff.segments.slice(0, action.segmentId);
   const after = state.xliff.segments.slice(action.segmentId + 2, state.xliff.segments.length);
-  const newSegment = Object.assign({}, currentSegment, {
-    source: newSource,
-    target: newTarget,
-  });
+  const newSegment = updateSegment(currentSegment, newSource, newTarget);
   const newArr = before.concat(newSegment, after);
   return {
     ...state,
@@ -143,15 +147,19 @@ const insertWord = function(state, action) {
   } else {
     newTarget.splice(action.index + 1, 0, word);
   }
-  segments[action.segmentId].target = newTarget.join(' ');
-  return state;
-  // return {
-  //   ...state,
-  //   xliff: {
-  //     ...state.xliff,
-  //     segments,
-  //   },
-  // };
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: segments.map((item, index) => {
+        if (index !== action.segmentId) return item;
+        return {
+          ...item,
+          target: newTarget.join(' '),
+        };
+      }),
+    },
+  };
 };
 
 const DocumentReducer = function(state = initialState, action) {
@@ -216,12 +224,12 @@ const DocumentReducer = function(state = initialState, action) {
         editorState: EditorState.createWithContent(ContentState.createFromText(text)),
       };
     case actions.INSERT_WORD:
-      const updatedState = insertWord(state.documents['123457'], action);
+      const updatedState = insertWord(state.documents[action.documentId], action);
       return Object.assign({}, state, {
         editorState: EditorState.createWithContent(ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target)),
         documents: {
           ...state.documents,
-          ['123457']: updatedState,
+          [action.documentId]: updatedState,
         },
       });
     // extracting all FindReplace actions to separate file
