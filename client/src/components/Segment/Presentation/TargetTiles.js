@@ -16,7 +16,7 @@ const tileTarget = {
     const dragIndex = item.index;
     const hoverIndex = props.index;
 
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    const hoverBoundingRect = component.card.getBoundingClientRect();
 
     // Get horizontal middle
     const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
@@ -62,7 +62,7 @@ function collect(connect, monitor) {
 class TargetTiles extends React.Component {
   render() {
     return this.props.connectDropTarget(
-      <div className={styles.format} >
+      <div className={styles.format} ref={(elm) => { this.card = elm; }}>
         {this.props.target}
       </div>,
     );

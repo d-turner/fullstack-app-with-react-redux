@@ -12,7 +12,7 @@ const tileSource = {
   beginDrag(props) {
     // Return the data describing the dragged item
     const item = { word: props.source, index: props.index };
-    
+
     let data = '';
     const wrapper = document.getElementById('wordTiles');
     const tiles = wrapper.childNodes;
