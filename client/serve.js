@@ -12,7 +12,7 @@ const app = express();
 
 // get the environment
 const isProduction = process.env.NODE_ENV === 'production';
-console.log('Produciton? ', isProduction);
+console.log('Production? ', isProduction);
 
 // setup hot reload
 config.plugins = [
