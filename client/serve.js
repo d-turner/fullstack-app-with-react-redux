@@ -7,7 +7,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const config = require('./webpack.config.js');
-const request = require('request');
 
 const app = express();
 
@@ -18,7 +17,7 @@ console.log('Produciton? ', isProduction);
 // setup hot reload
 config.plugins = [
   new webpack.DefinePlugin({
-    'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
+    'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) },
     API_HOST: JSON.stringify(process.env.API_HOST || 'http://localhost:8080'),
   }),
 ];
@@ -37,7 +36,7 @@ if (!isProduction) {
 }
 
 if (isProduction) {
-  const extractCSS = new ExtractTextPlugin('main.css');
+  const extractCSS = new ExtractTextPlugin({ filename: 'main.css', disable: false, allChunks: true });
   config.plugins.push(extractCSS);
   config.module.rules[0].use = ExtractTextPlugin.extract({
     fallback: 'style-loader',
@@ -47,16 +46,7 @@ if (isProduction) {
         modules: true,
         minimize: true,
       },
-    }],
-  });
-  config.module.rules[1].use = ExtractTextPlugin.extract({
-    fallback: 'style-loader',
-    use: [{
-      loader: 'css-loader',
-      options: {
-        minimize: true,
-      },
-    }],
+    }, 'sass-loader'],
   });
 
   config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
