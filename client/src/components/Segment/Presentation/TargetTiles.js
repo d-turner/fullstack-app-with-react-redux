@@ -62,7 +62,7 @@ function collect(connect, monitor) {
 class TargetTiles extends React.Component {
   render() {
     return this.props.connectDropTarget(
-      <div className={styles.format} ref={(elm) => { this.card = elm; }}>
+      <div className={`${styles.format} ${styles.noselect}`} ref={(elm) => { this.card = elm; }}>
         {this.props.target}
       </div>,
     );
