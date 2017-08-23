@@ -1,4 +1,6 @@
 import { EditorState, ContentState } from 'draft-js';
+import update from 'immutability-helper';
+
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 
@@ -134,19 +136,43 @@ const mergeSegment = function(state, action) {
   };
 };
 
+// const insertWord = function(state, action) {
+//   const segments = state.xliff.segments;
+//   const newTarget = segments[action.segmentId].target.split(' ');
+//   let word = action.word.toLowerCase();
+//   if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
+//     word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+//   }
+//   if (action.isBefore) {
+//     newTarget[action.index] = newTarget[action.index].toLowerCase();
+//     newTarget.splice(action.index, 0, word);
+//   } else {
+//     newTarget.splice(action.index + 1, 0, word);
+//   }
+//   return {
+//     ...state,
+//     xliff: {
+//       ...state.xliff,
+//       segments: segments.map((item, index) => {
+//         if (index !== action.segmentId) return item;
+//         return {
+//           ...item,
+//           target: newTarget.join(' '),
+//         };
+//       }),
+//     },
+//   };
+// };
+
 const insertWord = function(state, action) {
   const segments = state.xliff.segments;
   const newTarget = segments[action.segmentId].target.split(' ');
-  let word = action.word.toLowerCase();
-  if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
-    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-  }
-  if (action.isBefore) {
-    newTarget[action.index] = newTarget[action.index].toLowerCase();
-    newTarget.splice(action.index, 0, word);
-  } else {
-    newTarget.splice(action.index + 1, 0, word);
-  }
+  const newData = update(newTarget, {
+    $splice: [
+      [action.dragIndex, 1],
+      [action.hoverIndex, 0, action.word],
+    ],
+  });
   return {
     ...state,
     xliff: {
@@ -155,7 +181,7 @@ const insertWord = function(state, action) {
         if (index !== action.segmentId) return item;
         return {
           ...item,
-          target: newTarget.join(' '),
+          target: newData.join(' '),
         };
       }),
     },

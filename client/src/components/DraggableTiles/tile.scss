@@ -1,0 +1,21 @@
+@import '../../constants/variables';
+
+.format {
+  margin: 6px;
+  padding: 20px;
+  display: inline-block;
+  background-color: $background;
+};
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
