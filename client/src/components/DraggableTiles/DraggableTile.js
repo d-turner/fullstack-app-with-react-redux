@@ -26,7 +26,8 @@ const tileTarget = {
     if (dragIndex === hoverIndex) return;
 
     // determine the rect on the screen
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    // const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    const hoverBoundingRect = component.tile.getBoundingClientRect();
     // const hoverBoundingRect = component.tile.getBoundingClientRect();
 
     // Get horizontal middle
