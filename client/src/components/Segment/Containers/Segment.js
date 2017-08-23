@@ -9,7 +9,6 @@ import { RichUtils } from 'draft-js';
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import SegmentPresentation from '../Presentation/Segment';
-import SegmentTiles from '../Presentation/SegmentTiles';
 
 class Segment extends React.Component {
   constructor(props) {
@@ -58,17 +57,9 @@ class Segment extends React.Component {
   }
 
   render() {
-    if (this.props.renderTiles && this.props.segmentId === this.props.selectedSegment) {
-      return (
-        <SegmentTiles
-          segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
-          segmentId={this.props.segmentId}
-          documentId={this.props.documentId}
-        />
-      );
-    }
     return (
       <SegmentPresentation
+        renderTiles={this.props.renderTiles}
         segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
         editorState={this.props.editorState}
         toggleBlockType={this.toggleBlockType}

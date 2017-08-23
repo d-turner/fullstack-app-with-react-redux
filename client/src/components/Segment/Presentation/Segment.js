@@ -3,14 +3,25 @@ import PropTypes from 'prop-types';
 
 import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
+import DraggableTiles from '../../DraggableTiles/Container';
 
 class Segment extends React.Component {
   renderEditor(selected) {
     if (selected) {
+      if (this.props.renderTiles) {
+        return (
+          <div className={`${styles.wrapper} ${styles.selected}`} style={{ marginTop: '4px' }}>
+            <h6>Target</h6>
+            <DraggableTiles
+              segment={this.props.segment}
+              segmentId={this.props.segmentId}
+              documentId={123457}
+            />
+          </div>
+        );
+      }
       return (
         <div
-          onDrop={event => this.dropHandler(event)}
-          onDragOver={event => this.allowDrop(event)}
           style={{ marginTop: '10px' }}
           className={styles.editorWrapper}
           onClick={this.props.focus}

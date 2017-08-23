@@ -24,14 +24,3 @@ export function checkSpaces() {
     type: actions.SPACES,
   };
 }
-
-export function insertWord(index, word, isBefore, segmentId, documentId) {
-  return {
-    type: actions.INSERT_WORD,
-    index,
-    word,
-    isBefore,
-    segmentId,
-    documentId,
-  };
-}
