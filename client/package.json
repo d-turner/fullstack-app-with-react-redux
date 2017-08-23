@@ -4,7 +4,8 @@
   "description": "Application client to facilitate post-editing of MT output",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start serve.js",
+    "start-dev": "NODE_ENV=development pm2 start serve.js --env development",
+    "start-prod": "NODE_ENV=production pm2 start serve.js --env production",
     "dev": "NODE_ENV=development node serve.js",
     "prod": "NODE_ENV=production node serve.js",
     "test": "jest --coverage",
@@ -60,6 +61,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
+    "npm": "^5.3.0",
     "picnic": "^6.4.0",
     "prop-types": "^15.5.8",
     "q": "^1.5.0",
