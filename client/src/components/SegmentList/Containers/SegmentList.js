@@ -134,7 +134,7 @@ class SegmentList extends React.Component {
     return (
       <button
         onClick={() => this.selected(index)}
-        className={`full three-fifth-700 two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
+        className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
         aria-label="Activate the selected segment"
         role={'textbox'}>
         {this.renderSingle(index)}
@@ -157,7 +157,7 @@ class SegmentList extends React.Component {
 
   render() {
     return (
-      <div className={`two-third three-fourth-900 four-fifth-1200 center`}>
+      <div className="two-third three-fourth-900 four-fifth-1200 center">
         {this.props.segments.map(this.renderSegment)}
         {this.state.renderModal ?
           <SplitModal

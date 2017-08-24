@@ -14,7 +14,7 @@ class SegmentContainer extends React.Component {
     super(props);
     const id = parseInt(props.match.params.documentId, 10);
     store.dispatch(requestDocument(id));
-    // const i = props.documents.findIndex(doc => doc.id === id);
+
     this.renderComment = this.renderComment.bind(this);
     this.state = {
       id,
@@ -35,21 +35,20 @@ class SegmentContainer extends React.Component {
         <Redirect to="/404" />
       );
     }
-    return (
-      <div className="flex four five-900">
-        {(documents[this.state.id] && !documents[this.state.id].isFetching) ? (
+    if (documents[this.state.id] && !documents[this.state.id].isFetching) {
+      return (
+        <div className="flex four five-900 grow">
           <SegmentList
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
             editorState={editorState}
             renderComment={this.renderComment}
             {...this.props} />
-        ) : (<div className={styles.setPadding}><Loader /></div>)}
-        <Sidebar
-          documentId={this.state.id}
-        />
-      </div>
-    );
+          <Sidebar documentId={this.state.id} />
+        </div>
+      );
+    }
+    return <div className={styles.loader}><Loader /></div>;
   }
 }
 
