@@ -51,7 +51,8 @@ if (isProduction) {
 
   config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
   config.plugins.push(new webpack.optimize.UglifyJsPlugin());
-  config.plugins.push(new LodashModuleReplacementPlugin());
+  // does not work with lodash/flow
+  // config.plugins.push(new LodashModuleReplacementPlugin());
 }
 const compiler = webpack(config);
 

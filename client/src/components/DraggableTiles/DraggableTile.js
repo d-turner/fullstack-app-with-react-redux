@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+// import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import flow from 'lodash/flow';
 import styles from './tile.scss';
@@ -27,7 +27,7 @@ const tileTarget = {
 
     // determine the rect on the screen
     // const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-    const hoverBoundingRect = component.tile.getBoundingClientRect();
+    const hoverBoundingRect = component.decoratedComponentInstance.card.getBoundingClientRect();
     // const hoverBoundingRect = component.tile.getBoundingClientRect();
 
     // Get horizontal middle
@@ -87,7 +87,7 @@ class DraggableTile extends React.Component {
         style={{
           opacity: isDragging ? 0.5 : 1,
           cursor: 'pointer' }}
-        ref={(elm) => { this.tile = elm; }}
+        ref={(elm) => { this.card = elm; }}
       >
         {word}
       </div>,
@@ -102,6 +102,4 @@ DraggableTile.propTypes = {
   isDragging: PropTypes.bool.isRequired,
 };
 
-export default flow(
-  DragSource(Types.TILE, tileSource, collectSource), DropTarget(Types.TILE, tileTarget, collectTarget),
-)(DraggableTile);
+export default flow(DragSource(Types.TILE, tileSource, collectSource), DropTarget(Types.TILE, tileTarget, collectTarget))(DraggableTile);
