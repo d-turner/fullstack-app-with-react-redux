@@ -61,20 +61,19 @@ class Sidebar extends React.Component {
   }
 
   renderSwitch() {
+    const { documentId } = this.props;
     if (this.state.renderComment) {
-      return <Comments documentId={this.props.documentId} />;
+      return <Comments documentId={documentId} />;
     } else if (this.state.renderLexicon) {
-      return <Lexicon documentId={this.props.documentId} />;
+      return <Lexicon documentId={documentId} />;
     } else if (this.state.renderSearch) {
-      return <FindReplace documentId={this.props.documentId} />;
+      return <FindReplace documentId={documentId} />;
     }
-    return (
-      <div />
-    );
+    return null;
   }
   render() {
     return (
-      <div className={`third fourth-900 fifth-1200 ${styles.parent} ${styles.content}`} >
+      <div className={`none fourth-900 fifth-1200 ${styles.parent} ${styles.content}`} >
         <ButtonList
           renderComment={this.renderComment}
           renderLexicon={this.renderLexicon}
