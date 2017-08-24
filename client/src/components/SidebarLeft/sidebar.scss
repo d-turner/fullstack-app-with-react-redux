@@ -1,4 +1,4 @@
-@import '../../constants/main';
+@import '../../constants/variables';
 
 .side {
   border: $borderleft;
@@ -7,4 +7,8 @@
 .sideOptions {
   padding-left: $padding-small;
   
+}
+
+.sectionPadding {
+  padding-left: $padding-tiny + $padding-tiny;
 }

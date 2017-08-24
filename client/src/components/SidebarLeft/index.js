@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './sidebar.scss';
+import main from '../../constants/main.scss';
 
 function Sidebar(props) {
   return (
-    <aside className={`${styles.borderBox} ${styles.whiteBackground} fifth`}>
-      <div className={`${styles.groupItem} ${styles.borderBottom}`}>
-        <i className={`material-icons ${styles.fixTop}`}>keyboard_arrow_left</i>
-        <span className={styles.textInline}>Back to Projects</span>
+    <aside className={`${main.borderBox} ${main.whiteBackground} fifth`}>
+      <div className={`${main.groupItem} ${main.borderBottom}`}>
+        <i className={`material-icons ${main.fixTop}`}>keyboard_arrow_left</i>
+        <span className={main.textInline}>Back to Projects</span>
       </div>
-      <section>
+      <section className={styles.sectionPadding}>
         <h3>Project Name</h3>
         <div className={styles.sideOptions}>
           <h4>Documents</h4>
