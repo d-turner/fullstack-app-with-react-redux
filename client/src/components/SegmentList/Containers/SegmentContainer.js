@@ -30,11 +30,13 @@ class SegmentContainer extends React.Component {
 
   render() {
     const { documents, editorState } = this.props;
+    // if the document failed to fetch direct to NotFound
     if (documents[this.state.id] && documents[this.state.id].error) {
       return (
         <Redirect to="/404" />
       );
     }
+    // if the document exists and is not loading display
     if (documents[this.state.id] && !documents[this.state.id].isFetching) {
       return (
         <div className="flex four five-900 grow">
