@@ -15,7 +15,7 @@ class Segment extends React.Component {
             <DraggableTiles
               segment={this.props.segment}
               segmentId={this.props.segmentId}
-              documentId={123457}
+              documentId={this.props.documentId}
             />
           </div>
         );
@@ -65,6 +65,8 @@ class Segment extends React.Component {
 }
 
 Segment.propTypes = {
+  renderTiles: PropTypes.bool.isRequired,
+  documentId: PropTypes.number.isRequired,
   focus: PropTypes.func.isRequired,
   toggleBlockType: PropTypes.func.isRequired,
   toggleInlineStyle: PropTypes.func.isRequired,

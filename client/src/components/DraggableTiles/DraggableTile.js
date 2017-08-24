@@ -86,7 +86,7 @@ class DraggableTile extends React.Component {
         className={`${styles.format} ${styles.inlineBlock} ${styles.noselect}`}
         style={{
           opacity: isDragging ? 0.5 : 1,
-          cursor: 'pointer' }}
+          cursor: 'move' }}
         ref={(elm) => { this.card = elm; }}
       >
         {word}

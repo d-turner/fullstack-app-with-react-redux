@@ -61,6 +61,7 @@ class Segment extends React.Component {
       <SegmentPresentation
         renderTiles={this.props.renderTiles}
         segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
+        documentId={this.props.documentId}
         editorState={this.props.editorState}
         toggleBlockType={this.toggleBlockType}
         toggleInlineStyle={this.toggleInlineStyle}
