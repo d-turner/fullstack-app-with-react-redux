@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import { Editor, EditorState, ContentState } from 'draft-js';
 
-//  import * as actionCreators from '../ActionCreators/SegmentActions';
 import styles from '../split.scss';
 import EditorStyles from '../../Editor/Editor.scss';
 
@@ -20,31 +19,33 @@ class Modal extends React.Component {
   }
 
   _handleKeyCommand(command) {
-    console.log(command);
+    // split the segment if the user hits enter while in the split editor
     if (command === 'split-block') {
       this._splitSegment();
     }
   }
 
   _splitSegment() {
+    const { segmentId, documentId } = this.props;
     const selectionState = this.state.editorState.getSelection();
     const cursorEnd = selectionState.getEndOffset();
-    this.props.splitSegment(this.props.segmentId, this.props.documentId, cursorEnd);
+    this.props.splitSegment(segmentId, documentId, cursorEnd);
     this.props.removeModal();
   }
 
   render() {
     if (this.props.renderModal) {
+      const { renderModal, removeModal, segmentId } = this.props;
       return (
         <ReactModal
           role="Dialog"
           tabIndex={0}
-          isOpen={this.props.renderModal}
+          isOpen={renderModal}
           contentLabel="Split segment at cursor index on source"
           overlayClassName={styles.overlay}
           className={styles.content}>
           <div className={EditorStyles['RichEditor-root']}>
-            <div>Split Segment {this.props.segmentId}</div>
+            <div>Split Segment {segmentId}</div>
             <div className={EditorStyles['RichEditor-editor']}>
               <Editor
                 role="Dialog"
@@ -57,13 +58,13 @@ class Modal extends React.Component {
             </div>
             <div className={styles.buttons}>
               <button onClick={() => this.splitSegment()}>Split</button>
-              <button onClick={() => this.props.removeModal()}>Cancel</button>
+              <button onClick={() => removeModal()}>Cancel</button>
             </div>
           </div>
         </ReactModal>
       );
     }
-    return (<div />);
+    return null;
   }
 }
 
