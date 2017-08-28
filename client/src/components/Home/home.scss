@@ -9,6 +9,11 @@
   background-color: $darkslategrey;
   color: white;
 }
+@media (max-width: 600px) {
+  .home {
+    padding: $padding-header $padding-header $padding-large $padding-header
+  }
+}
 .img {
   width: $logo-size;
   height: $logo-size;
@@ -17,7 +22,10 @@
 .extend {
   min-height: 86.6%;
   background-color: $lightsilver;
-  color: $kanjbackground
+  color: $kanjbackground;
+  padding: 0 10px;
+  left: 0px;
+  position: absolute;
 }
 
 .description {
