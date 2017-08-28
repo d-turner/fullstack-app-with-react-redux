@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import { Redirect } from 'react-router';
 
 import api from '../../utils/apiWrapper';
 import styles from './register.scss';
@@ -29,14 +29,21 @@ export default class Register extends React.Component {
       password: this.state.password,
     };
     api.register(data, (response) => {
-      if (response.data.error || response.status !== 200) {
+      if (response.onerror) {
+        const errorMessage = 'Something went wrong, please try again later';
+        console.log(errorMessage);
+        this.setState({ errorMessage });
+      } else if (response.data.error || response.status !== 200) {
         // something went wrong with the register
         if (response.status === 409) {
           this.setState({ emailValid: false, emailError: response.data.error });
         }
+      } else {
+        // registration successful redirect to login page
+        const feedbackMessage = 'Registration Successful, please login to continue';
+        console.log(feedbackMessage);
+        this.setState({ errorMessgae: null, feedbackMessage, redirectToReferrer: true });
       }
-      // registration successful redirect to login page
-      console.log('Registration Successful');
     });
   }
 
@@ -122,6 +129,9 @@ export default class Register extends React.Component {
   }
 
   render() {
+    if (this.state.redirectToReferrer) {
+      return (<Redirect to="/login" />);
+    }
     let visible = {
       display: 'none',
       transition: 3,
@@ -133,8 +143,8 @@ export default class Register extends React.Component {
       };
     }
     return (
-      <form className="flex five" onSubmit={event => this.submit(event)}>
-        <fieldset className="flex one">
+      <form onSubmit={event => this.submit(event)}>
+        <fieldset>
           <h2>Create an account</h2>
           <label htmlFor="name">
             <input
@@ -151,7 +161,7 @@ export default class Register extends React.Component {
               }}
               required />
             {this.state.nameValid ?
-              <div /> : this.renderError(' Name must not be empty')
+              null : this.renderError(' Name must not be empty')
             }
           </label>
 
@@ -170,7 +180,7 @@ export default class Register extends React.Component {
               }}
               required />
             {this.state.emailValid ?
-              <div /> : this.renderError(this.state.emailError || ' Please use a valid email address')
+              null : this.renderError(this.state.emailError || ' Please use a valid email address')
             }
           </label>
 
@@ -191,7 +201,7 @@ export default class Register extends React.Component {
               onBlur={() => this.passwordBlur()}
               required />
             {this.state.passwordValid ?
-              <div /> : this.renderError(' Please follow the password rules')
+              null : this.renderError(' Please follow the password rules')
             }
           </label>
 
@@ -210,7 +220,7 @@ export default class Register extends React.Component {
               }}
               required />
             {this.state.confirmValid ?
-              <div /> : this.renderError(' Passwords do not match')
+              null : this.renderError(' Passwords do not match')
             }
           </label>
 
@@ -227,17 +237,20 @@ export default class Register extends React.Component {
           <label htmlFor="submit">
             <input type="submit" id="submit" aria-label="create an account" value="CREATE ACCOUNT" />
           </label>
-
-          <div style={visible} className={styles.password_validator}>
-            <h4>
-              <span>Password Rules</span>
-            </h4>
-            <ul>
-              <li><span>8 characters minimum</span></li>
-              <li><span>Contains at least 1 number</span></li>
-              <li><span>Contains at least 1 capital letter</span></li>
-            </ul>
-          </div>
+          {this.state.errorMessage ? <span className="label error"><h2>{this.state.errorMessage}</h2></span> : null}
+          {this.state.feedbackMessage ? <span className="label success"><h2>{this.state.feedbackMessage}</h2></span> : null}
+          <article className={`card ${styles.password_validator}`} style={visible}>
+            <header>
+              <h4>
+                <span>Password Rules</span>
+              </h4>
+              <ul>
+                <li><span>8 characters minimum</span></li>
+                <li><span>Contains at least 1 number</span></li>
+                <li><span>Contains at least 1 capital letter</span></li>
+              </ul>
+            </header>
+          </article>
 
         </fieldset>
       </form>

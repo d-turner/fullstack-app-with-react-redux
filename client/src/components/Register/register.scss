@@ -2,21 +2,25 @@
 
 .password_validator {
   position: relative;
-  top: -205px;
-  left: 385px;
+  width: 300px;
+  padding: 10px;
+  top: 5px;
+  left: 0px;
   background-color: white;
+  color: black;
+
 }
 
-.password_validator:after {
-  display: block;
-  position: absolute;
-  top: 30px;
-  left: -10px;
-  content: '';
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-}
+// .password_validator:after {
+//   display: block;
+//   position: absolute;
+//   top: 80px;
+//   left: -10px;
+//   content: '';
+//   border-top: 10px solid transparent;
+//   border-bottom: 10px solid transparent;
+//   border-right: 10px solid white;
+// }
 
 .visable {
   display: block;
