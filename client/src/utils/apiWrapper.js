@@ -5,8 +5,12 @@ import axios from 'axios';
 const LOGIN = '/api/login';
 const REGISTER = '/api/register';
 const LOGOUT = '/api/logout';
+
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
-const API_HOSTNAME = 'http://localhost:8080';
+let API_HOSTNAME = 'http://localhost:8080';
+if (process.env.NODE_ENV === 'production') {
+  API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
+}
 
 export function apiCall(data, method, callback) {
   /*
@@ -34,11 +38,10 @@ export function apiCall(data, method, callback) {
       console.log(error.response.headers);
     } else if (error.request) {
       // no response received
-      console.log(error.request);
       return error.request;
     } else {
       // config error
-      console.log('Error', error.message);
+      console.log('Configuration Error: ', error.message);
     }
     return error.response;
   })
