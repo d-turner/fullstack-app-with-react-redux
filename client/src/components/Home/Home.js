@@ -21,7 +21,7 @@ export default class Home extends React.Component {
           <div className={`flex three center ${styles.description}`}>
             <h3>A Smart, Unified Toolkit For Every Translation Workflow</h3>
           </div>
-          <div className={'flex five center'}>
+          <div className={'flex one three-600 five-1100 center'}>
             <div className={styles.box}>
               <img src="/assets/features.png" alt="interface logo" />
               <h4>Ergonomic Interface</h4>
