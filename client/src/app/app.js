@@ -12,7 +12,7 @@ import { Route, Switch, Redirect } from 'react-router';
 import NavBar from '../components/NavBar/Containers/NavBar';
 import Home from '../components/Home/Home';
 import NotFound from '../components/Error/NotFound';
-import Register from '../components/Register/Register';
+import Auth from '../components/Authentication/Auth';
 import ProjectContainer from '../components/Project/Containers';
 import Segments from '../components/SegmentList/Containers';
 import Segment from '../components/Segment/Containers/Segment';
@@ -49,7 +49,7 @@ export default (
         <section className={`flex ${styles.content}`}>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Auth} />
             <Route path="/other" component={Other} />
             <Redirect from="/old-other" to="/other" />
             <Route exact path="/view/:postId" component={Single} />
