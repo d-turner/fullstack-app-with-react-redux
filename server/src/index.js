@@ -4,7 +4,9 @@ import logger from './util/logger';
 import mariaDB from './db';
 
 mariaDB.connect(() => {
-  logger.info('Connected to MariaDb, starting server...');
+  logger.info('Connected to MariaDb');
+  logger.info('MariaDb listening on 3306');
+  logger.info('starting server...');
   app.listen(8080, () => {
     const host = '127.0.0.1';
     const port = 8080;
