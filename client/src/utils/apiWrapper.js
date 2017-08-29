@@ -5,6 +5,7 @@ import axios from 'axios';
 const LOGIN = '/api/login';
 const REGISTER = '/api/register';
 const LOGOUT = '/api/logout';
+const TEST = '/api/test';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
@@ -12,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 }
 
-export function apiCall(data, method, callback) {
+export function apiCall(data, endpoint, callback, method) {
   /*
   * Expects Data to be:
   * { name, email, password } - register
@@ -25,8 +26,8 @@ export function apiCall(data, method, callback) {
   * { failed: 'something went wrong' }
   */
   axios({
-    method: 'post',
-    url: `${API_HOSTNAME}${method}`,
+    method,
+    url: `${API_HOSTNAME}${endpoint}`,
     withCredentials: true,
     data,
   })
@@ -52,13 +53,16 @@ export function apiCall(data, method, callback) {
 
 const api = {
   login: (data, callback) => {
-    apiCall(data, LOGIN, callback);
+    apiCall(data, LOGIN, callback, 'post');
   },
   register: (data, callback) => {
-    apiCall(data, REGISTER, callback);
+    apiCall(data, REGISTER, callback, 'post');
   },
   logout: (callback) => {
-    apiCall(null, LOGOUT, callback);
+    apiCall(null, LOGOUT, callback, 'get');
+  },
+  test: (callback) => {
+    apiCall(null, TEST, callback, 'get');
   },
 };
 
