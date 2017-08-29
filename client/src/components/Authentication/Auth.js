@@ -3,6 +3,7 @@ import React from 'react';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import styles from './auth.scss';
+import * as authActions from './AuthActions';
 
 export default class Auth extends React.Component {
   constructor(props) {
@@ -13,9 +14,9 @@ export default class Auth extends React.Component {
   render() {
     if (this.state.show) {
       return (
-        <div className="flex one five-700 grow">
-          <div className={`flex one two-fifth-700 fourth-1000 ${styles.card}`}>
-            <Login />
+        <div className="flex one three-700 center">
+          <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
+            <Login login={authActions.login} />
             <a
               role="button"
               id="no-account"
@@ -28,8 +29,8 @@ export default class Auth extends React.Component {
       );
     }
     return (
-      <div className="flex one five-700 grow">
-        <div className={`flex one two-fifth-700 fourth-1000 ${styles.card}`}>
+      <div className="flex one three-700 center">
+        <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
           <Register />
           <a
             role="button"
