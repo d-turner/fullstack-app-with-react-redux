@@ -36,6 +36,10 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const RESOLVE_COMMENT = 'RESOLVE_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 
+// Authentication Actions
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const REGISTER = 'REGISTER';
 
 /*
  * Another Example

@@ -150,14 +150,16 @@ label > h4 {
 }
 
 .button:hover {
-  background: $background;
+  background: $lightsilver;
   i {
+    background: $lightsilver;
     border-width: 0 0 1px 0;
     color: #4285f4;
     border-color: #4285f4;
   }
 
   svg {
+    background: $lightsilver;
     path {
       fill: #4285f4;
     }
@@ -182,7 +184,7 @@ label > h4 {
 }
 
 .button {
-  background: $background;
+  background: $lightsilver;
   color: $icon-color;
 }
 
