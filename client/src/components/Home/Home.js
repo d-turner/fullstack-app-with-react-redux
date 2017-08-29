@@ -12,8 +12,10 @@ export default class Home extends React.Component {
       <div className={styles.wrapper}>
         <div className={styles.home}>
           <h1>
-            Welcome to <img src={'/assets/kanj-white.png'} alt="kanjingo logo" className={styles.img} />
-            {this.state.app}!
+            Welcome to &nbsp;
+            <div className={styles.minTitle}>
+              <img src={'/assets/kanj-white.png'} alt="kanjingo logo" className={styles.img} /> {this.state.app}!
+            </div>
           </h1>
           <h2>A Post Editing Computer Assisted Translation Tool</h2>
         </div>
