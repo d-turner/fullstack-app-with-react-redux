@@ -3,20 +3,18 @@ import { Redirect } from 'react-router';
 
 import api from '../../utils/apiWrapper';
 import styles from '../Register/register.scss';
+import main from '../../constants/main.scss';
+import store from '../../store';
 
-export default class Register extends React.Component {
+export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = ({
-      name: null,
-      nameValid: true,
       email: null,
       emailValid: true,
       passwordFocused: false,
       password: null,
       passwordValid: true,
-      confirm: null,
-      confirmValid: true,
       checked: false,
     });
   }
@@ -24,25 +22,24 @@ export default class Register extends React.Component {
   sendData() {
     console.log('sending....');
     const data = {
-      name: this.state.name,
       email: this.state.email,
       password: this.state.password,
     };
-    api.register(data, (response) => {
+    api.login(data, (response) => {
+      console.log(response);
       if (response.onerror) {
         const errorMessage = 'Something went wrong, please try again later';
         console.log(errorMessage);
         this.setState({ errorMessage });
       } else if (response.data.error || response.status !== 200) {
-        // something went wrong with the register
-        if (response.status === 409) {
-          this.setState({ emailValid: false, emailError: response.data.error });
-        }
+        // something went wrong with the login
+        this.setState({ emailValid: false, emailError: response.data.error });
       } else {
-        // registration successful redirect to login page
-        const feedbackMessage = 'Registration Successful, please login to continue';
-        console.log(feedbackMessage);
+        // login successful redirect to home/profile page
+        const feedbackMessage = 'Login Successful';
         this.setState({ errorMessgae: null, feedbackMessage, redirectToReferrer: true });
+        const { user_id, email, name } = response.data;
+        store.dispatch(this.props.login(user_id, email, name));
       }
     });
   }
@@ -100,14 +97,17 @@ export default class Register extends React.Component {
 
   renderError(error) {
     return (
-      <div className={`${styles.groupItem} ${styles.error}`}>
+      <div className={`${styles.groupItem} ${main.error}`}>
         <i className={`material-icons ${styles.fixTop}`}>error_outline</i>
-        <span>{error}</span>
+        <span style={{ verticalAlign: 'super' }}>{error}</span>
       </div>
     );
   }
 
   render() {
+    if (this.state.redirectToReferrer) {
+      return (<Redirect to="/" />);
+    }
     let visible = {
       display: 'none',
       transition: 3,
@@ -176,8 +176,10 @@ export default class Register extends React.Component {
           <label htmlFor="submit">
             <input type="submit" id="submit" aria-label="sign into account" value="SIGN IN" />
           </label>
-          {this.state.errorMessage ? <span className="label error"><h2>{this.state.errorMessage}</h2></span> : null}
-          {this.state.feedbackMessage ? <span className="label success"><h2>{this.state.feedbackMessage}</h2></span> : null}
+          {this.state.errorMessage ?
+            <span className="label error"
+              style={{ marginLeft: '0px' }}><h2>{this.state.errorMessage}</h2></span>
+            : null}
           <article className={`card ${styles.password_validator}`} style={visible}>
             <header>
               <h4>
