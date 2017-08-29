@@ -79,7 +79,7 @@ passport.use('login', new LocalStrategy({
       logger.debug('User in now authenticated');
       user.password = undefined;
       user.salt = undefined;
-      return cb(null, user, resp.loginSuccess);
+      return cb(null, user, user);
     });
   });
 },
@@ -89,8 +89,10 @@ passport.use('login', new LocalStrategy({
 passport.use('register', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
+  passReqToCallback: true,
 },
-(username, password, cb) => {
+(req, username, password, cb) => {
+  const name = req.body.name;
   User.findByUsername(username, (err, result) => {
     const user = result[0];
     if (err) {
@@ -105,7 +107,7 @@ passport.use('register', new LocalStrategy({
         logger.error(`Hashing error ${hashErr}`);
         return cb(hashErr, false, resp.somethingBad);
       }
-      return User.register(username, hash, salt, (insertError, insertResult) => {
+      return User.register(username, name, hash, salt, (insertError, insertResult) => {
         if (insertError) {
           logger.error(`Database error ${insertError}`);
           return cb(insertError, false, resp.somethingBad);

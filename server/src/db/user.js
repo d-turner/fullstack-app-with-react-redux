@@ -13,10 +13,9 @@ const User = {
     cb);
   },
 
-  register(email, password, salt, cb) {
-    const name = 'Some Name';
-    return mariaDB.query('INSERT INTO Users (email, name, password, salt) VALUES (:email, :name, :password, :salt)',
-    { email, name, password, salt }, cb);
+  register(email, name, hash, salt, cb) {
+    return mariaDB.query('INSERT INTO Users (email, name, password, salt) VALUES (:email, :name, :hash, :salt)',
+    { email, name, hash, salt }, cb);
   },
 };
 
