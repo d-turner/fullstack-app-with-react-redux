@@ -44,7 +44,7 @@ const Single = function() {
 export default (
   <Router>
     <div>
-      <NavBar to={'/'} label={'Kanjingo'} />
+      <Route path="/" component={NavBar} />
       <main id="home">
         <section className={`flex ${styles.content}`}>
           <Switch>
