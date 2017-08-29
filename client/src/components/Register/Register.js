@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router';
 
 import api from '../../utils/apiWrapper';
+import main from '../../constants/main.scss';
 import styles from './register.scss';
 
 export default class Register extends React.Component {
@@ -31,7 +32,6 @@ export default class Register extends React.Component {
     api.register(data, (response) => {
       if (response.onerror) {
         const errorMessage = 'Something went wrong, please try again later';
-        console.log(errorMessage);
         this.setState({ errorMessage });
       } else if (response.data.error || response.status !== 200) {
         // something went wrong with the register
@@ -41,8 +41,7 @@ export default class Register extends React.Component {
       } else {
         // registration successful redirect to login page
         const feedbackMessage = 'Registration Successful, please login to continue';
-        console.log(feedbackMessage);
-        this.setState({ errorMessgae: null, feedbackMessage, redirectToReferrer: true });
+        this.setState({ errorMessage: null, feedbackMessage });
       }
     });
   }
@@ -121,17 +120,14 @@ export default class Register extends React.Component {
 
   renderError(error) {
     return (
-      <div className={`${styles.groupItem} ${styles.error}`}>
+      <div className={`${styles.groupItem} ${main.error}`}>
         <i className={`material-icons ${styles.fixTop}`}>error_outline</i>
-        <span>{error}</span>
+        <span style={{ verticalAlign: 'super' }}>{error}</span>
       </div>
     );
   }
 
   render() {
-    if (this.state.redirectToReferrer) {
-      return (<Redirect to="/login" />);
-    }
     let visible = {
       display: 'none',
       transition: 3,
@@ -226,6 +222,7 @@ export default class Register extends React.Component {
 
           <label htmlFor="remember">
             <input
+              style={{ backgroundColor: 'white' }}
               type="checkbox"
               id="remember"
               aria-label="remember me"
@@ -237,8 +234,14 @@ export default class Register extends React.Component {
           <label htmlFor="submit">
             <input type="submit" id="submit" aria-label="create an account" value="CREATE ACCOUNT" />
           </label>
-          {this.state.errorMessage ? <span className="label error"><h2>{this.state.errorMessage}</h2></span> : null}
-          {this.state.feedbackMessage ? <span className="label success"><h2>{this.state.feedbackMessage}</h2></span> : null}
+          {this.state.errorMessage ?
+            <span className="label error"
+              style={{ marginLeft: '0px' }}><h2>{this.state.errorMessage}</h2></span>
+            : null}
+          {this.state.feedbackMessage ?
+            <span className="label success"
+              style={{ marginLeft: '0px' }}><h2>{this.state.feedbackMessage}</h2></span>
+            : null}
           <article className={`card ${styles.password_validator}`} style={visible}>
             <header>
               <h4>

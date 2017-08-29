@@ -1,8 +1,7 @@
-@import '../../constants/main';
+@import '../../constants/variables';
 
 .password_validator {
   position: relative;
-  width: 300px;
   padding: 10px;
   top: 5px;
   left: 0px;
@@ -28,4 +27,32 @@
 
 .invisable {
   display: none;
+}
+
+fieldset {
+  label {
+    input {
+      color: $darkslategrey;
+    }
+  }
+}
+
+.groupItem {
+  padding-left: 12.5px;
+  padding-bottom: 0.6em; 
+}
+
+.checkable {
+  @extend .checkable;
+  background-color: white;
+}
+
+form {
+  fieldset {
+    label {
+      span::before {
+        background-color: white;
+      }
+    }
+  }
 }
