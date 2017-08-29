@@ -4,11 +4,15 @@
   border: $borderleft;
 }
 
+.aside {
+  min-width: 160px;
+}
+
 .sideOptions {
-  padding-left: $padding-small;
+  padding-left: $padding-tiny;
   
 }
 
 .sectionPadding {
-  padding-left: $padding-tiny + $padding-tiny;
+  padding-left: $padding-tiny;
 }

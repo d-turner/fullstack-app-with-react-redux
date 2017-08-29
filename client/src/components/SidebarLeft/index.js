@@ -6,7 +6,7 @@ import main from '../../constants/main.scss';
 
 function Sidebar(props) {
   return (
-    <aside className={`${main.borderBox} ${main.whiteBackground} fifth`}>
+    <aside className={`${main.borderBox} ${main.whiteBackground} ${styles.aside} fifth`}>
       <div className={`${main.groupItem} ${main.borderBottom}`}>
         <i className={`material-icons ${main.fixTop}`}>keyboard_arrow_left</i>
         <span className={main.textInline}>Back to Projects</span>
