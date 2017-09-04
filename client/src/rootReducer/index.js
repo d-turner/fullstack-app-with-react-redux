@@ -5,6 +5,7 @@ import projectReducer from '../components/Project/Reducers/ProjectReducer';
 import documentReducer from '../components/Document/Reducers/DocumentReducer';
 import commentReducer from '../components/Comments/Reducers/CommentReducer';
 import authenticationReducer from '../components/Authentication/AuthReducer';
+import keyLoggerReducer from '../components/KeyLogger/KeyLoggerReducer';
 
 // Reducer Root
 const reducerRoot = combineReducers({
@@ -12,6 +13,7 @@ const reducerRoot = combineReducers({
   documentReducer,
   commentReducer,
   authenticationReducer,
+  keyLoggerReducer,
 });
 
 export default reducerRoot;
