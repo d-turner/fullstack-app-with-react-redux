@@ -41,6 +41,10 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 
+// KeyLogger Actions
+export const ADD_LOGGER = 'ADD_LOGGER';
+export const BUILD = 'BUILD_LOGGER';
+
 /*
  * Another Example
  */
