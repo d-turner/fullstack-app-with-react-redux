@@ -29,7 +29,12 @@ class Segment extends React.Component {
   }
 
   _handleKeyCommand(command) {
+    if (command === 'next-segment') {
+      this.props.updateSelectedSegment(this.props.documentId, this.props.segmentId + 1);
+      return 'handled';
+    }
     const newState = RichUtils.handleKeyCommand(this.props.editorState, command);
+    console.log(command);
     if (newState) {
       console.log('handled');
       this.handleChange(newState);
@@ -80,6 +85,7 @@ Segment.propTypes = {
   documentId: PropTypes.number.isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   updateSegment: PropTypes.func.isRequired,
+  updateSelectedSegment: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,

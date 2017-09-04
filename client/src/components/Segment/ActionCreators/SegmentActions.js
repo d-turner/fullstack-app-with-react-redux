@@ -24,3 +24,11 @@ export function checkSpaces() {
     type: actions.SPACES,
   };
 }
+
+export function updateSelectedSegment(documentId, segmentId) {
+  return {
+    type: actions.UPDATE_SELECTED,
+    documentId,
+    segmentId,
+  };
+}

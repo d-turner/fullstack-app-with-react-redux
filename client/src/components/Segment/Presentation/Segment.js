@@ -5,7 +5,24 @@ import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 import DraggableTiles from '../../DraggableTiles/Container';
 
+import KeyLogger from '../../KeyLogger/KeyLogger';
+
 class Segment extends React.Component {
+  constructor(props) {
+    super(props);
+    const { segmentId, segment } = props;
+    this.keyLogger = new KeyLogger(segmentId, segment.source, segment.target);
+  }
+  componentWillUnmount() {
+    if (this.props.selectedSegment === this.props.segmentId) {
+      this.keyLogger.setTarget(this.props.segment.target);
+      this.keyLogger.save();
+    }
+    if (this.props.segmentId === 5) {
+      this.keyLogger.build();
+    }
+  }
+
   renderEditor(selected) {
     if (selected) {
       if (this.props.renderTiles) {
@@ -16,6 +33,7 @@ class Segment extends React.Component {
               segment={this.props.segment}
               segmentId={this.props.segmentId}
               documentId={this.props.documentId}
+              onTileDrag={e => this.keyLogger.tileDrag(e)}
             />
           </div>
         );
@@ -25,10 +43,12 @@ class Segment extends React.Component {
           style={{ marginTop: '10px' }}
           className={styles.editorWrapper}
           onClick={this.props.focus}
+          onKeyDown={e => this.keyLogger.record(e)}
           tabIndex={0}
           role="Main"
         >
           <CustomEditor
+            id="customEditor"
             editorState={this.props.editorState}
             toggleBlockType={this.props.toggleBlockType}
             toggleInlineStyle={this.props.toggleInlineStyle}
