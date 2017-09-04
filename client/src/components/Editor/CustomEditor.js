@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor } from 'draft-js';
+import { Editor, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
+const {hasCommandModifier} = KeyBindingUtil;
 
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
@@ -9,6 +10,13 @@ import styles from './Editor.scss';
 class CustomEditor extends React.Component {
   componentDidMount() {
     this.Editor.focus();
+  }
+
+  myKeyBindingFn(e) {
+    if (e.ctrlKey && e.keyCode === 13) {
+      return 'next-segment';
+    }
+    return getDefaultKeyBinding(e);
   }
 
   render() {
@@ -31,6 +39,7 @@ class CustomEditor extends React.Component {
           <Editor
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
+            keyBindingFn={this.myKeyBindingFn}
             onChange={this.props.handleChange}
             ref={(ref) => { this.Editor = ref; }}
             aria-label="Translation Input"
