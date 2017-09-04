@@ -17,8 +17,6 @@ class Segment extends React.Component {
     if (this.props.selectedSegment === this.props.segmentId) {
       this.keyLogger.setTarget(this.props.segment.target);
       this.keyLogger.save();
-    }
-    if (this.props.segmentId === 5) {
       this.keyLogger.build();
     }
   }
