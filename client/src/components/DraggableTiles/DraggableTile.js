@@ -50,7 +50,7 @@ const tileTarget = {
       return;
     }
     // Time to actually perform the action
-    props.moveTile(dragIndex, hoverIndex, item.word);
+    props.moveTile(dragIndex, hoverIndex, item.word, props.word);
     monitor.getItem().index = hoverIndex;
   },
 };

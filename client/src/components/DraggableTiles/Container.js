@@ -16,17 +16,19 @@ class SegmentTiles extends React.Component {
     this.moveTile = this.moveTile.bind(this);
   }
 
-  moveTile(dragIndex, hoverIndex, word, isBefore) {
+  moveTile(dragIndex, hoverIndex, word, targetWord) {
     store.dispatch(
       actions.insertWord(
         dragIndex,
         hoverIndex,
         word,
-        isBefore,
+        targetWord,
         this.props.segmentId,
         this.props.documentId,
       ),
     );
+    const event = {dragIndex, hoverIndex, word, targetWord };
+    this.props.onTileDrag(event);
     // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
   }
 
