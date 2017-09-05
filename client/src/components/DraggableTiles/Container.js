@@ -50,6 +50,7 @@ SegmentTiles.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
   documentId: PropTypes.number.isRequired,
+  onTileDrag: PropTypes.func.isRequired,
 };
 
 export default DragDropContext(TouchBackend({ enableMouseEvents: true }))(SegmentTiles);
