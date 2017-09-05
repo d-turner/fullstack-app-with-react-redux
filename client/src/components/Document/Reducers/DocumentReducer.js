@@ -167,12 +167,20 @@ const mergeSegment = function(state, action) {
 const insertWord = function(state, action) {
   const segments = state.xliff.segments;
   const newTarget = segments[action.segmentId].target.split(' ');
+  // if dragIndex == 0 have to set word to lower case and set the dragIndex + 1 word to upper case
+  // if hoverIndex == 0 have to set word to upper case and set hoverIndex + 1 word to lower case
+  // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
+  // 
+  // word has same case for all other scenarios
   const newData = update(newTarget, {
     $splice: [
       [action.dragIndex, 1],
       [action.hoverIndex, 0, action.word],
     ],
   });
+  // if (action.dragIndex === 0) {
+  //   newData[action.hoverIndex].charAt(0).toLowerCase();
+  // }
   return {
     ...state,
     xliff: {
@@ -257,6 +265,10 @@ const DocumentReducer = function(state = initialState, action) {
           ...state.documents,
           [action.documentId]: updatedState,
         },
+      });
+    case actions.RESET_EDITOR:
+      return Object.assign({}, state, {
+        editorState: '',
       });
     // extracting all FindReplace actions to separate file
     case actions.FIND:

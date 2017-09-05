@@ -7,6 +7,12 @@ import xliffParser from '../../../utils/xliffParser';
 
 let documentNumber = 0;
 
+export function resetEditorState() {
+  return {
+    type: actions.RESET_EDITOR,
+  };
+}
+
 // fetch xliff document actions
 export function fetchDocument(documentId) {
   return {
