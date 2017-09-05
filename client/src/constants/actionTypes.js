@@ -2,6 +2,7 @@
  * Action Constants
  */
 // Document Actions
+export const RESET_EDITOR = 'RESET =_EDITOR';
 export const FETCH_DOCUMENT = 'FETCH_DOCUMENT_REQUEST';
 export const FETCH_DOCUMENT_FAIL = 'FETCH_DOCUMENT_FAIL';
 export const FETCH_DOCUMENT_SUC = 'FETCH_DOCUMENT_SUCCESS';
@@ -40,10 +41,16 @@ export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
+export const LOAD_USER = 'LOAD_USER';
 
 // KeyLogger Actions
 export const ADD_LOGGER = 'ADD_LOGGER';
 export const BUILD = 'BUILD_LOGGER';
+
+export const API_HOSTNAME = 'http://localhost:8080';
+export const APP_HOSTNAME = 'http://localhost:3000';
+// export const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
+// export const APP_HOSTNAME = 'http://kanjingo.adaptcentre.ie/api';
 
 /*
  * Another Example
