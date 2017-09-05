@@ -20,16 +20,13 @@ export default class Login extends React.Component {
   }
 
   sendData() {
-    console.log('sending....');
     const data = {
       email: this.state.email,
       password: this.state.password,
     };
     api.login(data, (response) => {
-      console.log(response);
       if (response.onerror) {
         const errorMessage = 'Something went wrong, please try again later';
-        console.log(errorMessage);
         this.setState({ errorMessage });
       } else if (response.data.error || response.status !== 200) {
         // something went wrong with the login
@@ -45,35 +42,38 @@ export default class Login extends React.Component {
   }
 
   validateState() {
-    this.validateEmail(this.state.email);
-    this.validatePassword(this.state.password);
-    if (this.state.emailValid &&
-    this.state.passwordValid) {
+    const validEmail = this.validateEmail(this.state.email);
+    const validPassword = this.validatePassword(this.state.password);
+    if (validEmail && validPassword) {
       return true;
     }
-    if (!this.state.emailValid) {
+    if (!validEmail) {
       this.emailInput.focus();
-    } else if (!this.state.passwordValid) {
+    } else if (!validPassword) {
       this.passwordInput.focus();
     }
     return false;
   }
 
-  validateEmail(email) {
+  validateEmail() {
+    const { email } = this.state;
     // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const result = re.test(email);
-    this.setState({ email, emailValid: result, emailError: null });
+    this.setState({ emailValid: result, emailError: null });
+    return result;
   }
 
-  validatePassword(password) {
+  validatePassword() {
+    const { password } = this.state;
     const numberReg = /\d+/g;
     const upperReg = /[A-Z]+/g;
     if (password.length >= 8 && numberReg.test(password) && upperReg.test(password)) {
-      this.setState({ password, passwordValid: true });
-    } else {
-      this.setState({ password, passwordValid: false });
+      this.setState({ passwordValid: true });
+      return true;
     }
+    this.setState({ passwordValid: false });
+    return false;
   }
 
   passwordFocus() {
@@ -134,7 +134,7 @@ export default class Login extends React.Component {
               ref={(ref) => { this.emailInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validateEmail(value);
+                this.setState({ email: value });
               }}
               required />
             {this.state.emailValid ?
@@ -153,13 +153,13 @@ export default class Login extends React.Component {
               ref={(ref) => { this.passwordInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validatePassword(value);
+                this.setState({ password: value });
               }}
               onFocus={() => this.passwordFocus()}
               onBlur={() => this.passwordBlur()}
               required />
             {this.state.passwordValid ?
-              <div /> : this.renderError(' Please follow the password rules')
+              null : this.renderError(' Please follow the password rules')
             }
           </label>
 
