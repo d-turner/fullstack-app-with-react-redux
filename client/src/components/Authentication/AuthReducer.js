@@ -5,6 +5,14 @@ const initialState = {
   email: null,
   name: null,
   isLoggedIn: false,
+  loading: false,
+};
+
+const loadUser = (state) => {
+  return {
+    ...state,
+    loading: true,
+  };
 };
 
 const AuthenticationReducer = function(state = initialState, action) {
@@ -16,9 +24,12 @@ const AuthenticationReducer = function(state = initialState, action) {
         email: action.email,
         name: action.name,
         isLoggedIn: true,
+        loading: false,
       };
     case actions.LOGOUT:
       return initialState;
+    case actions.LOAD_USER:
+      return loadUser(state);
     default:
       return state;
   }
