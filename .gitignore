@@ -1,5 +1,6 @@
 node_modules/
 dist/
+client/src/data/
 *.log
 coverage
 .vscode
