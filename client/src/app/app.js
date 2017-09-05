@@ -9,6 +9,7 @@ import { Route, Switch, Redirect } from 'react-router';
 // our packages
 
 // our components
+import PrivateRoute from '../components/PrivateRoute/';
 import NavBar from '../components/NavBar/Containers/NavBar';
 import Home from '../components/Home/Home';
 import NotFound from '../components/Error/NotFound';
@@ -22,7 +23,7 @@ import DocumentContainer from '../components/Document/Containers';
 import styles from '../constants/main.scss';
 
 // import default styles (body, p, div, etc)
-require('../constants/main.scss');
+// require('../constants/main.scss');
 
 const Other = function() {
   return (
@@ -53,11 +54,11 @@ export default (
             <Route path="/other" component={Other} />
             <Redirect from="/old-other" to="/other" />
             <Route exact path="/view/:postId" component={Single} />
-            <Route path="/projects" component={ProjectContainer} />
-            <Route exact path="/documents" component={DocumentContainer} />
-            <Route exact path="/documents/:documentId" component={Segments} />
-            <Route exact path="/documents/:documentId/segments" component={Segments} />
-            <Route exact path="/documents/:documentId/segments/:segmentId" component={Segment} />
+            <PrivateRoute path="/projects" component={ProjectContainer} />
+            <PrivateRoute exact path="/documents" component={DocumentContainer} />
+            <PrivateRoute exact path="/documents/:documentId" component={Segments} />
+            <PrivateRoute exact path="/documents/:documentId/segments" component={Segments} />
+            <PrivateRoute exact path="/documents/:documentId/segments/:segmentId" component={Segment} />
             <Route path="*" component={NotFound} />
           </Switch>
         </section>
