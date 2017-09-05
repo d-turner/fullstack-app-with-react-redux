@@ -1,5 +1,6 @@
 import User from '../db/user';
-import routes from './user';
+import userRoutes from './user';
+import documentRoutes from './document';
 import logger from '../util/logger';
 
 const UserRoute = (app) => {
@@ -10,7 +11,8 @@ const UserRoute = (app) => {
     });
   });
 
-  routes(app);
+  userRoutes(app);
+  documentRoutes(app);
 };
 
 export default UserRoute;

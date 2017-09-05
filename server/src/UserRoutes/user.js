@@ -41,7 +41,7 @@ export default (app) => {
   app.post('/api/register', (req, res, next) => {
     // body: { name, email, password }
     const data = req.body;
-    if (!data.name && !data.email && !data.password) {
+    if (!data.name || !data.email || !data.password) {
       // Unprocessable Entity
       res.status(resp.unprocessable).json(resp.badParameters);
     }
