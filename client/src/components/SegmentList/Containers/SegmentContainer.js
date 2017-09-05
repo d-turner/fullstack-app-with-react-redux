@@ -7,7 +7,7 @@ import Sidebar from '../../Sidebar/Containers/Sidebar';
 import styles from '../segmentList.scss';
 import Loader from '../../Loader/Loader';
 import store from '../../../store';
-import { requestDocument } from '../../Document/ActionCreators/DocumentActions';
+import { requestDocument, resetEditorState } from '../../Document/ActionCreators/DocumentActions';
 
 class SegmentContainer extends React.Component {
   constructor(props) {
@@ -22,6 +22,9 @@ class SegmentContainer extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    store.dispatch(resetEditorState());
+  }
   renderComment() {
     this.setState({
       renderComment: true,
