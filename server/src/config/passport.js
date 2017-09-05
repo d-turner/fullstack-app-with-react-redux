@@ -125,7 +125,7 @@ passport.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated() && req.user) {
     return next(200, {
       status: 'Authenticated',
-      data: `Test page for user: ${JSON.stringify(req.user)}`,
+      data: req.user,
     });
   }
   return next(401, { status: 'Not Authenticated' });
