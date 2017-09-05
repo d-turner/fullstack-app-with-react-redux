@@ -7,21 +7,28 @@ import NavPill from '../Presentation/NavPill';
 
 require('../navbar.scss');
 
-const NavBar = (props) => {
-  return (
-    <nav>
-      <NavPill to={'/'} label={'Kanjingo'} >
-        <img src={'/assets/kanj.png'} alt="kanjingo logo" className="img-responsive" />
-      </NavPill>
-      { props.isLoggedIn ?
-        <NavPill to={'/logout'} label={'Logout'} logout={props.logout} /> :
-        <NavPill to={'/login'} label={'Login'} />
-      }
-      <NavPill to={'/projects'} label={'Projects'} />
-      <NavPill to={'/documents'} label={'Documents'} />
-    </nav>
-  );
-};
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.loadUser();
+  }
+
+  render() {
+    return (
+      <nav>
+        <NavPill to={'/'} label={'Kanjingo'} >
+          <img src={'/assets/kanj.png'} alt="kanjingo logo" className="img-responsive" />
+        </NavPill>
+        { this.props.isLoggedIn ?
+          <NavPill to={'/logout'} label={'Logout'} logout={this.props.logout} /> :
+          <NavPill to={'/login'} label={'Login'} />
+        }
+        <NavPill to={'/projects'} label={'Projects'} />
+        <NavPill to={'/documents'} label={'Documents'} />
+      </nav>
+    );
+  }
+}
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
