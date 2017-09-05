@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router';
 
 import api from '../../utils/apiWrapper';
 import main from '../../constants/main.scss';
@@ -23,7 +22,6 @@ export default class Register extends React.Component {
   }
 
   sendData() {
-    console.log('sending....');
     const data = {
       name: this.state.name,
       email: this.state.email,
@@ -47,14 +45,10 @@ export default class Register extends React.Component {
   }
 
   validateState() {
-    this.validateName(this.state.name);
-    this.validateEmail(this.state.email);
-    this.validatePassword(this.state.password);
-    this.validateConfirm(this.state.confirm);
-    if (this.state.nameValid &&
-    this.state.emailValid &&
-    this.state.passwordValid &&
-    this.state.confirmValid) {
+    if (this.validateName(this.state.name) &&
+      this.validateEmail(this.state.email) &&
+    this.validatePassword(this.state.password) &&
+    this.validateConfirm(this.state.confirm)) {
       return true;
     }
     if (!this.state.nameValid) {
@@ -69,34 +63,41 @@ export default class Register extends React.Component {
     return false;
   }
 
-  validateName(name) {
+  validateName() {
+    const { name } = this.state;
     const result = (name !== '' && name !== undefined && name !== null);
     this.setState({ name, nameValid: result });
+    return result;
   }
 
-  validateEmail(email) {
+  validateEmail() {
     // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+    const { email } = this.state;
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const result = re.test(email);
-    this.setState({ email, emailValid: result, emailError: null });
+    this.setState({ emailValid: result, emailError: null });
+    return result;
   }
 
-  validatePassword(password) {
+  validatePassword() {
+    const { password } = this.state;
     const numberReg = /\d+/g;
     const upperReg = /[A-Z]+/g;
     if (password.length >= 8 && numberReg.test(password) && upperReg.test(password)) {
       this.setState({ password, passwordValid: true });
-    } else {
-      this.setState({ password, passwordValid: false });
+      return true;
     }
+    this.setState({ password, passwordValid: false });
+    return false;
   }
 
   validateConfirm(confirm) {
     if (confirm === this.state.password) {
       this.setState({ confirm, confirmValid: true });
-    } else {
-      this.setState({ confirm, confirmValid: false });
+      return true;
     }
+    this.setState({ confirm, confirmValid: false });
+    return false;
   }
 
   passwordFocus() {
@@ -153,7 +154,7 @@ export default class Register extends React.Component {
               ref={(ref) => { this.nameInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validateName(value);
+                this.setState({ name: value });
               }}
               required />
             {this.state.nameValid ?
@@ -172,7 +173,7 @@ export default class Register extends React.Component {
               ref={(ref) => { this.emailInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validateEmail(value);
+                this.setState({ email: value });
               }}
               required />
             {this.state.emailValid ?
@@ -191,7 +192,7 @@ export default class Register extends React.Component {
               ref={(ref) => { this.passwordInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validatePassword(value);
+                this.setState({ password: value });
               }}
               onFocus={() => this.passwordFocus()}
               onBlur={() => this.passwordBlur()}
@@ -212,7 +213,7 @@ export default class Register extends React.Component {
               ref={(ref) => { this.passwordConfirmationInput = ref; }}
               onChange={(event) => {
                 const value = event.target.value;
-                this.validateConfirm(value);
+                this.setState({ confirm: value });
               }}
               required />
             {this.state.confirmValid ?
