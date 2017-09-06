@@ -87,6 +87,24 @@ body {
   box-sizing: inherit;
 }
 
+.removeButtonStyle, 
+.removeButtonStyle:hover {
+  box-shadow: none;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0! important;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.removeButtonStyle:active {
+  outline: initial !important;
+  box-shadow: initial !important;
+  background: initial !important;
+}
+
 .clearButtonLeft {
   display: block;
   margin: 0;
