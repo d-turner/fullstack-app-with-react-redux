@@ -28,10 +28,10 @@ export default class Register extends React.Component {
       password: this.state.password,
     };
     api.register(data, (response) => {
-      if (response.onerror) {
+      if (!response || response.onerror || response.status !== 200) {
         const errorMessage = 'Something went wrong, please try again later';
         this.setState({ errorMessage });
-      } else if (response.data.error || response.status !== 200) {
+      } else if (response.data.error) {
         // something went wrong with the register
         if (response.status === 409) {
           this.setState({ emailValid: false, emailError: response.data.error });
