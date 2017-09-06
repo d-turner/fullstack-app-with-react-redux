@@ -1,7 +1,17 @@
 # Notes
+### Install
+Visit mariadb.com and download the tarbel
+
+### Install mycli python library for mariaDB
+pip install mycli
 
 ### mysqladmin
 Used to manage users
+
+### Create A User
+mysql -u root -p
+GRANT ALL PRIVILEGES ON *.* TO 'adapt'@'localhost' IDENTIFIED BY 'TeHQ5u2g';
+mycli mysql://adapt@localhost:3306/testdb
 
 ### Login
 
@@ -10,6 +20,11 @@ mysql -u username -p
 
 #### Admin user
 sudo mysql -p
+mysql -u root -p
+
+### initialise database 
+sudo mysql -u root -p testdb < createDatabase.sql 
+
 
 ### Commands
 SHOW DATABASES;
