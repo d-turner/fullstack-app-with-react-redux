@@ -39,7 +39,8 @@ export function apiCall(data, endpoint, callback, method) {
       console.log(error.response.headers);
     } else if (error.request) {
       // no response received
-      return error.request;
+      // returns undefined
+      console.log(error.request);
     } else {
       // config error
       console.log('Configuration Error: ', error.message);
