@@ -6,7 +6,6 @@ import { Route, Redirect } from 'react-router';
 class PrivateRoute extends React.Component {
   render() {
     const { component: Component, isLoggedIn, loading, ...rest } = this.props;
-    console.log(this.props);
     if (loading) return null;
     return (
       <Route {...rest} render={(props) => {
@@ -24,20 +23,12 @@ class PrivateRoute extends React.Component {
     );
   }
 }
-// const PrivateRoute = ({ component: Component, isLoggedIn, loading, ...rest }) => (
-//   <Route {...rest} render={(props) => {
-//     return (
-//       isLoggedIn || loading ? (
-//         <Component {...props} />
-//       ) : (
-//         <Redirect to={{
-//           pathname: '/login',
-//           state: { from: props.location },
-//         }} />
-//       )
-//     );
-//   }} />
-// );
+
+PrivateRoute.propTypes = {
+  component: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 
 const mapStateToProps = function(state) {
