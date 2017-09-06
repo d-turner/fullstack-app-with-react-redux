@@ -15,6 +15,10 @@
 .link {
   color: white;
 }
+
+.link:hover {
+  text-decoration: underline;
+}
 // .front {
 //   -webkit-transition: 0.3s;
 //   -moz-transition: 0.3s;

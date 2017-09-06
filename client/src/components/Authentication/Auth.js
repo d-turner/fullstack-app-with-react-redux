@@ -3,6 +3,8 @@ import React from 'react';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import styles from './auth.scss';
+import main from '../../constants/main.scss';
+
 import * as authActions from './AuthActions';
 
 export default class Auth extends React.Component {
@@ -17,13 +19,14 @@ export default class Auth extends React.Component {
         <div className="flex one three-700 center">
           <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
             <Login login={authActions.login} />
-            <a
-              role="button"
-              id="no-account"
-              href="#" className={styles.link}
-              onClick={() => this.setState({ show: !this.state.show })}>
-                No account? Register here.
-            </a>
+            <span>
+              <button
+                id="has-account"
+                className={`${main.removeButtonStyle} ${styles.link}`}
+                onClick={() => this.setState({ show: !this.state.show })}>
+                  Already have an account? Log in here.
+              </button>
+            </span>
           </div>
         </div>
       );
@@ -32,13 +35,14 @@ export default class Auth extends React.Component {
       <div className="flex one three-700 center">
         <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
           <Register />
-          <a
-            role="button"
-            id="has-account"
-            href="#" className={styles.link}
-            onClick={() => this.setState({ show: !this.state.show })}>
-              Already have an account? Log in here.
-          </a>
+          <span>
+            <button
+              id="has-account"
+              className={`${main.removeButtonStyle} ${styles.link}`}
+              onClick={() => this.setState({ show: !this.state.show })}>
+                Already have an account? Log in here.
+            </button>
+          </span>
         </div>
       </div>
     );
