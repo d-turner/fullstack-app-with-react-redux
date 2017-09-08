@@ -31,7 +31,7 @@ export default function Document(props) {
       </td>
       <td>
         <span >
-          <strong>{props.document.isFetching ? (<Loader />) : props.document.xliff.segments.length}</strong>
+          <strong>{props.document.isFetching ? (<Loader />) : 123}</strong>
         </span>
       </td>
       <td>

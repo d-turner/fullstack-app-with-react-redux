@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-fetch';
 import $q from 'q';
+import axios from 'axios';
 
 import * as actions from '../../../constants/actionTypes';
 import fileReader from '../../../utils/fileReader';
 import xliffParser from '../../../utils/xliffParser';
+import apiWrapper from '../../../utils/apiWrapper';
 
 let documentNumber = 0;
 
@@ -40,6 +42,7 @@ export function fetchDocumentSuc(documentId, xliff) {
 
 const shouldFetchDocument = (state, documentId) => {
   const doc = state.documentReducer.documents[documentId];
+  console.log(doc);
   if (!doc) {
     return true;
   } else if (doc.isFetching) {
@@ -75,5 +78,37 @@ export function requestDocument(documentId) {
       });
     }
     return Promise.resolve();
+  };
+}
+
+export function fetchDocumentList() {
+  return {
+    type: actions.FETCH_DOCUMENT_LIST,
+  };
+}
+
+export function documentListSuccess(documents) {
+  return {
+    type: actions.INSERT_DOCUMENTS,
+    documents,
+  };
+}
+
+export function documentListFail() {
+  return {
+    type: actions.DOCUMENT_LIST_FAIL,
+  };
+}
+
+export function requestDocumentList() {
+  return (dispatch) => {
+    dispatch(fetchDocumentList());
+    return apiWrapper.getDocuments((response) => {
+      if (response && response.status === 200) {
+        dispatch(documentListSuccess(response.data));
+      } else {
+        dispatch(documentListFail());
+      }
+    });
   };
 }
