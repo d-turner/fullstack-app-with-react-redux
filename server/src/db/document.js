@@ -13,9 +13,9 @@ const User = {
     cb);
   },
 
-  create(name, description, location, userId, cb) {
-    return mariaDB.query('INSERT INTO Documents (name, description, location, user_id) VALUES (:name, :description, :location, :userId)',
-    { name, description, location, userId }, cb);
+  create(name, description, filename, location, userId, cb) {
+    return mariaDB.query('INSERT INTO Documents (name, description, saved_name, location, user_id) VALUES (:name, :description, :filename, :location, :userId)',
+    { name, description, filename, location, userId }, cb);
   },
 };
 

@@ -24,7 +24,7 @@ export default (app) => {
       if (status !== 200) {
         res.status(status).json(reply);
       }
-      doc.create(file.originalname, data.description, `${dest}${file.filename}`, user.user_id, (err, result) => {
+      doc.create(file.originalname, data.description, file.filename, file.path, user.user_id, (err, result) => {
         if (err) logger.error(err);
         logger.info(result);
         res.status(status).json({ status: 'Insert successful' });
