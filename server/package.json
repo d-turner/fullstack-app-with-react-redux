@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
+    "prod": "NODE_ENV=production pm2 start --interpreter babel-node src/index.js --env production",
     "test": "eslint src/ && babel-node test/",
     "eslint-test": "eslint src/",
     "start:db": "sudo mysqld_safe --skip-syslog --log-error=/home/adapt/Documents/git/kanjingo-react-redux/client/logs/maria_error.log --port=8008"
