@@ -6,6 +6,7 @@ const LOGIN = '/api/login';
 const REGISTER = '/api/register';
 const LOGOUT = '/api/logout';
 const TEST = '/api/test';
+const DOCUMENTS = '/api/documents';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
@@ -64,6 +65,9 @@ const api = {
   },
   test: (callback) => {
     apiCall(null, TEST, callback, 'get');
+  },
+  getDocuments: (callback) => {
+    apiCall(null, DOCUMENTS, callback, 'get');
   },
 };
 

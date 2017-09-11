@@ -28,14 +28,15 @@ export default class Register extends React.Component {
       password: this.state.password,
     };
     api.register(data, (response) => {
-      if (!response || response.onerror || response.status !== 200) {
+      if (!response || response.onerror) {
         const errorMessage = 'Something went wrong, please try again later';
         this.setState({ errorMessage });
-      } else if (response.data.error) {
+      } else if (response.data.error || response.status === 409) {
         // something went wrong with the register
-        if (response.status === 409) {
-          this.setState({ emailValid: false, emailError: response.data.error });
-        }
+        this.setState({ emailValid: false, emailError: response.data.error });
+      } else if (response.status !== 200) {
+        const errorMessage = 'Something went wrong, please try again later';
+        this.setState({ errorMessage });
       } else {
         // registration successful redirect to login page
         const feedbackMessage = 'Registration Successful, please login to continue';

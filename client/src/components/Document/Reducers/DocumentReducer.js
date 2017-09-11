@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
+import DocumentList from './DocumentListReducer';
 
 const initialState = {
   documents: {},
@@ -277,6 +278,10 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.REPLACE_TEXT:
     case actions.REPLACE_ALL:
       return FindReplaceReducer(state, action);
+    case actions.FETCH_DOCUMENT_LIST:
+    case actions.INSERT_DOCUMENTS:
+    case actions.DOCUMENT_LIST_FAIL:
+      return DocumentList(state, action);
     default:
       return state;
   }

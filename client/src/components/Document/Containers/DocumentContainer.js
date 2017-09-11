@@ -8,10 +8,8 @@ import DocumentTable from '../Presentation/DocumentTable';
 import main from '../../../constants/main.scss';
 
 class DocumentContainer extends React.Component {
-  componentDidMount() {
-    console.warn('Need to add api call here');
-    this.props.requestDocument('123456');
-    this.props.requestDocument('123457');
+  componentWillMount() {
+    this.props.requestDocumentList();
   }
 
   render() {

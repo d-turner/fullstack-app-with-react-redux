@@ -25,6 +25,7 @@ CREATE TABLE Projects (
 CREATE TABLE Documents (
   document_id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(80) NOT NULL,
+  saved_name VARCHAR(60) NOT NULL,
   description VARCHAR(256),
   location VARCHAR(256) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -50,11 +51,12 @@ INSERT INTO Projects VALUES (
   1
 );
 
-INSERT INTO Documents VALUES (
-  3,
-  'Test Document',
-  'This is a test document beloning to test project belonging to user Daniel Turner',
-  '/home/adapt/somePath/fileName.xliff',
-  NOW(),
-  1
-);
+-- INSERT INTO Documents VALUES (
+--  3,
+--  'Test Document',
+--  '123456',
+--  'This is a test document beloning to test project belonging to user Daniel Turner',
+--  '/home/adapt/somePath/fileName.xliff',
+--  NOW(),
+--  1
+-- );

@@ -25,12 +25,15 @@ export default class Login extends React.Component {
       password: this.state.password,
     };
     api.login(data, (response) => {
-      if (!response || response.onerror || response.status !== 200) {
+      if (!response || response.onerror) {
         const errorMessage = 'Something went wrong, please try again later';
         this.setState({ errorMessage });
-      } else if (response.data.error) {
+      } else if (response.data.error || response.status === 409) {
         // something went wrong with the login
         this.setState({ emailValid: false, emailError: response.data.error });
+      } else if (response.status !== 200) {
+        const errorMessage = 'Something went wrong, please try again later';
+        this.setState({ errorMessage });
       } else {
         // login successful redirect to home/profile page
         const feedbackMessage = 'Login Successful';
