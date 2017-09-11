@@ -12,14 +12,18 @@ import { requestDocument, resetEditorState } from '../../Document/ActionCreators
 class SegmentContainer extends React.Component {
   constructor(props) {
     super(props);
-    const id = parseInt(props.match.params.documentId, 10);
-    store.dispatch(requestDocument(id));
+    const id = props.match.params.documentId;
 
     this.renderComment = this.renderComment.bind(this);
     this.state = {
       id,
       renderComment: false,
     };
+  }
+
+  componentWillMount() {
+    const id = this.props.match.params.documentId;
+    store.dispatch(requestDocument(id));
   }
 
   componentWillUnmount() {
@@ -40,7 +44,7 @@ class SegmentContainer extends React.Component {
       );
     }
     // if the document exists and is not loading display
-    if (documents[this.state.id] && !documents[this.state.id].isFetching) {
+    if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex four five-900 grow">
           <SegmentList
