@@ -7,6 +7,7 @@ const REGISTER = '/api/register';
 const LOGOUT = '/api/logout';
 const TEST = '/api/test';
 const DOCUMENTS = '/api/documents';
+const UPLOAD = '/api/uploadDocument';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
@@ -14,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 }
 
-export function apiCall(data, endpoint, callback, method) {
+export function apiCall(data, endpoint, callback, method, headers) {
   /*
   * Expects Data to be:
   * { name, email, password } - register
@@ -31,6 +32,7 @@ export function apiCall(data, endpoint, callback, method) {
     url: `${API_HOSTNAME}${endpoint}`,
     withCredentials: true,
     data,
+    headers,
   })
   .catch((error) => {
     if (error.response) {
@@ -68,6 +70,10 @@ const api = {
   },
   getDocuments: (callback) => {
     apiCall(null, DOCUMENTS, callback, 'get');
+  },
+  uploadDocument: (data, callback) => {
+    const headers = { 'Content-Type': 'multipart/form-data' };
+    apiCall(data, UPLOAD, callback, 'post', headers);
   },
 };
 
