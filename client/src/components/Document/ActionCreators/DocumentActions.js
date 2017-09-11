@@ -43,7 +43,7 @@ export function fetchDocumentSuc(documentId, xliff) {
 const shouldFetchDocument = (state, documentId) => {
   const doc = state.documentReducer.documents[documentId];
   console.log(doc);
-  if (!doc) {
+  if (!doc || doc.didInvalidate) {
     return true;
   } else if (doc.isFetching) {
     return false;

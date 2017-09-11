@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Sidebar from '../../SidebarLeft';
+import Dropzone from '../../Dropzone';
 import DocumentTable from '../Presentation/DocumentTable';
 
 // import styles from '../documents.scss';
@@ -18,6 +19,7 @@ class DocumentContainer extends React.Component {
         <Sidebar />
 
         <div className={`four-fifth ${main.clearPaddingBottom} ${main.paddingInlineWithNavRight}`}>
+          <Dropzone />
           <DocumentTable documents={this.props.documents} />
         </div>
       </div>
