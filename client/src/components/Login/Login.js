@@ -138,8 +138,7 @@ export default class Login extends React.Component {
               onChange={(event) => {
                 const value = event.target.value;
                 this.setState({ email: value });
-              }}
-              required />
+              }} />
             {this.state.emailValid ?
               null : this.renderError(this.state.emailError || ' Please use a valid email address')
             }
@@ -159,8 +158,7 @@ export default class Login extends React.Component {
                 this.setState({ password: value });
               }}
               onFocus={() => this.passwordFocus()}
-              onBlur={() => this.passwordBlur()}
-              required />
+              onBlur={() => this.passwordBlur()} />
             {this.state.passwordValid ?
               null : this.renderError(' Please follow the password rules')
             }

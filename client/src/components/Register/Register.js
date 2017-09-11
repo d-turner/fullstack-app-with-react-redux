@@ -156,8 +156,7 @@ export default class Register extends React.Component {
               onChange={(event) => {
                 const value = event.target.value;
                 this.setState({ name: value });
-              }}
-              required />
+              }} />
             {this.state.nameValid ?
               null : this.renderError(' Name must not be empty')
             }
@@ -175,8 +174,7 @@ export default class Register extends React.Component {
               onChange={(event) => {
                 const value = event.target.value;
                 this.setState({ email: value });
-              }}
-              required />
+              }} />
             {this.state.emailValid ?
               null : this.renderError(this.state.emailError || ' Please use a valid email address')
             }
@@ -196,8 +194,7 @@ export default class Register extends React.Component {
                 this.setState({ password: value });
               }}
               onFocus={() => this.passwordFocus()}
-              onBlur={() => this.passwordBlur()}
-              required />
+              onBlur={() => this.passwordBlur()} />
             {this.state.passwordValid ?
               null : this.renderError(' Please follow the password rules')
             }
@@ -215,8 +212,7 @@ export default class Register extends React.Component {
               onChange={(event) => {
                 const value = event.target.value;
                 this.setState({ confirm: value });
-              }}
-              required />
+              }} />
             {this.state.confirmValid ?
               null : this.renderError(' Passwords do not match')
             }
