@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 import $q from 'q';
-import axios from 'axios';
 
 import * as actions from '../../../constants/actionTypes';
 import fileReader from '../../../utils/fileReader';
@@ -42,7 +41,6 @@ export function fetchDocumentSuc(documentId, xliff) {
 
 const shouldFetchDocument = (state, documentId) => {
   const doc = state.documentReducer.documents[documentId];
-  console.log(doc);
   if (!doc || doc.didInvalidate) {
     return true;
   } else if (doc.isFetching) {
