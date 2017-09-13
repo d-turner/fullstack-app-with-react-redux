@@ -28,7 +28,7 @@ class Drop extends React.Component {
         }
       });
     });
-    if (rejected) {
+    if (rejected.length > 0) {
       alert('Only xliff files allowed!');
     }
   }
@@ -41,7 +41,8 @@ class Drop extends React.Component {
           activeStyle={activeStyle}
           className={`${styles.dropzone}`}
           onDrop={this.onDrop}
-          ref={(node) => { this.dropzone = node; }}>
+          ref={(node) => { this.dropzone = node; }}
+          inputProps={{ 'aria-label': 'Document Upload' }}>
           <p>Upload Documents</p>
         </Dropzone>
         <button type="button" onClick={() => { this.dropzone.open(); }}>
