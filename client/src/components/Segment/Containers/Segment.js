@@ -82,7 +82,7 @@ class Segment extends React.Component {
 }
 
 Segment.propTypes = {
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   updateSegment: PropTypes.func.isRequired,
   updateSelectedSegment: PropTypes.func.isRequired,

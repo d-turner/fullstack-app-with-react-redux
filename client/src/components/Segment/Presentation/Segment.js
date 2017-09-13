@@ -84,7 +84,7 @@ class Segment extends React.Component {
 
 Segment.propTypes = {
   renderTiles: PropTypes.bool.isRequired,
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   focus: PropTypes.func.isRequired,
   toggleBlockType: PropTypes.func.isRequired,
   toggleInlineStyle: PropTypes.func.isRequired,
