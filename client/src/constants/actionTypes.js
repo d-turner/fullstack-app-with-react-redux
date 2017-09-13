@@ -2,7 +2,7 @@
  * Action Constants
  */
 // Document Actions
-export const RESET_EDITOR = 'RESET =_EDITOR';
+export const RESET_EDITOR = 'RESET_EDITOR';
 export const FETCH_DOCUMENT = 'FETCH_DOCUMENT_REQUEST';
 export const FETCH_DOCUMENT_FAIL = 'FETCH_DOCUMENT_FAIL';
 export const FETCH_DOCUMENT_SUC = 'FETCH_DOCUMENT_SUCCESS';
