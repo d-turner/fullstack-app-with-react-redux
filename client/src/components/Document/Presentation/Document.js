@@ -6,7 +6,7 @@ import Loader from '../../Loader/Loader';
 import styles from '../documents.scss';
 
 export default function Document(props) {
-  const { id, documentName } = props;
+  const { id, documentName} = props;
   if (props.document.error) {
     return null;
   }
@@ -31,7 +31,7 @@ export default function Document(props) {
       </td>
       <td>
         <span >
-          <strong>{props.document.isFetching ? (<Loader />) : 123}</strong>
+          <strong>{props.document.xliff.segments ? props.document.xliff.segments.length : null}</strong>
         </span>
       </td>
       <td>
