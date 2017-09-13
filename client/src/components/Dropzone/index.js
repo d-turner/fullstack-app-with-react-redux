@@ -54,3 +54,4 @@ class Drop extends React.Component {
 }
 
 export default Drop;
+[]
