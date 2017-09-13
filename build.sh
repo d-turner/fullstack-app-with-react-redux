@@ -14,7 +14,7 @@ do
   cd "${repo}"
   git fetch
   git diff origin/master --quiet
-  if [ $? -eq 1 ] || [ "$1" -gt 1 ] ;
+  if [ $? -eq 1 ] || [ "$1" -eq 1 ] ;
   then
     echo "Need to Update..."
     echo "Pulling from GIT..."
