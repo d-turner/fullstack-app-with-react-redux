@@ -90,7 +90,7 @@ class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
 };
 
 export default Sidebar;

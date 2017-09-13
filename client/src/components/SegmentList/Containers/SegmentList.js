@@ -176,7 +176,7 @@ class SegmentList extends React.Component {
 
 SegmentList.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   updateSelectedSegment: PropTypes.func.isRequired,
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
   selectedSegment: PropTypes.number.isRequired,

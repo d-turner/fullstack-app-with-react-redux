@@ -44,6 +44,7 @@ class SegmentContainer extends React.Component {
       );
     }
     // if the document exists and is not loading display
+    console.log(documents[this.state.id]);
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex four five-900 grow">
