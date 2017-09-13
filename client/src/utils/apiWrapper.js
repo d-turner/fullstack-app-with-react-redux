@@ -6,6 +6,7 @@ const LOGIN = '/api/login';
 const REGISTER = '/api/register';
 const LOGOUT = '/api/logout';
 const TEST = '/api/test';
+const DOCUMENT_ID = '/api/documents/';
 const DOCUMENTS = '/api/documents';
 const UPLOAD = '/api/uploadDocument';
 
@@ -67,6 +68,9 @@ const api = {
   },
   test: (callback) => {
     apiCall(null, TEST, callback, 'get');
+  },
+  getDocumentById: (data, callback) => {
+    apiCall(null, `${DOCUMENT_ID}${data}`, callback, 'get');
   },
   getDocuments: (callback) => {
     apiCall(null, DOCUMENTS, callback, 'get');
