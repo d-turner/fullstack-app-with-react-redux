@@ -48,7 +48,7 @@ CommentModal.defaultProps = {
 };
 
 CommentModal.propTypes = {
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   unrender: PropTypes.func.isRequired,
   render: PropTypes.bool,
