@@ -30,7 +30,6 @@ const createNewDocumentEntry = (state = blankDocument, doc) => {
   return Object.assign({}, state, {
     id: doc.document_id,
     name: doc.name,
-    isFetching: false,
     saved_name: doc.saved_name,
     description: doc.description,
     created_at: doc.created_at,
@@ -44,7 +43,7 @@ export default function DocumentList(state, action) {
       const docs = action.documents;
       for (let x = 0; x < docs.length; x++) {
         const savedName = docs[x].saved_name;
-        documents[savedName] = createNewDocumentEntry(state.documents[action.saved_name], docs[x]);
+        documents[savedName] = createNewDocumentEntry(state.documents[savedName], docs[x]);
       }
       return update(state, {
         documents: { $merge: documents },

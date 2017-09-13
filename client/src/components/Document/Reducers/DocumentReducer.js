@@ -40,7 +40,6 @@ const cleanText = (text, lowercaseBefore) => {
 
 const createNewDocumentEntry = (state = blankDocument, action) => {
   return Object.assign({}, state, {
-    name: action.name,
     isFetching: true,
   });
 };
