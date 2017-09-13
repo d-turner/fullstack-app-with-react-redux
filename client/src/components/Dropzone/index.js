@@ -1,7 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import axios from 'axios';
-
+import { documentListSuccess } from '../Document/ActionCreators/DocumentActions';
+import store from '../../store';
 import styles from './dropzone.scss';
 import api from '../../utils/apiWrapper';
 
@@ -17,16 +17,20 @@ class Drop extends React.Component {
     this.onDrop = this.onDrop.bind(this);
   }
 
-  onDrop(accepted) {
+  onDrop(accepted, rejected) {
     accepted.forEach((file) => {
       const formData = new FormData();
       formData.append('document', file);
       api.uploadDocument(formData, (response) => {
         if (response.status === 200) {
           alert('Upload Successful');
+          store.dispatch(documentListSuccess(response.data.result));
         }
       });
     });
+    if (rejected) {
+      alert('Only xliff/xlif files allowed!');
+    }
   }
 
   render() {
@@ -49,3 +53,4 @@ class Drop extends React.Component {
 }
 
 export default Drop;
+[]
