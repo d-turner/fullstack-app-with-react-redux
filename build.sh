@@ -23,13 +23,11 @@ do
     pm2 kill
     echo "Starting Server"
     cd server
-    npm install
     npm run prod
     echo "Server Started"
     cd ..
     echo "Starting Client"
     cd client
-    npm install
     npm run start-prod
     echo "Client Started"
   fi
