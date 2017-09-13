@@ -27,7 +27,12 @@ export default (app) => {
       doc.create(file.originalname, data.description, file.filename, file.path, user.user_id, (err, result) => {
         if (err) logger.error(err);
         logger.info(result);
-        res.status(status).json({ status: 'Insert successful' });
+        doc.findOneDocument(result.info.insertId, (erro, row) => {
+          if (erro) logger.error(erro);
+          row[0].location = undefined;
+          row[0].user_id = undefined;
+          res.status(status).json({ status: 'Insert successful', result: row });
+        });
       });
     });
   });
