@@ -38,7 +38,7 @@ export default (app) => {
   });
 
   // get a single document
-  app.get('/api/documents/:documentId ', (req, res) => {
+  app.get('/api/documents/:documentId', (req, res) => {
     const user = req.user;
     const documentId = req.params.documentId;
     passport.ensureAuthenticated(req, res, (status, reply) => {
@@ -47,11 +47,11 @@ export default (app) => {
       }
       doc.findOneDocument(documentId, (err, result) => {
         if (err) logger.error(err);
-        if (user.user_id !== result[0].user_id) {
+        if (!result[0] || user.user_id !== result[0].user_id) {
           res.status(401).json({ status: 'Not Authorized' });
         }
         logger.info(result);
-        res.status(status).send(result);
+        res.status(status).send(result[0]);
       });
     });
   });

@@ -8,7 +8,7 @@ const User = {
   },
 
   findOneDocument(id, cb) {
-    return mariaDB.query('SELECT * FROM Documents WHERE document_id = :id',
+    return mariaDB.query('SELECT * FROM Documents WHERE saved_name = :id',
     { id },
     cb);
   },
