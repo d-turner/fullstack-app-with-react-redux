@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import * as actions from '../../../constants/actionTypes';
 
 // const initialState = {
@@ -45,10 +46,9 @@ export default function DocumentList(state, action) {
         const savedName = docs[x].saved_name;
         documents[savedName] = createNewDocumentEntry(state.documents[action.saved_name], docs[x]);
       }
-      return {
-        ...state,
-        documents,
-      };
+      return update(state, {
+        documents: { $merge: documents },
+      });
     default:
       return state;
   }
