@@ -5,13 +5,14 @@ import ReactToolTip from 'react-tooltip';
 import styles from '../segmentList.scss';
 import Segment from '../../Segment/Containers/Segment';
 import CommentModal from '../../Comments/Presentation/CommentModal';
-import SplitModal from '../../../components/SplitModal/Containers/Modal';
+import SplitModal from '../../SplitModal/Containers/Modal';
+import VoiceInput from '../../VoiceInputModal/VoiceInput';
 
 class SegmentList extends React.Component {
   constructor(props) {
     super(props);
     const renderArray = new Array(props.segments.length).fill(false);
-    this.state = { renderArray, renderTiles: false };
+    this.state = { renderArray, renderTiles: false, renderVoice: false };
 
     this.renderSegment = this.renderSegment.bind(this);
     this.renderSingle = this.renderSingle.bind(this);
@@ -56,6 +57,10 @@ class SegmentList extends React.Component {
     this.setState({ renderTiles: !this.state.renderTiles });
   }
 
+  renderVoice(index) {
+    this.setState({ renderVoice: !this.state.renderVoice, voiceIndex: index });
+  }
+
   renderSidebar(index) {
     return (
       <div className={`id ${styles.clearPadding} ${styles.fixedSmallWidth}`}>
@@ -98,6 +103,16 @@ class SegmentList extends React.Component {
           </svg>
         </button>
         <ReactToolTip place="right" id="Chain" effect="solid">
+          <span>Chain Words</span>
+        </ReactToolTip>
+
+        <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
+          data-tip data-for="Voice"
+          aria-label="Voice Input"
+          onClick={() => this.renderVoice(index)}>
+          <i className={`small material-icons ${styles.fixFont}`}>settings_voice</i>
+        </button>
+        <ReactToolTip place="right" id="Voice" effect="solid">
           <span>Chain Words</span>
         </ReactToolTip>
       </div>
@@ -168,6 +183,14 @@ class SegmentList extends React.Component {
             content={this.props.segments[this.state.splitIndex].source}
             renderModal={this.state.renderModal}
             removeModal={this.removeModal} /> :
+          null}
+        {this.state.renderVoice ?
+          <VoiceInput
+            {...this.props}
+            segmentId={this.state.voiceIndex}
+            content={this.props.segments[this.state.voiceIndex].source}
+            renderModal={this.state.renderVoice}
+            removeModal={() => this.renderVoice(this.state.voiceIndex)} /> :
           null}
       </div>
     );
