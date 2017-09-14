@@ -45,7 +45,7 @@ class Modal extends React.Component {
           overlayClassName={styles.overlay}
           className={styles.content}>
           <div className={EditorStyles['RichEditor-root']}>
-            <div>Split Segment {segmentId}</div>
+            <h5>#{segmentId} Split Segment</h5>
             <div className={EditorStyles['RichEditor-editor']}>
               <Editor
                 role="Dialog"
@@ -76,7 +76,7 @@ Modal.propTypes = {
   renderModal: PropTypes.bool,
   content: PropTypes.string.isRequired,
   segmentId: PropTypes.number.isRequired,
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   splitSegment: PropTypes.func.isRequired,
   removeModal: PropTypes.func.isRequired,
 };
