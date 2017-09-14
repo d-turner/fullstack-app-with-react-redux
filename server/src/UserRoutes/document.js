@@ -26,7 +26,6 @@ export default (app) => {
       }
       doc.create(file.originalname, data.description, file.filename, file.path, user.user_id, (err, result) => {
         if (err) logger.error(err);
-        logger.info(result);
         doc.findOneDocument(result.info.insertId, (erro, row) => {
           if (erro) logger.error(erro);
           row[0].location = undefined;
@@ -45,12 +44,11 @@ export default (app) => {
       if (status !== 200) {
         res.status(status).json(reply);
       }
-      doc.findOneDocument(documentId, (err, result) => {
+      doc.findDocumentBySavedName(documentId, (err, result) => {
         if (err) logger.error(err);
         if (!result[0] || user.user_id !== result[0].user_id) {
           res.status(401).json({ status: 'Not Authorized' });
         }
-        logger.info(result);
         res.status(status).send(result[0]);
       });
     });
@@ -65,7 +63,6 @@ export default (app) => {
       }
       doc.findByUser(user.user_id, (err, result) => {
         if (err) logger.error(err);
-        logger.info(result);
         res.status(status).send(result);
       });
     });
