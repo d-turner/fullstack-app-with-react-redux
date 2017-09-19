@@ -135,7 +135,8 @@ nav {
 }
 
 .buttonMargin {
-  margin-bottom: $margin-small;
+  margin-bottom: 0px;
+  margin-right: -1px;
 }
 
 .smallMargin{
@@ -191,6 +192,7 @@ label > h4 {
 }
 
 .button {
+  box-shadow: none !important;
   i {
     border: solid;
     padding-bottom: 6px;
@@ -199,6 +201,7 @@ label > h4 {
   }
 
   svg {
+    padding-bottom: 0px;
     path {
       fill: $icon-color;
     }
