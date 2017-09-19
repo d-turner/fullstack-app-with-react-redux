@@ -1,3 +1,5 @@
+import update from 'immutability-helper';
+
 import * as actions from '../../../constants/actionTypes';
 
 function getDate() {
@@ -16,29 +18,29 @@ function getDate() {
 let genId = 4;
 const initialState = {
   comments: {
-    123456: {},
-    123457: {
-      0: [{
-        id: 1,
-        author: 'Daniel Turner',
-        time: getDate(),
-        text: 'This is a test comment 1 on segment 0',
-      }],
-      1: [{
-        id: 2,
-        author: 'Daniel Turner',
-        time: getDate(),
-        text: 'This is a test comment 2 on segment 1',
-      },
-      {
-        id: 3,
-        author: 'Daniel Turner',
-        time: getDate(),
-        text: 'This is a test comment 3 on segment 1',
-      }],
-    },
   },
 };
+
+const emptyComment = {
+  id: null,
+  author: null,
+  time: null,
+  text: null,
+};
+
+function creatCommentObject(state, action) {
+  const result = {};
+  const docs = action.documents;
+  for (let i = 0; i < docs.length; i++) {
+    if (!state.comments[docs[i].saved_name]) {
+      result[docs[i].saved_name] = {};
+    }
+  }
+  return update(state, {
+    comments: { $merge: result },
+  });
+}
+
 
 function addComment(state, action) {
   if (state.comments[action.documentId][action.segmentId] === undefined) {
@@ -81,6 +83,8 @@ function addComment(state, action) {
 
 export default function commentReducer(state = initialState, action) {
   switch (action.type) {
+    case actions.INSERT_DOCUMENTS:
+      return creatCommentObject(state, action);
     case actions.ADD_COMMENT:
       return addComment(state, action);
     case actions.EDIT_COMMENT:
