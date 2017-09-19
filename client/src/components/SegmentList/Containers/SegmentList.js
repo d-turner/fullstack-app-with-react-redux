@@ -113,7 +113,7 @@ class SegmentList extends React.Component {
           <i className={`small material-icons ${styles.fixFont}`}>settings_voice</i>
         </button>
         <ReactToolTip place="right" id="Voice" effect="solid">
-          <span>Chain Words</span>
+          <span>Voice Input</span>
         </ReactToolTip>
       </div>
     );
