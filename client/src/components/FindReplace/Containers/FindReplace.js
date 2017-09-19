@@ -62,7 +62,7 @@ class FindReplace extends React.Component {
 }
 
 FindReplace.propTypes = {
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   findNext: PropTypes.func.isRequired,
   replace: PropTypes.func.isRequired,
 };
