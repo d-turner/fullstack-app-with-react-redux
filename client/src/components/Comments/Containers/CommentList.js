@@ -48,7 +48,7 @@ class CommentList extends React.Component {
 }
 
 CommentList.propTypes = {
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   comments: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
