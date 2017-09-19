@@ -23,18 +23,21 @@ class CustomEditor extends React.Component {
     return (
       <div className={styles['RichEditor-root']} >
         <h6>Target</h6>
-        <BlockStyleControls
-          editorState={this.props.editorState}
-          onToggle={this.props.toggleBlockType}
-          className={styles['RichEditor-styleButton']}
-          activeClass={styles['RichEditor-activeButton']}
+        <details>
+          <summary className={styles.summary}>Styles</summary>
+          <BlockStyleControls
+            editorState={this.props.editorState}
+            onToggle={this.props.toggleBlockType}
+            className={styles['RichEditor-styleButton']}
+            activeClass={styles['RichEditor-activeButton']}
+          />
+          <InlineStyleControls
+            editorState={this.props.editorState}
+            onToggle={this.props.toggleInlineStyle}
+            className={styles['RichEditor-styleButton']}
+            activeClass={styles['RichEditor-activeButton']}
         />
-        <InlineStyleControls
-          editorState={this.props.editorState}
-          onToggle={this.props.toggleInlineStyle}
-          className={styles['RichEditor-styleButton']}
-          activeClass={styles['RichEditor-activeButton']}
-        />
+        </details>
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
