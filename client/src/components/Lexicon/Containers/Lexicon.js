@@ -116,7 +116,7 @@ Lexicon.defaultProps = {
 Lexicon.propTypes = {
   lexicon: PropTypes.string,
   documents: PropTypes.objectOf(PropTypes.any).isRequired,
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
 };
 
 export default Lexicon;
