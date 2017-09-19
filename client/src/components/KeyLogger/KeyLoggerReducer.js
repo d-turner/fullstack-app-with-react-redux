@@ -164,11 +164,11 @@ function buildXML({loggerRecordings}) {
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
       } else if (buffer[y].type === 'drag') {
         const event = xmlDoc.createElement(buffer[y].type);
+        event.setAttribute('time', buffer[y].t - startTime);
         event.setAttribute('sourceIndex', buffer[y].sourceIndex);
         event.setAttribute('targetIndex', buffer[y].targetIndex);
         event.setAttribute('sourceWord', buffer[y].sourceWord);
         event.setAttribute('targetWord', buffer[y].targetWord);
-        event.setAttribute('time', buffer[y].t - startTime);
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
       }
 
