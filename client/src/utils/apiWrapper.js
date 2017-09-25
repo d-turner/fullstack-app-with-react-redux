@@ -13,7 +13,7 @@ const UPLOAD = '/api/uploadDocument';
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
 if (process.env.NODE_ENV === 'production') {
-  API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
+  API_HOSTNAME = '';
 }
 
 export function apiCall(data, endpoint, callback, method, headers) {
