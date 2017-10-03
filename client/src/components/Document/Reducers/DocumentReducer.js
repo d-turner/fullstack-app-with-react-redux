@@ -166,11 +166,19 @@ const mergeSegment = function(state, action) {
 
 const insertWord = function(state, action) {
   const segments = state.xliff.segments;
-  const newTarget = segments[action.segmentId].target.split(' ');
+  const prep = segments[action.segmentId].target.replace('.', ' .');
+  const prep2 = prep.replace(',', ' ,');
+  const prep3 = prep2.replace('  ', ' ');
+  const newTarget = prep3.split(' ').filter((e) => { return e === 0 || e; });
+  // need to remove other words
+  for (let i = 0; i < action.indexArr.length; i++) {
+    if (action.indexArr[i] !== action.dragIndex) {
+      newTarget[action.indexArr[i]] = '';
+    }
+  }
   // if dragIndex == 0 have to set word to lower case and set the dragIndex + 1 word to upper case
   // if hoverIndex == 0 have to set word to upper case and set hoverIndex + 1 word to lower case
   // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
-  // 
   // word has same case for all other scenarios
   const newData = update(newTarget, {
     $splice: [
@@ -189,7 +197,7 @@ const insertWord = function(state, action) {
         if (index !== action.segmentId) return item;
         return {
           ...item,
-          target: newData.join(' '),
+          target: newData.join(' ').replace(' ,', ',').replace(' .', '.').replace(/ +/g, ' ').trim(),
         };
       }),
     },
