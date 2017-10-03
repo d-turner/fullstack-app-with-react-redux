@@ -19,6 +19,7 @@ class VoiceInput extends React.Component {
 
   result(result) {
     console.log(result);
+    this.textarea.value = result.grammar;
   }
 
   render() {

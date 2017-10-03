@@ -26,7 +26,7 @@ class VoiceRecognition extends React.Component {
 
     const options = Object.assign({}, defaults, this.props);
 
-    let recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognition();
 
     recognition.continuous = options.continuous;
     recognition.interimResults = options.interimResults;
@@ -62,13 +62,7 @@ class VoiceRecognition extends React.Component {
     this.recognition.abort();
   }
 
-  componentWillReceiveProps({ stop }) {
-    if (stop) {
-      this.stop();
-    }
-  }
-
-  componentDidMount () {
+  componentDidMount() {
     const events = [
       { name: 'start', action: this.props.onStart },
       { name: 'end', action: this.props.onEnd },
@@ -84,11 +78,17 @@ class VoiceRecognition extends React.Component {
     this.start();
   }
 
-  componentWillUnmount () {
+  componentWillReceiveProps({ stop }) {
+    if (stop) {
+      this.stop();
+    }
+  }
+
+  componentWillUnmount() {
     this.abort();
   }
 
-  render () {
+  render() {
     return null;
   }
 }
