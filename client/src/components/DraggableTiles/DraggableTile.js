@@ -11,13 +11,31 @@ const Types = {
 
 const tileSource = {
   beginDrag(props) {
+    const item = { word: props.word, index: props.index, isDragging: props.isDragging };
+    const indexArr = [];
+    let data = '';
+    const wrapper = document.getElementById('wordTiles');
+    const tiles = wrapper.childNodes;
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i];
+      const input = tile.getElementsByTagName('input')[0];
+      const label = tile.getElementsByTagName('label')[0];
+      if (input.checked) {
+        data += label.innerText + ' ';
+        indexArr.push(i);
+      }
+    }
+    if (data !== '') {
+      item.word = data;
+    }
+    item.indexArr = indexArr;
     // Return the data describing the dragged item
-    return { word: props.word, index: props.index };
+    return item;
   },
 };
 
 const tileTarget = {
-  hover(props, monitor, component) {
+  drop(props, monitor, component) {
     const item = monitor.getItem();
     const dragIndex = item.index;
     const hoverIndex = props.index;
@@ -49,10 +67,10 @@ const tileTarget = {
     if (hoverClientX < hoverMiddleX - 20 && dragIndex < hoverIndex) {
       return;
     }
-    // Time to actually perform the action
-    props.moveTile(dragIndex, hoverIndex, item.word, props.word);
+    props.moveTile(dragIndex, hoverIndex, item.word, props.word, item.indexArr);
     monitor.getItem().index = hoverIndex;
   },
+
 };
 
 // this inject props into the component
@@ -80,16 +98,24 @@ function collectTarget(connect, monitor) {
 
 class DraggableTile extends React.Component {
   render() {
-    const { connectDragSource, connectDropTarget, isDragging, word } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, word, index } = this.props;
     return connectDragSource(connectDropTarget(
       <div
-        className={`${styles.format} ${styles.inlineBlock} ${styles.noselect}`}
+        className={`${styles.inlineBlock} ${styles.noselect}`}
         style={{
           opacity: isDragging ? 0.5 : 1,
           cursor: 'move' }}
         ref={(elm) => { this.card = elm; }}
       >
-        {word}
+        <input aria-label="select word for dragging" id={`drag${word}${index}`} type="checkbox" className={styles.check} />
+        <label className={styles.format} htmlFor={`drag${word}${index}`}
+          style={{
+            minWidth: '58px',
+            textAlign: 'center',
+            opacity: isDragging ? 0.5 : 1,
+            cursor: 'move' }}>
+          {word}
+        </label>
       </div>,
     ));
   }
@@ -97,6 +123,7 @@ class DraggableTile extends React.Component {
 
 DraggableTile.propTypes = {
   word: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
