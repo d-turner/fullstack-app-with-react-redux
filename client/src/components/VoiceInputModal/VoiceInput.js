@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 
-import Input from 'react-speech-recognition-input';
-
-import VoiceRecognition from './VoiceRecognition';
+import Input from './react-speech-recognition-input';
 import styles from '../SplitModal/split.scss';
 
 class VoiceInput extends React.Component {
@@ -17,11 +15,18 @@ class VoiceInput extends React.Component {
 
   finished() {
     this.setState({ stop: true });
+    console.log('Submitting...');
+    console.log(this.textarea.value);
   }
 
   result(result) {
     console.log(result);
-    this.textarea.value = result.grammar;
+    this.textarea.value = result;
+  }
+
+  end(result) {
+    console.log(result);
+    this.textarea.value = result;
   }
 
   render() {
@@ -39,9 +44,7 @@ class VoiceInput extends React.Component {
             <h5>#{segmentId} Voice Input</h5>
             <div className={styles.innerText}>
               {content}
-              { /* <VoiceRecognition stop={this.state.stop} onResult={result => this.result(result)} onEnd={result => this.result(result)} onError={result => this.result(result)} /> */}}
-              <Input className="test" onChange={value => console.log(value)} onEnd={value => console.log(value)} />
-              <textarea ref={(ref) => { this.textarea = ref; }} />
+              <Input onChange={value => this.result(value)} onEnd={value => this.end(value)} />
             </div>
 
             <div className={styles.buttons}>
