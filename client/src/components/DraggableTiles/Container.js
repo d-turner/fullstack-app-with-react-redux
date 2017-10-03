@@ -16,7 +16,7 @@ class SegmentTiles extends React.Component {
     this.moveTile = this.moveTile.bind(this);
   }
 
-  moveTile(dragIndex, hoverIndex, word, targetWord) {
+  moveTile(dragIndex, hoverIndex, word, targetWord, indexArr) {
     store.dispatch(
       actions.insertWord(
         dragIndex,
@@ -25,6 +25,7 @@ class SegmentTiles extends React.Component {
         targetWord,
         this.props.segmentId,
         this.props.documentId,
+        indexArr,
       ),
     );
     const event = {dragIndex, hoverIndex, word, targetWord };
@@ -34,9 +35,13 @@ class SegmentTiles extends React.Component {
 
   render() {
     const { segment } = this.props;
+    const prep = segment.target.replace('.', ' .');
+    const prep2 = prep.replace(',', ' ,');
+    const prep3 = prep2.replace('  ', ' ');
+    const words = prep3.split(' ').filter((e) => { return e === 0 || e; });
     return (
-      <div>
-        {segment.target.split(' ').map((word, index) => {
+      <div id="wordTiles">
+        {words.map((word, index) => {
           const key = `${word}${index}`;
           if (word === '') return null;
           return <DraggableTile word={word} index={index} moveTile={this.moveTile} key={key} />;
@@ -49,7 +54,7 @@ class SegmentTiles extends React.Component {
 SegmentTiles.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
-  documentId: PropTypes.number.isRequired,
+  documentId: PropTypes.string.isRequired,
   onTileDrag: PropTypes.func.isRequired,
 };
 
