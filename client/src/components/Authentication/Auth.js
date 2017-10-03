@@ -16,8 +16,9 @@ export default class Auth extends React.Component {
   render() {
     if (this.state.show) {
       return (
-        <div className="flex one three-700 center">
-          <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
+        <div className="flex one two-600 three-1100 center">
+          <div className={`flex one third-1100 fourth-1400 center ${styles.card}`}
+            style={{ marginTop: '40px', padding: '16px 40px 30px 30px', borderRadius: '4px' }}>
             <Login login={authActions.login} />
             <span>
               <button
@@ -32,8 +33,9 @@ export default class Auth extends React.Component {
       );
     }
     return (
-      <div className="flex one three-700 center">
-        <div className={`flex one third-700 fourth-1200 center ${styles.card}`}>
+      <div className="flex one two-600 three-1100 center">
+        <div className={`flex one third-1100 fourth-1400 center ${styles.card}`}
+          style={{ marginTop: '40px', padding: '16px 40px 30px 30px', borderRadius: '4px' }}>
           <Register />
           <span>
             <button
