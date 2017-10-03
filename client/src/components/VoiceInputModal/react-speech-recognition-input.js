@@ -74,7 +74,7 @@ export default class App extends Component {
             className={styles.micImg}
             onClick={this.say.bind(this)} />
         }
-        <input
+        <textarea
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
           className={styles.chatMessageInput}
