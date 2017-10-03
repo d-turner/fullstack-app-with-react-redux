@@ -3,17 +3,17 @@
 nav {
   /* position: absolute; if we  don't want it to scroll */
   a {
+    display: inline-block;
     padding: $tab-padding;
-    float: right;
+    margin-right: auto;
     color: $kanjbackground;
-    height: 100%;
     img {
       height: $logo-nav-width;
       width: $logo-nav-width;
     }
   }
   a:first-child {
-    position: absolute;
+    margin-right: auto;
   }
 
   background-color: $lightsilver;
@@ -21,5 +21,5 @@ nav {
 
 .selected {
   border-bottom: 2px solid $mediumorchid;
-  padding-bottom: 0.8em;
+  padding-bottom: 0.52em;
 }

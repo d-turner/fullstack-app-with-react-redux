@@ -32,7 +32,7 @@ export default class NavPill extends React.Component {
       );
     }
     return (
-      <Link to={this.props.to} className={location ? styles.selected : ''}>
+      <Link to={this.props.to} className={location ? styles.selected : ''} style={{ marginRight: '22.4px' }}>
         <div>{this.props.label}</div>
       </Link>
     );
