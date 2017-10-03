@@ -2,7 +2,7 @@ import $q from 'q';
 
 import * as actions from '../../../constants/actionTypes';
 import fileReader from '../../../utils/fileReader';
-import xliffParser from '../../../utils/xliffParser';
+import xliffParser from '../../../utils/xliffTwoParser';
 import apiWrapper from '../../../utils/apiWrapper';
 
 export function resetEditorState() {
