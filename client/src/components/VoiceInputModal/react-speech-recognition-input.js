@@ -78,7 +78,8 @@ export default class App extends Component {
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
           className={styles.chatMessageInput}
-          placeholder="Enter Translation" />
+          placeholder="Enter Translation"
+          ref={(ref) => { this.textarea = ref; }} />
       </div>
     );
   }

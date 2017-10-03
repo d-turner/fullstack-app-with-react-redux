@@ -16,17 +16,17 @@ class VoiceInput extends React.Component {
   finished() {
     this.setState({ stop: true });
     console.log('Submitting...');
-    console.log(this.textarea.value);
+    console.log(this.Input.textarea.value);
   }
 
   result(result) {
     console.log(result);
-    this.textarea.value = result;
+    this.Input.textarea.value = result;
   }
 
   end(result) {
     console.log(result);
-    this.textarea.value = result;
+    this.Input.textarea.value = result;
   }
 
   render() {
@@ -44,7 +44,9 @@ class VoiceInput extends React.Component {
             <h5>#{segmentId} Voice Input</h5>
             <div className={styles.innerText}>
               {content}
-              <Input onChange={value => this.result(value)} onEnd={value => this.end(value)} />
+              <Input onChange={value => this.result(value)}
+                onEnd={value => this.end(value)}
+                ref={(ref) => { this.Input = ref; }} />
             </div>
 
             <div className={styles.buttons}>
