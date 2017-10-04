@@ -4,19 +4,23 @@ import ReactModal from 'react-modal';
 
 import Input from './react-speech-recognition-input';
 import styles from '../SplitModal/split.scss';
+import { updateFromVoice } from './actions';
+import store from '../../store';
 
 class VoiceInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { stop: false };
     this.finished = this.finished.bind(this);
     this.result = this.result.bind(this);
   }
 
   finished() {
-    this.setState({ stop: true });
+    const { documentId, segmentId, removeModal } = this.props;
+    const text = this.Input.textarea.value;
     console.log('Submitting...');
     console.log(this.Input.textarea.value);
+    store.dispatch(updateFromVoice(documentId, segmentId, text));
+    removeModal();
   }
 
   result(result) {
@@ -27,8 +31,8 @@ class VoiceInput extends React.Component {
 
   end(result) {
     console.log(result);
-    console.log('On end updating...');
-    this.Input.textarea.value = result;
+    console.log('On end does not do what we want');
+    // this.Input.textarea.value = result;
   }
 
   render() {
@@ -41,13 +45,14 @@ class VoiceInput extends React.Component {
           isOpen={renderModal}
           contentLabel="Voice input for translation"
           overlayClassName={styles.overlay}
-          className={styles.content}>
+          className={styles.content1}>
           <div className={styles.wrapper} >
             <h5>#{segmentId} Voice Input</h5>
             <div className={styles.innerText}>
               {content}
               <Input onChange={value => this.result(value)}
                 onEnd={value => this.end(value)}
+                lang={this.props.lang}
                 ref={(ref) => { this.Input = ref; }} />
             </div>
 
@@ -65,6 +70,7 @@ class VoiceInput extends React.Component {
 
 VoiceInput.defaultProps = {
   renderModal: false,
+  lang: 'en-US',
 };
 
 VoiceInput.propTypes = {
@@ -73,6 +79,7 @@ VoiceInput.propTypes = {
   segmentId: PropTypes.number.isRequired,
   documentId: PropTypes.string.isRequired,
   removeModal: PropTypes.func.isRequired,
+  lang: PropTypes.string,
 };
 
 export default VoiceInput;

@@ -70,6 +70,7 @@ export default class App extends Component {
         {
           this.state.supportVoice &&
           <img
+            alt="Microphone image for voice input"
             src={this.state.speaking ? micAnimate : mic}
             className={styles.micImg}
             onClick={this.say.bind(this)} />

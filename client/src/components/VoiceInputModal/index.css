@@ -9,6 +9,7 @@
   height: 38px;
   right: 5px;
   top: 1px;
+  cursor: pointer;
 }
 .chatMessageInput {
   background-color: #ffffff;
