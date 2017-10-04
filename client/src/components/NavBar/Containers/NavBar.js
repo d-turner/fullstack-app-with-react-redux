@@ -23,7 +23,7 @@ class NavBar extends React.Component {
           <NavPill to={'/logout'} label={'Logout'} logout={this.props.logout} /> :
           <NavPill to={'/login'} label={'Login'} />
         }
-        <NavPill to={'/projects'} label={'Projects'} />
+        {/* <NavPill to={'/projects'} label={'Projects'}> */}
         <NavPill to={'/documents'} label={'Documents'} />
       </nav>
     );

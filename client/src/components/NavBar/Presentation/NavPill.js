@@ -21,7 +21,7 @@ export default class NavPill extends React.Component {
     `/${window.location.pathname.split('/')[1]}` === this.props.to);
     if (this.props.children) {
       return (
-        <Link to={this.props.to} className={location ? `img ${styles.selected}` : 'img'} >
+        <Link to={this.props.to} className={location ? `img ${styles.selected}` : 'img'} style={{ marginRight: '22.4px' }}>
           {this.props.children}
         </Link>
       );
@@ -29,6 +29,13 @@ export default class NavPill extends React.Component {
     if (this.props.label === 'Logout') {
       return (
         <button style={{ float: 'right', marginTop: '10px' }} onClick={() => this.logoutUser()}>Logout</button>
+      );
+    }
+    if (this.props.label === 'Login') {
+      return (
+        <Link to={this.props.to} className={location ? styles.selected : ''} style={{ float: 'right', paddingBottom: '0.8em' }}>
+          <div>{this.props.label}</div>
+        </Link>
       );
     }
     return (
