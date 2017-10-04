@@ -21,11 +21,13 @@ class VoiceInput extends React.Component {
 
   result(result) {
     console.log(result);
+    console.log('On change updating...');
     this.Input.textarea.value = result;
   }
 
   end(result) {
     console.log(result);
+    console.log('On end updating...');
     this.Input.textarea.value = result;
   }
 
