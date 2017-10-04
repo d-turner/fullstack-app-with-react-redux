@@ -138,10 +138,14 @@ const mergeSegment = function(state, action) {
 
 const updateFromVoiceInput = function(state, action) {
   const { documentId, segmentId, text } = action;
+  let editorState = state.editorState;
   if (segmentId === state.selectedSegment) {
-    return state;
+    editorState = EditorState.createWithContent(ContentState.createFromText(text));
   }
   const newState = update(state, {
+    editorState: {
+      $set: editorState,
+    },
     documents: {
       [documentId]: {
         xliff: {
