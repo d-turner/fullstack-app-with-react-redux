@@ -136,6 +136,29 @@ const mergeSegment = function(state, action) {
   };
 };
 
+const updateFromVoiceInput = function(state, action) {
+  const { documentId, segmentId, text } = action;
+  if (segmentId === state.selectedSegment) {
+    return state;
+  }
+  const newState = update(state, {
+    documents: {
+      [documentId]: {
+        xliff: {
+          segments: {
+            [segmentId]: {
+              target: {
+                $set: text,
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  return newState;
+};
+
 // const insertWord = function(state, action) {
 //   const segments = state.xliff.segments;
 //   const newTarget = segments[action.segmentId].target.split(' ');
@@ -274,6 +297,8 @@ const DocumentReducer = function(state = initialState, action) {
           [action.documentId]: updatedState,
         },
       });
+    case actions.VOICE_INPUT:
+      return updateFromVoiceInput(state, action);
     case actions.RESET_EDITOR:
       return Object.assign({}, state, {
         editorState: '',
