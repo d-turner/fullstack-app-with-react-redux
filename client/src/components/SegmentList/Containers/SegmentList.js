@@ -186,8 +186,9 @@ class SegmentList extends React.Component {
           null}
         {this.state.renderVoice ?
           <VoiceInput
-            {...this.props}
+            documentId={this.props.documentId}
             segmentId={this.state.voiceIndex}
+            lang={this.props.documents[this.props.documentId].xliff.targetLang}
             content={this.props.segments[this.state.voiceIndex].source}
             renderModal={this.state.renderVoice}
             removeModal={() => this.renderVoice(this.state.voiceIndex)} /> :
