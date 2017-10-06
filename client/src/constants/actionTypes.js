@@ -1,6 +1,10 @@
 /*
  * Action Constants
  */
+
+// Sync actions
+export const SYNC = 'SYNC_DOCUMENT';
+
 // Document Actions
 export const RESET_EDITOR = 'RESET_EDITOR';
 export const FETCH_DOCUMENT = 'FETCH_DOCUMENT_REQUEST';
