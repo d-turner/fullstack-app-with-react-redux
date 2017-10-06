@@ -10,7 +10,7 @@ import * as authActions from './AuthActions';
 export default class Auth extends React.Component {
   constructor(props) {
     super(props);
-    this.state = ({ show: false });
+    this.state = ({ show: true });
   }
 
   render() {
