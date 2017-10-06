@@ -8,7 +8,7 @@ import authenticationReducer from '../components/Authentication/AuthReducer';
 import keyLoggerReducer from '../components/KeyLogger/KeyLoggerReducer';
 
 // Reducer Root
-const reducerRoot = combineReducers({
+const appReducer = combineReducers({
   projectReducer,
   documentReducer,
   commentReducer,
@@ -16,4 +16,12 @@ const reducerRoot = combineReducers({
   keyLoggerReducer,
 });
 
-export default reducerRoot;
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT') {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
+export default rootReducer;
