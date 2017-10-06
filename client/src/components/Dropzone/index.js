@@ -29,7 +29,7 @@ class Drop extends React.Component {
       });
     });
     if (rejected.length > 0) {
-      alert('Only xliff files allowed!');
+      alert('Only xliff/xlf files allowed!');
     }
   }
 
@@ -37,7 +37,7 @@ class Drop extends React.Component {
     return (
       <div>
         <Dropzone
-          accept=".xliff"
+          accept=".xliff,.xlf"
           activeStyle={activeStyle}
           className={`${styles.dropzone}`}
           onDrop={this.onDrop}
