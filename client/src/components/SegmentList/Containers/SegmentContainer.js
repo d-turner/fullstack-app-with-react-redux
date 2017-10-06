@@ -8,6 +8,7 @@ import styles from '../segmentList.scss';
 import Loader from '../../Loader/Loader';
 import store from '../../../store';
 import { requestDocument, resetEditorState } from '../../Document/ActionCreators/DocumentActions';
+import Sync from '../../Sync/Save';
 
 class SegmentContainer extends React.Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class SegmentContainer extends React.Component {
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex four five-900 grow">
+          <Sync documentId={this.state.id} />
           <SegmentList
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
