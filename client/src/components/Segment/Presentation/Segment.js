@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 import styles from '../segment.scss';
@@ -40,7 +41,6 @@ class Segment extends React.Component {
         <div
           style={{ marginTop: '10px' }}
           className={styles.editorWrapper}
-          onClick={this.props.focus}
           onKeyDown={e => this.keyLogger.record(e)}
           tabIndex={0}
           role="Main"

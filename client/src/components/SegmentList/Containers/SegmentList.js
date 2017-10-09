@@ -24,7 +24,15 @@ class SegmentList extends React.Component {
     this.props.updateSelectedSegment(this.props.documentId, 0);
   }
 
-  selected(index) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedSegment !== this.props.selectedSegment) {
+      const node = document.getElementById('selectedSegment');
+      node.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
+  }
+
+  selected(e, index) {
+    e.preventDefault();
     this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
     this.props.updateSelectedSegment(this.props.documentId, index);
   }
@@ -141,7 +149,7 @@ class SegmentList extends React.Component {
 
   renderSelected(index) {
     return (
-      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.selected}`}>
+      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.selected}`} id="selectedSegment">
         {this.renderSingle(index)}
       </div>
     );
@@ -150,7 +158,7 @@ class SegmentList extends React.Component {
   renderButton(index) {
     return (
       <button
-        onClick={() => this.selected(index)}
+        onClick={e => this.selected(e, index)}
         className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
         aria-label="Activate the selected segment"
         role={'textbox'}>
