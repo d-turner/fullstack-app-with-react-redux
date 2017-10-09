@@ -212,8 +212,6 @@ const xliffTwoParser = (fileReader, $q, $log) => {
     },
     // util to stringify an XML dom (takes a DOM as argument)
     getDOMString(xmlObj) {
-      $log.log('XmlObj: ');
-      $log.log(xmlObj);
       const domString = new XMLSerializer().serializeToString(xmlObj);
       return domString;
     },
