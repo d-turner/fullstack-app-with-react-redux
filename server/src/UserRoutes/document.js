@@ -6,7 +6,7 @@ import logger from '../util/logger';
 import doc from '../db/document';
 import * as resp from '../config/Responses';
 
-const dest = '~/Documents/git/kanjingo-react-redux/client/src/data/';
+const dest = '../../../client/src/data/';
 const uploads = multer({ dest });
 
 export default (app) => {
