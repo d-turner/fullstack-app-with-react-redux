@@ -4,11 +4,12 @@ import update from 'immutability-helper';
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
+import SyncReducer from '../../Sync/reducer';
 
 const initialState = {
   documents: {},
   lexicon: '',
-  selectedSegment: 0,
+  selectedSegment: -1,
   editorState: '',
   find: {
     isFinding: false,
@@ -286,12 +287,12 @@ const DocumentReducer = function(state = initialState, action) {
         },
       });
     case actions.UPDATE_SELECTED:
+      if (state.selectedSegment === action.segmentId) return state;
       const text = cleanText(state.documents[action.documentId].xliff.segments[action.segmentId].target);
-      return {
-        ...state,
+      return Object.assign({}, state, {
         selectedSegment: action.segmentId,
         editorState: EditorState.createWithContent(ContentState.createFromText(text)),
-      };
+      });
     case actions.INSERT_WORD:
       const updatedState = insertWord(state.documents[action.documentId], action);
       return Object.assign({}, state, {
@@ -318,6 +319,8 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.INSERT_DOCUMENTS:
     case actions.DOCUMENT_LIST_FAIL:
       return DocumentList(state, action);
+    case actions.SYNC:
+      return SyncReducer(state, action);
     default:
       return state;
   }
