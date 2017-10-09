@@ -9,6 +9,7 @@ const TEST = '/api/test';
 const DOCUMENT_ID = '/api/documents/';
 const DOCUMENTS = '/api/documents';
 const UPLOAD = '/api/uploadDocument';
+const SYNC = '/api/syncDocument/';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
@@ -78,6 +79,10 @@ const api = {
   uploadDocument: (data, callback) => {
     const headers = { 'Content-Type': 'multipart/form-data' };
     apiCall(data, UPLOAD, callback, 'post', headers);
+  },
+  sync: (data, id, callback) => {
+    const headers = { 'Content-Type': 'text/plain' };
+    apiCall(data, `${SYNC}${id}`, callback, 'post', headers);
   },
 };
 
