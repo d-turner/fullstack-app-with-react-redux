@@ -1,11 +1,12 @@
 import multer from 'multer';
+import fs from 'fs';
 
 import passport from '../config/passport';
 import logger from '../util/logger';
 import doc from '../db/document';
 import * as resp from '../config/Responses';
 
-const dest = '/home/dturner/git/kanjingo-react-redux/client/src/data/';
+const dest = '/home/adapt/Documents/git/kanjingo-react-redux/client/src/data/';
 const uploads = multer({ dest });
 
 export default (app) => {
@@ -64,6 +65,35 @@ export default (app) => {
       doc.findByUser(user.user_id, (err, result) => {
         if (err) logger.error(err);
         res.status(status).send(result);
+      });
+    });
+  });
+
+  // update a single document
+  app.post('/api/syncDocument/:documentId', (req, res) => {
+    const user = req.user;
+    const documentId = req.params.documentId;
+    passport.ensureAuthenticated(req, res, (status, reply) => {
+      if (status !== 200) {
+        res.status(status).json(reply);
+      }
+      doc.findDocumentBySavedName(documentId, (err, result) => {
+        if (err) logger.error(err);
+        if (!result[0] || user.user_id !== result[0].user_id) {
+          res.status(401).json({ status: 'Not Authorized' });
+        }
+        const location = result[0].location;
+        req.on('data', (chunk) => {
+          const data = chunk.toString('utf8');
+          fs.writeFile(location, data, (fail) => {
+            if (fail) {
+              console.log(fail);
+              return res.status(501).send('Fail');
+            }
+            console.log('The file was saved!');
+            return res.status(status).send('Success');
+          });
+        });
       });
     });
   });
