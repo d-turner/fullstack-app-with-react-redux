@@ -1,10 +1,10 @@
-import update from 'immutability-helper';
 import $q from 'q';
 
+import apiWrapper from '../../utils/apiWrapper';
 import fileReader from '../../utils/fileReader';
 import xliffParser from '../../utils/xliffTwoParser';
 
-const DocumentReducer = function(state = initialState, action) {
+const DocumentReducer = function(state, action) {
   const doc = state.documents[action.documentId];
   console.log(doc);
   const DOM = doc.xliff.DOM;
@@ -37,10 +37,12 @@ const DocumentReducer = function(state = initialState, action) {
       }
     }
   }
-  console.log(DOM);
   const reader = fileReader($q);
   const parser = xliffParser(reader, $q, console);
-  // parser.getDOMString(doc.xliff.DOM);
+  const domString = parser.getDOMString(DOM);
+  apiWrapper.sync(domString, action.documentId, (result) => {
+    console.log(result);
+  });
   return state;
 };
 
