@@ -6,7 +6,7 @@ import logger from '../util/logger';
 import doc from '../db/document';
 import * as resp from '../config/Responses';
 
-const dest = '../../../client/src/data/';
+const dest = '/home/adapt/Documents/git/kanjingo-react-redux/client/src/data/';
 const uploads = multer({ dest });
 
 export default (app) => {
@@ -87,10 +87,34 @@ export default (app) => {
           const data = chunk.toString('utf8');
           fs.writeFile(location, data, (fail) => {
             if (fail) {
-              console.log(fail);
               return res.status(501).send('Fail');
             }
-            console.log('The file was saved!');
+            return res.status(status).send('Success');
+          });
+        });
+      });
+    });
+  });
+
+  // upload a log
+  app.post('/api/uploadLog/:documentId', (req, res) => {
+    const user = req.user;
+    const documentId = req.params.documentId;
+    passport.ensureAuthenticated(req, res, (status, reply) => {
+      if (status !== 200) {
+        res.status(status).json(reply);
+      }
+      req.on('data', (chunk) => {
+        const data = chunk.toString('utf8');
+        const location = `${dest}logs/${documentId}`;
+        doc.insertLog(documentId, location, user.user_id, (err, result) => {
+          logger.log(result);
+          if (err) logger.error(err);
+          fs.writeFile(location, data, (fail) => {
+            if (fail) {
+              logger.error(fail);
+              return res.status(401).send('Fail');
+            }
             return res.status(status).send('Success');
           });
         });
