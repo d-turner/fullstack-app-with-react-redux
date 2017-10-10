@@ -34,6 +34,28 @@ CREATE TABLE Documents (
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
+CREATE TABLE Logs (
+  document_id VARCHAR(60) NOT NULL,
+  description VARCHAR(256),
+  location VARCHAR(256) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  user_id INT NOT NULL,
+  PRIMARY KEY (document_id),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Document_META (
+  document_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(80) NOT NULL,
+  saved_name VARCHAR(60) NOT NULL,
+  description VARCHAR(256),
+  location VARCHAR(256) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  user_id INT NOT NULL,
+  PRIMARY KEY (document_id),
+  FOREIGN KEY (docum) REFERENCES Users(user_id)
+);
+
 
 INSERT INTO Users VALUES (
   1,
