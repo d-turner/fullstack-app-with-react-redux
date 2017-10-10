@@ -11,8 +11,8 @@ import KeyLogger from '../../KeyLogger/KeyLogger';
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-    const { segmentId, segment } = props;
-    this.keyLogger = new KeyLogger(segmentId, segment.source, segment.target);
+    const { segmentId, segment, documentId, userId, email } = props;
+    this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, segment.target, userId, email);
   }
   componentWillUnmount() {
     if (this.props.selectedSegment === this.props.segmentId) {
@@ -94,6 +94,8 @@ Segment.propTypes = {
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
   selectedSegment: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 export default Segment;
