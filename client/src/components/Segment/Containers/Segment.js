@@ -75,6 +75,8 @@ class Segment extends React.Component {
         focus={this.focus}
         segmentId={this.props.segmentId}
         selectedSegment={this.props.selectedSegment}
+        email={this.props.email}
+        userId={this.props.userId}
         ref={(ref) => { this.SegmentPresentation = ref; }}
       />
     );
@@ -90,16 +92,19 @@ Segment.propTypes = {
   selectedSegment: PropTypes.number.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   renderTiles: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
-  const { documentReducer } = state;
+  const { documentReducer, authenticationReducer } = state;
   const { documents, selectedSegment } = documentReducer;
+  const { email, userId } = authenticationReducer;
   // return what we want available in the props
   return {
-    documents, selectedSegment,
+    documents, selectedSegment, email, userId,
   };
 };
 
