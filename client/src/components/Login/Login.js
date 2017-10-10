@@ -109,7 +109,7 @@ export default class Login extends React.Component {
 
   render() {
     if (this.state.redirectToReferrer) {
-      return (<Redirect to="/" />);
+      return (<Redirect to="/documents" />);
     }
     let visible = {
       display: 'none',
