@@ -2,8 +2,11 @@ import store from '../../store';
 import * as actions from './KeyLoggerActions';
 
 class KeyLogger {
-  constructor(segmentId, source, target) {
+  constructor(documentId, segmentId, source, target, userId, email) {
     this.buffer = [];
+    this.userId = userId;
+    this.email = email;
+    this.documentId = documentId;
     this.segmentId = segmentId;
     this.source = source;
     this.target = target;
@@ -32,7 +35,7 @@ class KeyLogger {
   }
 
   build() {
-    store.dispatch(actions.build());
+    store.dispatch(actions.build(this.documentId, this.userId, this.email));
   }
 
   tileDrag(e) {

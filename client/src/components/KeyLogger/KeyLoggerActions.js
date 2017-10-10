@@ -7,8 +7,11 @@ export function addLogger(logger) {
   };
 }
 
-export function build() {
+export function build(documentId, userId, email) {
   return {
     type: actions.BUILD,
+    documentId,
+    userId,
+    email,
   };
 }

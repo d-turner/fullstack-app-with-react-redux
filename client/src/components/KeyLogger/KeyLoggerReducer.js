@@ -1,8 +1,9 @@
 import update from 'immutability-helper';
 import * as actions from '../../constants/actionTypes';
+import apiWrapper from '../../utils/apiWrapper';
 
 const initialState = {
-  loggerRecordings: [],
+  loggerRecordings: {},
 };
 
 function countDelete(array) {
@@ -96,19 +97,19 @@ function generateAnnotations(xmlDoc, buffer, time) {
   return annotationsNode;
 }
 
-function buildXML({loggerRecordings}) {
+function buildXML({loggerRecordings}, action) {
   // TODO: Add progress
   // TODO: Add status (on going / finished / etc) general and per unit
   // xml document setup
   const xmlDoc = document.implementation.createDocument('post-editing-translations', 'root');
   const job = xmlDoc.createElement('job');
+  job.setAttribute('document', action.documentId);
+  job.setAttribute('user', action.email);
+  job.setAttribute('userId', action.userId);
   xmlDoc.getElementsByTagName('root')[0].appendChild(job);
-  // add the username to the job
-  // TODO: Add the username
-  // TODO: Add document name
 
-  for (let x = 0; x < loggerRecordings.length; x++) {
-    const { buffer, segmentId, source, target, translation } = loggerRecordings[x];
+  for (let x = 0; x < loggerRecordings[action.documentId].length; x++) {
+    const { buffer, segmentId, source, target, translation } = loggerRecordings[action.documentId][x];
     let startTime = 0;
     let endTime = 0;
     if (buffer.length > 0) {
@@ -182,16 +183,28 @@ function buildXML({loggerRecordings}) {
     }
   }
   console.log(xmlDoc);
+  return xmlDoc;
 }
 
 const KeyLoggerReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.ADD_LOGGER:
+      if (!state.loggerRecordings[action.logger.documentId]) {
+        state.loggerRecordings[action.logger.documentId] = [];
+      }
       return update(state, {
-        loggerRecordings: { $push: [action.logger] },
+        loggerRecordings: {
+          [action.logger.documentId]: {
+            $push: [action.logger],
+          },
+        },
       });
     case actions.BUILD:
-      buildXML(state);
+      const xmlDoc = buildXML(state, action);
+      const domString = new XMLSerializer().serializeToString(xmlDoc);
+      apiWrapper.uploadLog(domString, action.documentId, (result) => {
+        console.log(result);
+      });
       return state;
     default:
       return state;
