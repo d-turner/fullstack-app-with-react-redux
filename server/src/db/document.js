@@ -23,6 +23,11 @@ const User = {
     return mariaDB.query('INSERT INTO Documents (name, description, saved_name, location, user_id) VALUES (:name, :description, :filename, :location, :userId)',
     { name, description, filename, location, userId }, cb);
   },
+
+  insertLog(documentId, location, userId, cb) {
+    return mariaDB.query('INSERT INTO Logs (document_id, location, user_id) VALUES (:documentId, :location, :userId)',
+    { documentId, location, userId }, cb);
+  },
 };
 
 export default User;
