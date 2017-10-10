@@ -108,6 +108,7 @@ export default (app) => {
         const data = chunk.toString('utf8');
         const location = `${dest}logs/${documentId}`;
         doc.insertLog(documentId, location, user.user_id, (err, result) => {
+          // TODO: fix when value already in table
           logger.log(result);
           if (err) logger.error(err);
           fs.writeFile(location, data, (fail) => {
