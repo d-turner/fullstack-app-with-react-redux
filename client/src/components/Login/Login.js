@@ -37,9 +37,11 @@ export default class Login extends React.Component {
       } else {
         // login successful redirect to home/profile page
         const feedbackMessage = 'Login Successful';
-        this.setState({ errorMessgae: null, feedbackMessage, redirectToReferrer: true });
         const { user_id, email, name } = response.data;
         store.dispatch(this.props.login(user_id, email, name));
+        window.setTimeout(() => {
+          this.setState({ errorMessgae: null, feedbackMessage, redirectToReferrer: true });
+        }, 500);
       }
     });
   }
