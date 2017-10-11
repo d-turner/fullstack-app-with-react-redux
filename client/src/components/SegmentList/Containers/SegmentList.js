@@ -4,6 +4,7 @@ import ReactToolTip from 'react-tooltip';
 
 import styles from '../segmentList.scss';
 import Segment from '../../Segment/Containers/Segment';
+import PlainSegment from '../../Segment/Presentation/PlainSegment';
 import CommentModal from '../../Comments/Presentation/CommentModal';
 import SplitModal from '../../SplitModal/Containers/Modal';
 import VoiceInput from '../../VoiceInputModal/VoiceInput';
@@ -11,13 +12,14 @@ import VoiceInput from '../../VoiceInputModal/VoiceInput';
 class SegmentList extends React.Component {
   constructor(props) {
     super(props);
-    const renderArray = new Array(props.segments.length).fill(false);
-    this.state = { renderArray, renderTiles: false, renderVoice: false };
+    const editArray = new Array(props.segments.length).fill(false);
+    editArray[0] = true;
+    this.state = { editArray, renderComment: false, renderModal: false, renderTiles: false, renderVoice: false };
 
     this.renderSegment = this.renderSegment.bind(this);
     this.renderSingle = this.renderSingle.bind(this);
-    this.unrender = this.unrender.bind(this);
-    this.removeModal = () => this._removeModal();
+    this.renderComment = this.renderComment.bind(this);
+    this.renderModal = this.renderModal.bind(this);
   }
 
   componentWillMount() {
@@ -33,36 +35,30 @@ class SegmentList extends React.Component {
 
   selected(e, index) {
     e.preventDefault();
-    this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
+    const editArray = this.state.editArray;
+    editArray[index] = true;
+    this.setState({ editArray });
     this.props.updateSelectedSegment(this.props.documentId, index);
-  }
-
-  unrender() {
-    this.setState({ renderArray: new Array(this.props.segments.length).fill(false) });
-  }
-
-  _splitSegment(index) {
-    this.setState({ renderModal: true, splitIndex: index });
-  }
-  _removeModal() {
-    this.setState({ renderModal: false });
   }
 
   _mergeSegment(index) {
     this.props.mergeSegment(index, this.props.documentId);
   }
 
-  renderComment(event, index) {
-    const newArray = this.state.renderArray.map((value, i) => {
-      if (index === i) return true;
-      return false;
-    });
-    this.setState({ renderArray: newArray });
-    this.props.renderComment();
+  renderModal() {
+    this.setState({ renderModal: !this.state.renderModal });
+  }
+
+  renderComment() {
+    this.setState({ renderComment: !this.state.renderComment });
   }
 
   renderTiles() {
     this.setState({ renderTiles: !this.state.renderTiles });
+    window.setTimeout(() => {
+      const node = document.getElementById('selectedSegment');
+      node.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }, 300);
   }
 
   renderVoice(index) {
@@ -75,7 +71,7 @@ class SegmentList extends React.Component {
         <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Comment"
           aria-label="Add a Comment"
-          onClick={event => this.renderComment(event, index)}>
+          onClick={() => this.renderComment()}>
           <i className={`small material-icons ${styles.fixFont}`}>chat_bubble</i>
         </button>
         <ReactToolTip place="right" id="Comment" effect="solid">
@@ -85,7 +81,7 @@ class SegmentList extends React.Component {
         <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Split"
           aria-label="Split Segment"
-          onClick={() => this._splitSegment(index)}>
+          onClick={() => this.renderModal()}>
           <i className={`small material-icons ${styles.fixFont}`}>call_split</i>
         </button>
         <ReactToolTip place="right" id="Split" effect="solid">
@@ -128,7 +124,7 @@ class SegmentList extends React.Component {
   }
 
   renderSegment(segment, index) {
-    const { selectedSegment, documentId } = this.props;
+    const { selectedSegment } = this.props;
     let selected = styles.normalPadding;
     if (index === selectedSegment) selected = styles.selectedPadding;
     return (
@@ -137,12 +133,7 @@ class SegmentList extends React.Component {
           this.renderSelected(index) :
           this.renderButton(index)
         }
-        {this.renderSidebar(index)}
-        <CommentModal
-          documentId={documentId}
-          index={index}
-          unrender={this.unrender}
-          render={this.state.renderArray[index]} />
+        {index === this.props.selectedSegment ? this.renderSidebar(index) : null}
       </div>
     );
   }
@@ -150,7 +141,26 @@ class SegmentList extends React.Component {
   renderSelected(index) {
     return (
       <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.selected}`} id="selectedSegment">
-        {this.renderSingle(index)}
+        {this.renderSingleSelected(index)}
+        <CommentModal
+          documentId={this.props.documentId}
+          index={index}
+          unrender={this.renderComment}
+          render={this.state.renderComment} />
+        <SplitModal
+          splitSegment={this.props.splitSegment}
+          documentId={this.props.documentId}
+          segmentId={index}
+          content={this.props.segments[index].source}
+          renderModal={this.state.renderModal}
+          removeModal={this.renderModal} />
+        <VoiceInput
+          documentId={this.props.documentId}
+          segmentId={index}
+          lang={this.props.documents[this.props.documentId].xliff.targetLang}
+          content={this.props.segments[index].source}
+          renderModal={this.state.renderVoice}
+          removeModal={() => this.renderVoice(this.state.voiceIndex)} />
       </div>
     );
   }
@@ -160,6 +170,7 @@ class SegmentList extends React.Component {
       <button
         onClick={e => this.selected(e, index)}
         className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.block} ${styles.clearMarginTop}`}
+        style={{ marginRight: '80px' }}
         aria-label="Activate the selected segment"
         role={'textbox'}>
         {this.renderSingle(index)}
@@ -167,7 +178,7 @@ class SegmentList extends React.Component {
     );
   }
 
-  renderSingle(index) {
+  renderSingleSelected(index) {
     if (this.props.editorState === '') {
       return null;
     }
@@ -180,27 +191,19 @@ class SegmentList extends React.Component {
     );
   }
 
+  renderSingle(index) {
+    return (
+      <PlainSegment
+        edited={this.state.editArray[index]}
+        segment={this.props.segments[index]}
+        segmentId={index} />
+    );
+  }
+
   render() {
     return (
       <div className="two-third three-fourth-900 four-fifth-1200 center">
         {this.props.segments.map(this.renderSegment)}
-        {this.state.renderModal ?
-          <SplitModal
-            {...this.props}
-            segmentId={this.state.splitIndex}
-            content={this.props.segments[this.state.splitIndex].source}
-            renderModal={this.state.renderModal}
-            removeModal={this.removeModal} /> :
-          null}
-        {this.state.renderVoice ?
-          <VoiceInput
-            documentId={this.props.documentId}
-            segmentId={this.state.voiceIndex}
-            lang={this.props.documents[this.props.documentId].xliff.targetLang}
-            content={this.props.segments[this.state.voiceIndex].source}
-            renderModal={this.state.renderVoice}
-            removeModal={() => this.renderVoice(this.state.voiceIndex)} /> :
-          null}
       </div>
     );
   }
@@ -212,8 +215,8 @@ SegmentList.propTypes = {
   updateSelectedSegment: PropTypes.func.isRequired,
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
   selectedSegment: PropTypes.number.isRequired,
-  renderComment: PropTypes.func.isRequired,
   mergeSegment: PropTypes.func.isRequired,
+  splitSegment: PropTypes.func.isRequired,
 };
 
 export default SegmentList;
