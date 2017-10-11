@@ -5,14 +5,15 @@ import styles from '../segment.scss';
 
 class PlainSegment extends React.Component {
   render() {
-    let className = styles.wrapper;
+    const className = styles.wrapper;
+    let tick = null;
     if (this.props.edited) {
-      className = `${styles.wrapper} ${styles.edited}`;
+      tick = <i className={`material-icons ${styles.tick}`}>check</i>;
     }
     return (
       <div>
         <div className={className}>
-          <h6>#{this.props.segmentId} Source</h6>
+          <h6>#{this.props.segmentId} Source {tick}</h6>
           {this.props.segment.source}
         </div>
         <div className={styles.wrapper}>
