@@ -8,7 +8,7 @@ class PlainSegment extends React.Component {
     const className = styles.wrapper;
     let tick = null;
     if (this.props.edited) {
-      tick = <i className={`material-icons ${styles.tick}`}>check</i>;
+      tick = <i className={`material-icons ${styles.tick}`}>check_circle</i>;
     }
     return (
       <div>
