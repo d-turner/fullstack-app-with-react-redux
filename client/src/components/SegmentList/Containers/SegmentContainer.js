@@ -15,10 +15,8 @@ class SegmentContainer extends React.Component {
     super(props);
     const id = props.match.params.documentId;
 
-    this.renderComment = this.renderComment.bind(this);
     this.state = {
       id,
-      renderComment: false,
     };
   }
 
@@ -29,11 +27,6 @@ class SegmentContainer extends React.Component {
 
   componentWillUnmount() {
     store.dispatch(resetEditorState());
-  }
-  renderComment() {
-    this.setState({
-      renderComment: true,
-    });
   }
 
   render() {
@@ -53,7 +46,6 @@ class SegmentContainer extends React.Component {
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
             editorState={editorState}
-            renderComment={this.renderComment}
             {...this.props} />
           <Sidebar documentId={this.state.id} />
         </div>
