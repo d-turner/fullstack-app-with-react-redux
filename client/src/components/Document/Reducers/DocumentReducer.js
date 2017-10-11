@@ -67,19 +67,15 @@ const documentFetchResults = function(state = blankDocument, action) {
 };
 
 const updateTarget = function(state = blankDocument, action) {
-  return {
-    ...state,
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: state.xliff.segments.map((segment, index) => {
-        if (index !== action.segmentId) { return segment; }
-        return {
-          ...segment,
-          target: action.editorState.getCurrentContent().getPlainText(),
-        };
-      }),
+      segments: {
+        [action.segmentId]: {
+          target: { $set: action.editorState.getCurrentContent().getPlainText() },
+        },
+      },
     },
-  };
+  });
 };
 
 function updateSegment(segment, newSource, newTarget) {
@@ -252,11 +248,12 @@ const DocumentReducer = function(state = initialState, action) {
         },
       };
     case actions.UPDATE_TARGET:
-      return Object.assign({}, state, {
-        editorState: action.editorState,
+      return update(state, {
+        editorState: { $set: action.editorState },
         documents: {
-          ...state.documents,
-          [action.documentId]: updateTarget(state.documents[action.documentId], action),
+          [action.documentId]: {
+            $set: updateTarget(state.documents[action.documentId], action),
+          },
         },
       });
     case actions.LOOKUP:
