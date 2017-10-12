@@ -38,7 +38,7 @@ class CustomEditor extends React.Component {
             activeClass={styles['RichEditor-activeButton']}
         />
         </details>
-        <VoiceInput onChange={(value) => { alert('Value: ', value); }} onEnd={(value) => { alert('End Value: ', value); }} />
+        <VoiceInput onChange={(value) => { console.log('Value: ', value); }} onEnd={(value) => { console.log('End Value: ', value); }} />
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
