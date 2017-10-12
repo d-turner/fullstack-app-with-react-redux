@@ -9,6 +9,7 @@ export default class App extends Component {
     this.state = {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
+      speaking: false,
     };
   }
 
@@ -20,6 +21,7 @@ export default class App extends Component {
       this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang || 'en-US';
       this.recognition.onresult = (event) => {
+        console.log('Result');
         let interimTranscript = '';
         let finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -55,33 +57,35 @@ export default class App extends Component {
         this.recognition.start();
       } else {
         this.recognition.stop();
-        const question = this.state.inputValue;
+        this.props.onEnd(this.state.inputValue);
       }
       this.setState({
         speaking: !this.state.speaking,
-        inputValue: '',
       });
     }
   }
 
   render() {
     return (
-      <div className={styles.chatInputWrapper + " " + this.props.className} >
+      <div style={{ display: 'inline', float: 'right' }} className={`${styles.chatInputWrapper} ${this.props.className}`} >
         {
-          this.state.supportVoice &&
-          <img
-            alt="Microphone image for voice input"
-            src={this.state.speaking ? micAnimate : mic}
-            className={styles.micImg}
-            onClick={this.say.bind(this)} />
+          this.state.supportVoice ?
+            <img
+              alt="Microphone for voice input"
+              tabIndex="-10"
+              role="button"
+              src={this.state.speaking ? micAnimate : mic}
+              className={styles.micImg}
+              onClick={this.say.bind(this)} /> : null
         }
-        <textarea
-          value={this.state.inputValue}
-          onChange={this.changeValue.bind(this)}
-          className={styles.chatMessageInput}
-          placeholder="Enter Translation"
-          ref={(ref) => { this.textarea = ref; }} />
       </div>
     );
   }
 }
+
+// <textarea
+// value={this.state.inputValue}
+// onChange={this.changeValue.bind(this)}
+// className={styles.chatMessageInput}
+// placeholder="Enter Translation"
+// ref={(ref) => { this.textarea = ref; }} />

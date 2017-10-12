@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
-const {hasCommandModifier} = KeyBindingUtil;
+import { Editor, getDefaultKeyBinding } from 'draft-js';
 
+import VoiceInput from '../VoiceInputModal/react-speech-recognition-input';
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.scss';
@@ -38,6 +38,7 @@ class CustomEditor extends React.Component {
             activeClass={styles['RichEditor-activeButton']}
         />
         </details>
+        <VoiceInput onChange={(value) => { console.log('Value: ', value); }} onEnd={(value) => { console.log('End Value: ', value); }} />
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
@@ -52,6 +53,11 @@ class CustomEditor extends React.Component {
     );
   }
 }
+
+// <Input onChange={value => this.result(value)}
+// onEnd={value => this.end(value)}
+// lang={this.props.lang}
+// ref={(ref) => { this.Input = ref; }} />
 
 CustomEditor.propTypes = {
   editorState: PropTypes.objectOf(PropTypes.object).isRequired,
