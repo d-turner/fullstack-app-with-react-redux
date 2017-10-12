@@ -25,7 +25,7 @@ const User = {
   },
 
   insertLog(documentId, location, userId, cb) {
-    return mariaDB.query('INSERT INTO Logs (document_id, location, user_id) VALUES (:documentId, :location, :userId)',
+    return mariaDB.query('INSERT IGNORE INTO Logs (document_id, location, user_id) VALUES (:documentId, :location, :userId)',
     { documentId, location, userId }, cb);
   },
 };
