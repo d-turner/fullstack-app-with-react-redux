@@ -97,7 +97,7 @@ function generateAnnotations(xmlDoc, buffer, time) {
   return annotationsNode;
 }
 
-function buildXML({loggerRecordings}, action) {
+function buildXML({ loggerRecordings }, action) {
   // TODO: Add progress
   // TODO: Add status (on going / finished / etc) general and per unit
   // xml document setup
@@ -182,7 +182,6 @@ function buildXML({loggerRecordings}, action) {
       }
     }
   }
-  console.log(xmlDoc);
   return xmlDoc;
 }
 
