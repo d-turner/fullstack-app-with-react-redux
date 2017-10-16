@@ -12,3 +12,14 @@ export function insertWord(dragIndex, hoverIndex, word, targetWord, segmentId, d
     indexArr,
   };
 }
+
+export function insertSourceWord(index, word, isBefore, segmentId, documentId) {
+  return {
+    type: actions.INSERT_SOURCE_WORD,
+    index,
+    word,
+    isBefore,
+    segmentId,
+    documentId,
+  };
+}
