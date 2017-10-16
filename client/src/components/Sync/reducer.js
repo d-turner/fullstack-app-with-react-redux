@@ -6,7 +6,6 @@ import xliffParser from '../../utils/xliffTwoParser';
 
 const DocumentReducer = function(state, action) {
   const doc = state.documents[action.documentId];
-  console.log(doc);
   const DOM = doc.xliff.DOM;
   const segments = doc.xliff.segments;
   let found = false;
