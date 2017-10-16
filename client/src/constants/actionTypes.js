@@ -23,6 +23,7 @@ export const MERGE = 'MERGE';
 export const FIND = 'FIND_REPLACE';
 export const SPACES = 'CHECK_DOUBLE_SPACES';
 export const INSERT_WORD = 'INSERT_WORD';
+export const INSERT_SOURCE_WORD = 'INSERT_SOURCE_WORD';
 export const VOICE_INPUT = 'VOICE_INPUT';
 
 // SegmentList Actions
