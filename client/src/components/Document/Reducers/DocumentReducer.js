@@ -5,6 +5,7 @@ import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
 import SyncReducer from '../../Sync/reducer';
+import { splitTextIntoArray, joinTextArray } from '../../../utils/stringParser';
 
 const initialState = {
   documents: {},
@@ -160,40 +161,9 @@ const updateFromVoiceInput = function(state, action) {
   return newState;
 };
 
-// const insertWord = function(state, action) {
-//   const segments = state.xliff.segments;
-//   const newTarget = segments[action.segmentId].target.split(' ');
-//   let word = action.word.toLowerCase();
-//   if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
-//     word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-//   }
-//   if (action.isBefore) {
-//     newTarget[action.index] = newTarget[action.index].toLowerCase();
-//     newTarget.splice(action.index, 0, word);
-//   } else {
-//     newTarget.splice(action.index + 1, 0, word);
-//   }
-//   return {
-//     ...state,
-//     xliff: {
-//       ...state.xliff,
-//       segments: segments.map((item, index) => {
-//         if (index !== action.segmentId) return item;
-//         return {
-//           ...item,
-//           target: newTarget.join(' '),
-//         };
-//       }),
-//     },
-//   };
-// };
-
 const insertWord = function(state, action) {
   const segments = state.xliff.segments;
-  const prep = segments[action.segmentId].target.replace('.', ' .');
-  const prep2 = prep.replace(',', ' ,');
-  const prep3 = prep2.replace('  ', ' ');
-  const newTarget = prep3.split(' ').filter((e) => { return e === 0 || e; });
+  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
   // need to remove other words
   for (let i = 0; i < action.indexArr.length; i++) {
     if (action.indexArr[i] !== action.dragIndex) {
@@ -204,10 +174,16 @@ const insertWord = function(state, action) {
   // if hoverIndex == 0 have to set word to upper case and set hoverIndex + 1 word to lower case
   // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
   // word has same case for all other scenarios
+  let word = action.word;
+  if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
+    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+  } else {
+    word = word.toLowerCase();
+  }
   const newData = update(newTarget, {
     $splice: [
       [action.dragIndex, 1],
-      [action.hoverIndex, 0, action.word],
+      [action.hoverIndex, 0, word],
     ],
   });
   // if (action.dragIndex === 0) {
@@ -221,7 +197,35 @@ const insertWord = function(state, action) {
         if (index !== action.segmentId) return item;
         return {
           ...item,
-          target: newData.join(' ').replace(' ,', ',').replace(' .', '.').replace(/ +/g, ' ').trim(),
+          target: joinTextArray(newData),
+        };
+      }),
+    },
+  };
+};
+
+const insertSourceWord = function(state, action) {
+  const segments = state.xliff.segments;
+  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
+  let word = action.word.toLowerCase();
+  if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
+    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+  }
+  if (action.isBefore) {
+    newTarget[action.index] = newTarget[action.index].toLowerCase();
+    newTarget.splice(action.index, 0, word);
+  } else {
+    newTarget.splice(action.index + 1, 0, word);
+  }
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: segments.map((item, index) => {
+        if (index !== action.segmentId) return item;
+        return {
+          ...item,
+          target: joinTextArray(newTarget),
         };
       }),
     },
@@ -297,6 +301,15 @@ const DocumentReducer = function(state = initialState, action) {
         documents: {
           ...state.documents,
           [action.documentId]: updatedState,
+        },
+      });
+    case actions.INSERT_SOURCE_WORD:
+      const updatedState1 = insertSourceWord(state.documents[action.documentId], action);
+      return Object.assign({}, state, {
+        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target)),
+        documents: {
+          ...state.documents,
+          [action.documentId]: updatedState1,
         },
       });
     case actions.VOICE_INPUT:
