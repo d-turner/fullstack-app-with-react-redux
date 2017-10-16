@@ -1,4 +1,5 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 // import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
@@ -6,6 +7,7 @@ import flow from 'lodash/flow';
 import styles from './tile.scss';
 
 const Types = {
+  SOURCE: 'source',
   TILE: 'draggable',
 };
 
@@ -14,7 +16,7 @@ const tileSource = {
     const item = { word: props.word, index: props.index, isDragging: props.isDragging };
     const indexArr = [];
     let data = '';
-    const wrapper = document.getElementById('wordTiles');
+    const wrapper = document.getElementById('targetTiles');
     const tiles = wrapper.childNodes;
     for (let i = 0; i < tiles.length; i++) {
       const tile = tiles[i];
@@ -35,40 +37,79 @@ const tileSource = {
 };
 
 const tileTarget = {
+  hover(props, monitor, component) {
+    if (monitor.getItemType() === Types.SOURCE) {
+      const item = monitor.getItem();
+      const dragIndex = item.index;
+      const hoverIndex = props.index;
+
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+      // Get horizontal middle
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      // Get pixels from the left
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+
+      // Should insert tile before when hoverClientX is less than the hoverMiddleX
+      // Should insert tile after when hoverClientX is more than the hoverMiddleX
+      let isBefore = false;
+      // check if less than middle
+      if (hoverClientX < hoverMiddleX) {
+        isBefore = true;
+      }
+
+      // check if more than middle
+      if (hoverClientX > hoverMiddleX) {
+        isBefore = false;
+      }
+      // Time to actually perform the action
+      props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
+    }
+  },
+
   drop(props, monitor, component) {
-    const item = monitor.getItem();
-    const dragIndex = item.index;
-    const hoverIndex = props.index;
+    if (monitor.getItemType() === Types.TILE) {
+      const item = monitor.getItem();
+      const dragIndex = item.index;
+      const hoverIndex = props.index;
 
-    // dont replace tiles with themselves
-    if (dragIndex === hoverIndex) return;
+      // dont replace tiles with themselves
+      if (dragIndex === hoverIndex) return;
 
-    // determine the rect on the screen
-    // const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-    const hoverBoundingRect = component.decoratedComponentInstance.card.getBoundingClientRect();
-    // const hoverBoundingRect = component.tile.getBoundingClientRect();
+      // determine the rect on the screen
+      // const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+      const hoverBoundingRect = component.decoratedComponentInstance.card.getBoundingClientRect();
+      // const hoverBoundingRect = component.tile.getBoundingClientRect();
 
-    // Get horizontal middle
-    const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+      // Get horizontal middle
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
 
-    // Determine mouse position
-    const clientOffset = monitor.getClientOffset();
-    // Get pixels from the left
-    const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      // Get pixels from the left
+      const mouseX = clientOffset.x - hoverBoundingRect.left;
 
-    // Should insert tile before when hoverClientX is less than the hoverMiddleX
-    // Should insert tile after when hoverClientX is more than the hoverMiddleX
-    // check if less than middle
-    if (hoverClientX > hoverMiddleX + 20 && dragIndex > hoverIndex) {
-      return;
+      // Should insert tile before when hoverClientX is less than the hoverMiddleX
+      // Should insert tile after when hoverClientX is more than the hoverMiddleX
+      // check if less than middle
+      if (mouseX > hoverMiddleX && dragIndex > hoverIndex) {
+        props.moveTile(dragIndex, hoverIndex + 1, item.word, props.word, item.indexArr);
+        monitor.getItem().index = hoverIndex;
+        return;
+      }
+
+      // check if more than middle
+      if (mouseX < hoverMiddleX && dragIndex < hoverIndex) {
+        props.moveTile(dragIndex, hoverIndex - 1, item.word, props.word, item.indexArr);
+        monitor.getItem().index = hoverIndex;
+        return;
+      }
+      props.moveTile(dragIndex, hoverIndex, item.word, props.word, item.indexArr);
+      monitor.getItem().index = hoverIndex;
     }
-
-    // check if more than middle
-    if (hoverClientX < hoverMiddleX - 20 && dragIndex < hoverIndex) {
-      return;
-    }
-    props.moveTile(dragIndex, hoverIndex, item.word, props.word, item.indexArr);
-    monitor.getItem().index = hoverIndex;
   },
 
 };
@@ -129,4 +170,7 @@ DraggableTile.propTypes = {
   isDragging: PropTypes.bool.isRequired,
 };
 
-export default flow(DragSource(Types.TILE, tileSource, collectSource), DropTarget(Types.TILE, tileTarget, collectTarget))(DraggableTile);
+export default flow(
+  DragSource(Types.TILE, tileSource, collectSource),
+  DropTarget([Types.TILE, Types.SOURCE], tileTarget, collectTarget),
+)(DraggableTile);
