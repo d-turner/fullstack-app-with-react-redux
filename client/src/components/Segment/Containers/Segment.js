@@ -9,15 +9,28 @@ import { RichUtils } from 'draft-js';
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import SegmentPresentation from '../Presentation/Segment';
+import SegmentTiles from '../Presentation/SegmentTiles';
+
+import KeyLogger from '../../KeyLogger/KeyLogger';
 
 class Segment extends React.Component {
   constructor(props) {
     super(props);
+    const { segmentId, documents, documentId, userId, email } = props;
+    const segment = documents[documentId].xliff.segments[segmentId];
+    this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, segment.target, userId, email);
+
     this.handleChange = this.handleChange.bind(this);
     this.focus = () => this.SegmentPresentation.CustomEditor.Editor.focus();
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+  }
+
+  componentWillUnmount() {
+    this.keyLogger.setTarget(this.props.editorState.getCurrentContent().getPlainText());
+    this.keyLogger.save();
+    this.keyLogger.build();
   }
 
   handleChange(editorState) {
@@ -62,9 +75,18 @@ class Segment extends React.Component {
   }
 
   render() {
+    if (this.props.renderTiles) {
+      return (
+        <SegmentTiles
+          segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
+          segmentId={this.props.segmentId}
+          documentId={this.props.documentId}
+          keyLogger={this.keyLogger}
+        />
+      );
+    }
     return (
       <SegmentPresentation
-        renderTiles={this.props.renderTiles}
         segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
         documentId={this.props.documentId}
         editorState={this.props.editorState}
@@ -74,9 +96,7 @@ class Segment extends React.Component {
         handleChange={this.handleChange}
         focus={this.focus}
         segmentId={this.props.segmentId}
-        selectedSegment={this.props.selectedSegment}
-        email={this.props.email}
-        userId={this.props.userId}
+        keyLogger={this.keyLogger}
         ref={(ref) => { this.SegmentPresentation = ref; }}
       />
     );
@@ -89,7 +109,6 @@ Segment.propTypes = {
   updateSegment: PropTypes.func.isRequired,
   updateSelectedSegment: PropTypes.func.isRequired,
   segmentId: PropTypes.number.isRequired,
-  selectedSegment: PropTypes.number.isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   renderTiles: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
