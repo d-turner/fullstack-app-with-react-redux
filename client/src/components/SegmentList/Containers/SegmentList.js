@@ -77,7 +77,7 @@ class SegmentList extends React.Component {
         <ReactToolTip place="right" id="Comment" effect="solid">
           <span>Add Comment</span>
         </ReactToolTip>
-
+        { /*
         <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Split"
           aria-label="Split Segment"
@@ -97,7 +97,7 @@ class SegmentList extends React.Component {
         <ReactToolTip place="right" id="Merge" effect="solid">
           <span>Merge With Next</span>
         </ReactToolTip>
-
+        */ }
         <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Chain"
           aria-label="Chain Words"
@@ -109,7 +109,7 @@ class SegmentList extends React.Component {
         <ReactToolTip place="right" id="Chain" effect="solid">
           <span>Chain Words</span>
         </ReactToolTip>
-
+        { /*
         <button className={`${styles.clearButtonLeft} ${styles.buttonMargin} ${styles.button}`}
           data-tip data-for="Voice"
           aria-label="Voice Input"
@@ -119,6 +119,7 @@ class SegmentList extends React.Component {
         <ReactToolTip place="right" id="Voice" effect="solid">
           <span>Voice Input</span>
         </ReactToolTip>
+        */ }
       </div>
     );
   }
