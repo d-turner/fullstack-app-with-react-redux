@@ -25,7 +25,7 @@ export default class Auth extends React.Component {
                 id="has-account"
                 className={`${main.removeButtonStyle} ${styles.link}`}
                 onClick={() => this.setState({ show: !this.state.show })}>
-                  Already have an account? Log in here.
+                  Don&#39;t have an account? Create one here.
               </button>
             </span>
           </div>
