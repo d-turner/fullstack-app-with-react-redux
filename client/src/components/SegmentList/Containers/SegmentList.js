@@ -22,15 +22,8 @@ class SegmentList extends React.Component {
     this.renderModal = this.renderModal.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateSelectedSegment(this.props.documentId, 0);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.selectedSegment !== this.props.selectedSegment) {
-      const node = document.getElementById('selectedSegment');
-      node.scrollIntoView({ behavior: 'auto', block: 'center' });
-    }
   }
 
   selected(e, index) {
@@ -55,10 +48,6 @@ class SegmentList extends React.Component {
 
   renderTiles() {
     this.setState({ renderTiles: !this.state.renderTiles });
-    window.setTimeout(() => {
-      const node = document.getElementById('selectedSegment');
-      node.scrollIntoView({ behavior: 'auto', block: 'center' });
-    }, 300);
   }
 
   renderVoice(index) {
