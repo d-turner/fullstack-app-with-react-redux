@@ -2,9 +2,9 @@
 
 .format {
   margin: 6px;
-  padding: 20px;
+  padding: 10px 12px;
   display: inline-block;
-  background-color: $background;
+  background-color: #e4eafa;
 };
 
 .inlineBlock {
@@ -26,6 +26,10 @@
 
 .check:checked + .format{
   background-color: $orange;
+}
+
+.check:checked.dragging{
+  background-color: black;
 }
 
 #checkboxes input[type=checkbox]:checked {
