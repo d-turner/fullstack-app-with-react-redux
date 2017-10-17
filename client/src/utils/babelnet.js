@@ -96,22 +96,26 @@ export function test() {
 }
 
 const BabelApi = {
-  lookup: (word, source, target) => {
+  lookup: (word, source, target, cb) => {
     const url = BabelNet.getSynsetIds(word, target, source);
-    return fetch(url, {
+    axios({
+      url,
+      mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    });
+    }).then(response => cb(response));
   },
 
-  find: (json, source, target) => {
+  find: (json, source, target, cb) => {
     const url = BabelNet.getSynset(json[0].id, target, source);
-    return fetch(url, {
+    axios({
+      url,
+      mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    });
+    }).then(response => cb(response));
   },
 
   lookupWord: (word, target, source, cb) => {
