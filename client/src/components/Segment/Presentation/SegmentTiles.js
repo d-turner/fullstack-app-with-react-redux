@@ -74,7 +74,7 @@ class SegmentTiles extends React.Component {
           <h6>#{this.props.segmentId} Source</h6>
           {sourceWords.map((word, index) => {
             const key = `${word}${index}`;
-            if (word === '') return <div key={key} />;
+            if (word === '') return null;
             return (
               <SourceTile source={word} index={index} key={key} endDrag={this.endDrag} />
             );
