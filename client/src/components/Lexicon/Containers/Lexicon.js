@@ -73,20 +73,19 @@ class Lexicon extends React.Component {
     const selectedText = lexicon.trim();
     let loading = true;
     this.setState({ loading, lexicon: selectedText });
-    BabelApi.lookupWord(selectedText, sourceLang, targetLang).then((res) => {
-      res.json().then((json) => {
-        loading = false;
-        let sourceLemma = findFirstLemma(this.state.sourceCode, json);
-        let targetLemma = findFirstLemma(this.state.targetCode, json);
-        if (!json || !sourceLemma) {
-          sourceLemma = 'Sense not found';
-        }
-        if (!json || !targetLemma) {
-          targetLemma = 'Sense not found';
-        }
-        this.setState({ json, loading, sourceLemma, targetLemma });
-      });
-    });
+    BabelApi.lookupWord(selectedText, sourceLang, targetLang, ((res) => {
+      console.log(res);
+      loading = false;
+      let sourceLemma = findFirstLemma(this.state.sourceCode, res.data);
+      let targetLemma = findFirstLemma(this.state.targetCode, res.data);
+      if (!res.data || !sourceLemma) {
+        sourceLemma = 'Sense not found';
+      }
+      if (!res.data || !targetLemma) {
+        targetLemma = 'Sense not found';
+      }
+      this.setState({ loading, sourceLemma, targetLemma });
+    }));
   }
   renderSpinner() {
     if (this.state.loading) {

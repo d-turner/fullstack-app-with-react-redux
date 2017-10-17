@@ -1,7 +1,9 @@
+import axios from 'axios';
+
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const key = 'ad58eca6-d462-4f61-8f11-cc07f82590c0';
 const headers = new Headers({
-  Origin: 'http://localhost:3000',
+  Origin: '/',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET',
   'Accept-Encoding': 'gzip, deflate',
@@ -96,7 +98,7 @@ export function test() {
 const BabelApi = {
   lookup: (word, source, target) => {
     const url = BabelNet.getSynsetIds(word, target, source);
-    return fetch(proxyUrl + url, {
+    return fetch(url, {
       method: 'GET',
       compress: true,
       headers,
@@ -105,21 +107,23 @@ const BabelApi = {
 
   find: (json, source, target) => {
     const url = BabelNet.getSynset(json[0].id, target, source);
-    return fetch(proxyUrl + url, {
+    return fetch(url, {
       method: 'GET',
       compress: true,
       headers,
     });
   },
 
-  lookupWord: (word, target, source) => {
+  lookupWord: (word, target, source, cb) => {
     const url = BabelNet.getSenses(word, target, source);
     console.log(url);
-    return fetch(proxyUrl + url, {
+    axios({
+      url,
+      mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    });
+    }).then(response => cb(response));
   },
 };
 
