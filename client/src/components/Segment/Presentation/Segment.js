@@ -11,6 +11,11 @@ class Segment extends React.Component {
     this.state = { target: segment.target };
   }
 
+  componentDidMount() {
+    const node = document.getElementById('selectedSegment');
+    node.scrollIntoView({ behavior: 'auto', block: 'center' });
+  }
+
   renderEditor() {
     return (
       <div
