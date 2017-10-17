@@ -16,7 +16,7 @@ class Save extends React.Component {
     // build xml dom and make server request
     console.log('Building DOM and saving...');
     console.log(this.props.documentId);
-    store.dispatch(sync(this.props.documentId));
+    store.dispatch(sync(this.props.documentId, this.props.userId, this.props.email));
   }
 
   render() {
@@ -30,6 +30,8 @@ class Save extends React.Component {
 
 Save.propTypes = {
   documentId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default Save;
