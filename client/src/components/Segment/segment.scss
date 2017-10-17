@@ -5,6 +5,7 @@
   margin-right: 0px;
   padding: 15px;
   border: 1px solid $borderColor;
+  word-break: break-word;
 }
 
 .format1 {
@@ -23,6 +24,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: $borderSelected !important;
+  word-break: break-word;
 }
 
 .wrapper:hover {
