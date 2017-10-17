@@ -41,7 +41,7 @@ class SegmentContainer extends React.Component {
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex four five-900 grow">
-          <Sync documentId={this.state.id} />
+          <Sync documentId={this.state.id} userId={this.props.userId} email={this.props.email} />
           <SegmentList
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
@@ -59,6 +59,8 @@ SegmentContainer.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
+  userId: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default SegmentContainer;
