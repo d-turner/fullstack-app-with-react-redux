@@ -139,8 +139,12 @@ class SegmentList extends React.Component {
   }
 
   renderSelected(index) {
+    let responsive = 'three-fourth three-fifth-700 two-fifth-1400';
+    if (this.state.renderTiles) {
+      responsive = 'three-fourth four-fifth-700 three-fifth-1400';
+    }
     return (
-      <div className={`three-fourth three-fifth-700 two-fifth-1400 ${styles.selected}`} id="selectedSegment">
+      <div className={`${responsive} ${styles.selected}`} id="selectedSegment">
         {this.renderSingleSelected(index)}
         <CommentModal
           documentId={this.props.documentId}
