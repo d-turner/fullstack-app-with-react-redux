@@ -15,8 +15,8 @@ class DocumentContainer extends React.Component {
 
   render() {
     return (
-      <div className="flex five">
-        <Sidebar />
+      <div className="flex five center">
+        { /* <Sidebar /> */ }
 
         <div className={`four-fifth ${main.clearPaddingBottom} ${main.paddingInlineWithNavRight}`}>
           <Dropzone />
