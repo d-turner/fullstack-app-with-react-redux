@@ -9,7 +9,7 @@ export default class App extends Component {
     this.state = {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
-      speaking: false,
+      speaking: true,
     };
   }
 
@@ -20,6 +20,7 @@ export default class App extends Component {
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang || 'en-US';
+      this.recognition.start();
       this.recognition.onresult = (event) => {
         let interimTranscript = '';
         let finalTranscript = '';
@@ -81,6 +82,12 @@ export default class App extends Component {
               className={styles.micImg}
               onClick={this.say.bind(this)} /> : null
         }
+        <textarea
+          value={this.state.inputValue}
+          onChange={this.changeValue.bind(this)}
+          className={styles.chatMessageInput}
+          placeholder="Voice Recognition"
+          ref={(ref) => { this.textarea = ref; }} />
       </div>
     );
   }
