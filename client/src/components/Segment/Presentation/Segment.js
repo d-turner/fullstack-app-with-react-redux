@@ -8,7 +8,7 @@ class Segment extends React.Component {
   constructor(props) {
     super(props);
     const { segment } = props;
-    this.state = { target: segment.target };
+    this.state = { target: segment.ml };
   }
 
   componentDidMount() {

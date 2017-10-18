@@ -119,6 +119,7 @@ const xliffTwoParser = (fileReader, $q, $log) => {
 
           const segPair = {
             source: seg[0].textContent,
+            ml: seg[1].textContent,
             target: seg[1].textContent,
             sourceDOM: seg[0],
             targetDOM: seg[1],
