@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor, getDefaultKeyBinding } from 'draft-js';
+import { Editor, EditorState, getDefaultKeyBinding, Modifier } from 'draft-js';
 
 import VoiceInput from '../VoiceInputModal/react-speech-recognition-input';
 import BlockStyleControls from '../Editor/BlockStyleControls';
@@ -10,6 +10,8 @@ import styles from './Editor.scss';
 class CustomEditor extends React.Component {
   componentDidMount() {
     this.Editor.focus();
+    this.insertIntoEditor = this.insertIntoEditor.bind(this);
+    this.endValue = this.endValue.bind(this);
   }
 
   myKeyBindingFn(e) {
@@ -17,6 +19,23 @@ class CustomEditor extends React.Component {
       return 'next-segment';
     }
     return getDefaultKeyBinding(e);
+  }
+
+  insertIntoEditor(value) {
+    console.log('Inserting value: ', value);
+    this.props.keyLogger.voiceInput(value);
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const newContentState = Modifier.insertText(contentState, selection, value);
+    this.props.handleChange(EditorState.createWithContent(newContentState));
+  }
+
+  endValue(value) {
+    console.log('End Value: ', value);
+    // const selection = this.props.editorState.getSelection();
+    // const contentState = this.props.editorState.getCurrentContent();
+    // const newContentState = Modifier.insertText(contentState, selection, value);
+    // this.props.handleChange(EditorState.createWithContent(newContentState));
   }
 
   render() {
@@ -38,7 +57,7 @@ class CustomEditor extends React.Component {
             activeClass={styles['RichEditor-activeButton']}
         />
         </details>
-        <VoiceInput onChange={(value) => { console.log('Value: ', value); }} onEnd={(value) => { console.log('End Value: ', value); }} />
+        <VoiceInput onChange={value => this.insertIntoEditor(value)} onEnd={endValue => this.endValue(endValue)} />
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
@@ -65,6 +84,7 @@ CustomEditor.propTypes = {
   toggleInlineStyle: PropTypes.func.isRequired,
   handleKeyCommand: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default CustomEditor;
