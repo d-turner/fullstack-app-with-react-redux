@@ -32,6 +32,7 @@ class Segment extends React.Component {
           toggleInlineStyle={this.props.toggleInlineStyle}
           handleKeyCommand={this.props.handleKeyCommand}
           handleChange={this.props.handleChange}
+          keyLogger={this.props.keyLogger}
           ref={(ref) => { this.CustomEditor = ref; }}
         />
       </div>
@@ -62,6 +63,7 @@ Segment.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
+  keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Segment;
