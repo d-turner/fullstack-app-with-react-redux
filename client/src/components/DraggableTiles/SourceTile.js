@@ -19,9 +19,8 @@ const tileSource = {
       const tile = tiles[i];
       const input = tile.getElementsByTagName('input')[0];
       const label = tile.getElementsByTagName('label')[0];
-      const span = label.getElementsByTagName('span')[0];
-      if (input.checked) {
-        data += `${span.innerText} `;
+      if (input.checked || i - 1 === item.index) {
+        data += label.innerText + ' ';
       }
     }
     if (data !== '') {
@@ -29,11 +28,6 @@ const tileSource = {
     }
     // props.moveTile(item.index, hoverIndex, item.word , isBefore);
     return item;
-  },
-
-  endDrag(props) {
-    console.log('Sending update....');
-    props.endDrag(props.source);
   },
 
 };
@@ -55,12 +49,13 @@ class SourceTile extends React.Component {
     const { connectDragSource, isDragging, source, index } = this.props;
     return connectDragSource(
       <div className={styles.inlineBlock}>
-        <input aria-label="select word for dragging" type="checkbox" id={`drag${source}${index}`} className={styles.check} />
-        <label className={styles.format} htmlFor={`drag${source}${index}`}
+        <input aria-label="select word for dragging" type="checkbox" id={`drag${source}${index}-source`} className={styles.check} />
+        <label className={styles.format} htmlFor={`drag${source}${index}-source`}
           style={{
-            opacity: isDragging ? 0.5 : 1,
+            opacity: isDragging ? 0.8 : 1,
+            backgroundColor: isDragging ? '#85bc67' : '',
             cursor: 'move' }}>
-          <span>{source}</span>
+          {source}
         </label>
       </div>,
     );

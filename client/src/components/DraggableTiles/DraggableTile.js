@@ -22,7 +22,7 @@ const tileSource = {
       const tile = tiles[i];
       const input = tile.getElementsByTagName('input')[0];
       const label = tile.getElementsByTagName('label')[0];
-      if (input.checked) {
+      if (input.checked || i === item.index) {
         data += label.innerText + ' ';
         indexArr.push(i);
       }
@@ -66,7 +66,7 @@ const tileTarget = {
         isBefore = false;
       }
       // Time to actually perform the action
-      props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
+      // props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
     }
   },
 
@@ -109,6 +109,35 @@ const tileTarget = {
       }
       props.moveTile(dragIndex, hoverIndex, item.word, props.word, item.indexArr);
       monitor.getItem().index = hoverIndex;
+    } else if (monitor.getItemType() === Types.SOURCE) {
+      const item = monitor.getItem();
+      const dragIndex = item.index;
+      const hoverIndex = props.index;
+
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+      // Get horizontal middle
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      // Get pixels from the left
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+
+      // Should insert tile before when hoverClientX is less than the hoverMiddleX
+      // Should insert tile after when hoverClientX is more than the hoverMiddleX
+      let isBefore = false;
+      // check if less than middle
+      if (hoverClientX < hoverMiddleX) {
+        isBefore = true;
+      }
+
+      // check if more than middle
+      if (hoverClientX > hoverMiddleX) {
+        isBefore = false;
+      }
+      // Time to actually perform the action
+      props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
     }
   },
 
@@ -139,21 +168,23 @@ function collectTarget(connect, monitor) {
 
 class DraggableTile extends React.Component {
   render() {
-    const { connectDragSource, connectDropTarget, isDragging, word, index } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, word, index, isOver } = this.props;
     return connectDragSource(connectDropTarget(
       <div
         className={`${styles.inlineBlock} ${styles.noselect}`}
         style={{
-          opacity: isDragging ? 0.5 : 1,
+          backgroundColor: isOver && !isDragging ? '#85bc67' : '',
+          opacity: isDragging ? 0.8 : 1,
           cursor: 'move' }}
         ref={(elm) => { this.card = elm; }}
       >
-        <input aria-label="select word for dragging" id={`drag${word}${index}`} type="checkbox" className={styles.check} />
-        <label className={styles.format} htmlFor={`drag${word}${index}`}
+        <input aria-label="select word for dragging" id={`drag${word}${index}-target`} type="checkbox" className={styles.check} />
+        <label className={styles.format} htmlFor={`drag${word}${index}-target`}
           style={{
             minWidth: '58px',
             textAlign: 'center',
-            opacity: isDragging ? 0.5 : 1,
+            opacity: isDragging ? 0.8 : 1,
+            backgroundColor: isDragging ? '#85bc67' : '',
             cursor: 'move' }}>
           {word}
         </label>
@@ -168,6 +199,7 @@ DraggableTile.propTypes = {
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
+  isOver: PropTypes.bool.isRequired,
 };
 
 export default flow(
