@@ -171,6 +171,12 @@ function buildXML({ loggerRecordings }, action) {
         event.setAttribute('sourceWord', buffer[y].sourceWord);
         event.setAttribute('targetWord', buffer[y].targetWord);
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
+      } else if (buffer[y].type === 'voiceInput') {
+        const event = xmlDoc.createElement(buffer[y].type);
+        const eventText = xmlDoc.createTextNode(buffer[y].k);
+        event.setAttribute('time', buffer[y].t - startTime);
+        event.appendChild(eventText);
+        xmlDoc.getElementsByTagName('events')[x].appendChild(event);
       }
 
       if (y === buffer.length - 1) {

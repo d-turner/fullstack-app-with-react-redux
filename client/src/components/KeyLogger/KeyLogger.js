@@ -30,6 +30,16 @@ class KeyLogger {
     this.buffer.push(stroke);
   }
 
+  voiceInput(value) {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'voiceInput',
+      word: value,
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
   save() {
     store.dispatch(actions.addLogger(this));
   }
