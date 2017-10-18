@@ -20,10 +20,15 @@ class SegmentList extends React.Component {
     this.renderSingle = this.renderSingle.bind(this);
     this.renderComment = this.renderComment.bind(this);
     this.renderModal = this.renderModal.bind(this);
+    this.updateSegmentState = this.updateSegmentState.bind(this);
   }
 
   componentDidMount() {
     this.props.updateSelectedSegment(this.props.documentId, 0);
+  }
+
+  componentWillUnmount() {
+    this.props.updateSelectedSegment(this.props.documentId, 1);
   }
 
   selected(e, index) {
@@ -32,6 +37,12 @@ class SegmentList extends React.Component {
     editArray[index] = true;
     this.setState({ editArray });
     this.props.updateSelectedSegment(this.props.documentId, index);
+  }
+
+  updateSegmentState(index) {
+    const editArray = this.state.editArray;
+    editArray[index] = true;
+    this.setState(editArray);
   }
 
   _mergeSegment(index) {
@@ -181,7 +192,8 @@ class SegmentList extends React.Component {
         documentId={this.props.documentId}
         segmentId={index}
         editorState={this.props.editorState}
-        renderTiles={this.state.renderTiles} />
+        renderTiles={this.state.renderTiles}
+        updateSegmentState={this.updateSegmentState} />
     );
   }
 

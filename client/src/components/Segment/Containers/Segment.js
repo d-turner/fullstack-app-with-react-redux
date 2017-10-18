@@ -39,6 +39,7 @@ class Segment extends React.Component {
       this.props.segmentId,
       editorState,
     );
+    this.props.updateSegmentState(this.props.segmentId);
   }
 
   _handleKeyCommand(command) {
