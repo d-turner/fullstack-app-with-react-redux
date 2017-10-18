@@ -86,9 +86,10 @@ class Segment extends React.Component {
         />
       );
     }
+    const doc = this.props.documents[this.props.documentId];
     return (
       <SegmentPresentation
-        segment={this.props.documents[this.props.documentId].xliff.segments[this.props.segmentId]}
+        segment={doc.xliff.segments[this.props.segmentId]}
         documentId={this.props.documentId}
         editorState={this.props.editorState}
         toggleBlockType={this.toggleBlockType}
@@ -98,6 +99,7 @@ class Segment extends React.Component {
         focus={this.focus}
         segmentId={this.props.segmentId}
         keyLogger={this.keyLogger}
+        targetLang={doc.xliff.targetLang}
         ref={(ref) => { this.SegmentPresentation = ref; }}
       />
     );

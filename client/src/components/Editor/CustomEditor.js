@@ -57,7 +57,7 @@ class CustomEditor extends React.Component {
             activeClass={styles['RichEditor-activeButton']}
         />
         </details>
-        <VoiceInput onChange={value => this.insertIntoEditor(value)} onEnd={endValue => this.endValue(endValue)} />
+        <VoiceInput lang={this.props.lang} onChange={value => this.insertIntoEditor(value)} onEnd={endValue => this.endValue(endValue)} />
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
@@ -85,6 +85,7 @@ CustomEditor.propTypes = {
   handleKeyCommand: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
+  lang: PropTypes.string.isRequired,
 };
 
 export default CustomEditor;

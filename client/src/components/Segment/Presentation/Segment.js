@@ -33,6 +33,7 @@ class Segment extends React.Component {
           handleKeyCommand={this.props.handleKeyCommand}
           handleChange={this.props.handleChange}
           keyLogger={this.props.keyLogger}
+          lang={this.props.targetLang}
           ref={(ref) => { this.CustomEditor = ref; }}
         />
       </div>
@@ -64,6 +65,7 @@ Segment.propTypes = {
   editorState: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
+  targetLang: PropTypes.string.isRequired,
 };
 
 export default Segment;
