@@ -18,7 +18,7 @@ export default class App extends Component {
       const WebkitSpeechRecognition = window.webkitSpeechRecognition;
       this.recognition = new WebkitSpeechRecognition();
       this.recognition.continuous = true;
-      this.recognition.interimResults = false;
+      this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang || 'en-US';
       this.recognition.onresult = (event) => {
         let interimTranscript = '';
@@ -26,16 +26,20 @@ export default class App extends Component {
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             finalTranscript += event.results[i][0].transcript;
+            console.log('Current Event Final: ', event.results[i][0].transcript);
+            console.log('Final: ', finalTranscript);
             this.setState({
               inputValue: finalTranscript,
             });
             if (this.props.onEnd) this.props.onEnd(finalTranscript);
+            if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           } else {
             interimTranscript += event.results[i][0].transcript;
+            console.log('Current Event Interim: ', event.results[i][0].transcript);
+            console.log('Total: ', interimTranscript);
             this.setState({
               inputValue: interimTranscript,
             });
-            if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           }
         }
       };
