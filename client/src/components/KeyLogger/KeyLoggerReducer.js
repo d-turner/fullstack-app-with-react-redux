@@ -173,7 +173,7 @@ function buildXML({ loggerRecordings }, action) {
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
       } else if (buffer[y].type === 'voiceInput') {
         const event = xmlDoc.createElement(buffer[y].type);
-        const eventText = xmlDoc.createTextNode(buffer[y].k);
+        const eventText = xmlDoc.createTextNode(buffer[y].word);
         event.setAttribute('time', buffer[y].t - startTime);
         event.appendChild(eventText);
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
