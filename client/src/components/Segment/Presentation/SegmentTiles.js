@@ -44,29 +44,35 @@ class SegmentTiles extends React.Component {
   }
 
   moveSourceTile(dragIndex, hoverIndex, word, isBefore) {
-    this.setState({
-      placeholder: true,
-      hoverIndex,
-      word,
-      isBefore,
-    });
+    store.dispatch(
+      actions.insertSourceWord(
+        hoverIndex,
+        word,
+        isBefore,
+        this.props.segmentId,
+        this.props.documentId,
+      ),
+    );
     // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
   }
 
   endDrag() {
     const { hoverIndex, word, isBefore } = this.state;
-    store.dispatch(
-      actions.insertSourceWord(
-        this.state.hoverIndex,
-        this.state.word,
-        this.state.isBefore,
-        this.props.segmentId,
-        this.props.documentId,
-      ),
-    );
-    this.setState({ placeholder: false });
-    const event = { dragIndex: 'FROM SOURCE', hoverIndex, word, targetWord: isBefore };
-    this.props.keyLogger.tileDrag(event);
+    console.log(this.state);
+    if (hoverIndex && word && isBefore !== undefined) {
+      store.dispatch(
+        actions.insertSourceWord(
+          this.state.hoverIndex,
+          this.state.word,
+          this.state.isBefore,
+          this.props.segmentId,
+          this.props.documentId,
+        ),
+      );
+      this.setState({ placeholder: false, hoverIndex: undefined, word: undefined, isBefore: undefined });
+      const event = { dragIndex: 'FROM SOURCE', hoverIndex, word, targetWord: isBefore };
+      this.props.keyLogger.tileDrag(event);
+    }
   }
 
   render() {
@@ -78,7 +84,7 @@ class SegmentTiles extends React.Component {
         <div id="wordTiles" className={`${styles.wrapper} ${styles.selected}`}>
           <h6>#{this.props.segmentId} Source</h6>
           {sourceWords.map((word, index) => {
-            const key = `${word}${index}`;
+            const key = `${word}${index}-source`;
             if (word === '') return null;
             return (
               <SourceTile source={word} index={index} key={key} endDrag={this.endDrag} />
@@ -89,7 +95,7 @@ class SegmentTiles extends React.Component {
           <h6>Target</h6>
           <div id="targetTiles">
             {targetWords.map((word, index) => {
-              const key = `${word}${index}`;
+              const key = `${word}${index}-target`;
               if (word === '') return null;
               return (
                 <DraggableTile
