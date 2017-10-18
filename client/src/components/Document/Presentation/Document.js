@@ -35,10 +35,10 @@ export default function Document(props) {
         </span>
       </td>
       <td>
-        <span><strong>4</strong></span>
+        <span><strong></strong></span>
       </td>
       <td>
-        <span><strong>1112</strong></span>
+        <span><strong></strong></span>
       </td>
     </tr>
   );
