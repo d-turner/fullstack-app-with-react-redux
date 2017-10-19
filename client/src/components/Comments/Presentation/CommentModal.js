@@ -11,7 +11,7 @@ export default class CommentModal extends React.Component {
     const comment = event.target[0].value;
     // TODO: ADD USER NAME HERE
     console.warn('Need to insert actual username here');
-    const user = 'Daniel Turner';
+    const user = this.props.name;
     const time = Date.now();
     store.dispatch(addComment(this.props.documentId, index, comment, user, time));
     this.props.unrender(index);
@@ -52,4 +52,5 @@ CommentModal.propTypes = {
   index: PropTypes.number.isRequired,
   unrender: PropTypes.func.isRequired,
   render: PropTypes.bool,
+  name: PropTypes.string.isRequired,
 };

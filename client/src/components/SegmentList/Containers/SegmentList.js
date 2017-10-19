@@ -151,7 +151,8 @@ class SegmentList extends React.Component {
           documentId={this.props.documentId}
           index={index}
           unrender={this.renderComment}
-          render={this.state.renderComment} />
+          render={this.state.renderComment}
+          name={this.props.email} />
         <SplitModal
           splitSegment={this.props.splitSegment}
           documentId={this.props.documentId}

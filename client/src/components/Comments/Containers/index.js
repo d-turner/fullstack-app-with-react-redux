@@ -6,11 +6,12 @@ import CommentContainer from './CommentSidebar';
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
-  const { commentReducer } = state;
+  const { commentReducer, authenticationReducer } = state;
   // return what we want available in the props
   const { comments } = commentReducer;
+  const { name } = authenticationReducer;
   return {
-    comments,
+    comments, name,
   };
 };
 
