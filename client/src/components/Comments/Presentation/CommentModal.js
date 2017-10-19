@@ -20,7 +20,7 @@ export default class CommentModal extends React.Component {
   render() {
     if (this.props.render) {
       return (
-        <div className="fifth">
+        <div className={`fifth ${styles.modal}`}>
           <div>Add Comment</div>
           <form onSubmit={event => this.addComment(event, this.props.index)}>
             <input className={styles.commentInput} autoComplete="false"
