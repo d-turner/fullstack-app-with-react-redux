@@ -9,7 +9,7 @@ export default class App extends Component {
     this.state = {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
-      speaking: true,
+      speaking: false,
     };
   }
 
@@ -20,7 +20,7 @@ export default class App extends Component {
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang || 'en-US';
-      this.recognition.start();
+      // this.recognition.start();
       this.recognition.onresult = (event) => {
         let interimTranscript = '';
         let finalTranscript = '';
