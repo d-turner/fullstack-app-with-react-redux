@@ -86,7 +86,7 @@ export default class App extends Component {
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
           className={styles.chatMessageInput}
-          placeholder="Voice Recognition will insert at cursor"
+          placeholder="Voice Recognition will insert at cursor point"
           ref={(ref) => { this.textarea = ref; }} />
       </div>
     );

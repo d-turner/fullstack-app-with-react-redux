@@ -23,7 +23,7 @@ const BlockStyleControls = (props) => {
     .getBlockForKey(selection.getStartKey())
     .getType();
   return (
-    <div>
+    <div style={{ marginBottom: '10px' }}>
       {BLOCK_TYPES.map(type =>
         <StyleButton
           key={type.label}
