@@ -198,7 +198,6 @@ class DraggableTile extends React.Component {
       }
       this.props.updateWord(this.props.index, text);
       this.setState({ doubleClick: false });
-      console.log(event.target);
     }
   }
 
