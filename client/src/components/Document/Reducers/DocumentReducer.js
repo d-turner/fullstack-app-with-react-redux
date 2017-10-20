@@ -19,6 +19,9 @@ const initialState = {
     index: 0,
     offset: 0,
   },
+  savingResult: {
+    data: 'Saved',
+  },
 };
 
 const blankDocument = {
@@ -359,6 +362,9 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.DOCUMENT_LIST_FAIL:
       return DocumentList(state, action);
     case actions.SYNC:
+    case actions.SAVE_DOCUMENT:
+    case actions.SAVE_SUCCESS:
+    case actions.SAVE_FAIL:
       return SyncReducer(state, action);
     default:
       return state;
