@@ -23,3 +23,13 @@ export function insertSourceWord(index, word, isBefore, segmentId, documentId) {
     documentId,
   };
 }
+
+export function updateWord(documentId, segmentId, index, text) {
+  return {
+    type: actions.UPDATE_WORD,
+    documentId,
+    segmentId,
+    index,
+    text,
+  };
+}

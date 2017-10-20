@@ -167,6 +167,45 @@ function collectTarget(connect, monitor) {
 }
 
 class DraggableTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { doubleClick: false };
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.keyDown = this.keyDown.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.doubleClick) {
+      this.tile.focus();
+    }
+  }
+
+  handleDoubleClick(event) {
+    event.preventDefault();
+    this.setState({ doubleClick: true });
+  }
+
+  handleFocus(event) {
+    document.execCommand('selectAll', false, null);
+  }
+
+  handleBlur(event) {
+    const text = event.target.innerText;
+    this.props.updateWord(this.props.index, text);
+    this.setState({ doubleClick: false });
+  }
+
+  keyDown(event) {
+    if (event.key === 'Enter') {
+      console.log('Accepting...');
+      event.preventDefault();
+      const text = event.target.innerText;
+      this.props.updateWord(this.props.index, text);
+      this.handleBlur();
+    }
+  }
+
   render() {
     const { connectDragSource, connectDropTarget, isDragging, word, index, isOver } = this.props;
     return connectDragSource(connectDropTarget(
@@ -178,8 +217,18 @@ class DraggableTile extends React.Component {
           cursor: 'move' }}
         ref={(elm) => { this.card = elm; }}
       >
-        <input aria-label="select word for dragging" id={`drag${word}${index}-target`} type="checkbox" className={styles.check} />
+        <input aria-label="select word for dragging"
+          id={`drag${word}${index}-target`}
+          type="checkbox"
+          className={styles.check}
+        />
         <label className={styles.format} htmlFor={`drag${word}${index}-target`}
+          onDoubleClick={this.handleDoubleClick}
+          contentEditable={this.state.doubleClick}
+          onKeyDown={this.keyDown}
+          onBlur={this.handleBlur}
+          onFocus={this.handleFocus}
+          ref={(tile) => { this.tile = tile; }}
           style={{
             minWidth: '58px',
             textAlign: 'center',
@@ -200,6 +249,7 @@ DraggableTile.propTypes = {
   connectDropTarget: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
   isOver: PropTypes.bool.isRequired,
+  updateWord: PropTypes.func.isRequired,
 };
 
 export default flow(
