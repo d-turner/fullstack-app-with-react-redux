@@ -20,6 +20,7 @@ class SegmentTiles extends React.Component {
     this.moveTile = this.moveTile.bind(this);
     this.endDrag = this.endDrag.bind(this);
     this.moveSourceTile = this.moveSourceTile.bind(this);
+    this.updateWord = this.updateWord.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +76,17 @@ class SegmentTiles extends React.Component {
     }
   }
 
+  updateWord(index, text) {
+    store.dispatch(
+      actions.updateWord(
+        this.props.documentId,
+        this.props.segmentId,
+        index,
+        text,
+      ),
+    );
+  }
+
   render() {
     const { segment } = this.props;
     const sourceWords = splitTextIntoArray(segment.source);
@@ -104,6 +116,7 @@ class SegmentTiles extends React.Component {
                   moveTile={this.moveTile}
                   moveSourceTile={this.moveSourceTile}
                   key={key}
+                  updateWord={this.updateWord}
                 />
               );
             })}
