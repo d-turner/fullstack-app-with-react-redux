@@ -90,9 +90,9 @@ export default (app) => {
         req.on('end', () => {
           fs.writeFile(location, data, (fail) => {
             if (fail) {
-              return res.status(501).send('Fail');
+              return res.status(501).send('Failed');
             }
-            return res.status(status).send('Success');
+            return res.status(status).send('Saved');
           });
         });
       });
@@ -120,9 +120,9 @@ export default (app) => {
           fs.writeFile(location, data, (fail) => {
             if (fail) {
               logger.error(fail);
-              return res.status(401).send('Fail');
+              return res.status(401).send('Failed');
             }
-            return res.status(status).send('Success');
+            return res.status(status).send('Saved');
           });
         });
       });
