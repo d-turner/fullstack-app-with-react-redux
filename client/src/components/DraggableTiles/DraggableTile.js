@@ -200,9 +200,7 @@ class DraggableTile extends React.Component {
     if (event.key === 'Enter') {
       console.log('Accepting...');
       event.preventDefault();
-      const text = event.target.innerText;
-      this.props.updateWord(this.props.index, text);
-      this.handleBlur();
+      this.handleBlur(event);
     }
   }
 
