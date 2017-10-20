@@ -61,7 +61,6 @@ class SegmentTiles extends React.Component {
 
   endDrag() {
     const { hoverIndex, word, isBefore } = this.state;
-    console.log(this.state);
     if (hoverIndex && word && isBefore !== undefined) {
       store.dispatch(
         actions.insertSourceWord(
