@@ -169,7 +169,7 @@ function collectTarget(connect, monitor) {
 class DraggableTile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { doubleClick: false };
+    this.state = { doubleClick: false, word: props.word };
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.keyDown = this.keyDown.bind(this);
@@ -191,9 +191,15 @@ class DraggableTile extends React.Component {
   }
 
   handleBlur(event) {
-    const text = event.target.innerText;
-    this.props.updateWord(this.props.index, text);
-    this.setState({ doubleClick: false });
+    if (event !== undefined) {
+      const text = event.target.innerText;
+      if (text.trim().split(' ')[0] === this.state.word) {
+        event.target.innerText = text.trim().split(' ')[0];
+      }
+      this.props.updateWord(this.props.index, text);
+      this.setState({ doubleClick: false });
+      console.log(event.target);
+    }
   }
 
   keyDown(event) {
