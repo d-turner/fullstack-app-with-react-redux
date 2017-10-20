@@ -54,6 +54,7 @@ class SegmentTiles extends React.Component {
         this.props.documentId,
       ),
     );
+    this.props.keyLogger.tileDrag(event);
     // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
   }
 
@@ -131,6 +132,7 @@ SegmentTiles.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
   documentId: PropTypes.string.isRequired,
+  keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DragDropContext(TouchBackend({ enableMouseEvents: true }))(SegmentTiles);
