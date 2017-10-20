@@ -25,6 +25,7 @@ export const SPACES = 'CHECK_DOUBLE_SPACES';
 export const INSERT_WORD = 'INSERT_WORD';
 export const INSERT_SOURCE_WORD = 'INSERT_SOURCE_WORD';
 export const VOICE_INPUT = 'VOICE_INPUT';
+export const UPDATE_WORD = 'UPDATE_WORD';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
