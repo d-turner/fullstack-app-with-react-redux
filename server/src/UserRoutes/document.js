@@ -83,8 +83,11 @@ export default (app) => {
           res.status(401).json({ status: 'Not Authorized' });
         }
         const location = result[0].location;
+        let data = '';
         req.on('data', (chunk) => {
-          const data = chunk.toString('utf8');
+          data += chunk.toString('utf8');
+        });
+        req.on('end', () => {
           fs.writeFile(location, data, (fail) => {
             if (fail) {
               return res.status(501).send('Fail');
@@ -104,8 +107,11 @@ export default (app) => {
       if (status !== 200) {
         res.status(status).json(reply);
       }
+      let data = '';
       req.on('data', (chunk) => {
-        const data = chunk.toString('utf8');
+        data += chunk.toString('utf8');
+      });
+      req.on('end', () => {
         const location = `${dest}logs/${documentId}`;
         doc.insertLog(documentId, location, user.user_id, (err, result) => {
           // TODO: fix when value already in table
