@@ -12,6 +12,14 @@ class Save extends React.Component {
     this.save = this.save.bind(this);
   }
 
+  componentDidMount() {
+    this.interval = setInterval(this.save, 20000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   save() {
     // build xml dom and make server request
     console.log('Building DOM and saving...');

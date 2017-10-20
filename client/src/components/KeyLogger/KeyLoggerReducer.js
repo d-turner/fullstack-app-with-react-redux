@@ -206,6 +206,9 @@ const KeyLoggerReducer = function(state = initialState, action) {
       });
     case actions.BUILD:
     case actions.SYNC:
+      if (state.loggerRecordings[action.documentId] === undefined) {
+        return state;
+      }
       const xmlDoc = buildXML(state, action);
       const domString = new XMLSerializer().serializeToString(xmlDoc);
       apiWrapper.uploadLog(domString, action.documentId, (result) => {
