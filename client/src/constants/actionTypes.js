@@ -4,6 +4,9 @@
 
 // Sync actions
 export const SYNC = 'SYNC_DOCUMENT';
+export const SAVE_DOCUMENT = 'SAVE_DOCUMENT';
+export const SAVE_SUCCESS = 'SAVE_SUCCESS';
+export const SAVE_FAIL = 'SAVE_FAIL';
 
 // Document Actions
 export const RESET_EDITOR = 'RESET_EDITOR';
