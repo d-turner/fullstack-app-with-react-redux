@@ -310,6 +310,12 @@ const DocumentReducer = function(state = initialState, action) {
       });
     case actions.UPDATE_SELECTED:
       if (state.selectedSegment === action.segmentId) return state;
+      if (action.segmentId === -1) {
+        return Object.assign({}, state, {
+          selectedSegment: action.segmentId,
+          editorState: '',
+        });
+      }
       const text = cleanText(state.documents[action.documentId].xliff.segments[action.segmentId].target);
       return Object.assign({}, state, {
         selectedSegment: action.segmentId,
