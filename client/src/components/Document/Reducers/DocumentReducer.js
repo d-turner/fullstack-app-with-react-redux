@@ -180,8 +180,6 @@ const insertWord = function(state, action) {
   let word = action.word;
   if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
     word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-  } else {
-    word = word.toLowerCase();
   }
   const newData = update(newTarget, {
     $splice: [
@@ -210,12 +208,12 @@ const insertWord = function(state, action) {
 const insertSourceWord = function(state, action) {
   const segments = state.xliff.segments;
   const newTarget = splitTextIntoArray(segments[action.segmentId].target);
-  let word = action.word.toLowerCase();
+  let word = action.word; // .toLowerCase();
   if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
     word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
   }
   if (action.isBefore) {
-    newTarget[action.index] = newTarget[action.index].toLowerCase();
+    // newTarget[action.index] = newTarget[action.index].toLowerCase();
     newTarget.splice(action.index, 0, word);
   } else {
     newTarget.splice(action.index + 1, 0, word);
