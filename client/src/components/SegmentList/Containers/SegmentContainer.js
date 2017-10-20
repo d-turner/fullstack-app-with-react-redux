@@ -41,7 +41,13 @@ class SegmentContainer extends React.Component {
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex four five-900 grow">
-          <Sync documentId={this.state.id} userId={this.props.userId} email={this.props.email} />
+          <Sync
+            documentId={this.state.id}
+            userId={this.props.userId}
+            email={this.props.email}
+            savingResult={this.props.savingResult}
+            document={documents[this.state.id]}
+          />
           <SegmentList
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
