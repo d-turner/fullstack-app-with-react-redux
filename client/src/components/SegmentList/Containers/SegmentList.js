@@ -28,7 +28,7 @@ class SegmentList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.updateSelectedSegment(this.props.documentId, 1);
+    this.props.updateSelectedSegment(this.props.documentId, -1);
   }
 
   selected(e, index) {
