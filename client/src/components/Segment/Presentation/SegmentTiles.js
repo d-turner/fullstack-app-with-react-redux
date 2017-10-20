@@ -54,6 +54,7 @@ class SegmentTiles extends React.Component {
         this.props.documentId,
       ),
     );
+    const event = { dragIndex: 'FROM SOURCE', hoverIndex, word, targetWord: isBefore };
     this.props.keyLogger.tileDrag(event);
     // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
   }
