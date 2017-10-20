@@ -232,6 +232,26 @@ const insertSourceWord = function(state, action) {
   };
 };
 
+const updateWord = function(state, action) {
+  const segments = state.xliff.segments;
+  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
+  const text = action.text;
+  newTarget[action.index] = text;
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: segments.map((item, index) => {
+        if (index !== action.segmentId) return item;
+        return {
+          ...item,
+          target: joinTextArray(newTarget),
+        };
+      }),
+    },
+  };
+};
+
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
@@ -310,6 +330,15 @@ const DocumentReducer = function(state = initialState, action) {
         documents: {
           ...state.documents,
           [action.documentId]: updatedState1,
+        },
+      });
+    case actions.UPDATE_WORD:
+      const updatedState2 = updateWord(state.documents[action.documentId], action);
+      return Object.assign({}, state, {
+        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target)),
+        documents: {
+          ...state.documents,
+          [action.documentId]: updatedState2,
         },
       });
     case actions.VOICE_INPUT:
