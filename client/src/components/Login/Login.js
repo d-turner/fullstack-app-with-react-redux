@@ -73,7 +73,7 @@ export default class Login extends React.Component {
     const { password } = this.state;
     const numberReg = /\d+/g;
     const upperReg = /[A-Z]+/g;
-    if (password.length >= 8 && numberReg.test(password) && upperReg.test(password)) {
+    if (password && password.length >= 8 && numberReg.test(password) && upperReg.test(password)) {
       this.setState({ passwordValid: true });
       return true;
     }
