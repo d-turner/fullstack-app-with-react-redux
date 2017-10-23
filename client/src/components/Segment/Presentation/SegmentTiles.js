@@ -24,8 +24,10 @@ class SegmentTiles extends React.Component {
   }
 
   componentDidMount() {
-    const node = document.getElementById('selectedSegment');
-    node.scrollIntoView({ behavior: 'auto', block: 'center' });
+    if (this.props.segmentId !== 0) {
+      const node = document.getElementById('selectedSegment');
+      node.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
   }
 
   moveTile(dragIndex, hoverIndex, word, targetWord, indexArr) {
