@@ -86,6 +86,8 @@ class SegmentTiles extends React.Component {
         text,
       ),
     );
+    const event = { index, text };
+    this.props.keyLogger.updateWord(event);
   }
 
   render() {

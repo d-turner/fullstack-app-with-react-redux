@@ -177,6 +177,13 @@ function buildXML({ loggerRecordings }, action) {
         event.setAttribute('time', buffer[y].t - startTime);
         event.appendChild(eventText);
         xmlDoc.getElementsByTagName('events')[x].appendChild(event);
+      } else if (buffer[y].type === 'TileEdit') {
+        const event = xmlDoc.createElement(buffer[y].type);
+        const eventText = xmlDoc.createTextNode(buffer[y].word);
+        event.appendChild(eventText);
+        event.setAttribute('time', buffer[y].t - startTime);
+        event.setAttribute('index', buffer[y].index);
+        xmlDoc.getElementsByTagName('events')[x].appendChild(event);
       }
 
       if (y === buffer.length - 1) {

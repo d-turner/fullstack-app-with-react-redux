@@ -40,6 +40,17 @@ class KeyLogger {
     this.buffer.push(stroke);
   }
 
+  updateWord(event) {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'TileEdit',
+      index: event.index,
+      word: event.text,
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
   save() {
     store.dispatch(actions.addLogger(this));
   }
