@@ -75,9 +75,9 @@ export default (app) => {
     const documentId = req.params.documentId;
     passport.ensureAuthenticated(req, res, (status, reply) => {
       if (status !== 200) {
-        res.status(status).json(reply);
+        return res.status(status).json(reply);
       }
-      doc.findDocumentBySavedName(documentId, (err, result) => {
+      return doc.findDocumentBySavedName(documentId, (err, result) => {
         if (err) logger.error(err);
         if (!result[0] || !user || user.user_id !== result[0].user_id) {
           return res.status(401).json({ status: 'Not Authorized' });
@@ -87,7 +87,7 @@ export default (app) => {
         req.on('data', (chunk) => {
           data += chunk.toString('utf8');
         });
-        req.on('end', () => {
+        return req.on('end', () => {
           fs.writeFile(location, data, (fail) => {
             if (fail) {
               return res.status(501).send('Failed');
@@ -111,7 +111,7 @@ export default (app) => {
       req.on('data', (chunk) => {
         data += chunk.toString('utf8');
       });
-      req.on('end', () => {
+      return req.on('end', () => {
         const location = `${dest}logs/${documentId}`;
         doc.insertLog(documentId, location, user.user_id, (err, result) => {
           // TODO: fix when value already in table
