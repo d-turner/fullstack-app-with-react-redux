@@ -23,19 +23,27 @@ class CustomEditor extends React.Component {
 
   insertIntoEditor(value) {
     console.log('Inserting value: ', value);
-    this.props.keyLogger.voiceInput(value);
-    const selection = this.props.editorState.getSelection();
-    const contentState = this.props.editorState.getCurrentContent();
-    const newContentState = Modifier.insertText(contentState, selection, value);
-    this.props.handleChange(EditorState.createWithContent(newContentState));
-  }
-
-  endValue(value) {
-    console.log('End Value: ', value);
+    // this.props.keyLogger.voiceInput(value);
     // const selection = this.props.editorState.getSelection();
     // const contentState = this.props.editorState.getCurrentContent();
     // const newContentState = Modifier.insertText(contentState, selection, value);
     // this.props.handleChange(EditorState.createWithContent(newContentState));
+    // this.setState({ contentState });
+  }
+
+  endValue(value) {
+    console.log('End Value: ', value);
+    value = value + ' ';
+    this.props.keyLogger.voiceInput(value);
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const newContentState = Modifier.insertText(contentState, selection, value);
+    const newEditorState = EditorState.createWithContent(newContentState);
+    const updatedSelection = selection.merge({
+      focusOffset: selection.getAnchorOffset() + value.length,
+      anchorOffset: selection.getAnchorOffset() + value.length,
+    });
+    this.props.handleChange(EditorState.acceptSelection(newEditorState, updatedSelection));
   }
 
   render() {

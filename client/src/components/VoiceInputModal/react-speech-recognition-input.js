@@ -32,7 +32,7 @@ export default class App extends Component {
             this.setState({
               inputValue: finalTranscript,
             });
-            if (this.props.onEnd) this.props.onEnd(finalTranscript);
+            // if (this.props.onEnd) this.props.onEnd(finalTranscript);
             if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           } else {
             interimTranscript += event.results[i][0].transcript;
@@ -56,12 +56,9 @@ export default class App extends Component {
   say() {
     if (this.state.supportVoice) {
       if (!this.state.speaking) {
-        // start listening
         this.recognition.start();
       } else {
         this.recognition.stop();
-        const question = this.state.inputValue;
-        this.props.onEnd(question);
       }
       this.setState({
         speaking: !this.state.speaking,
@@ -71,7 +68,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div style={{ display: 'inline', float: 'right' }} className={`${styles.chatInputWrapper} ${this.props.className}`} >
+      <div className={`${styles.chatInputWrapper} ${this.props.className}`} >
         {
           this.state.supportVoice ?
             <img
@@ -83,11 +80,26 @@ export default class App extends Component {
               onClick={this.say.bind(this)} /> : null
         }
         <textarea
+          className={`${styles.editor} ${styles.chatMessageInput}`}
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
-          className={styles.chatMessageInput}
           placeholder="Voice Recognition will insert at cursor point"
           ref={(ref) => { this.textarea = ref; }} />
+        <div className={styles.buttons}>
+          <button className={`shyButton success ${styles.button}`}
+            onClick={() => {
+              this.props.onEnd(this.state.inputValue);
+              this.setState({ inputValue: '' });
+            }}
+          >
+            <i className={`material-icons ${styles.icon}`}>done</i>
+          </button>
+          <button className={`shyButton error ${styles.button}`}
+            onClick={() => this.setState({ inputValue: '' })}
+          >
+            <i className={`material-icons ${styles.icon}`}>clear</i>
+          </button>
+        </div>
       </div>
     );
   }
