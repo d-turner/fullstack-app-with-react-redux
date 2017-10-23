@@ -80,7 +80,7 @@ export default (app) => {
       doc.findDocumentBySavedName(documentId, (err, result) => {
         if (err) logger.error(err);
         if (!result[0] || !user || user.user_id !== result[0].user_id) {
-          res.status(401).json({ status: 'Not Authorized' });
+          return res.status(401).json({ status: 'Not Authorized' });
         }
         const location = result[0].location;
         let data = '';
@@ -105,7 +105,7 @@ export default (app) => {
     const documentId = req.params.documentId;
     passport.ensureAuthenticated(req, res, (status, reply) => {
       if (status !== 200 || !user) {
-        res.status(status).json(reply);
+        return res.status(status).json(reply);
       }
       let data = '';
       req.on('data', (chunk) => {
