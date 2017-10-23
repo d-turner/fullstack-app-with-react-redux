@@ -219,7 +219,7 @@ const KeyLoggerReducer = function(state = initialState, action) {
       const xmlDoc = buildXML(state, action);
       const domString = new XMLSerializer().serializeToString(xmlDoc);
       apiWrapper.uploadLog(domString, action.documentId, (result) => {
-        console.log(result);
+        // console.log(result);
       });
       return state;
     default:
