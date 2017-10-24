@@ -22,7 +22,7 @@ class CustomEditor extends React.Component {
   }
 
   insertIntoEditor(value) {
-    console.log('Inserting value: ', value);
+    // console.log('Inserting value: ', value);
     // this.props.keyLogger.voiceInput(value);
     // const selection = this.props.editorState.getSelection();
     // const contentState = this.props.editorState.getCurrentContent();
@@ -32,7 +32,7 @@ class CustomEditor extends React.Component {
   }
 
   endValue(value) {
-    console.log('End Value: ', value);
+    // console.log('End Value: ', value);
     value = value + ' ';
     this.props.keyLogger.voiceInput(value);
     const selection = this.props.editorState.getSelection();
