@@ -37,7 +37,7 @@ class CustomEditor extends React.Component {
     this.props.keyLogger.voiceInput(value);
     const selection = this.props.editorState.getSelection();
     const contentState = this.props.editorState.getCurrentContent();
-    const newContentState = Modifier.insertText(contentState, selection, value);
+    const newContentState = Modifier.replaceText(contentState, selection, value);
     const newEditorState = EditorState.createWithContent(newContentState);
     const updatedSelection = selection.merge({
       focusOffset: selection.getAnchorOffset() + value.length,
