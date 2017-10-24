@@ -78,6 +78,7 @@ class CustomEditor extends React.Component {
             handleKeyCommand={this.props.handleKeyCommand}
             keyBindingFn={this.myKeyBindingFn}
             onChange={this.props.handleChange}
+            handleDrop={() => true}
             ref={(ref) => { this.Editor = ref; }}
             aria-label="Translation Input"
           />
