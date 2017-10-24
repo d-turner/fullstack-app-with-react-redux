@@ -50,3 +50,12 @@
   min-height: 80px;
   height: 100px;
 }
+
+.removeStyles {
+  box-shadow: none !important;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0);
+  margin: 0px;
+  padding: 0px;
+  height: 50px;
+}

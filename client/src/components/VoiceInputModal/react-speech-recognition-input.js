@@ -6,6 +6,7 @@ import micAnimate from './mic-animate.gif';
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.say = this.say.bind(this);
     this.state = {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
@@ -73,26 +74,51 @@ export default class App extends Component {
           className={`${styles.editor} ${styles.chatMessageInput}`}
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
-          placeholder="Voice Recognition will insert at cursor point or replace selected text"
+          aria-label="Voice Recognition Input"
+          placeholder="Voice Recognition Input - Will insert at cursor point or replace selected text"
           ref={(ref) => { this.textarea = ref; }} />
         <div className={`flex sixth ${styles.buttons}`}>
-          <img
-            alt="Microphone for voice input"
-            tabIndex="-10"
-            role="button"
-            src={this.state.speaking ? micAnimate : mic}
-            className={styles.micImg}
-            onClick={this.say.bind(this)} />
+          <button
+            className={styles.removeStyles}
+            onClick={(e) => {
+              e.preventDefault();
+              this.say();
+              const x = window.scrollX;
+              const y = window.scrollY;
+              this.props.editor.focus();
+              window.scrollTo(x, y);
+            }}>
+            <img
+              alt="Microphone for voice input"
+              src={this.state.speaking ? micAnimate : mic}
+              className={styles.micImg} />
+          </button>
           <button className={`shyButton success ${styles.button}`}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               this.props.onEnd(this.state.inputValue);
               this.setState({ inputValue: '' });
+              const x = window.scrollX;
+              const y = window.scrollY;
+              setTimeout(() => {
+                this.props.editor.focus();
+                window.scrollTo(x, y);
+              }, 200);
             }}
           >
             <i className={`material-icons ${styles.icon}`}>done</i>
           </button>
           <button className={`shyButton error ${styles.button}`}
-            onClick={() => this.setState({ inputValue: '' })}
+            onClick={(e) => {
+              e.preventDefault();
+              this.setState({ inputValue: '' });
+              const x = window.scrollX;
+              const y = window.scrollY;
+              setTimeout(() => {
+                this.props.editor.focus();
+                window.scrollTo(x, y);
+              }, 200);
+            }}
           >
             <i className={`material-icons ${styles.icon}`}>clear</i>
           </button>
@@ -105,10 +131,3 @@ export default class App extends Component {
     return this.state.supportVoice ? this.renderVoiceInput() : null;
   }
 }
-
-// <textarea
-// value={this.state.inputValue}
-// onChange={this.changeValue.bind(this)}
-// className={styles.chatMessageInput}
-// placeholder="Enter Translation"
-// ref={(ref) => { this.textarea = ref; }} />
