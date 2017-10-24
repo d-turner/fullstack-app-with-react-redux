@@ -32,8 +32,9 @@ class CustomEditor extends React.Component {
   }
 
   endValue(value) {
-    // console.log('End Value: ', value);
-    value = value + ' ';
+    if (value !== '') {
+      value = value + ' ';
+    }
     this.props.keyLogger.voiceInput(value);
     const selection = this.props.editorState.getSelection();
     const contentState = this.props.editorState.getCurrentContent();
@@ -65,7 +66,12 @@ class CustomEditor extends React.Component {
             activeClass={styles['RichEditor-activeButton']}
         />
         </details>
-        <VoiceInput lang={this.props.lang} onChange={value => this.insertIntoEditor(value)} onEnd={endValue => this.endValue(endValue)} />
+        <VoiceInput
+          lang={this.props.lang}
+          editor={this.Editor}
+          onChange={value => this.insertIntoEditor(value)}
+          onEnd={endValue => this.endValue(endValue)}
+        />
         <div className={styles['RichEditor-editor']} >
           <Editor
             editorState={this.props.editorState}
