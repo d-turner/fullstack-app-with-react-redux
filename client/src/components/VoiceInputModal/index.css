@@ -1,14 +1,15 @@
 .chatInputWrapper {
-  position: relative;
-  height: 50px;
-  margin-top: 30px;
+  display: flex;
 }
+
 .micImg {
-  position: absolute;
+  /* position: absolute;
   width: 38px;
   height: 38px;
   right: 0px;
-  top: -6px;
+  top: -6px; */
+  height: 50px;
+  padding: 0px;
   cursor: pointer;
 }
 .chatMessageInput {
@@ -27,16 +28,15 @@
 }
 
 .buttons {
-  display: inline-grid;
-  position: relative;
-  top: -60px;
-  margin: 15px;
+  margin-left: 30px;
+  align-self: baseline;
 }
 
 .button {
   padding: 1px 20px;
   padding-top: 5px;
-  margin-bottom: 7px;
+  margin-bottom: 4px;
+  height: 24px;
 }
 
 .icon {
@@ -44,8 +44,9 @@
 }
 
 .editor {
-  width: 70%;
-  position: relative;
-  left: -2px;
-  resize: none;
+  scroll-behavior: smooth;
+  margin-top: 30px;
+  min-width: 250px;
+  min-height: 80px;
+  height: 100px;
 }

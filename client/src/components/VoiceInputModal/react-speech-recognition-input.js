@@ -66,26 +66,23 @@ export default class App extends Component {
     }
   }
 
-  render() {
+  renderVoiceInput() {
     return (
       <div className={`${styles.chatInputWrapper} ${this.props.className}`} >
-        {
-          this.state.supportVoice ?
-            <img
-              alt="Microphone for voice input"
-              tabIndex="-10"
-              role="button"
-              src={this.state.speaking ? micAnimate : mic}
-              className={styles.micImg}
-              onClick={this.say.bind(this)} /> : null
-        }
         <textarea
           className={`${styles.editor} ${styles.chatMessageInput}`}
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
-          placeholder="Voice Recognition will insert at cursor point"
+          placeholder="Voice Recognition will insert at cursor point or replace selected text"
           ref={(ref) => { this.textarea = ref; }} />
-        <div className={styles.buttons}>
+        <div className={`flex sixth ${styles.buttons}`}>
+          <img
+            alt="Microphone for voice input"
+            tabIndex="-10"
+            role="button"
+            src={this.state.speaking ? micAnimate : mic}
+            className={styles.micImg}
+            onClick={this.say.bind(this)} />
           <button className={`shyButton success ${styles.button}`}
             onClick={() => {
               this.props.onEnd(this.state.inputValue);
@@ -102,6 +99,10 @@ export default class App extends Component {
         </div>
       </div>
     );
+  }
+
+  render() {
+    return this.state.supportVoice ? this.renderVoiceInput() : null;
   }
 }
 
