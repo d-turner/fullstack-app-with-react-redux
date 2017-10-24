@@ -27,8 +27,8 @@ export default class App extends Component {
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             finalTranscript += event.results[i][0].transcript;
-            console.log('Current Event Final: ', event.results[i][0].transcript);
-            console.log('Final: ', finalTranscript);
+            // console.log('Current Event Final: ', event.results[i][0].transcript);
+            // console.log('Final: ', finalTranscript);
             this.setState({
               inputValue: finalTranscript,
             });
@@ -36,8 +36,8 @@ export default class App extends Component {
             if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           } else {
             interimTranscript += event.results[i][0].transcript;
-            console.log('Current Event Interim: ', event.results[i][0].transcript);
-            console.log('Total: ', interimTranscript);
+            // console.log('Current Event Interim: ', event.results[i][0].transcript);
+            // console.log('Total: ', interimTranscript);
             this.setState({
               inputValue: interimTranscript,
             });
