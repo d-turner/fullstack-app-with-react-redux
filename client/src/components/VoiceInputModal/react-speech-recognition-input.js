@@ -12,6 +12,8 @@ export default class App extends Component {
       supportVoice: 'webkitSpeechRecognition' in window,
       speaking: false,
     };
+    this.finalTranscript = '';
+    this.interimTranscript = '';
   }
 
   componentDidMount() {
@@ -23,24 +25,24 @@ export default class App extends Component {
       this.recognition.lang = this.props.lang || 'en-US';
       // this.recognition.start();
       this.recognition.onresult = (event) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
+        this.interimTranscript = '';
+        this.finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
+            this.finalTranscript += event.results[i][0].transcript;
             // console.log('Current Event Final: ', event.results[i][0].transcript);
             // console.log('Final: ', finalTranscript);
             this.setState({
-              inputValue: finalTranscript,
+              inputValue: this.finalTranscript,
             });
             // if (this.props.onEnd) this.props.onEnd(finalTranscript);
-            if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
+            // if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           } else {
-            interimTranscript += event.results[i][0].transcript;
+            this.interimTranscript += event.results[i][0].transcript;
             // console.log('Current Event Interim: ', event.results[i][0].transcript);
             // console.log('Total: ', interimTranscript);
             this.setState({
-              inputValue: interimTranscript,
+              inputValue: this.interimTranscript,
             });
           }
         }
@@ -75,7 +77,7 @@ export default class App extends Component {
           value={this.state.inputValue}
           onChange={this.changeValue.bind(this)}
           aria-label="Voice Recognition Input"
-          placeholder="Voice Recognition Input - Will insert at cursor point or replace selected text"
+          placeholder="Voice Recognition Input"
           ref={(ref) => { this.textarea = ref; }} />
         <div className={`flex sixth ${styles.buttons}`}>
           <button
@@ -96,11 +98,15 @@ export default class App extends Component {
           <button className={`shyButton success ${styles.button}`}
             onClick={(e) => {
               e.preventDefault();
-              this.props.onEnd(this.state.inputValue);
+              this.say();
+              this.finalTranscript = '';
+              this.interimTranscript = '';
+              this.props.onEnd(this.state.inputValue.trim());
               this.setState({ inputValue: '' });
               const x = window.scrollX;
               const y = window.scrollY;
               setTimeout(() => {
+                this.say();
                 this.props.editor.focus();
                 window.scrollTo(x, y);
               }, 200);
@@ -111,10 +117,14 @@ export default class App extends Component {
           <button className={`shyButton error ${styles.button}`}
             onClick={(e) => {
               e.preventDefault();
+              this.say();
+              this.finalTranscript = '';
+              this.interimTranscript = '';
               this.setState({ inputValue: '' });
               const x = window.scrollX;
               const y = window.scrollY;
               setTimeout(() => {
+                this.say();
                 this.props.editor.focus();
                 window.scrollTo(x, y);
               }, 200);
