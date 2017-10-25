@@ -95,43 +95,47 @@ export default class App extends Component {
               src={this.state.speaking ? micAnimate : mic}
               className={styles.micImg} />
           </button>
-          <button className={`shyButton success ${styles.button}`}
-            onClick={(e) => {
-              e.preventDefault();
-              this.say();
-              this.finalTranscript = '';
-              this.interimTranscript = '';
-              this.props.onEnd(this.state.inputValue.trim());
-              this.setState({ inputValue: '' });
-              const x = window.scrollX;
-              const y = window.scrollY;
-              setTimeout(() => {
-                this.say();
-                this.props.editor.focus();
-                window.scrollTo(x, y);
-              }, 200);
-            }}
-          >
-            <i className={`material-icons ${styles.icon}`}>done</i>
-          </button>
-          <button className={`shyButton error ${styles.button}`}
-            onClick={(e) => {
-              e.preventDefault();
-              this.say();
-              this.finalTranscript = '';
-              this.interimTranscript = '';
-              this.setState({ inputValue: '' });
-              const x = window.scrollX;
-              const y = window.scrollY;
-              setTimeout(() => {
-                this.say();
-                this.props.editor.focus();
-                window.scrollTo(x, y);
-              }, 200);
-            }}
-          >
-            <i className={`material-icons ${styles.icon}`}>clear</i>
-          </button>
+          {this.state.speaking ? (
+            <div style={{ padding: '0px' }}>
+              <button className={`shyButton success ${styles.button}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.say();
+                  this.finalTranscript = '';
+                  this.interimTranscript = '';
+                  this.props.onEnd(this.state.inputValue.trim());
+                  this.setState({ inputValue: '' });
+                  const x = window.scrollX;
+                  const y = window.scrollY;
+                  setTimeout(() => {
+                    this.say();
+                    this.props.editor.focus();
+                    window.scrollTo(x, y);
+                  }, 200);
+                }}
+              >
+                <i className={`material-icons ${styles.icon}`}>done</i>
+              </button>
+              <button className={`shyButton error ${styles.button}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.say();
+                  this.finalTranscript = '';
+                  this.interimTranscript = '';
+                  this.setState({ inputValue: '' });
+                  const x = window.scrollX;
+                  const y = window.scrollY;
+                  setTimeout(() => {
+                    this.say();
+                    this.props.editor.focus();
+                    window.scrollTo(x, y);
+                  }, 200);
+                }}
+              >
+                <i className={`material-icons ${styles.icon}`}>clear</i>
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     );
