@@ -6,6 +6,27 @@ import { DragSource, DropTarget } from 'react-dnd';
 import flow from 'lodash/flow';
 import styles from './tile.scss';
 
+function deselectSource() {
+  const wrapper = document.getElementById('wordTiles');
+  const tiles = wrapper.childNodes;
+  for (let i = 1; i < tiles.length; i++) {
+    const tile = tiles[i];
+    const input = tile.getElementsByTagName('input')[0];
+    input.checked = false;
+  }
+}
+
+function deselectTarget() {
+  console.log('Deselecting Target Tiles...............');
+  const wrapper = document.getElementById('targetTiles');
+  const tiles = wrapper.childNodes;
+  for (let i = 0; i < tiles.length; i++) {
+    const tile = tiles[i];
+    const input = tile.getElementsByTagName('input')[0];
+    input.checked = false;
+  }
+}
+
 const Types = {
   SOURCE: 'source',
   TILE: 'draggable',
@@ -98,6 +119,7 @@ const tileTarget = {
       if (mouseX > hoverMiddleX && dragIndex > hoverIndex) {
         props.moveTile(dragIndex, hoverIndex + 1, item.word, props.word, item.indexArr);
         monitor.getItem().index = hoverIndex;
+        deselectTarget();
         return;
       }
 
@@ -105,8 +127,10 @@ const tileTarget = {
       if (mouseX < hoverMiddleX && dragIndex < hoverIndex) {
         props.moveTile(dragIndex, hoverIndex - 1, item.word, props.word, item.indexArr);
         monitor.getItem().index = hoverIndex;
+        deselectTarget();
         return;
       }
+      deselectTarget();
       props.moveTile(dragIndex, hoverIndex, item.word, props.word, item.indexArr);
       monitor.getItem().index = hoverIndex;
     } else if (monitor.getItemType() === Types.SOURCE) {
@@ -137,6 +161,7 @@ const tileTarget = {
         isBefore = false;
       }
       // Time to actually perform the action
+      deselectSource();
       props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
     }
   },
