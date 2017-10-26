@@ -35,7 +35,7 @@ const cleanText = (text, lowercaseBefore) => {
   let newText = (text === undefined || text === null) ? '' : text;
   if (lowercaseBefore) { newText = newText.toLowerCase(); }
   newText = newText.replace(/\./g, '. ');
-  newText = newText.replace(/  +/g, ' ');
+  newText = newText.replace(/ +/g, ' ');
   newText = newText.replace(/(<([^>]+)>)/ig, '');
   newText = newText.split('.').map(data => data.trim()).join('. ');
   return newText.toString().replace(/(^|\. *)([a-z])/g, (match, separator, char) => {
@@ -309,7 +309,7 @@ const DocumentReducer = function(state = initialState, action) {
         },
       });
     case actions.UPDATE_SELECTED:
-      if (state.selectedSegment === action.segmentId) return state;
+      if (state.selectedSegment === action.segmentId || action.segmentId >= state.documents[action.documentId].xliff.segments.length) return state;
       if (action.segmentId === -1) {
         return Object.assign({}, state, {
           selectedSegment: action.segmentId,
