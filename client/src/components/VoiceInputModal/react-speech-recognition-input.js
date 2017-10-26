@@ -11,6 +11,7 @@ export default class App extends Component {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
       speaking: false,
+      isFirst: true,
     };
     this.finalTranscript = '';
     this.interimTranscript = '';
@@ -72,6 +73,7 @@ export default class App extends Component {
   renderVoiceInput() {
     return (
       <div className={`${styles.chatInputWrapper} ${this.props.className}`} >
+<<<<<<< Updated upstream
         <textarea
           className={`${styles.editor} ${styles.chatMessageInput}`}
           value={this.state.inputValue}
@@ -79,6 +81,17 @@ export default class App extends Component {
           aria-label="Voice Recognition Input"
           placeholder="Voice Recognition Input"
           ref={(ref) => { this.textarea = ref; }} />
+=======
+        {this.state.speaking || !this.state.isFirst ? (
+          <textarea
+            className={`${styles.editor} ${styles.chatMessageInput}`}
+            value={this.state.inputValue}
+            onChange={this.changeValue.bind(this)}
+            aria-label="Voice Recognition Input"
+            placeholder="Voice Recognition Input"
+            ref={(ref) => { this.textarea = ref; }} />
+        ) : <div className={styles.hideEditor} />}
+>>>>>>> Stashed changes
         <div className={`flex sixth ${styles.buttons}`}>
           <button
             className={styles.removeStyles}
@@ -97,14 +110,22 @@ export default class App extends Component {
           </button>
           {this.state.speaking ? (
             <div style={{ padding: '0px' }}>
+<<<<<<< Updated upstream
               <button className={`shyButton success ${styles.button}`}
+=======
+              <button className={`shyButton ${styles.button}`}
+>>>>>>> Stashed changes
                 onClick={(e) => {
                   e.preventDefault();
                   this.say();
                   this.finalTranscript = '';
                   this.interimTranscript = '';
                   this.props.onEnd(this.state.inputValue.trim());
+<<<<<<< Updated upstream
                   this.setState({ inputValue: '' });
+=======
+                  this.setState({ inputValue: '', isFirst: false });
+>>>>>>> Stashed changes
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
@@ -122,7 +143,11 @@ export default class App extends Component {
                   this.say();
                   this.finalTranscript = '';
                   this.interimTranscript = '';
+<<<<<<< Updated upstream
                   this.setState({ inputValue: '' });
+=======
+                  this.setState({ inputValue: '', isFirst: false });
+>>>>>>> Stashed changes
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
