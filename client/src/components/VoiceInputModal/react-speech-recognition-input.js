@@ -99,7 +99,7 @@ export default class App extends Component {
               src={this.state.speaking ? micAnimate : mic}
               className={styles.micImg} />
           </button>
-          {this.state.speaking ? (
+          {this.state.speaking || !this.state.isFirst ? (
             <div style={{ padding: '0px' }}>
               <button className={`shyButton ${styles.button}`}
                 onClick={(e) => {
