@@ -66,6 +66,7 @@ export default class App extends Component {
       }
       this.setState({
         speaking: !this.state.speaking,
+        isFirst: false,
       });
     }
   }
@@ -107,7 +108,7 @@ export default class App extends Component {
                   this.finalTranscript = '';
                   this.interimTranscript = '';
                   this.props.onEnd(this.state.inputValue.trim());
-                  this.setState({ inputValue: '', isFirst: false });
+                  this.setState({ inputValue: '' });
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
@@ -125,7 +126,7 @@ export default class App extends Component {
                   this.say();
                   this.finalTranscript = '';
                   this.interimTranscript = '';
-                  this.setState({ inputValue: '', isFirst: false });
+                  this.setState({ inputValue: '' });
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
