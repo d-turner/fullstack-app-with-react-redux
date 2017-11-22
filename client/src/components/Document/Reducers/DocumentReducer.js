@@ -1,6 +1,7 @@
 import { EditorState, ContentState } from 'draft-js';
 import update from 'immutability-helper';
 
+import {cleanText} from '../../../utils/stringParser';
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
@@ -31,18 +32,6 @@ const blankDocument = {
   xliff: {},
 };
 
-const cleanText = (text, lowercaseBefore) => {
-  let newText = (text === undefined || text === null) ? '' : text;
-  if (lowercaseBefore) { newText = newText.toLowerCase(); }
-  newText = newText.replace(/\./g, '. ');
-  newText = newText.replace(/ +/g, ' ');
-  newText = newText.replace(/(<([^>]+)>)/ig, '');
-  newText = newText.split('.').map(data => data.trim()).join('. ');
-  return newText.toString().replace(/(^|\. *)([a-z])/g, (match, separator, char) => {
-    return separator + char.toUpperCase();
-  });
-};
-
 const createNewDocumentEntry = (state = blankDocument, action) => {
   return Object.assign({}, state, {
     isFetching: true,
@@ -71,15 +60,19 @@ const documentFetchResults = function(state = blankDocument, action) {
 };
 
 const updateTarget = function(state = blankDocument, action) {
-  return update(state, {
+  return {
+    ...state,
     xliff: {
-      segments: {
-        [action.segmentId]: {
-          target: { $set: action.editorState.getCurrentContent().getPlainText() },
-        },
-      },
+      ...state.xliff,
+      segments: state.xliff.segments.map((segment, index) => {
+        if (index !== action.segmentId) { return segment; }
+        return {
+          ...segment,
+          target: action.editorState.getCurrentContent().getPlainText(),
+        };
+      }),
     },
-  });
+  };
 };
 
 function updateSegment(segment, newSource, newTarget) {
@@ -178,9 +171,10 @@ const insertWord = function(state, action) {
   // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
   // word has same case for all other scenarios
   let word = action.word;
-  if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
-    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-  }
+  // TODO: Character Capital After Insert
+  // if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
+  //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+  // }
   const newData = update(newTarget, {
     $splice: [
       [action.dragIndex, 1],
@@ -209,9 +203,10 @@ const insertSourceWord = function(state, action) {
   const segments = state.xliff.segments;
   const newTarget = splitTextIntoArray(segments[action.segmentId].target);
   let word = action.word; // .toLowerCase();
-  if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
-    word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-  }
+  // TODO: Character Capital After Insert
+  // if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
+  //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
+  // }
   if (action.isBefore) {
     // newTarget[action.index] = newTarget[action.index].toLowerCase();
     newTarget.splice(action.index, 0, word);
@@ -253,6 +248,23 @@ const updateWord = function(state, action) {
   };
 };
 
+const updateWordOrder = function(state, action) {
+  const segments = state.xliff.segments;
+  return {
+    ...state,
+    xliff: {
+      ...state.xliff,
+      segments: segments.map((item, index) => {
+        if (index !== action.segmentId) return item;
+        return {
+          ...item,
+          target: joinTextArray(action.wordArray),
+        };
+      }),
+    },
+  };
+}
+
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
     case actions.FETCH_DOCUMENT:
@@ -273,12 +285,11 @@ const DocumentReducer = function(state = initialState, action) {
         },
       };
     case actions.UPDATE_TARGET:
-      return update(state, {
-        editorState: { $set: action.editorState },
+      return Object.assign({}, state, {
+        editorState: action.editorState,
         documents: {
-          [action.documentId]: {
-            $set: updateTarget(state.documents[action.documentId], action),
-          },
+          ...state.documents,
+          [action.documentId]: updateTarget(state.documents[action.documentId], action),
         },
       });
     case actions.LOOKUP:
@@ -346,6 +357,15 @@ const DocumentReducer = function(state = initialState, action) {
         documents: {
           ...state.documents,
           [action.documentId]: updatedState2,
+        },
+      });
+    case actions.UPDATE_WORD_ORDER:
+      const updatedState3 = updateWordOrder(state.documents[action.documentId], action);
+      return Object.assign({}, state, {
+        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target)),
+        documents: {
+          ...state.documents,
+          [action.documentId]: updatedState3,
         },
       });
     case actions.VOICE_INPUT:
