@@ -9,7 +9,7 @@ import { RichUtils } from 'draft-js';
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
 import SegmentPresentation from '../Presentation/Segment';
-import SegmentTiles from '../Presentation/SegmentTiles';
+import SegmentTiles from '../Presentation/SortableTiles';
 
 import KeyLogger from '../../KeyLogger/KeyLogger';
 
@@ -83,6 +83,7 @@ class Segment extends React.Component {
           segmentId={this.props.segmentId}
           documentId={this.props.documentId}
           keyLogger={this.keyLogger}
+          updateSelectedSegment={this.props.updateSelectedSegment}
         />
       );
     }
