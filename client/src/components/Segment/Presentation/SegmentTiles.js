@@ -7,7 +7,7 @@ import { default as TouchBackend } from 'react-dnd-touch-backend';
 
 import store from '../../../store';
 import * as actions from '../../DraggableTiles/TileActions';
-import { splitTextIntoArray } from '../../../utils/stringParser';
+import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
 import SourceTile from '../../DraggableTiles/SourceTile';
 import DraggableTile from '../../DraggableTiles/DraggableTile';
 
@@ -21,9 +21,15 @@ class SegmentTiles extends React.Component {
     this.endDrag = this.endDrag.bind(this);
     this.moveSourceTile = this.moveSourceTile.bind(this);
     this.updateWord = this.updateWord.bind(this);
+    this.tempMoveTile = this.tempMoveTile.bind(this);
   }
 
   componentDidMount() {
+    window.onkeydown = (e) => {
+      if (e.ctrlKey && e.keyCode === 13) {
+        return this.props.updateSelectedSegment(this.props.documentId, this.props.segmentId + 1);
+      }
+    };
     if (this.props.segmentId !== 0) {
       const node = document.getElementById('selectedSegment');
       node.scrollIntoView({ behavior: 'auto', block: 'center' });
@@ -42,6 +48,7 @@ class SegmentTiles extends React.Component {
         indexArr,
       ),
     );
+    this.setState({ placeholder: false, hoverIndex: undefined, word: undefined, isBefore: undefined });
     const event = { dragIndex, hoverIndex, word, targetWord };
     this.props.keyLogger.tileDrag(event);
   }
@@ -92,17 +99,27 @@ class SegmentTiles extends React.Component {
     this.props.keyLogger.updateWord(event);
   }
 
+  tempMoveTile(dragIndex, hoverIndex, word, isBefore) {
+    this.setState({
+      placeholder: true,
+      tempDragIndex: dragIndex,
+      tempHoverIndex: hoverIndex,
+      tempWord: word,
+      tempIsBefore: isBefore,
+    });
+    // on drop only if inside -> store.dispatch(actions.insertWord(hoverIndex, word));
+  }
   render() {
     const { segment } = this.props;
-    const sourceWords = splitTextIntoArray(segment.source);
-    const targetWords = splitTextIntoArray(segment.target);
+    const sourceWords = splitTextIntoArray(cleanText(segment.source));
+    const targetWords = splitTextIntoArray(cleanText(segment.target));
     return (
       <div>
         <div id="wordTiles" className={`${styles.wrapper} ${styles.selected}`}>
           <h6>#{this.props.segmentId} Source</h6>
           {sourceWords.map((word, index) => {
             const key = `${word}${index}-source`;
-            if (word === '') return null;
+            if (word === '' || word === undefined || word === null) return null;
             return (
               <SourceTile source={word} index={index} key={key} endDrag={this.endDrag} />
             );
@@ -114,6 +131,38 @@ class SegmentTiles extends React.Component {
             {targetWords.map((word, index) => {
               const key = `${word}${index}-target`;
               if (word === '') return null;
+              if (this.state.placeholder && this.state.tempHoverIndex === index) {
+                if (this.state.tempIsBefore) {
+                  return (
+                    <div className={styles.inlineBlock} key={key}>
+                      <div className={`${styles.format} ${styles.inserted}`}>{this.state.tempWord}</div>
+                      <DraggableTile
+                        word={word}
+                        index={index}
+                        moveTile={this.moveTile}
+                        moveSourceTile={this.moveSourceTile}
+                        key={key}
+                        updateWord={this.updateWord}
+                        tempMoveTile={this.tempMoveTile}
+                      />
+                    </div>
+                  );
+                }
+                return (
+                  <div className={styles.inlineBlock} key={key}>
+                    <DraggableTile
+                      word={word}
+                      index={index}
+                      moveTile={this.moveTile}
+                      moveSourceTile={this.moveSourceTile}
+                      key={key}
+                      updateWord={this.updateWord}
+                      tempMoveTile={this.tempMoveTile}
+                    />
+                    <div className={`${styles.format} ${styles.inserted}`}>{this.state.tempWord}</div>
+                  </div>
+                );
+              }
               return (
                 <DraggableTile
                   word={word}
@@ -122,6 +171,7 @@ class SegmentTiles extends React.Component {
                   moveSourceTile={this.moveSourceTile}
                   key={key}
                   updateWord={this.updateWord}
+                  tempMoveTile={this.tempMoveTile}
                 />
               );
             })}
