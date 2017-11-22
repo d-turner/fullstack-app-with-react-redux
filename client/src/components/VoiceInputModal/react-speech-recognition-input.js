@@ -1,12 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './index.css';
 import mic from './mic.gif';
 import micAnimate from './mic-animate.gif';
 
-export default class App extends Component {
+export default class VoiceInput extends Component {
   constructor(props) {
     super(props);
     this.say = this.say.bind(this);
+    this.stop = this.stop.bind(this);
+    this.changeValue = this.changeValue.bind(this);
     this.state = {
       inputValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
@@ -24,15 +27,12 @@ export default class App extends Component {
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang || 'en-US';
-      // this.recognition.start();
       this.recognition.onresult = (event) => {
         this.interimTranscript = '';
         this.finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.finalTranscript += event.results[i][0].transcript;
-            // console.log('Current Event Final: ', event.results[i][0].transcript);
-            // console.log('Final: ', finalTranscript);
             this.setState({
               inputValue: this.finalTranscript,
             });
@@ -40,8 +40,6 @@ export default class App extends Component {
             // if (this.props.onChange) this.props.onChange(event.results[i][0].transcript);
           } else {
             this.interimTranscript += event.results[i][0].transcript;
-            // console.log('Current Event Interim: ', event.results[i][0].transcript);
-            // console.log('Total: ', interimTranscript);
             this.setState({
               inputValue: this.interimTranscript,
             });
@@ -55,6 +53,19 @@ export default class App extends Component {
     this.setState({
       inputValue: event.target.value,
     });
+  }
+
+  stop() {
+    if (this.state.supportVoice) {
+      this.recognition.stop();
+      this.finalTranscript = '';
+      this.interimTranscript = '';
+      this.setState({
+        speaking: false,
+        isFirst: false,
+        inputValue: '',
+      });
+    }
   }
 
   say() {
@@ -78,7 +89,7 @@ export default class App extends Component {
           <textarea
             className={`${styles.editor} ${styles.chatMessageInput}`}
             value={this.state.inputValue}
-            onChange={this.changeValue.bind(this)}
+            onChange={e => this.changeValue(e)}
             aria-label="Voice Recognition Input"
             placeholder="Voice Recognition Input"
             ref={(ref) => { this.textarea = ref; }} />
@@ -104,15 +115,11 @@ export default class App extends Component {
               <button className={`shyButton ${styles.button}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  this.say();
-                  this.finalTranscript = '';
-                  this.interimTranscript = '';
+                  this.stop();
                   this.props.onEnd(this.state.inputValue.trim());
-                  this.setState({ inputValue: '' });
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
-                    this.say();
                     this.props.editor.focus();
                     window.scrollTo(x, y);
                   }, 200);
@@ -123,14 +130,10 @@ export default class App extends Component {
               <button className={`shyButton error ${styles.button}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  this.say();
-                  this.finalTranscript = '';
-                  this.interimTranscript = '';
-                  this.setState({ inputValue: '' });
+                  this.stop();
                   const x = window.scrollX;
                   const y = window.scrollY;
                   setTimeout(() => {
-                    this.say();
                     this.props.editor.focus();
                     window.scrollTo(x, y);
                   }, 200);
@@ -149,3 +152,11 @@ export default class App extends Component {
     return this.state.supportVoice ? this.renderVoiceInput() : null;
   }
 }
+
+VoiceInput.propTypes = {
+  lang: PropTypes.string,
+  onEnd: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  editor: PropTypes.objectOf(PropTypes.any),
+  className: PropTypes.string,
+};
