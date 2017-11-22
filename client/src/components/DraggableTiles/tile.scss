@@ -1,8 +1,25 @@
 @import '../../constants/variables';
 
+.container {
+  padding-left: 0px;
+}
+
+.tile {
+  padding: 2px 4px 3px 2px;
+  margin-right: 10px;
+  display: inline;
+}
+
 .format {
+  padding: 6px 12px 6px 6px;
   margin: 6px;
-  padding: 10px 12px;
+  display: inline-block;
+  background-color: #e4eafa;
+};
+
+.format1 {
+  padding: 12px 12px 12px 6px;
+  margin: 6px;
   display: inline-block;
   background-color: #e4eafa;
 };
@@ -34,4 +51,27 @@
 
 #checkboxes input[type=checkbox]:checked {
   background-color: green;
+}
+
+span.grippy {
+  content: '....';
+  width: 22px;
+  height: 23px;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 4px;
+  padding: 3px 0px;
+  cursor: move;
+  vertical-align: middle;
+  margin-top: -.7em;
+  margin-left: -2px;
+  margin-right: .5em;
+  font-size: 13px;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+  color: black;
+  opacity: 0.35;
+}
+span.grippy::after {
+  content: '.. .. .. ..';
 }

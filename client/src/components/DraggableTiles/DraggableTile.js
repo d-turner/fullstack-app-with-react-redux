@@ -88,6 +88,35 @@ const tileTarget = {
       }
       // Time to actually perform the action
       // props.moveSourceTile(dragIndex, hoverIndex, item.word, isBefore);
+    } else if (monitor.getItemType() === Types.TILE) {
+      const item = monitor.getItem();
+      const dragIndex = item.index;
+      const hoverIndex = props.index;
+
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+      // Get horizontal middle
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      // Get pixels from the left
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+
+      // Should insert tile before when hoverClientX is less than the hoverMiddleX
+      // Should insert tile after when hoverClientX is more than the hoverMiddleX
+      let isBefore = false;
+      // check if less than middle
+      if (hoverClientX < hoverMiddleX) {
+        isBefore = true;
+      }
+
+      // check if more than middle
+      if (hoverClientX > hoverMiddleX) {
+        isBefore = false;
+      }
+      // Time to actually perform the action
+      props.tempMoveTile(dragIndex, hoverIndex, item.word, isBefore);
     }
   },
 
@@ -258,12 +287,14 @@ class DraggableTile extends React.Component {
           onFocus={this.handleFocus}
           ref={(tile) => { this.tile = tile; }}
           style={{
-            minWidth: '58px',
             textAlign: 'center',
             opacity: isDragging ? 0.8 : 1,
             backgroundColor: isDragging ? '#85bc67' : '',
             cursor: 'move' }}>
-          {word}
+          <div style={{ padding: '6px 12px 6px 0px' }}>
+            <span className={styles.grippy} />
+            {word}
+          </div>
         </label>
       </div>,
     ));

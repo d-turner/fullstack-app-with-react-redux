@@ -48,14 +48,18 @@ class SourceTile extends React.Component {
   render() {
     const { connectDragSource, isDragging, source, index } = this.props;
     return connectDragSource(
-      <div className={styles.inlineBlock}>
+      <div className={`${styles.inlineBlock} ${styles.noselect}`}>
         <input aria-label="select word for dragging" type="checkbox" id={`drag${source}${index}-source`} className={styles.check} />
         <label className={styles.format} htmlFor={`drag${source}${index}-source`}
           style={{
+            textAlign: 'center',
             opacity: isDragging ? 0.8 : 1,
             backgroundColor: isDragging ? '#85bc67' : '',
             cursor: 'move' }}>
-          {source}
+          <div style={{ padding: '6px 12px 6px 0px' }}>
+            <span className={styles.grippy} />
+            {source}
+          </div>
         </label>
       </div>,
     );

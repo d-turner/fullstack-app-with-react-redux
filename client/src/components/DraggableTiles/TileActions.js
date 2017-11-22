@@ -33,3 +33,12 @@ export function updateWord(documentId, segmentId, index, text) {
     text,
   };
 }
+
+export function updateWordOrder(documentId, segmentId, wordArray) {
+  return {
+    type: actions.UPDATE_WORD_ORDER,
+    documentId,
+    segmentId,
+    wordArray,
+  };
+}
