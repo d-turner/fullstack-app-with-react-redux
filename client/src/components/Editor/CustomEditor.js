@@ -51,6 +51,16 @@ class CustomEditor extends React.Component {
     return (
       <div className={styles['RichEditor-root']} >
         <h6>Target</h6>
+        <div className={styles['RichEditor-editor']} >
+          <Editor
+            editorState={this.props.editorState}
+            handleKeyCommand={this.props.handleKeyCommand}
+            keyBindingFn={this.myKeyBindingFn}
+            onChange={this.props.handleChange}
+            ref={(ref) => { this.Editor = ref; }}
+            aria-label="Translation Input"
+          />
+        </div>
         <details>
           <summary className={styles.summary}>Styles</summary>
           <BlockStyleControls
@@ -72,16 +82,6 @@ class CustomEditor extends React.Component {
           onChange={value => this.insertIntoEditor(value)}
           onEnd={endValue => this.endValue(endValue)}
         />
-        <div className={styles['RichEditor-editor']} >
-          <Editor
-            editorState={this.props.editorState}
-            handleKeyCommand={this.props.handleKeyCommand}
-            keyBindingFn={this.myKeyBindingFn}
-            onChange={this.props.handleChange}
-            ref={(ref) => { this.Editor = ref; }}
-            aria-label="Translation Input"
-          />
-        </div>
       </div>
     );
   }
