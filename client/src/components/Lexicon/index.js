@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import LexiconContainer from './Lexicon';
+import LexiconContainer from './Containers/Lexicon';
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
