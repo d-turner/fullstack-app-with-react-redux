@@ -21,10 +21,8 @@ class Segment extends React.Component {
   renderEditor() {
     return (
       <div
-        style={{ marginTop: '10px' }}
         className={styles.editorWrapper}
         onKeyDown={e => this.props.keyLogger.record(e)}
-        tabIndex={0}
         role="Main"
       >
         <CustomEditor
@@ -45,8 +43,9 @@ class Segment extends React.Component {
   render() {
     return (
       <div>
+        <div className={styles.number}>#{this.props.segmentId}</div>
         <div className={`${styles.wrapper} ${styles.selected}`}>
-          <h6>#{this.props.segmentId} Source</h6>
+          <h6>Source</h6>
           {this.props.segment.source}
           <h6 style={{ marginTop: '10px' }}>Machine Translation</h6>
           {this.state.target}
@@ -58,7 +57,6 @@ class Segment extends React.Component {
 }
 
 Segment.propTypes = {
-  focus: PropTypes.func.isRequired,
   toggleBlockType: PropTypes.func.isRequired,
   toggleInlineStyle: PropTypes.func.isRequired,
   handleKeyCommand: PropTypes.func.isRequired,

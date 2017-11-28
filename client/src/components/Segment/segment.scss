@@ -1,24 +1,12 @@
 @import '../../constants/variables';
 
 .wrapper {
-  background-color: white;
-  margin-right: 0px;
-  padding: 15px;
+  background-color: $segmentBackground;
+  padding: $segmentPadding;
   border: 1px solid $borderColor;
   word-break: break-word;
+  border-radius: $segmentRadius;
 }
-
-.format1 {
-  margin: 20px;
-  display: inline-block;
-};
-
-.format {
-  margin: 6px;
-  padding: 20px;
-  display: inline-block;
-  background-color: $background;
-};
 
 .selected {
   border-width: 1px;
@@ -78,4 +66,27 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+// .box {
+//   border-color: #8AA9E2;
+// }
+
+// .editorWrapper {
+//   background: #fff;
+//   border: 1px solid #8AA9E2;
+//   font-family: sans-serif;
+//   font-size: 1em;
+//   padding: 15px 15px 8px 15px;
+// }
+
+.editorWrapper {
+  margin-top: $segmentGap;
+}
+
+.number {
+  position: relative;
+  margin-left: -50px;
+  top: 20px;
+  margin-bottom: -30px;
 }
