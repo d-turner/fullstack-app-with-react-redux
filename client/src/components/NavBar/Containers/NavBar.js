@@ -19,12 +19,11 @@ class NavBar extends React.Component {
         <NavPill to={'/'} label={'Kanjingo'} >
           <img src={'/assets/kanj.png'} alt="kanjingo logo" className="img-responsive" />
         </NavPill>
+        <NavPill to={'/documents'} label={'Documents'} />
         { this.props.isLoggedIn ?
           <NavPill to={'/logout'} label={'Logout'} logout={this.props.logout} /> :
           <NavPill to={'/login'} label={'Login'} />
         }
-        {/* <NavPill to={'/projects'} label={'Projects'}> */}
-        <NavPill to={'/documents'} label={'Documents'} />
       </nav>
     );
   }

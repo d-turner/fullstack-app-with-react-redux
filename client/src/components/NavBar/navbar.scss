@@ -5,15 +5,12 @@ nav {
   a {
     display: inline-block;
     padding: $tab-padding;
-    margin-right: auto;
+    margin-right: 44px;
     color: $kanjbackground;
     img {
       height: $logo-nav-width;
       width: $logo-nav-width;
     }
-  }
-  a:first-child {
-    margin-right: auto;
   }
 
   background-color: $lightsilver;
@@ -22,4 +19,27 @@ nav {
 .selected {
   border-bottom: 2px solid $mediumorchid;
   padding-bottom: 0.52em;
+}
+
+.logout {
+  margin-left: auto;
+}
+
+@media (min-width: 100px) and (max-width: 900px) {
+  nav {
+    a {
+      padding: 1em 0.6em;
+      margin-right: 5px;
+    }
+    padding: 0px !important;
+    font-size: 0.8em;
+  }
+
+  .logout {
+    margin-left: auto;
+    padding: 0.4em 0.4em;
+    height: 1.4em;
+    line-height: 0.6em;
+    margin-top: 10px;
+  }
 }
