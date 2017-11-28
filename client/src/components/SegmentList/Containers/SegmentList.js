@@ -102,7 +102,6 @@ class SegmentList extends React.Component {
           renderTiles={this.renderTiles}
           renderStyles={this.renderStyles}
           renderVoice={this.renderVoice} />
-        
         {/*  <CommentModal
             documentId={this.props.documentId}
             index={index}
@@ -173,7 +172,7 @@ class SegmentList extends React.Component {
       Multiple tiles can be dragged by first selecting and highlighting the desired tiles.";
     }
     return (
-      <div className="full grow">
+      <div className={`full grow ${styles.listMargin}`}>
         {this.state.help ?
           <div className={responsiveWidth}>
             <Info

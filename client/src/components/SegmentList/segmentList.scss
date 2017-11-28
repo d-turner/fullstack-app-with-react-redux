@@ -29,7 +29,11 @@
 }
 
 .normalPadding {
-  padding: 10px 0;
+  margin: $normalSegmentMargin;
+}
+
+.selectedPadding {
+  margin: $selectedSegmentMargin;
 }
 
 .chain {
@@ -47,4 +51,8 @@
   width: 100%;
   height: 100%;
   padding: 200px 40%;
+}
+
+.listMargin {
+  margin: $segmentMargin;
 }
