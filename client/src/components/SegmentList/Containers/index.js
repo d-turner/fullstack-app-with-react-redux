@@ -8,10 +8,10 @@ const mapStateToProps = function(state) {
   // get the required reducer(s) from the state
   const { documentReducer, authenticationReducer } = state;
   // return what we want available in the props
-  const { documents, editorState, selectedSegment, savingResult } = documentReducer;
+  const { documents, editorState, selectedSegment } = documentReducer;
   const { email, userId } = authenticationReducer;
   return {
-    documents, editorState, selectedSegment, email, userId, savingResult,
+    documents, editorState, selectedSegment, email, userId,
   };
 };
 

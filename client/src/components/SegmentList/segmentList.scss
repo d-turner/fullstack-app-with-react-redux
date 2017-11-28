@@ -1,45 +1,5 @@
 @import  '../../constants/variables';
 
-
-.button:hover {
-  background: $lightsilver;
-  i {
-    background: $lightsilver;
-    border-width: 0 0 1px 0;
-    color: #4285f4;
-    border-color: #4285f4;
-  }
-
-  svg {
-    background: $lightsilver;
-    path {
-      fill: #4285f4;
-    }
-    border-width: 0 0 1px 0;
-    border-color: #4285f4;
-  }
-}
-
-.button {
-  background: $lightsilver;
-  color: $icon-color;
-  margin-left: 0px;
-  margin-top: 5px;
-  box-shadow: none !important;
-  i {
-    border: solid;
-    padding-bottom: 6px;
-    border-width: 0 0 1px 0;
-    border-color: rgba(0, 0, 0, 0.0);
-  }
-  svg {
-    padding-bottom: 0px;
-    path {
-      fill: $icon-color;
-    }
-  }
-}
-
 .clearPadding {
   padding: 0px;
 }
@@ -66,10 +26,6 @@
 
 .padNumber {
   padding-top: 4px;
-}
-
-.selectedPadding {
-  padding: $padding-large 0;
 }
 
 .normalPadding {

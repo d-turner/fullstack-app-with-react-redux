@@ -40,20 +40,21 @@ class SegmentContainer extends React.Component {
     // if the document exists and is not loading display
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
-        <div className="flex four five-900 grow">
-          <Sync
-            documentId={this.state.id}
-            userId={this.props.userId}
-            email={this.props.email}
-            savingResult={this.props.savingResult}
-            document={documents[this.state.id]}
-          />
+        <div className="flex four">
+          <div className="full">
+            <Sync
+              documentId={this.state.id}
+              userId={this.props.userId}
+              email={this.props.email}
+              document={documents[this.state.id]}
+            />
+          </div>
           <SegmentList
             segments={documents[this.state.id].xliff.segments}
             documentId={this.state.id}
             editorState={editorState}
             {...this.props} />
-          <Sidebar documentId={this.state.id} />
+          {/* <Sidebar documentId={this.state.id} /> */}
         </div>
       );
     }
