@@ -2,6 +2,16 @@ import { EditorState, ContentState } from 'draft-js';
 import * as actions from '../../../constants/actionTypes';
 import styles from '../../../constants/main.scss';
 
+const initialState = {
+  find: {
+    isFinding: false,
+    render: false,
+    word: '',
+    index: 0,
+    offset: 0,
+  },
+};
+
 function replaceUsingRegex(target, text, newText, offset) {
   const re = new RegExp(text, 'g');
   const newTarget = target.replace(re, (match, i) => {
@@ -135,6 +145,7 @@ const findNext = (state, action) => {
   }
 };
 
+// TODO: Completely reimplement
 const FindReplaceReducer = function(state, action) {
   switch (action.type) {
     case actions.FIND_NEXT:
