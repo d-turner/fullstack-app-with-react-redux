@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Lexicon from '../../Lexicon/Containers';
+import Lexicon from '../../Lexicon/';
 import Comments from '../../Comments/Containers';
 import FindReplace from '../../FindReplace/Containers';
 import styles from '../sidebar.scss';
