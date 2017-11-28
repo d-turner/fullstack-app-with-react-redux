@@ -1,4 +1,4 @@
-@import '../../constants/main';
+@import '../../constants/variables';
 
 .center {
   margin-top: $padding-header;
@@ -10,6 +10,9 @@
   display: block;
   background-color: $darkslategrey;
   padding: 10px 20px;
+  margin-top: 40px;
+  padding: 16px 40px 30px 30px;
+  border-radius: 4px;
 }
 
 .link {
@@ -19,29 +22,3 @@
 .link:hover {
   text-decoration: underline;
 }
-// .front {
-//   -webkit-transition: 0.3s;
-//   -moz-transition: 0.3s;
-//   -o-transition: 0.3s;
-//   transition: 0.3s;
-//   left: 200px;
-//   opacity: 1;
-//   z-index: 1;
-//   &.hide {
-//     z-index: 0;
-//     opacity: .6;
-//   }
-// }
-
-// .back {
-//   -webkit-transition: 0.3s;
-//   -moz-transition: 0.3s;
-//   -o-transition: 0.3s;
-//   transition: 0.3s;
-//   left: -200px;
-//   opacity: .6;
-//   &.show {
-//     z-index: 1;
-//     opacity: 1;
-//   }
-// }
