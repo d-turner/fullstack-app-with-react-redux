@@ -102,7 +102,7 @@ class SegmentList extends React.Component {
           renderTiles={this.renderTiles}
           renderStyles={this.renderStyles}
           renderVoice={this.renderVoice} />
-        <div>Hello</div>
+        
         {/*  <CommentModal
             documentId={this.props.documentId}
             index={index}
