@@ -13,7 +13,7 @@ import PrivateRoute from '../components/PrivateRoute/';
 import NavBar from '../components/NavBar/Containers/NavBar';
 import Home from '../components/Home/Home';
 import NotFound from '../components/Error/NotFound';
-import Auth from '../components/Authentication/Auth';
+import Auth from '../components/Authentication/AuthContainer';
 import ProjectContainer from '../components/Project/Containers';
 import Segments from '../components/SegmentList/Containers';
 import Segment from '../components/Segment/Containers/Segment';
