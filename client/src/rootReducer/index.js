@@ -6,6 +6,7 @@ import documentReducer from '../components/Document/Reducers/DocumentReducer';
 import commentReducer from '../components/Comments/Reducers/CommentReducer';
 import authenticationReducer from '../components/Authentication/AuthReducer';
 import keyLoggerReducer from '../components/KeyLogger/KeyLoggerReducer';
+import syncReducer from '../components/Sync/SyncReducer';
 
 // Reducer Root
 const appReducer = combineReducers({
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   commentReducer,
   authenticationReducer,
   keyLoggerReducer,
+  syncReducer,
 });
 
 const rootReducer = (state, action) => {
