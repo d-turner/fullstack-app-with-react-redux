@@ -11,7 +11,6 @@ export function resetEditorState() {
   };
 }
 
-// fetch xliff document actions
 export function fetchDocument(documentId) {
   return {
     type: actions.FETCH_DOCUMENT,

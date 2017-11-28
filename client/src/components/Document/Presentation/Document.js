@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import Loader from '../../Loader/Loader';
 import styles from '../documents.scss';
 
 export default function Document(props) {
-  const { id, documentName} = props;
+  const { id, documentName } = props;
   if (props.document.error) {
     return null;
   }
@@ -35,10 +34,10 @@ export default function Document(props) {
         </span>
       </td>
       <td>
-        <span><strong></strong></span>
+        <span><strong /></span>
       </td>
       <td>
-        <span><strong></strong></span>
+        <span><strong /></span>
       </td>
     </tr>
   );

@@ -1,28 +1,15 @@
 import { EditorState, ContentState } from 'draft-js';
 import update from 'immutability-helper';
 
-import {cleanText} from '../../../utils/stringParser';
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
-import SyncReducer from '../../Sync/reducer';
-import { splitTextIntoArray, joinTextArray } from '../../../utils/stringParser';
+import { splitTextIntoArray, joinTextArray, cleanText } from '../../../utils/stringParser';
 
 const initialState = {
   documents: {},
-  lexicon: '',
   selectedSegment: -1,
   editorState: '',
-  find: {
-    isFinding: false,
-    render: false,
-    word: '',
-    index: 0,
-    offset: 0,
-  },
-  savingResult: {
-    data: 'Saved',
-  },
 };
 
 const blankDocument = {
@@ -32,7 +19,7 @@ const blankDocument = {
   xliff: {},
 };
 
-const createNewDocumentEntry = (state = blankDocument, action) => {
+const createNewDocumentEntry = (state = blankDocument) => {
   return Object.assign({}, state, {
     isFetching: true,
   });
@@ -60,19 +47,17 @@ const documentFetchResults = function(state = blankDocument, action) {
 };
 
 const updateTarget = function(state = blankDocument, action) {
-  return {
-    ...state,
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: state.xliff.segments.map((segment, index) => {
-        if (index !== action.segmentId) { return segment; }
-        return {
-          ...segment,
-          target: action.editorState.getCurrentContent().getPlainText(),
-        };
-      }),
+      segments: {
+        [action.segmentId]: {
+          target: {
+            $set: action.editorState.getCurrentContent().getPlainText(),
+          },
+        },
+      },
     },
-  };
+  });
 };
 
 function updateSegment(segment, newSource, newTarget) {
@@ -90,11 +75,9 @@ function insertItem(array, index, item) {
   ];
 }
 
+// TODO: Fix Comment Structure After Split
+// TODO: Fix Document Structure After Split
 const splitSegment = function(state, action) {
-  console.warn(
-    'Need to fix comment structure after splitting',
-    'Need to fix xliff document structure',
-  );
   const oldSegment = state.xliff.segments[action.segmentId];
   const seg1 = updateSegment(oldSegment, oldSegment.source.substring(0, action.cursorPosition), oldSegment.target);
   const seg2 = updateSegment(oldSegment, oldSegment.source.substring(action.cursorPosition), '');
@@ -108,11 +91,9 @@ const splitSegment = function(state, action) {
   };
 };
 
+// TODO: Fix Comment Structure After Merge
+// TODO: Fix Document Structure After Merge
 const mergeSegment = function(state, action) {
-  console.warn(
-    'Need to fix comment structure after splitting',
-    'Need to fix xliff document structure',
-  );
   const currentSegment = state.xliff.segments[action.segmentId];
   const nextSegment = state.xliff.segments[action.segmentId + 1];
   const newSource = currentSegment.source.concat(' ', nextSegment.source);
@@ -121,13 +102,13 @@ const mergeSegment = function(state, action) {
   const after = state.xliff.segments.slice(action.segmentId + 2, state.xliff.segments.length);
   const newSegment = updateSegment(currentSegment, newSource, newTarget);
   const newArr = before.concat(newSegment, after);
-  return {
-    ...state,
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: newArr,
+      segments: {
+        $set: newArr,
+      },
     },
-  };
+  });
 };
 
 const updateFromVoiceInput = function(state, action) {
@@ -136,7 +117,7 @@ const updateFromVoiceInput = function(state, action) {
   if (segmentId === state.selectedSegment) {
     editorState = EditorState.createWithContent(ContentState.createFromText(text));
   }
-  const newState = update(state, {
+  return update(state, {
     editorState: {
       $set: editorState,
     },
@@ -154,7 +135,6 @@ const updateFromVoiceInput = function(state, action) {
       },
     },
   });
-  return newState;
 };
 
 const insertWord = function(state, action) {
@@ -170,7 +150,7 @@ const insertWord = function(state, action) {
   // if hoverIndex == 0 have to set word to upper case and set hoverIndex + 1 word to lower case
   // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
   // word has same case for all other scenarios
-  let word = action.word;
+  const word = action.word;
   // TODO: Character Capital After Insert
   // if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
   //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
@@ -202,7 +182,7 @@ const insertWord = function(state, action) {
 const insertSourceWord = function(state, action) {
   const segments = state.xliff.segments;
   const newTarget = splitTextIntoArray(segments[action.segmentId].target);
-  let word = action.word; // .toLowerCase();
+  const word = action.word; // .toLowerCase();
   // TODO: Character Capital After Insert
   // if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
   //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
@@ -263,7 +243,7 @@ const updateWordOrder = function(state, action) {
       }),
     },
   };
-}
+};
 
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
@@ -292,11 +272,6 @@ const DocumentReducer = function(state = initialState, action) {
           [action.documentId]: updateTarget(state.documents[action.documentId], action),
         },
       });
-    case actions.LOOKUP:
-      return {
-        ...state,
-        lexicon: action.lexicon,
-      };
     case actions.SPLIT:
       return Object.assign({}, state, {
         documents: {
@@ -311,16 +286,17 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState: action.segmentId === state.selectedSegment ?
         EditorState.createWithContent(ContentState.createFromText(
-          state.documents[action.documentId].xliff.segments[action.segmentId].target
-          + ' ' + state.documents[action.documentId].xliff.segments[action.segmentId + 1].target,
+          `${state.documents[action.documentId].xliff.segments[action.segmentId].target} \
+           ${state.documents[action.documentId].xliff.segments[action.segmentId + 1].target}`,
         )) : state.editorState,
         documents: {
           ...state.documents,
           [action.documentId]: mergeSegment(state.documents[action.documentId], action),
         },
       });
-    case actions.UPDATE_SELECTED:
-      if (state.selectedSegment === action.segmentId || action.segmentId >= state.documents[action.documentId].xliff.segments.length) return state;
+    case actions.UPDATE_SELECTED: {
+      if (state.selectedSegment === action.segmentId ||
+        action.segmentId >= state.documents[action.documentId].xliff.segments.length) return state;
       if (action.segmentId === -1) {
         return Object.assign({}, state, {
           selectedSegment: action.segmentId,
@@ -332,42 +308,59 @@ const DocumentReducer = function(state = initialState, action) {
         selectedSegment: action.segmentId,
         editorState: EditorState.createWithContent(ContentState.createFromText(text)),
       });
-    case actions.INSERT_WORD:
+    }
+    case actions.INSERT_WORD: {
       const updatedState = insertWord(state.documents[action.documentId], action);
       return Object.assign({}, state, {
-        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target)),
+        editorState:
+          EditorState.createWithContent(
+            ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target),
+          ),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState,
         },
       });
-    case actions.INSERT_SOURCE_WORD:
+    }
+    case actions.INSERT_SOURCE_WORD: {
       const updatedState1 = insertSourceWord(state.documents[action.documentId], action);
       return Object.assign({}, state, {
-        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target)),
+        editorState:
+          EditorState.createWithContent(
+            ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target),
+          ),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState1,
         },
       });
-    case actions.UPDATE_WORD:
+    }
+    case actions.UPDATE_WORD: {
       const updatedState2 = updateWord(state.documents[action.documentId], action);
       return Object.assign({}, state, {
-        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target)),
+        editorState:
+          EditorState.createWithContent(
+            ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target),
+          ),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState2,
         },
       });
-    case actions.UPDATE_WORD_ORDER:
+    }
+    case actions.UPDATE_WORD_ORDER: {
       const updatedState3 = updateWordOrder(state.documents[action.documentId], action);
       return Object.assign({}, state, {
-        editorState: EditorState.createWithContent(ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target)),
+        editorState:
+        EditorState.createWithContent(
+          ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target),
+        ),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState3,
         },
       });
+    }
     case actions.VOICE_INPUT:
       return updateFromVoiceInput(state, action);
     case actions.RESET_EDITOR:
@@ -385,11 +378,6 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.INSERT_DOCUMENTS:
     case actions.DOCUMENT_LIST_FAIL:
       return DocumentList(state, action);
-    case actions.SYNC:
-    case actions.SAVE_DOCUMENT:
-    case actions.SAVE_SUCCESS:
-    case actions.SAVE_FAIL:
-      return SyncReducer(state, action);
     default:
       return state;
   }

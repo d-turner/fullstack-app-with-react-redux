@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Sidebar from '../../SidebarLeft';
+// TODO: Implement Sidebar Structure
+// import Sidebar from '../../SidebarLeft';
 import Dropzone from '../../Dropzone';
 import DocumentTable from '../Presentation/DocumentTable';
 
@@ -28,7 +29,7 @@ class DocumentContainer extends React.Component {
 }
 
 DocumentContainer.propTypes = {
-  requestDocument: PropTypes.func.isRequired,
+  requestDocumentList: PropTypes.func.isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 

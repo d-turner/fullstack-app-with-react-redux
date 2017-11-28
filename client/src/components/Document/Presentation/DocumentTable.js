@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// TODO: Store and Fetch table fields (Segment Count, Completed Segments, Word Count, etc)
 import Document from './Document';
 // import styles from '../documents.scss';
 import main from '../../../constants/main.scss';
