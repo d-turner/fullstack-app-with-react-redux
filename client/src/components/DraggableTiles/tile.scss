@@ -75,3 +75,22 @@ span.grippy {
 span.grippy::after {
   content: '.. .. .. ..';
 }
+
+.closeButton {
+  background: none;
+  padding: 0px;
+  margin: 0px;
+  top: -8px;
+  position: relative;
+  left: 20px;
+  color: lighten(#7e7e7e, 30%);
+  height: 18px;
+}
+
+.closeButton > i {
+  font-size: 16px;
+}
+
+.closeButton:hover {
+  color: darken($error, 20%);
+}

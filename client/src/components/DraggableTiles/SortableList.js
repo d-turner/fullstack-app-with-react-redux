@@ -95,6 +95,7 @@ class EditableListItem extends React.Component {
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.keyDown = this.keyDown.bind(this);
+    this.removeWord = this.removeWord.bind(this);
   }
 
   handleDoubleClick(event) {
@@ -125,6 +126,10 @@ class EditableListItem extends React.Component {
 
   handleUpdate() {
 
+  }
+
+  removeWord() {
+    this.props.updateWord(this.props.itemIndex, '');
   }
 
   handleBlur(event) {
@@ -167,7 +172,10 @@ class EditableListItem extends React.Component {
             onBlur={this.handleBlur}
             ref={(tile) => { this.tile = tile; }}>
             {this.props.value}
-          </span>&nbsp;&nbsp;
+          </span>
+          <button className={styles.closeButton} onClick={this.removeWord}>
+            <i className="material-icons">highlight_off</i>
+          </button>
         </div>
       </li>,
     );
