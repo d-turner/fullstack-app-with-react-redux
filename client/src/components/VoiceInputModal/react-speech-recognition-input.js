@@ -153,6 +153,10 @@ export default class VoiceInput extends Component {
   }
 }
 
+VoiceInput.defaultProps = {
+  lang: 'en-us',
+};
+
 VoiceInput.propTypes = {
   lang: PropTypes.string,
   onEnd: PropTypes.func.isRequired,
