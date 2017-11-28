@@ -11,7 +11,8 @@ $mediumorchid: #c568d5;
 $darkslategrey: #2d3b55;
 $lightsilver: #e8e9ec;
 $borderColor: #ddd;
-$borderSelected: lighten($orange, 25%);
+// $borderSelected: lighten($orange, 25%);
+$borderSelected: lighten(#8AA9E2, 15%);
 $borderHover: lighten($darkslategrey, 40%);
 $error: #ec9697;
 $hover:  #4285f4;
@@ -37,7 +38,7 @@ $margin-med: 24px;
 
 /* nav bar constants */
 $tab-padding: 1em 0.8em;
-$logo-nav-width: 18px;
+$logo-nav-width: 17px;
 $padding-from-right-nav: 22.4px;
 /* home constants */
 $logo-size: 2em;
@@ -54,3 +55,9 @@ $borderBox: 1px solid $bordercolor;
 
 $fullborder: 1px 1px 1px 1px;
 $topbottomBorder: 1px 0px 1px 0px;
+
+$segmentRadius: 8px;
+$segmentPadding: 15px;
+$segmentBackground: #fff;
+$segmentGap: 4px;
+$editorFontSize: 1em;
