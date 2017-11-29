@@ -126,7 +126,7 @@ class SegmentList extends React.Component {
     return (
       <button
         onClick={e => this.selected(e, index)}
-        className={`${responsiveWidth} ${styles.block} ${styles.clearMarginTop}`}
+        className={`${responsiveWidth} ${styles.block}`}
         aria-label="Activate the selected segment"
         role={'textbox'}>
         {this.renderSingle(index)}
