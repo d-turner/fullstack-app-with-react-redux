@@ -11,7 +11,7 @@ $mediumorchid: #c568d5;
 $darkslategrey: #2d3b55;
 $lightsilver: #e8e9ec;
 $borderColor: #ddd;
-// $borderSelected: lighten($orange, 25%);
+$borderHighlight: lighten($orange, 25%);
 $borderSelected: lighten(#8AA9E2, 15%);
 $borderHover: lighten($darkslategrey, 40%);
 $error: #ec9697;
@@ -22,7 +22,7 @@ $icon-color: #646464;
 $link-hover: #483a66;
 
 $segmentText: black;
-
+$smallFont: 12px;
 $padding-mini: 0.4em;
 $padding-tiny: 12.5px;
 $padding-small: 32px;
@@ -56,8 +56,76 @@ $borderBox: 1px solid $bordercolor;
 $fullborder: 1px 1px 1px 1px;
 $topbottomBorder: 1px 0px 1px 0px;
 
+$normalSegmentBorder: 1px solid $borderColor;
+$normalSegmentMargin: 10px 0;
+
+// important overrights :hover value
+$selectedSegmentBorder: 1px solid $borderSelected !important;
+$selectedSegmentMargin: 60px 0;
+
+$segmentBorderHover: 1px solid $borderHover;
+
 $segmentRadius: 8px;
 $segmentPadding: 15px;
+// used for authentication form
+$cardPadding: 40px;
+$segmentMargin: 40px 0;
 $segmentBackground: #fff;
 $segmentGap: 4px;
+$segmentNumberLeft: -50px;
+$segmentNumberBottom: -36.5px;
 $editorFontSize: 1em;
+
+$dropzoneMargin: 40px 0;
+$dropzoneBorderColor: #0074d9;
+$dropzoneColor: rgba(40,127,244, .9);
+$dropzoneFontSize: 34px;
+$dropzoneBorder: 1px $dropzoneBorderColor dashed;
+$dropzonePadding: 0 15px;
+
+$tableRowHeight: 50px;
+$tableRowWidth: 24px;
+
+$infoMargin: -30px 0 30px 0;
+$infoMarginSmall: -15px 0 30px 0;
+
+$targetWindowSpacing: 10px 0 0 0;
+$textAreaPadding: 10px 12px;
+$textAreaBorder: 1px solid $borderColor;
+$textAreaFont: sans-serif;
+$textAreaRadius: 0px;
+
+$helpMessageFontFamily: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Oxygen', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+// $helpMessageColor: #4c566c;
+$helpMessageColor: rgba(76, 86, 108, .8);
+$helpMessageLineHeight: 1.4em;
+$helpMessageMargin: 28px 0 0 0;
+$helpMessageFontSize: 16px;
+
+$messageFontFamily: Consolas, Monaco, "Courier New", monospace;
+$messageFontSize: 14px;;
+$messageLineHeight: 1.4em;
+$messageBackground: #E3E3E5;
+$messageColor: #313439;
+
+$mainTransitionTime: 0.2s;
+
+$tileTextPadding: 2px 4px 3px 2px;
+$tileSpaceAfterText: 7px;
+$sourceTilePadding: 6px 12px 6px 6px;
+$targetTilePadding: 12px 12px 12px 6px;
+$tileMargin: 6px;
+$tileColor: #e4eafa;
+$tileClose: 20px;
+
+.clearPadding {
+  padding: 0;
+}
+
+.faded {
+  opacity: 0.35;
+}
+
+.solid {
+  opacity: 1;
+}

@@ -26,6 +26,13 @@ h2 {
   line-height: 1.4em;
 }
 
+.animate {
+  -webkit-transition: $mainTransitionTime;
+  -moz-transition: $mainTransitionTime;
+  -o-transition: $mainTransitionTime;
+  transition: $mainTransitionTime;
+}
+
 .content {
   padding: $padding-header 0 0;
 }
@@ -159,7 +166,13 @@ h2 {
 }
 
 .paddingInlineWithNavRight {
-  padding-right: $padding-from-right-nav
+  padding-right: 0
+}
+
+@media (min-width: 1000px) {
+  .paddingInlineWithNavRight {
+    padding-right: $padding-from-right-nav
+  }
 }
 
 .whiteBackground {
@@ -211,14 +224,13 @@ label > h4 {
 }
 
 .help {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Oxygen', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.2;
-  margin: 28px 0 0 0;
-  font-weight: normal;
-  color: lighten( #646464, 10%);
-  font-size: 16px;
+  font-family: $helpMessageFontFamily;
+  color: $helpMessageColor;
+  line-height: $helpMessageLineHeight;
+  margin: $helpMessageMargin;
+  font-size: $helpMessageFontSize;
   white-space: pre-line;
-  border-radius: 8px;
+  border-radius: $segmentRadius;
 }
 
 .close {
@@ -240,14 +252,17 @@ label > h4 {
 }
 
 .message {
-  font-family: Consolas, Monaco, "Courier New", monospace;
-  font-size: 14px;
-  line-height: 20px;
-  background: #e0e1e1;
-  color: #313439;
-  padding: 15px;
-  margin: 24px 0;
-  border-radius: 8px;
+  font-family: $messageFontFamily;
+  font-size: $messageFontSize;
+  line-height: $messageLineHeight;
+  background: $messageBackground;
+  color: $messageColor;
+  padding: $segmentPadding;
+  margin: $infoMargin;
+  @media (min-width: 500px) {
+    margin: $infoMarginSmall;
+  }
+  border-radius: $segmentRadius;
 }
 
 .password_validator {
@@ -327,4 +342,77 @@ label > h4 {
 	border-right-color: #c7d6f1;
 	border-width: 16px;
 	margin-top: -16px;
+}
+
+.responsiveTable {
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+@media (min-width: 800px) {
+  .responsiveTable {
+    overflow: hidden;
+  }
+}
+
+/* 
+// Code taken from https://codepen.io/vulchivijay/pen/yyxyvB
+// all credit to Vijaya Kumar Vulchi
+*/
+.underline-from-center {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    background: #2980b9;
+    height: 2px;
+    -webkit-transition-property: left right;
+    transition-property: left right;
+    -webkit-transition-duration: $mainTransitionTime;
+    transition-duration: $mainTransitionTime;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+  &:hover:before {
+    left: 0;
+    right: 0;
+  }
+}
+
+.underline-center {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    background: #2980b9;
+    height: 2px;
+    -webkit-transition-property: left right;
+    transition-property: left right;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+  &:before {
+    left: 0;
+    right: 0;
+  }
 }
