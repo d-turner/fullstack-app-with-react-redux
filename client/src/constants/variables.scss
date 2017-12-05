@@ -110,13 +110,13 @@ $messageColor: #313439;
 
 $mainTransitionTime: 0.2s;
 
-$tileTextPadding: 2px 4px 3px 2px;
+$tileTextPadding: 1px;
 $tileSpaceAfterText: 7px;
 $sourceTilePadding: 6px 12px 6px 6px;
-$targetTilePadding: 12px 12px 12px 6px;
-$tileMargin: 6px;
-$tileColor: #e4eafa;
-$tileClose: 20px;
+$targetTilePadding: 7px 4px 7px 4px;
+$tileMargin: 4px 2px;
+$tileColor: lighten(#e4eafa, 1%);
+$tileClose: 18px;
 
 .clearPadding {
   padding: 0;
