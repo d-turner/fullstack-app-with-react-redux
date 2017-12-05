@@ -6,7 +6,7 @@ import styles from '../Register/register.scss';
 
 export default function Form(props) {
   return (
-    <form onSubmit={event => props.submit(event)}>
+    <form className={`flex one ${styles.form}`} onSubmit={event => props.submit(event)}>
       <h2>Sign In</h2>
 
       {/* Email Input */}
@@ -47,7 +47,7 @@ export default function Form(props) {
         id="submit"
         name="submit"
         aria-label="sign into account"
-        value="SIGN IN" />
+        value="Sign In" />
       {props.passwordError ? <PasswordRules /> : null}
     </form>
   );

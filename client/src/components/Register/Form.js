@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import TextError from '../Error/TextError';
 import PasswordRules from '../Login/PasswordRules';
 import Success from '../Notifications/Success';
+import styles from '../Register/register.scss';
 
 export default function Form(props) {
   return (
-    <form onSubmit={event => props.submit(event)}>
+    <form className={`flex one ${styles.form}`} onSubmit={event => props.submit(event)}>
       <h2>Create an account</h2>
 
       {/* Name Input */}

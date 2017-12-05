@@ -8,13 +8,6 @@
   display: none;
 }
 
-form {
-  input {
-    margin-bottom: 10px;
-    color: $darkslategrey;
-  }
-}
-
 .groupItem {
   padding-left: 12.5px;
   padding-bottom: 0.6em; 
@@ -30,5 +23,21 @@ form {
     span::before {
       background-color: white;
     }
+  }
+  input {
+    margin-bottom: 10px;
+    color: $darkslategrey;
+  }
+}
+
+.form {
+  h2 {
+    padding-left: 0;
+  }
+  label{
+    padding-left: 0;
+  }
+  input{
+    padding: 0.4em 0.6em 0.3em 0.6em;
   }
 }
