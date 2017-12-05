@@ -3,22 +3,23 @@
 .wrapper {
   background-color: $segmentBackground;
   padding: $segmentPadding;
-  border: 1px solid $borderColor;
+  border: $normalSegmentBorder;
   word-break: break-word;
   border-radius: $segmentRadius;
+  margin-top: $segmentGap;
 }
 
 .selected {
-  border-width: 1px;
-  border-style: solid;
-  border-color: $borderSelected !important;
+  border: $selectedSegmentBorder;
   word-break: break-word;
 }
 
 .wrapper:hover {
-  border-width: $fullborder;
-  border-style: solid;
-  border-color: $borderHover;
+  border: $segmentBorderHover;
+}
+
+.targetSpacing {
+  margin: $targetWindowSpacing;
 }
 
 #checkboxes input[type=checkbox]:checked + .whatever{
@@ -86,7 +87,6 @@
 
 .number {
   position: relative;
-  margin-left: -50px;
-  top: 20px;
-  margin-bottom: -30px;
+  margin-left: $segmentNumberLeft;
+  margin-bottom: $segmentNumberBottom;
 }
