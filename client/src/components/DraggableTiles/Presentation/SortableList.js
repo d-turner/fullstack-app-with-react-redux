@@ -74,6 +74,7 @@ class EditableListItem extends React.Component {
         role="textbox"
         style={{ cursor: 'move' }}>
         <div className={styles.tile}>
+          <span className={styles.grippy} />
           <span style={{ display: 'inline' }}
             id={this.state.doubleClick ? 'editable' : null}
             contentEditable
