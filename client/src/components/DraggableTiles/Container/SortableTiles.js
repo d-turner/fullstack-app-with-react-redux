@@ -7,7 +7,7 @@ import * as actions from '../../DraggableTiles/TileActions';
 import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
 import SourceTile from '../Presentation/SourceTile';
 import SortableList from '../Presentation/SortableList';
-// import Multiple from './Multiple';
+import Multiple from './Multiple';
 
 class SortableTiles extends React.Component {
   constructor(props) {
@@ -43,11 +43,7 @@ class SortableTiles extends React.Component {
   }
 
   render() {
-    return (<SortableList
-      items={this.props.words}
-      distance={4} axis="xy"
-      updateWord={this.updateWord} onSortEnd={this.onSortEnd}
-      disabled={!this.props.sortable} />);
+    return (<Multiple />);
   }
 }
 
@@ -61,3 +57,11 @@ SortableTiles.propTypes = {
 };
 
 export default SortableTiles;
+
+// render() {
+//   return (<SortableList
+//     items={this.props.words}
+//     distance={4} axis="xy"
+//     updateWord={this.updateWord} onSortEnd={this.onSortEnd}
+//     disabled={!this.props.sortable} />);
+// }
