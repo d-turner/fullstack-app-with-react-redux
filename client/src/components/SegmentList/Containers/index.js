@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import SegmentContainer from './SegmentContainer';
+import SegmentListContainer from './SegmentListContainer';
 import * as actionCreators from '../ActionCreators/SegmentListActions';
 
 const mapStateToProps = function(state) {
@@ -20,5 +20,5 @@ const mapDispatchToProps = function(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SegmentContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SegmentListContainer);
 

@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 
-import SegmentList from './SegmentList';
-import Sidebar from '../../Sidebar/Containers/Sidebar';
+import SegmentList from '../Presentation/SegmentList';
+
+// TODO: Implement Sidebar
+// import Sidebar from '../../Sidebar/Containers/Sidebar';
+
+
 import styles from '../segmentList.scss';
 import Loader from '../../Loader/Loader';
 import store from '../../../store';
 import { requestDocument, resetEditorState } from '../../Document/ActionCreators/DocumentActions';
 import Sync from '../../Sync/Save';
 
-class SegmentContainer extends React.Component {
+class SegmentListContainer extends React.Component {
   constructor(props) {
     super(props);
     const id = props.match.params.documentId;
@@ -54,15 +58,15 @@ class SegmentContainer extends React.Component {
             documentId={this.state.id}
             editorState={editorState}
             {...this.props} />
-          {/* <Sidebar documentId={this.state.id} /> */}
         </div>
       );
     }
+    // default display spinner
     return <div className={styles.loader}><Loader /></div>;
   }
 }
 
-SegmentContainer.propTypes = {
+SegmentListContainer.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   documents: PropTypes.objectOf(PropTypes.object).isRequired,
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
@@ -70,4 +74,4 @@ SegmentContainer.propTypes = {
   email: PropTypes.string.isRequired,
 };
 
-export default SegmentContainer;
+export default SegmentListContainer;
