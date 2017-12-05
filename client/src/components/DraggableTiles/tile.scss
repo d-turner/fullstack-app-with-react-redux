@@ -20,8 +20,8 @@
 
 // Target Tile format
 .format1 {
-  padding: $targetTilePadding;
-  margin: $tileMargin;
+  padding: 6px;
+  margin: 2px;
   display: inline-block;
   background-color: $tileColor;
 };
@@ -82,9 +82,9 @@ span.grippy::after {
   background: none;
   padding: 0px;
   margin: 0px;
-  top: -8px;
+  top: -2px;
   position: relative;
-  left: 20px;
+  left: 8px;
   color: #7e7e7e;
   height: 18px;
   @extend .faded;
