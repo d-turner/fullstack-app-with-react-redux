@@ -1,18 +1,12 @@
 @import '../../constants/variables';
 
-.center {
-  margin-top: $padding-header;
-}
-
 .card {
-  position: relative;
   color: white;
   display: block;
   background-color: $darkslategrey;
-  padding: 10px 20px;
-  margin-top: 40px;
-  padding: 16px 40px 30px 30px;
-  border-radius: 4px;
+  margin: $segmentMargin;
+  padding: $cardPadding;
+  border-radius: $segmentRadius;
 }
 
 .link {
