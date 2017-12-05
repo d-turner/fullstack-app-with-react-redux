@@ -1,12 +1,13 @@
+@import '../../constants/variables';
+
 .dropzone {
-  border-width: 2px;
   background-color: rgba(197,104,213, .1);
-  border-color: #0074d9;
-  border-style: dashed;
-  border-radius: 5px;
-  padding: 12px;
-  color: rgba(40,127,244, .7);
+  border: $dropzoneBorder;
+  border-radius: $segmentRadius;
+  padding: $dropzonePadding;
+  color: $dropzoneColor;
   text-align: center;
-  margin: 40px 0px;
-  font-size: 34px;
+  line-height: 1.2em;
+  margin: $dropzoneMargin;
+  font-size: $dropzoneFontSize;
 }
