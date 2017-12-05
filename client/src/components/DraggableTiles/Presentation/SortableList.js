@@ -77,7 +77,7 @@ class EditableListItem extends React.Component {
           <span className={styles.grippy} />
           <span style={{ display: 'inline' }}
             id={this.state.doubleClick ? 'editable' : null}
-            contentEditable={this.state.doubleClick}
+            contentEditable
             onKeyDown={this.keyDown}
             onBlur={this.handleBlur}
             ref={(tile) => { this.tile = tile; }}>
