@@ -7,7 +7,7 @@ class PlainSegment extends React.Component {
   render() {
     const className = styles.wrapper;
     let tick = null;
-    if (this.props.edited) {
+    if (this.props.segment.accepted) {
       tick = <i className={`material-icons ${styles.tick}`}>check_circle</i>;
     }
     return (
@@ -26,7 +26,6 @@ class PlainSegment extends React.Component {
 }
 
 PlainSegment.propTypes = {
-  edited: PropTypes.bool.isRequired,
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
 };
