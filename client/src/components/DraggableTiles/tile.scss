@@ -5,23 +5,25 @@
 }
 
 .tile {
-  padding: 2px 4px 3px 2px;
-  margin-right: 10px;
+  padding: $tileTextPadding;
+  margin-right: $tileSpaceAfterText;
   display: inline;
 }
 
+// Source Tile format
 .format {
-  padding: 6px 12px 6px 6px;
-  margin: 6px;
+  padding: $sourceTilePadding;
+  margin: $tileMargin;
   display: inline-block;
-  background-color: #e4eafa;
+  background-color: $tileColor;
 };
 
+// Target Tile format
 .format1 {
-  padding: 12px 12px 12px 6px;
-  margin: 6px;
+  padding: $targetTilePadding;
+  margin: $tileMargin;
   display: inline-block;
-  background-color: #e4eafa;
+  background-color: $tileColor;
 };
 
 .inlineBlock {
@@ -83,14 +85,16 @@ span.grippy::after {
   top: -8px;
   position: relative;
   left: 20px;
-  color: lighten(#7e7e7e, 30%);
+  color: #7e7e7e;
   height: 18px;
+  @extend .faded;
 }
 
 .closeButton > i {
-  font-size: 16px;
+  font-size: $tileClose
 }
 
 .closeButton:hover {
-  color: darken($error, 20%);
+  color: $error;
+  @extend .solid;
 }
