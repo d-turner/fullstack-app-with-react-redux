@@ -16,12 +16,14 @@ class DocumentContainer extends React.Component {
 
   render() {
     return (
-      <div className="flex five center">
+      <div className="flex one five-1000 center">
         { /* <Sidebar /> */ }
 
-        <div className={`four-fifth ${main.clearPaddingBottom} ${main.paddingInlineWithNavRight}`}>
+        <div className={`full four-fifth-1000 ${main.clearPaddingBottom} ${main.paddingInlineWithNavRight}`}>
           <Dropzone />
-          <DocumentTable documents={this.props.documents} />
+          <div className={main.responsiveTable}>
+            <DocumentTable documents={this.props.documents} />
+          </div>
         </div>
       </div>
     );
