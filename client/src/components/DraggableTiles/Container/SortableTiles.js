@@ -45,7 +45,7 @@ class SortableTiles extends React.Component {
   render() {
     return (<SortableList
       items={this.props.words}
-      pressDelya={200} axis="xy"
+      distance={4} axis="xy"
       updateWord={this.updateWord} onSortEnd={this.onSortEnd}
       disabled={!this.props.sortable} />);
   }
