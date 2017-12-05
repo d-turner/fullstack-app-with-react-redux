@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { DragSource } from 'react-dnd';
-import styles from './tile.scss';
+import styles from '../tile.scss';
 
 const Types = {
   SOURCE: 'source',
