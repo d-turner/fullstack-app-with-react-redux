@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, getDefaultKeyBinding, Modifier } from 'draft-js';
-import ReactToolTip from 'react-tooltip';
 
-import Button from '../ButtonList/Button';
-import VoiceInput from '../VoiceInputModal/react-speech-recognition-input';
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.scss';
@@ -69,20 +66,6 @@ class CustomEditor extends React.Component {
             toggleInlineStyle={this.props.toggleInlineStyle} /> :
           null
         }
-        {/*<div style={{ marginBottom: '-55px' }}>
-          <Button
-            classNames={`${styles.styles} ${main.button}`}
-            label="styles" icon="format_paint" direction={'right'}
-            func={() => this.setState({ renderStyles: !this.state.renderStyles, renderVoice: false })}
-            id="Add Style" />
-        </div>
-        <div style={{ marginBottom: '-50px' }}>
-          <Button
-            classNames={`${styles.voice} ${main.button}`}
-            label="styles" icon="settings_voice" direction={'right'}
-            func={() => this.setState({ renderStyles: false, renderVoice: !this.state.renderVoice })}
-            id="Open Voice Dialogue" />
-      </div>*/}
         <div className={`${styles['RichEditor-editor']} ${style}`} >
           <Editor
             editorState={this.props.editorState}
@@ -112,7 +95,6 @@ CustomEditor.propTypes = {
   handleKeyCommand: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
-  lang: PropTypes.string.isRequired,
 };
 
 export default CustomEditor;

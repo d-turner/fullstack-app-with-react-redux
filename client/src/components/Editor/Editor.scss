@@ -1,18 +1,13 @@
 @import '../../constants/variables';
 
-.RichEditor-root {
-  background: #fff;
-  border: 1px solid $borderSelected;
-  font-family: sans-serif;
-  font-size: 1em;
-  padding: 15px 15px 8px 15px;
-}
 
 .RichEditor-editor {
-  border-top: 1px solid #ddd;
-  cursor: text;
-  margin: 10px 0;
-  padding: 10px 0;
+  background: $segmentBackground;
+  border: $textAreaBorder;
+  border-radius: $textAreaRadius;
+  font-family: $textAreaFont;
+  font-size: $editorFontSize;
+  padding: $segmentPadding;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
@@ -76,3 +71,30 @@
 //   color: #000;
 //   margin-right: 5px;
 // }
+
+.focus {
+  border-color: darken($borderSelected, 12%);
+}
+
+.label {
+  position: relative;
+  margin-left: -70px;
+  top: -18px;
+  margin-bottom: -30px;
+}
+
+.styles {
+  position: relative;
+  right: -582px;
+  top: -14px;
+}
+
+.voice {
+  position: relative;
+  right: -582px;
+  top: 32px;
+}
+
+.styleBox{
+  margin-bottom: 6px;
+}
