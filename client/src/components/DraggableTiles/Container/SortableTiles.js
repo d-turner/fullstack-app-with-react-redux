@@ -7,7 +7,7 @@ import * as actions from '../../DraggableTiles/TileActions';
 import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
 import SourceTile from '../Presentation/SourceTile';
 import SortableList from '../Presentation/SortableList';
-import Multiple from './Multiple';
+// import Multiple from './Multiple';
 
 class SortableTiles extends React.Component {
   constructor(props) {
