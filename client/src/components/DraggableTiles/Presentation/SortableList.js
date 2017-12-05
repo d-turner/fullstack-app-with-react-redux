@@ -20,7 +20,7 @@ class EditableListItem extends React.Component {
       const range = document.createRange();
       const sel = window.getSelection();
       const el = document.getElementById('editable');
-      range.setStart(el.childNodes[0], this.tile.innerText.length);
+      range.setStart(el.childNodes[0], this.tile.innerHTML.length);
       range.collapse(true);
       sel.removeAllRanges();
       sel.addRange(range);
@@ -44,7 +44,7 @@ class EditableListItem extends React.Component {
 
   handleBlur(event) {
     if (event !== undefined) {
-      const text = event.target.innerText;
+      const text = event.target.innerHTML;
       this.props.updateWord(this.props.itemIndex, text);
       if (text.trim().split(' ')[0] === this.state.word) {
         event.target.innerText = text.trim().split(' ')[0];
@@ -77,7 +77,7 @@ class EditableListItem extends React.Component {
           <span className={styles.grippy} />
           <span style={{ display: 'inline' }}
             id={this.state.doubleClick ? 'editable' : null}
-            contentEditable
+            contentEditable={!this.props.editable}
             spellCheck="false"
             onKeyDown={this.keyDown}
             onBlur={this.handleBlur}
@@ -98,6 +98,7 @@ EditableListItem.propTypes = {
   value: PropTypes.string.isRequired,
   itemIndex: PropTypes.number.isRequired,
   updateWord: PropTypes.func.isRequired,
+  editable: PropTypes.bool.isRequired,
 };
 
 const SortableItem = SortableElement(props =>
@@ -106,14 +107,14 @@ const SortableItem = SortableElement(props =>
 
 
 const SortableList = SortableContainer((props) => {
-  const { items, distance } = props;
+  const { items, distance, disabled } = props;
   return (
     <ul className={styles.container}>
       {items.map((value, index) => {
         const key = `item-${index}-${value}`;
         if (value === null || value === '') return null;
         return (
-          <SortableItem key={key} index={index} value={value} distance={distance}
+          <SortableItem key={key} index={index} value={value} distance={distance} editable={disabled}
             itemIndex={index}
             {...props} />
         );
