@@ -3,21 +3,15 @@ import PropTypes from 'prop-types';
 import { arrayMove } from 'react-sortable-hoc';
 
 import store from '../../../store';
-import * as actions from '../../DraggableTiles/TileActions';
+import * as actions from '../TileActions';
 import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
-import SourceTile from '../Presentation/SourceTile';
-import SortableList from '../Presentation/SortableList';
+// import SourceTile from '../Presentation/SourceTile';
+// import SortableList from '../Presentation/SortableList';
 import Multiple from './Multiple';
 
 class SortableTiles extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { placeholder: false };
-    this.onSortEnd = this.onSortEnd.bind(this);
-    this.updateWord = this.updateWord.bind(this);
-  }
 
-  onSortEnd({ oldIndex, newIndex }) {
+  onSortEnd = ({ oldIndex, newIndex }) => {
     const targetWords = splitTextIntoArray(cleanText(this.props.segment.target));
     const newArray = arrayMove(targetWords, oldIndex, newIndex);
     store.dispatch(
@@ -29,7 +23,19 @@ class SortableTiles extends React.Component {
     );
   }
 
-  updateWord(index, text) {
+  insertSourceWord = (index, text) => {
+    store.dispatch(
+      actions.insertSourceWord(
+        index,
+        text,
+        true,
+        this.props.segmentId,
+        this.props.documentId,
+      ),
+    );
+  }
+
+  updateWord = (index, text) => {
     store.dispatch(
       actions.updateWord(
         this.props.documentId,
@@ -43,7 +49,14 @@ class SortableTiles extends React.Component {
   }
 
   render() {
-    return (<Multiple />);
+    return (
+      <Multiple
+        words={this.props.words}
+        sortable={this.props.sortable}
+        insertSourceWord={this.insertSourceWord}
+        updateWord={this.updateWord}
+        onSortEnd={this.onSortEnd} />
+    );
   }
 }
 
@@ -57,11 +70,3 @@ SortableTiles.propTypes = {
 };
 
 export default SortableTiles;
-
-// render() {
-//   return (<SortableList
-//     items={this.props.words}
-//     distance={4} axis="xy"
-//     updateWord={this.updateWord} onSortEnd={this.onSortEnd}
-//     disabled={!this.props.sortable} />);
-// }
