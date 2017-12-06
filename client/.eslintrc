@@ -1,5 +1,5 @@
 {
-    "parse": "babel-eslint",
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "env": {
         "browser": true
@@ -9,6 +9,7 @@
         "jest"
     ],
     "rules": {
+        "brace-style": ["warn"],
         "object-curly-spacing": ["warn"],
         "func-names": "off",
         "space-before-function-paren": ["error", "never"],
