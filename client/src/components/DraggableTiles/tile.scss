@@ -98,3 +98,11 @@ span.grippy::after {
   color: $error;
   @extend .solid;
 }
+
+.text {
+  display: inline;
+}
+
+.text:hover {
+  cursor: text;
+}
