@@ -8,10 +8,6 @@ class EditableListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = { doubleClick: false, word: props.value };
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.keyDown = this.keyDown.bind(this);
-    this.removeWord = this.removeWord.bind(this);
   }
 
   componentDidUpdate() {
@@ -27,22 +23,22 @@ class EditableListItem extends React.Component {
     }
   }
 
-  handleDoubleClick(event) {
+  handleDoubleClick = (event) => {
     if (this.state.doubleClick) return;
     if (event.nativeEvent.type === 'dblclick' || event.key === 'Enter' || event.key === 'Space') {
       this.setState({ doubleClick: true });
     }
   }
 
-  handleFocus() {
+  handleFocus = () => {
     document.execCommand('selectAll', false, null);
   }
 
-  removeWord() {
+  removeWord = () => {
     this.props.updateWord(this.props.itemIndex, '');
   }
 
-  handleBlur(event) {
+  handleBlur = (event) => {
     if (event !== undefined) {
       const text = event.target.innerHTML;
       this.props.updateWord(this.props.itemIndex, text);
@@ -53,7 +49,7 @@ class EditableListItem extends React.Component {
     }
   }
 
-  keyDown(event) {
+  keyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       this.handleBlur(event);
@@ -66,27 +62,34 @@ class EditableListItem extends React.Component {
   }
 
   render() {
+    let closeButton = null;
+    if (this.props.editable) {
+      closeButton = (
+        <button className={styles.closeButton} onClick={this.removeWord}>
+          <i className="material-icons">highlight_off</i>
+        </button>
+      );
+    }
     return (
       <li className={`${styles.format1} ${styles.noselect}`}
         onDoubleClick={this.handleDoubleClick}
         onKeyDown={this.handleDoubleClick}
         tabIndex={0}
         role="textbox"
+        data-list-item={this.props.editable}
         style={{ cursor: 'move' }}>
         <div className={styles.tile}>
           <span className={styles.grippy} />
-          <span style={{ display: 'inline' }}
+          <span className={styles.text}
             id={this.state.doubleClick ? 'editable' : null}
-            contentEditable={!this.props.editable}
+            contentEditable={this.props.editable}
             spellCheck="false"
             onKeyDown={this.keyDown}
             onBlur={this.handleBlur}
             ref={(tile) => { this.tile = tile; }}>
             {this.props.value}
           </span>
-          <button className={styles.closeButton} onClick={this.removeWord}>
-            <i className="material-icons">highlight_off</i>
-          </button>
+          {closeButton}
           &nbsp;
         </div>
       </li>
@@ -105,7 +108,6 @@ const SortableItem = SortableElement(props =>
   <EditableListItem {...props} />,
 );
 
-
 const SortableList = SortableContainer((props) => {
   const { items, distance, disabled } = props;
   return (
@@ -123,4 +125,5 @@ const SortableList = SortableContainer((props) => {
   );
 });
 
+export { EditableListItem };
 export default SortableList;
