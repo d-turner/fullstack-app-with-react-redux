@@ -33,6 +33,6 @@ export function cleanText(text, lowercaseBefore) {
   newText = newText.split('.').map(data => data.trim()).join('. ');
   newText = newText.trim();
   return newText.toString().replace(/(^|\. *)([a-z])/g, (match, separator, char) => {
-    return separator + char.toUpperCase();
+    return separator + char;
   });
-};
+}
