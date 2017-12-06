@@ -4,7 +4,7 @@
   "description": "Application server to facilitate post-editing of MT output",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js --exec babel-node",
+    "dev": "nodemon src/index.js --exec babel-node",
     "prod": "NODE_ENV=production pm2 start --interpreter babel-node src/index.js --env production",
     "test": "eslint src/ && babel-node test/",
     "eslint-test": "eslint src/",
