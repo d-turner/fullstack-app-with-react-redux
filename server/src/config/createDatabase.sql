@@ -1,5 +1,7 @@
 drop table if exists Documents;
+drop table if exists Document_META;
 drop table if exists Projects;
+drop table if exists Logs;
 drop table if exists Users;
 
 CREATE TABLE Users (
@@ -53,7 +55,7 @@ CREATE TABLE Document_META (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   user_id INT NOT NULL,
   PRIMARY KEY (document_id),
-  FOREIGN KEY (docum) REFERENCES Users(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 
