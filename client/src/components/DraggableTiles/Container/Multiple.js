@@ -21,7 +21,7 @@ class SortableWordList extends React.Component {
         chosenClass: styles.sortableChosen || 'sortable-chosen',  // Class name for the chosen item
         onEnd: this.onEnd,
         onAdd: this.onAdd,
-        onMove: this.onMove,
+        onStart: this.onMove,
       };
       Sortable.create(componentBackingInstance, options);
     }
@@ -32,12 +32,17 @@ class SortableWordList extends React.Component {
     if (event.from === event.to) {
       this.props.onSortEnd({ oldIndex: event.oldIndex, newIndex: event.newIndex });
     }
+    this.props.setDragging(false);
   };
 
   onAdd = (event) => {
     const itemEl = event.item;  // dragged HTMLElement
     this.props.insertSourceWord(event.newIndex, itemEl.firstChild.childNodes[1].innerText);
     itemEl.parentNode.removeChild(itemEl);
+  }
+
+  onMove = (event) => {
+    this.props.setDragging(true);
   }
 
   renderTiles = (word, index) => {
@@ -54,10 +59,15 @@ class SortableWordList extends React.Component {
   }
 
   render() {
+    let id = 'non-sortable-list';
+    let backgroundClass = null;
+    if (this.props.sortable) id = 'sortable-list';
+    if (this.props.sortable && this.props.dragging) backgroundClass = styles.canDrag;
+    if (!this.props.sortable && this.props.dragging) backgroundClass = styles.dragging;
     return (
       <div className="container" ref={this.sortableContainersDecorator}>
-        <div className="group">
-          <div className="group-list" ref={this.sortableGroupDecorator}>
+        <div className={styles.group}>
+          <div className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={this.sortableGroupDecorator}>
             {this.props.words.map((word, index) => this.renderTiles(word, index))}
           </div>
         </div>

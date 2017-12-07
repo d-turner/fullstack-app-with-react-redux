@@ -55,7 +55,9 @@ class SortableTiles extends React.Component {
         sortable={this.props.sortable}
         insertSourceWord={this.insertSourceWord}
         updateWord={this.updateWord}
-        onSortEnd={this.onSortEnd} />
+        onSortEnd={this.onSortEnd}
+        setDragging={this.props.setDragging}
+        dragging={this.props.dragging} />
     );
   }
 }
