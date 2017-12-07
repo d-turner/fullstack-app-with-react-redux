@@ -24,10 +24,10 @@ class EditableListItem extends React.Component {
   }
 
   handleDoubleClick = (event) => {
-    if (this.state.doubleClick) return;
-    if (event.nativeEvent.type === 'dblclick' || event.key === 'Enter' || event.key === 'Space') {
-      this.setState({ doubleClick: true });
-    }
+    // if (this.state.doubleClick) return;
+    // if (event.nativeEvent.type === 'dblclick' || event.key === 'Enter' || event.key === 'Space') {
+    //   this.setState({ doubleClick: true });
+    // }
   }
 
   handleFocus = () => {
@@ -80,8 +80,7 @@ class EditableListItem extends React.Component {
         style={{ cursor: 'move' }}>
         <div className={styles.tile}>
           <span className={styles.grippy} />
-          <span className={styles.text}
-            id={this.state.doubleClick ? 'editable' : null}
+          <span className={this.props.editable ? styles.text : null}
             contentEditable={this.props.editable}
             spellCheck="false"
             onKeyDown={this.keyDown}
