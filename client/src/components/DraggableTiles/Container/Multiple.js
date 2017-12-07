@@ -7,15 +7,6 @@ import styles from '../tile.scss';
 
 class SortableWordList extends React.Component {
 
-  sortableContainersDecorator = (componentBackingInstance) => {
-    // check if backing instance not null
-    if (componentBackingInstance) {
-      const options = {
-      };
-      Sortable.create(componentBackingInstance, options);
-    }
-  };
-
   sortableGroupDecorator = (componentBackingInstance) => {
     // check if backing instance not null
     if (componentBackingInstance) {
