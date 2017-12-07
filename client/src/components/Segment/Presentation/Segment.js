@@ -10,7 +10,7 @@ class Segment extends React.Component {
   constructor(props) {
     super(props);
     const { segment } = props;
-    this.state = { target: segment.target };
+    this.state = { target: segment.target, dragging: false };
   }
 
   componentDidMount() {
@@ -18,6 +18,10 @@ class Segment extends React.Component {
       const node = document.getElementById('selectedSegment');
       node.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
+  }
+
+  setDragging = (bool) => {
+    this.setState({ dragging: bool });
   }
 
   renderTiles(sortable) {
@@ -32,6 +36,8 @@ class Segment extends React.Component {
           segmentId={this.props.segmentId}
           documentId={this.props.documentId}
           sortable={sortable}
+          setDragging={this.setDragging}
+          dragging={this.state.dragging}
           keyLogger={this.props.keyLogger} />
       </div>
     );
