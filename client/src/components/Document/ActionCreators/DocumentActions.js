@@ -44,39 +44,6 @@ const shouldFetchDocument = (state, documentId) => {
   return doc.didInvalidate;
 };
 
-export function requestDocument(documentId) {
-  return (dispatch, getState) => {
-    if (shouldFetchDocument(getState(), documentId)) {
-      dispatch(fetchDocument(documentId));
-      apiWrapper.getDocumentById(documentId, (response) => {
-        dispatch(documentListSuccess([response.data]));
-        return fetch(`/src/data/${documentId}`)
-        .then((res) => {
-          const blob = res.blob();
-          return blob;
-        })
-        .then((blob) => {
-          const reader = fileReader($q);
-          const parser = xliffParser(reader, $q, console);
-          const file = new File([blob], { type: 'application/xml' });
-          const func = parser.readFile(file);
-          func
-            .then((result) => {
-              dispatch(fetchDocumentSuc(documentId, result));
-            })
-            .catch((error) => {
-              dispatch(fetchDocumentFail(documentId, error));
-            })
-            .done(() => {
-              //  console.log('done dispatching...');
-            });
-        });
-      });
-    }
-    return Promise.resolve();
-  };
-}
-
 export function fetchDocumentList() {
   return {
     type: actions.FETCH_DOCUMENT_LIST,
@@ -93,6 +60,34 @@ export function documentListSuccess(documents) {
 export function documentListFail() {
   return {
     type: actions.DOCUMENT_LIST_FAIL,
+  };
+}
+
+export function requestDocument(documentId) {
+  return (dispatch, getState) => {
+    if (shouldFetchDocument(getState(), documentId)) {
+      dispatch(fetchDocument(documentId));
+      apiWrapper.getDocumentById(documentId, (response) => {
+        dispatch(documentListSuccess([response.data]));
+        apiWrapper.getDocument(documentId, (res) => {
+          const reader = fileReader($q);
+          const parser = xliffParser(reader, $q, console);
+          const file = new File([res.data], { type: 'application/xml' });
+          const func = parser.readFile(file);
+          func
+            .then((result) => {
+              dispatch(fetchDocumentSuc(documentId, result));
+            })
+            .catch((error) => {
+              dispatch(fetchDocumentFail(documentId, error));
+            })
+            .done(() => {
+              //  console.log('done dispatching...');
+            });
+        });
+      });
+    }
+    return Promise.resolve();
   };
 }
 
