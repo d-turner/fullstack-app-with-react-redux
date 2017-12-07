@@ -55,6 +55,20 @@ export default (app) => {
     });
   });
 
+  // return a single document
+  app.get('/api/document/:documentId', (req, res) => {
+    const documentId = req.params.documentId;
+    passport.ensureAuthenticated(req, res, (status, reply) => {
+      if (status !== 200) {
+        res.status(status).json(reply);
+      }
+      res.sendFile(dest + documentId, (err) => {
+        if (err) console.log(err);
+        else console.log('Sent file');
+      });
+    });
+  });
+
   // get a user's list of documents
   app.get('/api/documents', (req, res) => {
     const user = req.user;
