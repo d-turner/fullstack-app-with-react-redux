@@ -101,8 +101,54 @@ span.grippy::after {
 
 .text {
   display: inline;
+  border: 1px dashed lighten(#363636, 60%);
+  padding:  2px;
+}
+
+.text::before {
+  content: ' ';
+  line-height: 1em;
+}
+.text::after {
+  content: ' ';
+  line-height: 1em;
 }
 
 .text:hover {
   cursor: text;
+}
+
+.dragging {
+  background-color: $error;
+  opacity: .8;
+}
+
+.canDrag {
+  background-color: $success;
+}
+
+.group-list {
+  padding: 10px 0;
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.group-list.canDrag > li {
+  border: 1px solid $borderColor;
+}
+
+.group-list > li {
+  border: 1px solid $tileColor;
+}
+
+.sortableChosen {
+  color: green;
+  opacity: .4;
+}
+
+.sortableGhost {
+  color: green;
+  opacity: 1;
 }
