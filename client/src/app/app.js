@@ -16,7 +16,6 @@ import NotFound from '../components/Error/NotFound';
 import Auth from '../components/Authentication/AuthContainer';
 import ProjectContainer from '../components/Project/Containers';
 import Segments from '../components/SegmentList/Containers';
-import Segment from '../components/Segment/Containers/Segment';
 import DocumentContainer from '../components/Document/Containers';
 
 // testing scss
@@ -58,7 +57,6 @@ export default (
             <PrivateRoute exact path="/documents" component={DocumentContainer} />
             <PrivateRoute exact path="/documents/:documentId" component={Segments} />
             <PrivateRoute exact path="/documents/:documentId/segments" component={Segments} />
-            <PrivateRoute exact path="/documents/:documentId/segments/:segmentId" component={Segment} />
             <Route path="*" component={NotFound} />
           </Switch>
         </section>
