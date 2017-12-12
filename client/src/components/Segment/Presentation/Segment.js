@@ -57,7 +57,8 @@ class Segment extends React.Component {
         handleChange={this.props.handleChange}
         keyLogger={this.props.keyLogger}
         lang={this.props.xliff.targetLang}
-        ref={(ref) => { this.CustomEditor = ref; }} />
+        setRef={this.props.setRef}
+        ref={(ref) => { this.CustomEditor = ref; this.props.setRef('CustomEditor', ref); }} />
     );
   }
 
@@ -70,10 +71,8 @@ class Segment extends React.Component {
     );
   }
 
-  // we want to either render the tile view or the editor view based on a prop
-  // use a temporary variable for now
   render() {
-    const renderTiles = true;
+    const { renderTiles } = this.props;
     return (
       <div>
         <div className={`${styles.wrapper} ${styles.selected}`}>
@@ -102,6 +101,7 @@ Segment.propTypes = {
   documentId: PropTypes.string.isRequired,
   xliff: PropTypes.objectOf(PropTypes.any).isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
+  renderTiles: PropTypes.bool.isRequired,
 };
 
 export default Segment;
