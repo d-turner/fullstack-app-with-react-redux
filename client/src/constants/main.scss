@@ -78,7 +78,7 @@ h2 {
 }
 
 .fixFont {
-  font-size: 1.4em;
+  font-size: 1.5em;
 }
 
 .textInline {
@@ -198,25 +198,6 @@ label > h4 {
 
 .error {
   color: darken($error, 20%);
-}
-
-.button:hover {
-  background: $lightsilver;
-  i {
-    background: $lightsilver;
-    border-width: 0 0 1px 0;
-    color: #4285f4;
-    border-color: #4285f4;
-  }
-
-  svg {
-    background: $lightsilver;
-    path {
-      fill: #4285f4;
-    }
-    border-width: 0 0 1px 0;
-    border-color: #4285f4;
-  }
 }
 
 .highlight {
@@ -415,4 +396,24 @@ label > h4 {
     left: 0;
     right: 0;
   }
+}
+
+.animate {
+  -webkit-transition-duration: $mainTransitionTime;
+  transition-duration: $mainTransitionTime;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.fadeIn {
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden; 
+}  
+.fadeIn.show {
+  opacity: 1;
+  visibility: visible; 
 }
