@@ -11,8 +11,7 @@ function Button({ classNames, label, icon, func, id, direction }) {
       className={classNames}
       data-tip data-for={id}
       aria-label={label}
-      onClick={func}
-    >
+      onClick={func}>
       <i className={`small material-icons ${styles.fixFont}`}>{icon}</i>
       <ReactToolTip place={direction} id={id} effect="solid">
         <span>{id}</span>
