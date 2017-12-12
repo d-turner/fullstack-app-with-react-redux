@@ -12,14 +12,13 @@ import SegmentPresentation from '../Presentation/Segment';
 
 import KeyLogger from '../../KeyLogger/KeyLogger';
 
-class Segment extends React.Component {
+class SelectedSegment extends React.Component {
   constructor(props) {
     super(props);
     const { segmentId, documentId, userId, email, segment } = props;
     this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, segment.target, userId, email);
 
     this.handleChange = this.handleChange.bind(this);
-    this.focus = () => this.SegmentPresentation.CustomEditor.Editor.focus();
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.toggleBlockType = this.toggleBlockType.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -81,17 +80,18 @@ class Segment extends React.Component {
         toggleInlineStyle={this.toggleInlineStyle}
         handleKeyCommand={this.handleKeyCommand}
         handleChange={this.handleChange}
-        focus={this.focus}
         segmentId={this.props.segmentId}
         keyLogger={this.keyLogger}
         xliff={this.props.xliff}
+        renderTiles={this.props.renderTiles}
         ref={(ref) => { this.SegmentPresentation = ref; }}
+        setRef={this.props.setRef}
       />
     );
   }
 }
 
-Segment.propTypes = {
+SelectedSegment.propTypes = {
   segment: PropTypes.objectOf(PropTypes.any).isRequired,
   segmentId: PropTypes.number.isRequired,
   documentId: PropTypes.string.isRequired,
@@ -101,6 +101,7 @@ Segment.propTypes = {
   xliff: PropTypes.objectOf(PropTypes.any).isRequired,
   email: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
+  renderTiles: PropTypes.bool.isRequired,
 };
 
 
@@ -119,4 +120,4 @@ const mapDispatchToProps = function(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Segment);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedSegment);
