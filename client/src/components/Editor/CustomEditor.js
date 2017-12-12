@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, getDefaultKeyBinding, Modifier } from 'draft-js';
+import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
 
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
@@ -15,8 +15,6 @@ class CustomEditor extends React.Component {
 
   componentDidMount() {
     this.Editor.focus();
-    this.insertIntoEditor = this.insertIntoEditor.bind(this);
-    this.endValue = this.endValue.bind(this);
   }
 
   myKeyBindingFn(e) {
@@ -26,30 +24,34 @@ class CustomEditor extends React.Component {
     return getDefaultKeyBinding(e);
   }
 
-  insertIntoEditor(value) {
-    // console.log('Inserting value: ', value);
-    // this.props.keyLogger.voiceInput(value);
-    // const selection = this.props.editorState.getSelection();
-    // const contentState = this.props.editorState.getCurrentContent();
-    // const newContentState = Modifier.insertText(contentState, selection, value);
-    // this.props.handleChange(EditorState.createWithContent(newContentState));
-    // this.setState({ contentState });
+  clearText = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const updatedSelection = selection.merge({
+      focusOffset: 0,
+      anchorOffset: 0,
+    });
+    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(''), 'remove-range');
+    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
   }
 
-  endValue(value) {
-    if (value !== '') {
-      value = value + ' ';
-    }
+  endValue = (value) => {
+    // TODO: Add space before if no space at caret
+    // TODO: Add space after if no space before next character
+    // TODO: Capitalize if at the start of the sentence or after a full stop
+    // TODO: Lowercase if not at the start of a sentence
     this.props.keyLogger.voiceInput(value);
+    // selection holds the cursor position
     const selection = this.props.editorState.getSelection();
+    // content state holds EditorState without undo/redo history
     const contentState = this.props.editorState.getCurrentContent();
     const newContentState = Modifier.replaceText(contentState, selection, value);
-    const newEditorState = EditorState.createWithContent(newContentState);
+    const newEditorState = EditorState.push(this.props.editorState, newContentState, 'insert-characters');
     const updatedSelection = selection.merge({
       focusOffset: selection.getAnchorOffset() + value.length,
       anchorOffset: selection.getAnchorOffset() + value.length,
     });
-    this.props.handleChange(EditorState.acceptSelection(newEditorState, updatedSelection));
+    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
   }
 
   render() {
@@ -74,7 +76,7 @@ class CustomEditor extends React.Component {
             onFocus={() => this.setState({ hasFocus: true })}
             onBlur={() => this.setState({ hasFocus: false })}
             onChange={this.props.handleChange}
-            ref={(ref) => { this.Editor = ref; }}
+            ref={(ref) => { this.Editor = ref; this.props.setRef('Editor', ref); }}
             aria-label="Translation Input"
           />
         </div>
@@ -82,11 +84,6 @@ class CustomEditor extends React.Component {
     );
   }
 }
-
-// <Input onChange={value => this.result(value)}
-// onEnd={value => this.end(value)}
-// lang={this.props.lang}
-// ref={(ref) => { this.Input = ref; }} />
 
 CustomEditor.propTypes = {
   editorState: PropTypes.objectOf(PropTypes.object).isRequired,
