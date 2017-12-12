@@ -1,0 +1,59 @@
+@import  '../../constants/variables';
+
+.chatInputWrapper {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #c7d6f1;
+  padding: 12px;
+  transition: background 0.2s linear 0s, box-shadow 0.2s linear 0s;
+  outline: 0;
+  box-sizing: border-box;
+  margin-left: -195px;
+}
+
+.micImg {
+  height: 47px;
+  padding: 0px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.buttons {
+  :nth-child(1){}
+  :nth-child(2){
+    background-color: $acceptColor;
+  }
+  :nth-child(3){
+    background-color: $rejectColor;
+  }
+}
+.button {
+  padding: 1px 1px;
+  padding-top: 5px;
+  margin-bottom: 15px;
+}
+
+.icon {
+  font-size: 14px;
+}
+
+.editor {
+  border: 1px solid #ddd;
+  scroll-behavior: smooth;
+  height: 120px;
+}
+.editor:focus {
+  border: 1px solid darken($borderSelected, 12%);
+}
+
+.hideEditor {
+  visibility: hidden;
+  min-width: 250px;
+  width: 80%;
+  height: 120px;
+}
+
+.removeStyles {
+  box-shadow: none !important;
+  background: #ffffff;
+}
