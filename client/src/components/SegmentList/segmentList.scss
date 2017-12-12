@@ -38,3 +38,31 @@
 .listMargin {
   margin: $segmentMargin;
 }
+
+.segmentAccept {
+  color: #74BF61; 
+}
+
+.segmentAccept:hover {
+  i {
+    color: #33B65A;
+    border-color: #33B65A;
+  }
+}
+
+.segmentReject {
+  color: $rejectColor;
+}
+
+.segmentReject:hover {
+  i {
+    color: #E95437;
+    border-color: #E95437;
+  }
+}
+
+.micActive {
+  i {
+    color: #E95437;
+  }
+}
