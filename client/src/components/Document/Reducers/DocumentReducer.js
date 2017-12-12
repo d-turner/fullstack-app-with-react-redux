@@ -265,11 +265,14 @@ const DocumentReducer = function(state = initialState, action) {
         },
       };
     case actions.UPDATE_TARGET:
-      return Object.assign({}, state, {
-        editorState: action.editorState,
+      return update(state, {
+        editorState: {
+          $set: action.editorState,
+        },
         documents: {
-          ...state.documents,
-          [action.documentId]: updateTarget(state.documents[action.documentId], action),
+          [action.documentId]: {
+            $set: updateTarget(state.documents[action.documentId], action),
+          },
         },
       });
     case actions.SPLIT:
