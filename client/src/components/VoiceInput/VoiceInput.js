@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactToolTip from 'react-tooltip';
+
 import styles from './VoiceInput.scss';
 import mic from './mic.gif';
 import micAnimate from './mic-animate.gif';
 import Button from '../ButtonList/Button';
+import TextError from '../Error/TextError';
 
 export default class VoiceInput extends Component {
   constructor(props) {
@@ -13,9 +16,11 @@ export default class VoiceInput extends Component {
     this.changeValue = this.changeValue.bind(this);
     this.state = {
       inputValue: '',
+      interimValue: '',
       supportVoice: 'webkitSpeechRecognition' in window,
       speaking: false,
       isFirst: true,
+      error: false,
     };
     this.finalTranscript = '';
     this.interimTranscript = '';
@@ -28,9 +33,9 @@ export default class VoiceInput extends Component {
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
       this.recognition.lang = this.props.lang;
+      this.finalTranscript = '';
       this.recognition.onresult = (event) => {
         this.interimTranscript = '';
-        this.finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.finalTranscript += event.results[i][0].transcript;
@@ -42,9 +47,16 @@ export default class VoiceInput extends Component {
           } else {
             this.interimTranscript += event.results[i][0].transcript;
             this.setState({
-              inputValue: this.interimTranscript,
+              interimValue: this.interimTranscript,
             });
           }
+        }
+      };
+      this.recognition.onend = (event) => {
+        if (this.state.speaking) {
+          // need to show stop and show an error that it did not detect anything
+          this.setState({ error: true });
+          this.stop();
         }
       };
     }
@@ -79,6 +91,7 @@ export default class VoiceInput extends Component {
       this.setState({
         speaking: !this.state.speaking,
         isFirst: false,
+        error: false,
       });
     }
   }
@@ -96,8 +109,10 @@ export default class VoiceInput extends Component {
   }
 
   renderButtons = () => {
-    return (<div className={`flex one center ${styles.buttons}`}>
+    return (<div className={`flex one center ${styles.buttons} ${this.props.className}`}>
       <button
+        data-tip data-for="Toggle Recording"
+        aria-label="Start Recoding"
         className={`${styles.removeStyles} two-third ${styles.button}`}
         onClick={(e) => {
           e.preventDefault();
@@ -108,15 +123,18 @@ export default class VoiceInput extends Component {
           alt="Microphone for voice input"
           src={this.state.speaking ? micAnimate : mic}
           className={styles.micImg} />
+        <ReactToolTip place="right" id="Toggle Recording" effect="solid">
+          <span>Toggle Recording</span>
+        </ReactToolTip>
       </button>
       <Button classNames={`shyButton success two-third ${styles.button}`}
         label="Accept Voice Input"
         icon="done"
         func={(e) => {
           e.preventDefault();
-          this.stop();
-          this.props.onEnd(this.state.inputValue.trim());
           this.props.editor.focus();
+          this.props.onEnd(this.state.inputValue.trim());
+          this.stop();
         }}
         id="Accept Voice Input"
         direction="right" />
@@ -126,8 +144,8 @@ export default class VoiceInput extends Component {
         icon="clear"
         func={(e) => {
           e.preventDefault();
-          this.stop();
           this.props.editor.focus();
+          this.stop();
         }}
         id="Reject Voice Input"
         direction="right" />
@@ -140,6 +158,7 @@ export default class VoiceInput extends Component {
       <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`} >
         {this.state.speaking || !this.state.isFirst ? this.renderEditor() :
         <div className={styles.hideEditor} />}
+        {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}
         <div className="full">
           {this.renderButtons()}
         </div>
@@ -154,6 +173,7 @@ export default class VoiceInput extends Component {
 
 VoiceInput.defaultProps = {
   lang: 'en-us',
+  className: '',
 };
 
 VoiceInput.propTypes = {
