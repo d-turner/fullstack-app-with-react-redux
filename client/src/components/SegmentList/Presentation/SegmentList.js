@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import main from '../../../constants/main.scss';
 import styles from '../segmentList.scss';
 
 import SelectedSegment from '../../Segment/Containers/SelectedSegment';
 import PlainSegment from '../../Segment/Presentation/PlainSegment';
+import VoiceInput from '../../VoiceInput/VoiceInput';
 
 import Info from '../../Notifications/Info';
+
+import ButtonList from '../../ButtonList';
+import Button from '../../ButtonList/Button';
 
 // general responsive view
 const responsive = 'flex one five-700';
@@ -17,6 +22,8 @@ class SegmentList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      renderTiles: false,
+      renderVoice: false,
       help: true,
     };
     this.renderSegment = this.renderSegment.bind(this);
@@ -32,6 +39,14 @@ class SegmentList extends React.Component {
 
   selected(index) {
     this.props.updateSelectedSegment(this.props.documentId, index);
+  }
+
+  renderTiles = () => {
+    this.setState({ renderTiles: !this.state.renderTiles });
+  }
+
+  renderVoice = () => {
+    this.setState({ renderVoice: !this.state.renderVoice });
   }
 
   renderSegment(segment, index) {
@@ -53,16 +68,83 @@ class SegmentList extends React.Component {
     if (this.props.editorState === '') {
       return null;
     }
+    const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
       <div className={`${responsive} ${styles.selected}`} id="selectedSegment">
         <div className={responsiveWidth}>
           <SelectedSegment
+            className="four-fifth"
             documentId={this.props.documentId}
             segment={segment}
             segmentId={index}
             editorState={this.props.editorState}
-            xliff={xliff} />
+            renderTiles={this.state.renderTiles}
+            xliff={xliff}
+            ref={(ref) => { this.SelectedSegment = ref; }}
+            setRef={(name, ref) => { this[name] = ref; }} />
         </div>
+        <ButtonList>
+          <Button
+            classNames={classNames}
+            label="Add a Comment"
+            icon="chat_bubble"
+            func={this.renderComment}
+            id="Comments"
+            direction="right" />
+          {this.state.renderTiles ?
+            <Button
+              classNames={classNames}
+              label="Edit Mode"
+              icon="mode_edit"
+              func={this.renderTiles}
+              id="Edit Mode"
+              direction="right" /> :
+            <Button
+              classNames={classNames}
+              label="Tile Mode"
+              icon="view_comfy"
+              func={this.renderTiles}
+              id="Tile Mode"
+              direction="right" />
+          }
+          {this.state.renderVoice ?
+            <Button
+              classNames={`${classNames} ${styles.micActive}`}
+              label="Voice Mode"
+              icon="mic"
+              func={this.renderVoice}
+              id="Deactivate Voice Mode"
+              direction="right" /> :
+            <Button
+              classNames={classNames}
+              label="Voice Mode"
+              icon="mic"
+              func={this.renderVoice}
+              id="Activate Voice Mode"
+              direction="right" />
+          }
+          <Button
+            classNames={`${classNames} ${styles.segmentAccept}`}
+            label="Accept Translation"
+            icon="done"
+            func={() => console.error('Need to implement')}
+            id="Accept Translation"
+            direction="right" />
+
+          <Button
+            classNames={`${classNames} ${styles.segmentReject}`}
+            label="Reject Translation"
+            icon="clear"
+            func={() => this.CustomEditor.clearText()}
+            id="Clear Translation"
+            direction="right" />
+        </ButtonList>
+        <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
+          onEnd={value => this.CustomEditor.endValue(value)}
+          segmentId={index}
+          removeModal={this.renderVoice}
+          documentId={this.props.documentId}
+          editor={this.Editor} />
       </div>
     );
   }
