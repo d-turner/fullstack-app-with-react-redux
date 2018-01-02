@@ -296,6 +296,30 @@ label > h4 {
   }
 }
 
+.downloadButton {
+  background: $lightsilver;
+  color: $icon-color;
+  margin-left: 0px;
+  margin-top: 5px;
+  box-shadow: none !important;
+  i {
+    border: solid;
+    padding-bottom: 6px;
+    border-width: 0 0 1px 0;
+    border-color: rgba(0, 0, 0, 0.0);
+  }
+}
+
+.downloadButton:hover {
+  background: $lightsilver;
+  i {
+    background: $lightsilver;
+    border-width: 0 0 1px 0;
+    color: #4285f4;
+    border-color: transparent;
+  }
+}
+
 .arrow_box {
 	position: relative;
 	background: #ffffff;
@@ -416,4 +440,26 @@ label > h4 {
 .fadeIn.show {
   opacity: 1;
   visibility: visible; 
+}
+
+.greenButton {
+  color: $acceptColor; 
+}
+
+.greenButton:hover {
+  i {
+    color: $darkAccept;
+    border-color: $darkAccept;
+  }
+}
+
+.redButton {
+  color: $rejectColor;
+}
+
+.redButton:hover {
+  i {
+    color: $darkReject;
+    border-color: $darkReject;
+  }
 }
