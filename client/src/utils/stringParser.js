@@ -36,3 +36,10 @@ export function cleanText(text, lowercaseBefore) {
     return separator + char;
   });
 }
+
+export function isEmpty(obj) {
+  for (const prop in obj) {
+    if (obj.hasOwnProperty(prop)) return false;
+  }
+  return true;
+}
