@@ -17,11 +17,6 @@ class SelectedSegment extends React.Component {
     super(props);
     const { segmentId, documentId, userId, email, segment } = props;
     this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, segment.target, userId, email);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.toggleBlockType = this.toggleBlockType.bind(this);
-    this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
   }
 
   componentWillUnmount() {
@@ -30,7 +25,7 @@ class SelectedSegment extends React.Component {
     this.keyLogger.build();
   }
 
-  handleChange(editorState) {
+  handleChange = (editorState) => {
     this.props.updateSegment(
       this.props.documentId,
       this.props.segmentId,
@@ -39,7 +34,7 @@ class SelectedSegment extends React.Component {
   }
 
   // TODO: Implement more shortcut and provide better return values
-  handleKeyCommand(command) {
+  handleKeyCommand = (command) => {
     if (command === 'next-segment') {
       this.props.updateSelectedSegment(this.props.documentId, this.props.segmentId + 1);
       return 'handled';
@@ -52,7 +47,7 @@ class SelectedSegment extends React.Component {
     return 'not-handled';
   }
 
-  toggleBlockType(blockType) {
+  toggleBlockType = (blockType) => {
     this.handleChange(
       RichUtils.toggleBlockType(
         this.props.editorState,
@@ -61,7 +56,7 @@ class SelectedSegment extends React.Component {
     );
   }
 
-  toggleInlineStyle(inlineStyle) {
+  toggleInlineStyle = (inlineStyle) => {
     this.handleChange(
       RichUtils.toggleInlineStyle(
         this.props.editorState,
