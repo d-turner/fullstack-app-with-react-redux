@@ -12,6 +12,8 @@ const DOCUMENT_FILE = '/api/document/';
 const UPLOAD = '/api/uploadDocument';
 const SYNC = '/api/syncDocument/';
 const LOGGER = '/api/uploadLog/';
+const META = '/api/documentMeta/';
+const SEGMENT = '/api/segment/';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 let API_HOSTNAME = 'http://localhost:8080';
@@ -92,6 +94,24 @@ const api = {
   uploadLog: (data, id, callback) => {
     const headers = { 'Content-Type': 'text/xml' };
     apiCall(data, `${LOGGER}${id}`, callback, 'post', headers);
+  },
+  getDocumentMeta: (docId, callback) => {
+    apiCall(null, `${META}${docId}`, callback, 'get');
+  },
+  setDocumentMeta: (docId, data, callback) => {
+    apiCall(data, `${META}${docId}`, callback, 'post');
+  },
+  getSegment: (docId, callback) => {
+    apiCall(null, `${SEGMENT}${docId}`, callback, 'get');
+  },
+  setSegment: (docId, data, callback) => {
+    apiCall(data, `${SEGMENT}${docId}`, callback, 'post');
+  },
+  deleteDocument: (docId, callback) => {
+    apiCall(null, `${DOCUMENT_ID}${docId}`, callback, 'delete');
+  },
+  updateDocument: (doc, callback) => {
+    apiCall(doc.meta, `${META}${doc.id}`, callback, 'put');
   },
 };
 
