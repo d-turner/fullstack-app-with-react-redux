@@ -16,6 +16,13 @@ export const FETCH_DOCUMENT_SUC = 'FETCH_DOCUMENT_SUCCESS';
 export const FETCH_DOCUMENT_LIST = 'FETCH_DOCUMENT_LIST';
 export const INSERT_DOCUMENTS = 'INSERT_DOCUMENTS';
 export const DOCUMENT_LIST_FAIL = 'DOCUMENT_LIST_FAIL';
+export const DELETE_DOCUMENT = 'DELETE_DOCUMENT';
+export const DELETE_FAIL = 'DELETE_FAIL';
+
+// Document META Actions
+export const SET_DOCUMENT_META = 'SET_DOCUMENT_META';
+export const SET_SUCCESS = 'SET_META_SUCCESS';
+export const SET_FAIL = 'SET_META_FAIL';
 
 // Segment Actions
 export const UPDATE_TARGET = 'UPDATE_TARGET';
@@ -33,6 +40,8 @@ export const UPDATE_WORD_ORDER = 'UPDATE_WORD_ORDER';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
+export const SET_SEGMENTS = 'SET_SEGMENTS';
+export const SET_SEGMENTS_FAILED = 'SET_SEGMENTS_FAILED';
 
 // Project Actions
 export const ADD_PROJECT = 'ADD_PROJECT';
