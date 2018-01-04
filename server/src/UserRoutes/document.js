@@ -37,7 +37,7 @@ export default (app) => {
     });
   });
 
-  // get a single document
+  // get a single document from the database
   app.get('/api/documents/:documentId', (req, res) => {
     const user = req.user;
     const documentId = req.params.documentId;
@@ -55,7 +55,7 @@ export default (app) => {
     });
   });
 
-  // return a single document
+  // return a single document file
   app.get('/api/document/:documentId', (req, res) => {
     const documentId = req.params.documentId;
     passport.ensureAuthenticated(req, res, (status, reply) => {
@@ -109,6 +109,24 @@ export default (app) => {
             return res.status(status).send('Saved');
           });
         });
+      });
+    });
+  });
+
+  // delete a single document
+  app.delete('/api/documents/:documentId', (req, res) => {
+    const documentId = req.params.documentId;
+    passport.ensureAuthenticated(req, res, (status, reply) => {
+      if (status !== 200) {
+        return res.status(status).json(reply);
+      }
+      // need to delete from Document, Document_META and Segment Table
+      return doc.delete(documentId, (err, result) => {
+        if (err) {
+          logger.error(err);
+          return res.status(resp.error).send('Fail');
+        }
+        return res.status(resp.good).send('Success');
       });
     });
   });
