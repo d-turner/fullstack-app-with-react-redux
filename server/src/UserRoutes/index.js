@@ -1,6 +1,7 @@
 import User from '../db/user';
 import userRoutes from './user';
 import documentRoutes from './document';
+import documentMeta from './documentMeta';
 import logger from '../util/logger';
 
 const UserRoute = (app) => {
@@ -13,6 +14,7 @@ const UserRoute = (app) => {
 
   userRoutes(app);
   documentRoutes(app);
+  documentMeta(app);
 };
 
 export default UserRoute;
