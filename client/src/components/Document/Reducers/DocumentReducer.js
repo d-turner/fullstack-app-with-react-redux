@@ -380,6 +380,7 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.FETCH_DOCUMENT_LIST:
     case actions.INSERT_DOCUMENTS:
     case actions.DOCUMENT_LIST_FAIL:
+    case actions.DELETE_DOCUMENT:
       return DocumentList(state, action);
     default:
       return state;
