@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 
 import SegmentList from '../Presentation/SegmentList';
-
+import { isEmpty } from '../../../utils/stringParser';
 // TODO: Implement Sidebar
 // import Sidebar from '../../Sidebar/Containers/Sidebar';
 
@@ -26,7 +26,9 @@ class SegmentListContainer extends React.Component {
 
   componentWillMount() {
     const id = this.props.match.params.documentId;
-    store.dispatch(requestDocument(id));
+    if (!this.props.documents[id] || isEmpty(this.props.documents[id].xliff)) {
+      store.dispatch(requestDocument(id));
+    }
   }
 
   componentWillUnmount() {
@@ -54,8 +56,7 @@ class SegmentListContainer extends React.Component {
             />
           </div>
           <SegmentList
-            segments={documents[this.state.id].xliff.segments}
-            documentId={this.state.id}
+            document={documents[this.state.id]}
             editorState={editorState}
             {...this.props} />
         </div>
