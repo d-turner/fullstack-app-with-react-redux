@@ -7,6 +7,7 @@ const password = 'TeHQ5u2g';
 const db = 'testdb';
 
 const client = new MariaDB({
+  multiStatements: true,
   host,
   port,
   user,
