@@ -25,7 +25,11 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // passport middleware
-app.use(session({ secret: 'kanjingo-1486729324' }));
+app.use(session({
+  secret: 'kanjingo-1486729324',
+  resave: false,
+  saveUninitialized: false,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -33,6 +37,7 @@ app.use(passport.session());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', APP_HOSTNAME);
   res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Max-Age', 1728000);
   next();
