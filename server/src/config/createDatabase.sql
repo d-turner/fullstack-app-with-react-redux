@@ -36,6 +36,34 @@ CREATE TABLE Documents (
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
+-- ONE TO ONE RELATION WITH Document
+-- HAS MANY RELATION WITH Segment
+CREATE TABLE Document_META (
+  document_id INT NOT NULL,
+  segment_count INT,
+  list_order INT,
+  completed_segments INT,
+  total_word_count INT,
+  PRIMARY KEY (document_id),
+  FOREIGN KEY (document_id) REFERENCES Documents(document_id)
+);
+
+-- ONE TO ONE RELATION WITH Document_META
+CREATE TABLE Segment (
+  segment_index INT NOT NULL,
+  document_id INT NOT NULL,
+  machine_translation VARCHAR(3000),
+  edit_mode_time INT,
+  tile_mode_time INT,
+  voice_mode_time INT,
+  total_edit_time INT,
+  characters_entered INT,
+  words_entered INT,
+  mode VARCHAR(20) NOT NULL,
+  PRIMARY KEY (document_id, segment_index),
+  FOREIGN KEY (document_id) REFERENCES Document_META(document_id)
+);
+
 CREATE TABLE Logs (
   document_id VARCHAR(60) NOT NULL,
   description VARCHAR(256),
@@ -45,19 +73,6 @@ CREATE TABLE Logs (
   PRIMARY KEY (document_id),
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
-
-CREATE TABLE Document_META (
-  document_id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(80) NOT NULL,
-  saved_name VARCHAR(60) NOT NULL,
-  description VARCHAR(256),
-  location VARCHAR(256) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  user_id INT NOT NULL,
-  PRIMARY KEY (document_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
 
 INSERT INTO Users VALUES (
   1,
