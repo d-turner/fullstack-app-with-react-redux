@@ -60,7 +60,11 @@ class CustomEditor extends React.Component {
       style = `${styles.focus} ${main['underline-center']} ${main.animate}`;
     }
     return (
-      <div className={styles['RichEditor-root']} >
+      <div className={styles['RichEditor-root']} id="editorWrapper"
+        onClick={() => { this.Editor.focus(); }}
+        aria-label="Editor"
+        tabIndex={0}
+        role="textbox">
         {this.state.renderStyles ?
           <Styles
             editorState={this.props.editorState}
@@ -70,6 +74,7 @@ class CustomEditor extends React.Component {
         }
         <div className={`${styles['RichEditor-editor']} ${style}`} >
           <Editor
+            ariaLabel="Draft JS Editor"
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
             keyBindingFn={this.myKeyBindingFn}
@@ -77,7 +82,6 @@ class CustomEditor extends React.Component {
             onBlur={() => this.setState({ hasFocus: false })}
             onChange={this.props.handleChange}
             ref={(ref) => { this.Editor = ref; this.props.setRef('Editor', ref); }}
-            aria-label="Translation Input"
           />
         </div>
       </div>
