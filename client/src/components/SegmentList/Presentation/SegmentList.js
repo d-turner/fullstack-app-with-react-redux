@@ -30,15 +30,15 @@ class SegmentList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.updateSelectedSegment(this.props.documentId, 0);
+    this.props.updateSelectedSegment(this.props.document.saved_name, 0);
   }
 
   componentWillUnmount() {
-    this.props.updateSelectedSegment(this.props.documentId, -1);
+    this.props.updateSelectedSegment(this.props.document.saved_name, -1);
   }
 
   selected(index) {
-    this.props.updateSelectedSegment(this.props.documentId, index);
+    this.props.updateSelectedSegment(this.props.document.saved_name, index);
   }
 
   renderTiles = () => {
@@ -64,7 +64,7 @@ class SegmentList extends React.Component {
   }
 
   renderSelected(segment, index) {
-    const xliff = this.props.documents[this.props.documentId].xliff;
+    const xliff = this.props.document.xliff;
     if (this.props.editorState === '') {
       return null;
     }
@@ -74,7 +74,8 @@ class SegmentList extends React.Component {
         <div className={responsiveWidth}>
           <SelectedSegment
             className="four-fifth"
-            documentId={this.props.documentId}
+            documentId={this.props.document.saved_name}
+            mt={this.props.d}
             segment={segment}
             segmentId={index}
             editorState={this.props.editorState}
@@ -124,7 +125,7 @@ class SegmentList extends React.Component {
               direction="right" />
           }
           <Button
-            classNames={`${classNames} ${styles.segmentAccept}`}
+            classNames={`${classNames} ${main.greenButton}`}
             label="Accept Translation"
             icon="done"
             func={() => console.error('Need to implement')}
@@ -132,7 +133,7 @@ class SegmentList extends React.Component {
             direction="right" />
 
           <Button
-            classNames={`${classNames} ${styles.segmentReject}`}
+            classNames={`${classNames} ${main.redButton}`}
             label="Reject Translation"
             icon="clear"
             func={() => this.CustomEditor.clearText()}
@@ -143,7 +144,7 @@ class SegmentList extends React.Component {
           onEnd={value => this.CustomEditor.endValue(value)}
           segmentId={index}
           removeModal={this.renderVoice}
-          documentId={this.props.documentId}
+          documentId={this.props.document.saved_name}
           editor={this.Editor} />
       </div>
     );
@@ -185,15 +186,13 @@ class SegmentList extends React.Component {
           </div> :
           (null)
         }
-        {this.props.segments.map(this.renderSegment)}
+        {this.props.document.xliff.segments.map(this.renderSegment)}
       </div>
     );
   }
 }
 
 SegmentList.propTypes = {
-  segments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  documentId: PropTypes.string.isRequired,
   updateSelectedSegment: PropTypes.func.isRequired,
   editorState: PropTypes.oneOfType([PropTypes.objectOf(PropTypes.any), PropTypes.string]).isRequired,
   selectedSegment: PropTypes.number.isRequired,
