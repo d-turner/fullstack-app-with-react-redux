@@ -103,3 +103,29 @@ export function requestDocumentList() {
     });
   };
 }
+
+export function documentDeleteSuccess(documentId) {
+  return {
+    type: actions.DELETE_DOCUMENT,
+    documentId,
+  };
+}
+
+export function documentDeleteFail() {
+  return {
+    type: actions.DELETE_FAIL,
+  };
+}
+
+export function deleteDocument(documentId, documentKey) {
+  return (dispatch) => {
+    return apiWrapper.deleteDocument(documentId, (response) => {
+      if (response && response.status === 200) {
+        dispatch(documentDeleteSuccess(documentKey));
+      } else {
+        dispatch(documentDeleteFail());
+      }
+    });
+  };
+}
+
