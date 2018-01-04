@@ -80,7 +80,9 @@ class Segment extends React.Component {
           <h5>Source</h5>
           {renderTiles ? this.renderTiles(false) : this.renderSource()}
           <h5 className={styles.targetSpacing}>Target Window</h5>
-          <div onKeyDown={e => this.props.keyLogger.record(e)} role="Main">
+          <div
+            aria-label="Key Logger"
+            onKeyDown={e => this.props.keyLogger.record(e)} role="Main">
             {renderTiles ? this.renderTiles(true) : this.renderEditor()}
           </div>
         </div>
