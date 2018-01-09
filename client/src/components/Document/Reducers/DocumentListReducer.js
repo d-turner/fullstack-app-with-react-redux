@@ -65,6 +65,16 @@ export default function DocumentList(state, action) {
         documents: { $set: deleteDocument(state.documents, action.documentId) },
       });
     }
+    case actions.ORDER_SUCCESS:
+      return update(state, {
+        documents: {
+          [action.document.saved_name]: {
+            meta: {
+              listOrder: { $set: action.index },
+            },
+          },
+        },
+      });
     default:
       return state;
   }

@@ -288,10 +288,10 @@ const DocumentReducer = function(state = initialState, action) {
       }
       return Object.assign({}, state, {
         editorState: action.segmentId === state.selectedSegment ?
-        EditorState.createWithContent(ContentState.createFromText(
-          `${state.documents[action.documentId].xliff.segments[action.segmentId].target} \
-           ${state.documents[action.documentId].xliff.segments[action.segmentId + 1].target}`,
-        )) : state.editorState,
+          EditorState.createWithContent(ContentState.createFromText(
+            `${state.documents[action.documentId].xliff.segments[action.segmentId].target} \
+            ${state.documents[action.documentId].xliff.segments[action.segmentId + 1].target}`))
+          : state.editorState,
         documents: {
           ...state.documents,
           [action.documentId]: mergeSegment(state.documents[action.documentId], action),
@@ -317,8 +317,7 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState:
           EditorState.createWithContent(
-            ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target),
-          ),
+            ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target)),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState,
@@ -330,8 +329,7 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState:
           EditorState.createWithContent(
-            ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target),
-          ),
+            ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target)),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState1,
@@ -343,8 +341,7 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState:
           EditorState.createWithContent(
-            ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target),
-          ),
+            ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target)),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState2,
@@ -356,8 +353,7 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState:
         EditorState.createWithContent(
-          ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target),
-        ),
+          ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target)),
         documents: {
           ...state.documents,
           [action.documentId]: updatedState3,
@@ -377,13 +373,8 @@ const DocumentReducer = function(state = initialState, action) {
     case actions.REPLACE_TEXT:
     case actions.REPLACE_ALL:
       return FindReplaceReducer(state, action);
-    case actions.FETCH_DOCUMENT_LIST:
-    case actions.INSERT_DOCUMENTS:
-    case actions.DOCUMENT_LIST_FAIL:
-    case actions.DELETE_DOCUMENT:
-      return DocumentList(state, action);
     default:
-      return state;
+      return DocumentList(state, action);
   }
 };
 
