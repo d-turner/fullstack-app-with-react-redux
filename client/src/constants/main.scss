@@ -37,6 +37,12 @@ h2 {
   padding: $padding-header 0 0;
 }
 
+@media only screen and (max-width: 900px) {
+  .content {
+    padding: 36px 0 0;
+  }
+}
+
 .setPadding {
   padding-left: $padding-med;
   padding-top: $padding-med;
