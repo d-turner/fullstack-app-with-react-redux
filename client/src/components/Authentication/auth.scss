@@ -4,9 +4,18 @@
   color: white;
   display: block;
   background-color: $darkslategrey;
-  margin: $segmentMargin;
   padding: $cardPadding;
-  border-radius: $segmentRadius;
+}
+
+@media only screen and (min-width: 700px) {
+  .card {
+    color: white;
+    display: block;
+    background-color: $darkslategrey;
+    margin: $segmentMargin;
+    padding: $cardPadding;
+    border-radius: $segmentRadius;
+  }
 }
 
 .link {
