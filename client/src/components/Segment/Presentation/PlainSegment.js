@@ -11,7 +11,7 @@ class PlainSegment extends React.Component {
       tick = <i className={`material-icons ${styles.tick}`}>check_circle</i>;
     }
     return (
-      <div>
+      <div className={styles.hide}>
         <div className={className}>
           <h6>#{this.props.segmentId} Source {tick}</h6>
           {this.props.segment.source}
