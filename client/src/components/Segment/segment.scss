@@ -14,10 +14,6 @@
   word-break: break-word;
 }
 
-.wrapper:hover {
-  border: $segmentBorderHover;
-}
-
 .targetSpacing {
   margin: $targetWindowSpacing;
 }
@@ -89,4 +85,15 @@
   position: relative;
   margin-left: $segmentNumberLeft;
   margin-bottom: $segmentNumberBottom;
+}
+
+.hide {
+  opacity: 0.5;
+}
+
+.hide:hover {
+  opacity: 1;
+  div {
+    border: $segmentBorderHover;
+  }
 }
