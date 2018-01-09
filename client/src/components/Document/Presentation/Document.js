@@ -13,12 +13,12 @@ export default class Document extends React.Component {
   state = { deleteConfirm: false };
 
   render() {
-    const { id, document } = this.props;
+    const { id, document, index } = this.props;
     if (this.props.document.error) {
       return null;
     }
     return (
-      <tr className={styles.tableBorder}>
+      <tr className={styles.tableBorder} data-index={index}>
         <td className={styles.tableRowHeight} data-key={id}>
           <strong>{document.id}</strong>
         </td>
@@ -32,6 +32,9 @@ export default class Document extends React.Component {
         </td>
         <td>
           <span><strong>{document.meta ? document.meta.completedSegments : null}</strong></span>
+        </td>
+        <td>
+          <span><strong>{document.created_at.split(' ')[0].split('-').reverse().join('/')}</strong></span>
         </td>
         <td>
           <span><strong>{document.meta ? document.meta.totalWords : null}</strong></span>
