@@ -11,6 +11,8 @@ import { fetchDocumentSuc, documentListSuccess } from '../Document/ActionCreator
 import fileReader from '../../utils/fileReader';
 import xliffParser from '../../utils/xliffTwoParser';
 
+import Alerts from '../Notifications/Alerts';
+import Success from '../Notifications/Success';
 import styles from './dropzone.scss';
 import api from '../../utils/apiWrapper';
 
@@ -27,6 +29,8 @@ const activeStyle = {
 };
 
 class Drop extends React.Component {
+  state = { messages: [], types: [] }
+
   onDrop = (accepted, rejected) => {
     accepted.forEach((file) => {
       const formData = new FormData();
@@ -37,37 +41,37 @@ class Drop extends React.Component {
       func.then((result) => {
         api.uploadDocument(formData, (response) => {
           if (response.status === 200) {
-            alert('Upload and Parse Successful');
+            this.setState({
+              messages: this.state.messages.concat('Upload Successful'),
+              types: this.state.types.concat('success'),
+            });
             this.props.buildMeta(response.data.result[0], result, this.props.length);
           } else {
-            alert('Upload Failed');
+            this.setState({
+              messages: this.state.messages.concat('Upload Failed'),
+              types: this.state.types.concat('fail'),
+            });
           }
         });
+      }).catch((error) => {
+        this.setState({
+          messages: this.state.messages.concat(`Upload Failed: ${error}`),
+          types: this.state.types.concat('fail'),
+        });
       });
-        // .then((result) => {
-        //   store.dispatch(fetchDocumentSuc(documentId, result));
-        // })
-        // .catch((error) => {
-        //   store.dispatch(fetchDocumentFail(documentId, error));
-        // })
-        // .done(() => {
-        //   //  console.log('done dispatching...');
-        // });
-      // api.uploadDocument(formData, (response) => {
-      //   if (response.status === 200) {
-      //     alert('Upload Successful');
-      //     store.dispatch(documentListSuccess(response.data.result));
-      //   }
-      // });
     });
     if (rejected.length > 0) {
-      alert('Only xliff/xlf files allowed!');
+      this.setState({
+        messages: this.state.messages.concat('Upload Failed, Only .xliff/.xlf files allowed!'),
+        types: this.state.types.concat('fail'),
+      });
     }
   }
 
   render() {
     return (
       <div>
+        <Alerts messages={this.state.messages} types={this.state.types} />
         <Dropzone
           accept=".xliff,.xlf"
           activeStyle={activeStyle}
@@ -77,12 +81,12 @@ class Drop extends React.Component {
           ref={(node) => { this.dropzone = node; }}
           role="Dialog"
           tabIndex={0}
-          inputProps={{ 'aria-label': 'Document Upload' }}>
+          inputProps={{ 'aria-label': 'Document Upload' }}> 
           <p>Upload Documents</p>
         </Dropzone>
         <button type="button" onClick={() => { this.dropzone.open(); }}>
           Open File Dialog
-      </button>
+        </button>
       </div>
     );
   }
