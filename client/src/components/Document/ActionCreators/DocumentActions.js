@@ -129,3 +129,35 @@ export function deleteDocument(documentId, documentKey) {
   };
 }
 
+export function documentOrderSuccess(doc, index, response) {
+  console.log('Response', response);
+  return {
+    type: actions.ORDER_SUCCESS,
+    document: doc,
+    index,
+  };
+}
+
+export function documentOrderFail(doc, error) {
+  console.log('Error', error);
+  return {
+    type: actions.ORDER_FAIL,
+    document: doc,
+    error,
+  };
+}
+
+// parameters: documentId1, newIndex1, documentId2, newIndex2
+export function setDocumentOrder(doc, index) {
+  return (dispatch) => {
+    const meta = Object.assign({}, doc.meta);
+    meta.listOrder = index;
+    return apiWrapper.updateDocument(doc.id, meta, (response) => {
+      if (response && response.status === 200) {
+        dispatch(documentOrderSuccess(doc, index, response));
+      } else {
+        dispatch(documentOrderFail(doc, response.error));
+      }
+    });
+  };
+}
