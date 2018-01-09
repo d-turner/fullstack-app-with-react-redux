@@ -48,12 +48,7 @@ class SegmentListContainer extends React.Component {
       return (
         <div className="flex four">
           <div className="full">
-            <Sync
-              documentId={this.state.id}
-              userId={this.props.userId}
-              email={this.props.email}
-              document={documents[this.state.id]}
-            />
+
           </div>
           <SegmentList
             document={documents[this.state.id]}

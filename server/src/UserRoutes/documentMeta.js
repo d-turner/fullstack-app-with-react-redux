@@ -52,7 +52,7 @@ export default (app) => {
       doc.updateMetaData(documentId, segmentCount, listOrder, completedSegments, totalWords, (err, result) => {
         if (err) {
           logger.error(err);
-          res.status(resp.conflict).json({ error: 'Meta data exists for document', err });
+          res.status(resp.conflict).json({ error: 'Could not update document meta data', err });
         } else res.status(status).send(result);
       });
     });
