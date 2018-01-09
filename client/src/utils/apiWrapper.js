@@ -110,8 +110,8 @@ const api = {
   deleteDocument: (docId, callback) => {
     apiCall(null, `${DOCUMENT_ID}${docId}`, callback, 'delete');
   },
-  updateDocument: (doc, callback) => {
-    apiCall(doc.meta, `${META}${doc.id}`, callback, 'put');
+  updateDocument: (docId, meta, callback) => {
+    apiCall(meta, `${META}${docId}`, callback, 'put');
   },
 };
 
