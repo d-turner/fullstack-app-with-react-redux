@@ -1,15 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Sortable from 'sortablejs';
-// TODO: Store and Fetch table fields (Segment Count, Completed Segments, Word Count, etc)
-// TODO: Implement document order on sort end
+
 import store from '../../../store';
 import { setDocumentOrder } from '../ActionCreators/DocumentActions';
 import Document from './Document';
-// import styles from '../documents.scss';
 import main from '../../../constants/main.scss';
 
 export default class DocumentTable extends React.Component {
+  state = { sortable: [] };
+
+  componentWillReceiveProps(nextProps) {
+    const sortable = [];
+    const keys = Object.keys(nextProps.documents);
+    // loop through the documents and add any new one the sortable array
+    for (let i = 0; i < keys.length; i++) {
+      if (this.state.sortable[keys[i]] === undefined) {
+        sortable.push(nextProps.documents[keys[i]]);
+      }
+    }
+    // sort the array based on the list order
+    // TODO: provide a parameter in the state for sorting the array
+    // e.g sort on name, created date, etc
+    sortable.sort((a, b) => {
+      if (a.meta === null || b.meta === null) return 0;
+      return a.meta.listOrder - b.meta.listOrder;
+    });
+    this.setState({ sortable });
+  }
+
+  onEnd = (evt, event) => {
+    const draggedIndex = evt.dragged.dataset.index;
+    const targetIndex = event.target.parentElement.dataset.index;
+    const doc1 = this.state.sortable[draggedIndex];
+    const doc2 = this.state.sortable[targetIndex];
+    // parameters: document, newIndex
+    store.dispatch(setDocumentOrder(doc1, targetIndex));
+    store.dispatch(setDocumentOrder(doc2, draggedIndex));
+  };
+
   sortableGroupDecorator = (componentBackingInstance) => {
     // check if backing instance not null
     if (componentBackingInstance) {
@@ -17,32 +46,18 @@ export default class DocumentTable extends React.Component {
         draggable: 'tr', // Specifies which items inside the element should be sortable
         sort: true,
         animation: 300,
-        onEnd: this.onEnd,
+        onMove: this.onEnd,
       };
       Sortable.create(componentBackingInstance, options);
     }
   };
 
-  onEnd = (event) => {
-    if (this.props.documents[event.item.firstChild.dataset.key].meta !== null && event.oldIndex !== event.newIndex) {
-      store.dispatch(setDocumentOrder(this.props.documents[event.item.firstChild.dataset.key], event.newIndex));
-    }
-  };
-
-  renderDocument = (doc, key) =>
-    (<Document document={doc} id={key} key={key} value={key} />);
+  renderDocument = (doc, key, index) =>
+    (<Document document={doc} id={key} key={key} value={key} index={index} />);
 
   render() {
-    const sortable = [];
-    for (const document in this.props.documents) {
-      sortable.push(this.props.documents[document]);
-    }
-    sortable.sort((a, b) => {
-      if (a.meta === null || b.meta === null) return 0;
-      return a.meta.listOrder - b.meta.listOrder;
-    });
     return (
-      <table id="documentList" className={main.fullWidth}>
+      <table id="documentList" className={main.fullWidth} style={{ color: 'rgba(51,51,51,1)'}}>
         <caption>
           <h3>Users Document List</h3>
         </caption>
@@ -52,7 +67,7 @@ export default class DocumentTable extends React.Component {
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Document ID</div>
             </th>
-            <th scope="col">
+            <th scope="col" style={{ minWidth: '172px' }}>
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Document name</div>
             </th>
@@ -63,6 +78,10 @@ export default class DocumentTable extends React.Component {
             <th scope="col">
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Completed Segments</div>
+            </th>
+            <th scope="col">
+              <div className="document-list-utility" />
+              <div className="th-document-ellipsis">Created Date</div>
             </th>
             <th scope="col">
               <div className="document-list-utility" />
@@ -79,8 +98,7 @@ export default class DocumentTable extends React.Component {
           </tr>
         </thead>
         <tbody ref={this.sortableGroupDecorator} id="items">
-          {/* Object.keys(this.props.documents).map(key => this.renderDocument(this.props.documents[key], key)) */}
-          { sortable.map(doc => this.renderDocument(doc, doc.saved_name)) }
+          { this.state.sortable.map((doc, index) => this.renderDocument(doc, doc.saved_name, index)) }
         </tbody>
       </table>
     );
