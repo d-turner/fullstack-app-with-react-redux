@@ -23,6 +23,8 @@ export const DELETE_FAIL = 'DELETE_FAIL';
 export const SET_DOCUMENT_META = 'SET_DOCUMENT_META';
 export const SET_SUCCESS = 'SET_META_SUCCESS';
 export const SET_FAIL = 'SET_META_FAIL';
+export const ORDER_SUCCESS = 'ORDER_SUCCESS';
+export const ORDER_FAIL = 'ORDER_FAILED';
 
 // Segment Actions
 export const UPDATE_TARGET = 'UPDATE_TARGET';
