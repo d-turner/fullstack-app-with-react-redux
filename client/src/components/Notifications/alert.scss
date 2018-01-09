@@ -1,0 +1,50 @@
+@import '../../constants/variables';
+
+.wrapper {
+  width: 320px;
+  position: fixed;
+  top: 54px;
+  font-size: 13px;
+  line-height: 1.2em;
+  right: 0px;
+  margin-right: $padding-from-right-nav;
+}
+
+.alert {
+  display: block;
+  padding: 10px;
+  margin: 10px 0 0;
+  border-radius: 2px;
+  height: 60px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.success {
+  border-top: 2px solid rgb(94, 164, 0);
+  background-color: rgb(240, 245, 234);
+  color: rgb(94, 164, 0);
+}
+
+.fail {
+  border-top: 2px solid rgb(236, 61, 61);
+  background-color: rgb(244, 233, 233);
+  color: rgb(236, 61, 61);
+}
+
+.info {
+  border-top: 2px solid rgb(54, 156, 199);
+  background-color: rgb(232, 240, 244);
+  color: rgb(54, 156, 199);
+}
+
+.message {
+  font-size: 14px;
+  margin: 0px 0px 5px;
+  padding: 0px;
+  font-weight: bold;
+}
+
+.extra {
+  color: rgb(51, 51, 51);
+  font-size: 13px;
+}
