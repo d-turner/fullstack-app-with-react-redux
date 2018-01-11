@@ -49,22 +49,12 @@ const DocumentWrapper = {
     { documentId, segmentCount, listOrder, completedSegments, wordCount }, cb);
   },
 
-  insertSegmentData(segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode, cb) {
-    return mariaDB.query('INSERT INTO Segment (segment_index, document_id, machine_translation, edit_mode_time, tile_mode_time, voice_mode_time, total_edit_time, characters_entered, words_entered, mode) VALUES \
-    (:segmentIndex, :documentId, :machineTranslation, :editTime, :tileTime, :voiceTime, :totalTime, :charactersEntered, :wordsEntered, :mode)',
-    { segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode }, cb);
-  },
-
   getMetaData(documentId, cb) {
     return mariaDB.query('SELECT * FROM Document_META WHERE document_id = :documentId',
   { documentId }, cb);
   },
 
-  getSegmentData(documentId, cb) {
-    return mariaDB.query('SELECT * FROM Segment WHERE document_id = :documentId',
-  { documentId }, cb);
-  },
-
+  // should not really use this method
   setData(documentId, table, column, value, cb) {
     return mariaDB.query(`UPDATE ${table} SET ${column} = :value WHERE document_id = :documentId`,
   { documentId, value }, cb);
