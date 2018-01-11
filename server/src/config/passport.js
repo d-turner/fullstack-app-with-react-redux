@@ -2,9 +2,10 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import crypto from 'crypto';
 
+import logger from '../util/logger';
 import User from '../db/user';
 import * as resp from '../config/Responses';
-import logger from '../util/logger';
+
 
 const LEN = 256;
 const SALT_LEN = 64;
@@ -76,7 +77,6 @@ passport.use('login', new LocalStrategy({
         return cb(hashErr, false, resp.somethingBad);
       }
       if (user.password !== hash) return cb(null, false, resp.loginFailed);
-      logger.debug('User in now authenticated');
       user.password = undefined;
       user.salt = undefined;
       return cb(null, user, user);
@@ -112,8 +112,6 @@ passport.use('register', new LocalStrategy({
           logger.error(`Database error ${insertError}`);
           return cb(insertError, false, resp.somethingBad);
         }
-        logger.debug('User in now authenticated');
-        logger.info('Insert Result ', insertResult);
         return cb(null, false, resp.registerSuccess);
       });
     });
@@ -122,13 +120,10 @@ passport.use('register', new LocalStrategy({
 ));
 
 passport.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated() && req.user) {
-    return next(200, {
-      status: 'Authenticated',
-      data: req.user,
-    });
-  }
-  return next(401, { status: 'Not Authenticated' });
+  if (req.isAuthenticated() && req.user) { next(); return; }
+  const err = new Error('Not authenticated');
+  err.status = resp.forbidden;
+  next(err);
 };
 
 
