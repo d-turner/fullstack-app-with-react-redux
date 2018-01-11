@@ -6,6 +6,7 @@ import session from 'express-session';
 
 // local packages
 import logger from './util/logger';
+import * as resp from './config/Responses';
 import setupUserRoutes from './UserRoutes';
 import passport from './config/passport';
 // init app
@@ -52,8 +53,9 @@ setupUserRoutes(app);
 
 // catch all unhandled errors
 app.use((err, req, res, next) => {
-  logger.error(`unhandled application error: ${err}`);
-  res.status(500).send(err);
+  logger.error(`Error message: ${err.message}`);
+  logger.error(`Error stack: ${err.stack}`);
+  res.status(err.status || resp.error).json({ error: err.message });
   next();
 });
 export default app;
