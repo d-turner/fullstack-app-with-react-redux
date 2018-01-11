@@ -40,25 +40,25 @@ export function apiCall(data, endpoint, callback, method, headers) {
     data,
     headers,
   })
-  .catch((error) => {
-    if (error.response) {
-      // status code outside 200
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-    } else if (error.request) {
-      // no response received
-      // returns undefined
-      console.log(error.request);
-    } else {
-      // config error
-      console.log('Configuration Error: ', error.message);
-    }
-    return error.response;
-  })
-  .then((response) => {
-    callback(response);
-  });
+    .catch((error) => {
+      if (error.response) {
+        // status code outside 200
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // no response received
+        // returns undefined
+        console.log(error.request);
+      } else {
+        // config error
+        console.log('Configuration Error: ', error.message);
+      }
+      return error.response;
+    })
+    .then((response) => {
+      callback(response);
+    });
 }
 
 const api = {
