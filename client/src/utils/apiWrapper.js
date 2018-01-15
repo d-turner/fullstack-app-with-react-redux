@@ -21,7 +21,8 @@ if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = '';
 }
 
-export function apiCall(data, endpoint, callback, method, headers) {
+// apiCall(options, callback)
+export function apiCall({ data, endpoint, method, headers }, callback) {
   /*
   * Expects Data to be:
   * { name, email, password } - register
@@ -43,6 +44,7 @@ export function apiCall(data, endpoint, callback, method, headers) {
     .catch((error) => {
       if (error.response) {
         // status code outside 200
+        // TODO: do some error handling
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
@@ -62,56 +64,78 @@ export function apiCall(data, endpoint, callback, method, headers) {
 }
 
 const api = {
+  // options = { data, endpoint, method, headers }
   login: (data, callback) => {
-    apiCall(data, LOGIN, callback, 'post');
+    apiCall({ data, endpoint: LOGIN, method: 'post' }, callback);
   },
   register: (data, callback) => {
-    apiCall(data, REGISTER, callback, 'post');
+    apiCall({ data, endpoint: REGISTER, method: 'post' }, callback);
   },
   logout: (callback) => {
-    apiCall(null, LOGOUT, callback, 'get');
+    apiCall({ endpoint: LOGOUT, method: 'get' }, callback);
   },
+  // check if a user is authenticated
   test: (callback) => {
-    apiCall(null, TEST, callback, 'get');
+    apiCall({ endpoint: TEST, method: 'get' }, callback);
   },
-  getDocumentById: (data, callback) => {
-    apiCall(null, `${DOCUMENT_ID}${data}`, callback, 'get');
+  // get document row from database
+  getDocumentById: (documentId, callback) => {
+    apiCall({ endpoint: `${DOCUMENT_ID}${documentId}`, method: 'get' }, callback);
   },
-  getDocument: (data, callback) => {
-    apiCall(null, `${DOCUMENT_FILE}${data}`, callback, 'get');
+  // get the actual document (stored outside the database)
+  getDocument: (savedName, callback) => {
+    apiCall({ endpoint: `${DOCUMENT_FILE}${savedName}`, method: 'get' }, callback);
   },
+  // get the list of documents owned by the user
   getDocuments: (callback) => {
-    apiCall(null, DOCUMENTS, callback, 'get');
+    apiCall({ endpoint: DOCUMENTS, method: 'get' }, callback);
   },
+  // upload a new document
   uploadDocument: (data, callback) => {
     const headers = { 'Content-Type': 'multipart/form-data' };
-    apiCall(data, UPLOAD, callback, 'post', headers);
+    apiCall({ data, endpoint: UPLOAD, method: 'post', headers }, callback);
   },
+  // save changes to the server
   sync: (data, id, callback) => {
     const headers = { 'Content-Type': 'text/plain' };
-    apiCall(data, `${SYNC}${id}`, callback, 'post', headers);
+    apiCall({ data, endpoint: `${SYNC}${id}`, method: 'post', headers }, callback);
   },
+  // save logger data to the server
   uploadLog: (data, id, callback) => {
     const headers = { 'Content-Type': 'text/xml' };
-    apiCall(data, `${LOGGER}${id}`, callback, 'post', headers);
+    apiCall({ data, endpoint: `${LOGGER}${id}`, method: 'post', headers }, callback);
   },
+  // get the document meta from database
   getDocumentMeta: (docId, callback) => {
-    apiCall(null, `${META}${docId}`, callback, 'get');
+    apiCall({ endpoint: `${META}${docId}`, method: 'get' }, callback);
   },
+  // create document meta
   setDocumentMeta: (docId, data, callback) => {
-    apiCall(data, `${META}${docId}`, callback, 'post');
+    apiCall({ data, endpoint: `${META}${docId}`, method: 'post' }, callback);
   },
-  getSegment: (docId, callback) => {
-    apiCall(null, `${SEGMENT}${docId}`, callback, 'get');
-  },
-  setSegment: (docId, data, callback) => {
-    apiCall(data, `${SEGMENT}${docId}`, callback, 'post');
-  },
+  // delete a document from the database
   deleteDocument: (docId, callback) => {
-    apiCall(null, `${DOCUMENT_ID}${docId}`, callback, 'delete');
+    apiCall({ endpoint: `${DOCUMENT_ID}${docId}`, method: 'delete' }, callback);
   },
-  updateDocument: (docId, meta, callback) => {
-    apiCall(meta, `${META}${docId}`, callback, 'put');
+  // update document meta
+  updateDocument: (docId, data, callback) => {
+    apiCall({ data, endpoint: `${META}${docId}`, method: 'put' }, callback);
+  },
+  // get all segments for a document
+  getSegments: (docId, callback) => {
+    apiCall({ endpoint: `${SEGMENT}${docId}`, method: 'get' }, callback);
+  },
+  // get a single segment
+  getSegment: (docId, index, callback) => {
+    apiCall({ endpoint: `${SEGMENT}${docId}/${index}`, method: 'get' }, callback);
+  },
+  // create a segment
+  setSegment: (docId, data, callback) => {
+    apiCall({ data, endpoint: `${SEGMENT}${docId}`, method: 'post' }, callback);
+  },
+  // update a segment
+  updateSegment: (docId, data, callback) => {
+    apiCall({ data, endpoint: `${SEGMENT}${docId}`, method: 'put' }, callback);
   },
 };
 
