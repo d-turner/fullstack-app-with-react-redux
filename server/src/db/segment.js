@@ -13,6 +13,11 @@ const SegmentWrapper = {
   { documentId }, cb);
   },
 
+  getSingle(documentId, segmentIndex, cb) {
+    return mariaDB.query('SELECT * FROM Segment WHERE document_id = :documentId AND segment_index = :segmentIndex',
+  { documentId, segmentIndex }, cb);
+  },
+
   updateSegment(segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode, cb) {
     return mariaDB.query('UPDATE Segment SET machine_translation = :machineTranslation, edit_mode_time = :editTime, tile_mode_time = :tileTime, voice_mode_time = :voiceTime, total_edit_time = :totalTime, characters_entered = :charactersEntered, words_entered = :wordsEntered WHERE document_id = :documentId AND segment_index = :segmentIndex',
     { segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode }, cb);
