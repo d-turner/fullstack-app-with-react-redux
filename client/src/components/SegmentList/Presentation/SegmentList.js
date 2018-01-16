@@ -64,88 +64,90 @@ class SegmentList extends React.Component {
   }
 
   renderSelected(segment, index) {
-    const xliff = this.props.document.xliff;
+    const { xliff } = this.props.document;
     if (this.props.editorState === '') {
       return null;
     }
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
-      <div className={`${responsive} ${styles.selected}`} id="selectedSegment">
-        <div className={responsiveWidth}>
-          <SelectedSegment
-            className="four-fifth"
-            documentId={this.props.document.saved_name}
-            mt={this.props.d}
-            segment={segment}
-            segmentId={index}
-            editorState={this.props.editorState}
-            renderTiles={this.state.renderTiles}
-            xliff={xliff}
-            ref={(ref) => { this.SelectedSegment = ref; }}
-            setRef={(name, ref) => { this[name] = ref; }} />
-        </div>
-        <ButtonList>
-          <Button
-            classNames={classNames}
-            label="Add a Comment"
-            icon="chat_bubble"
-            func={this.renderComment}
-            id="Comments"
-            direction="right" />
-          {this.state.renderTiles ?
+      <div id="selectedSegment" style={{ paddingTop: '62px' }}>
+        <div className={`${responsive} ${styles.selected}`}>
+          <div className={responsiveWidth}>
+            <SelectedSegment
+              className="four-fifth"
+              documentId={this.props.document.saved_name}
+              mt={this.props.d}
+              segment={segment}
+              segmentId={index}
+              editorState={this.props.editorState}
+              renderTiles={this.state.renderTiles}
+              xliff={xliff}
+              ref={(ref) => { this.SelectedSegment = ref; }}
+              setRef={(name, ref) => { this[name] = ref; }} />
+          </div>
+          <ButtonList>
             <Button
               classNames={classNames}
-              label="Edit Mode"
-              icon="mode_edit"
-              func={this.renderTiles}
-              id="Edit Mode"
-              direction="right" /> :
-            <Button
-              classNames={classNames}
-              label="Tile Mode"
-              icon="view_comfy"
-              func={this.renderTiles}
-              id="Tile Mode"
+              label="Add a Comment"
+              icon="chat_bubble"
+              func={this.renderComment}
+              id="Comments"
               direction="right" />
-          }
-          {this.state.renderVoice ?
+            {this.state.renderTiles ?
+              <Button
+                classNames={classNames}
+                label="Edit Mode"
+                icon="mode_edit"
+                func={this.renderTiles}
+                id="Edit Mode"
+                direction="right" /> :
+              <Button
+                classNames={classNames}
+                label="Tile Mode"
+                icon="view_comfy"
+                func={this.renderTiles}
+                id="Tile Mode"
+                direction="right" />
+            }
+            {this.state.renderVoice ?
+              <Button
+                classNames={`${classNames} ${styles.micActive}`}
+                label="Voice Mode"
+                icon="mic"
+                func={this.renderVoice}
+                id="Deactivate Voice Mode"
+                direction="right" /> :
+              <Button
+                classNames={classNames}
+                label="Voice Mode"
+                icon="mic"
+                func={this.renderVoice}
+                id="Activate Voice Mode"
+                direction="right" />
+            }
             <Button
-              classNames={`${classNames} ${styles.micActive}`}
-              label="Voice Mode"
-              icon="mic"
-              func={this.renderVoice}
-              id="Deactivate Voice Mode"
-              direction="right" /> :
-            <Button
-              classNames={classNames}
-              label="Voice Mode"
-              icon="mic"
-              func={this.renderVoice}
-              id="Activate Voice Mode"
+              classNames={`${classNames} ${main.greenButton}`}
+              label="Accept Translation"
+              icon="done"
+              func={() => console.error('Need to implement')}
+              id="Accept Translation"
               direction="right" />
-          }
-          <Button
-            classNames={`${classNames} ${main.greenButton}`}
-            label="Accept Translation"
-            icon="done"
-            func={() => console.error('Need to implement')}
-            id="Accept Translation"
-            direction="right" />
 
-          <Button
-            classNames={`${classNames} ${main.redButton}`}
-            label="Reject Translation"
-            icon="clear"
-            func={() => this.CustomEditor.clearText()}
-            id="Clear Translation"
-            direction="right" />
-        </ButtonList>
-        <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
-          onEnd={value => this.CustomEditor.endValue(value)}
-          segmentId={index}
-          removeModal={this.renderVoice}
-          documentId={this.props.document.saved_name}
-          editor={this.Editor} />
+            <Button
+              classNames={`${classNames} ${main.redButton}`}
+              label="Reject Translation"
+              icon="clear"
+              func={() => this.CustomEditor.clearText()}
+              id="Clear Translation"
+              direction="right" />
+          </ButtonList>
+          <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
+            onEnd={value => this.CustomEditor.endValue(value)}
+            segmentId={index}
+            removeModal={this.renderVoice}
+            documentId={this.props.document.saved_name}
+            editor={this.Editor} />
+        </div>
       </div>
     );
   }
