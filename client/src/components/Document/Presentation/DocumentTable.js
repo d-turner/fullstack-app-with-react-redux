@@ -52,6 +52,31 @@ export default class DocumentTable extends React.Component {
     }
   };
 
+  sortTable = (type) => {
+    switch (type) {
+      case ('id'): {
+        const { sortable } = this.state;
+        sortable.sort((a, b) => {
+          return a.id - b.id;
+        });
+        this.setState({ sortable });
+        break;
+      }
+      case ('name'): {
+        const { sortable } = this.state;
+        sortable.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        });
+        this.setState({ sortable });
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
   renderDocument = (doc, key, index) =>
     (<Document document={doc} id={key} key={key} value={key} index={index} />);
 
@@ -63,11 +88,11 @@ export default class DocumentTable extends React.Component {
         </caption>
         <thead>
           <tr>
-            <th scope="col">
+            <th scope="col" className={main.clickable} onClick={() => this.sortTable('id')}>
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Document ID</div>
             </th>
-            <th scope="col" style={{ minWidth: '172px' }}>
+            <th scope="col" className={main.clickable} style={{ minWidth: '172px' }} onClick={() => this.sortTable('name')}>
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Document name</div>
             </th>
