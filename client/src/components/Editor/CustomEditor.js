@@ -10,14 +10,14 @@ import main from '../../constants/main.scss';
 class CustomEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasFocus: false, renderStyles: false, renderVoice: false };
+    this.state = { hasFocus: false, renderStyles: false };
   }
 
   componentDidMount() {
     this.Editor.focus();
   }
 
-  myKeyBindingFn(e) {
+  myKeyBindingFn = (e) => {
     if (e.ctrlKey && e.keyCode === 13) {
       return 'next-segment';
     }
