@@ -469,3 +469,7 @@ label > h4 {
     border-color: $darkReject;
   }
 }
+
+.clickable:hover {
+  cursor: pointer;
+}
