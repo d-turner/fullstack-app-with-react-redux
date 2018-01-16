@@ -12,7 +12,6 @@ import fileReader from '../../utils/fileReader';
 import xliffParser from '../../utils/xliffTwoParser';
 
 import Alerts from '../Notifications/Alerts';
-import Success from '../Notifications/Success';
 import styles from './dropzone.scss';
 import api from '../../utils/apiWrapper';
 
@@ -55,7 +54,7 @@ class Drop extends React.Component {
         });
       }).catch((error) => {
         this.setState({
-          messages: this.state.messages.concat(`Upload Failed: ${error}`),
+          messages: this.state.messages.concat('Upload Failed: There was an issue parsing the document, please confirm the document is a valid xliff/xlf document'),
           types: this.state.types.concat('fail'),
         });
       });

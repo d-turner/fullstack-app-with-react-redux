@@ -8,7 +8,7 @@ const Alert = function({ message, type, state, onClick, index }) {
   if (message === null || message === undefined) return null;
   const header = capitalizeFirstLetter(type);
   return (
-    <div tabIndex={0} role="status" className={`${alert.alert} ${alert[type]}`} onClick={() => onClick(index)}>
+    <div role="status" className={`${alert.alert} ${alert[type]}`} onClick={() => onClick(index)}>
       <h4 className={alert.message}>{header}</h4>
       <div className={alert.extra}>{message}</div>
     </div>
@@ -54,7 +54,7 @@ class Alerts extends React.Component {
                 return state;
               }),
             });
-          }, 3500);
+          }, 8500);
           const key = `${message} ${index}`;
           return (
             <Alert
