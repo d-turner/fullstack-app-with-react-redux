@@ -16,7 +16,7 @@ class Segment extends React.Component {
   componentDidMount() {
     if (this.props.segmentId !== 0) {
       const node = document.getElementById('selectedSegment');
-      node.scrollIntoView({ behavior: 'auto', block: 'start' });
+      node.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
