@@ -12,7 +12,7 @@ import App from './app/app';
 import store from './store';
 
 const ENV = process.env.NODE_ENV;
-if (ENV === 'development') a11y(React, /* StrictMode: { throw: true },*/ { ReactDOM });
+if (ENV === 'development') a11y(React, /* StrictMode: { throw: true }, */ ReactDOM);
 
 // render on page
 ReactDOM.render(
