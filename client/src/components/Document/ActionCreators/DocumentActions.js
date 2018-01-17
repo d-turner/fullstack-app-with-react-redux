@@ -130,7 +130,6 @@ export function deleteDocument(documentId, documentKey) {
 }
 
 export function documentOrderSuccess(doc, index, response) {
-  console.log('Response', response);
   return {
     type: actions.ORDER_SUCCESS,
     document: doc,
@@ -139,7 +138,6 @@ export function documentOrderSuccess(doc, index, response) {
 }
 
 export function documentOrderFail(doc, error) {
-  console.log('Error', error);
   return {
     type: actions.ORDER_FAIL,
     document: doc,

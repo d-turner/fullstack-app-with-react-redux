@@ -20,6 +20,9 @@ export default class Document extends React.Component {
     return (
       <tr className={styles.tableBorder} data-index={index}>
         <td className={styles.tableRowHeight} data-key={id}>
+          <span className="my-handle"><i className="material-icons">drag_handle</i></span>
+        </td>
+        <td className={styles.tableRowHeight} data-key={id}>
           <strong>{document.id}</strong>
         </td>
         <td className={styles.tableRowHeight}>
@@ -35,6 +38,9 @@ export default class Document extends React.Component {
         </td>
         <td>
           <span><strong>{document.created_at.split(' ')[0].split('-').reverse().join('/')}</strong></span>
+        </td>
+        <td>
+          <span><strong>Placeholder</strong></span>
         </td>
         <td>
           <span><strong>{document.meta ? document.meta.totalWords : null}</strong></span>

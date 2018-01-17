@@ -35,6 +35,7 @@ export default class DocumentTable extends React.Component {
     const doc1 = this.state.sortable[draggedIndex];
     const doc2 = this.state.sortable[targetIndex];
     // parameters: document, newIndex
+    if (doc1 === undefined || doc2 === undefined) return;
     store.dispatch(setDocumentOrder(doc1, targetIndex));
     store.dispatch(setDocumentOrder(doc2, draggedIndex));
   };
@@ -46,6 +47,7 @@ export default class DocumentTable extends React.Component {
         draggable: 'tr', // Specifies which items inside the element should be sortable
         sort: true,
         animation: 300,
+        handle: ".my-handle", // Drag handle selector within list items
         onMove: this.onEnd,
       };
       Sortable.create(componentBackingInstance, options);
@@ -88,6 +90,10 @@ export default class DocumentTable extends React.Component {
         </caption>
         <thead>
           <tr>
+            <th scope="col" className={main.clickable}>
+              <div className="document-list-utility" />
+              <div className="th-document-ellipsis" />
+            </th>
             <th scope="col" className={main.clickable} onClick={() => this.sortTable('id')}>
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Document ID</div>
@@ -107,6 +113,10 @@ export default class DocumentTable extends React.Component {
             <th scope="col">
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Created Date</div>
+            </th>
+            <th scope="col">
+              <div className="document-list-utility" />
+              <div className="th-document-ellipsis">Last Edited</div>
             </th>
             <th scope="col">
               <div className="document-list-utility" />
