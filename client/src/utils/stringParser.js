@@ -15,11 +15,11 @@ export function splitTextIntoArray(text) {
 
 export function joinTextArray(array) {
   return array
-  .join(' ')
-  .replace(/[ ]{1,},/g, ',')
-  .replace(/[ ]{1,}\./g, '.')
-  .replace(/[ ]{1,}/g, ' ')
-  .trim();
+    .join(' ')
+    .replace(/[ ]{1,},/g, ',')
+    .replace(/[ ]{1,}\./g, '.')
+    .replace(/[ ]{1,}/g, ' ')
+    .trim();
 }
 
 export function cleanText(text, lowercaseBefore) {
@@ -39,11 +39,102 @@ export function cleanText(text, lowercaseBefore) {
 
 export function isEmpty(obj) {
   for (const prop in obj) {
-    if (obj.hasOwnProperty(prop)) return false;
+    if (Object.hasOwnProperty(prop)) return false;
   }
   return true;
 }
 
-export function capitalizeFirstLetter(string) {
+export function upperFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function upperLetterAt(string, index) {
+  return string.charAt(index).toUpperCase() + string.slice(1);
+}
+
+export function lowerFirstLetter(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+export function lowerLetterAt(string, index) {
+  return string.slice(0, index) + string.charAt(index).toLowerCase() + string.slice(index + 1);
+}
+
+export function shouldUpperCase(string, index) {
+  if (index === 0) return true;
+  if (['.', '!', '?'].indexOf(string.charAt(index - 1)) + 1 ||
+      ['.', '!', '?'].indexOf(string.charAt(index - 2)) + 1) return true;
+  return false;
+}
+
+export function shouldInsertSpace(string, index) {
+  if (index === 0) return true;
+  if (string.charAt(index) === ' ' && string.charAt(index - 1) === ' ') return false;
+  if ([' ', '.', '!', '?'].indexOf(string.charAt(index - 1)) + 1) return true; // add space before
+  if ([' ', '.', '!', '?'].indexOf(string.charAt(index)) + 1) return true; // add space before
+  return true;
+}
+
+export function shouldInsertBefore(string, index) {
+  if (index === 0) return false;
+  if (['.', '!', '?'].indexOf(string.charAt(index - 1)) + 1) return true; // add space before
+  if ([' ', '.', '!', '?'].indexOf(string.charAt(index)) + 1) return true; // add space before
+  return false;
+}
+
+export function shouldInsertAfter(string, index) {
+  if (index === 0) return true;
+  if ([' ', '.', '!', '?'].indexOf(string.charAt(index)) + 1) return false; // add space before
+  if (string.charAt(index - 1) === ' ') return true;
+  return false;
+}
+
+export function isCapital(char) {
+  if (char === ' ') {
+    // character is a space
+    return false;
+  } else if (!isNaN(char * 1)) {
+    // character is numeric
+    return false;
+  }
+  if (char === char.toUpperCase() && char !== char.toLowerCase()) {
+    // character is upper case
+    return true;
+  } else if (char === char.toLowerCase() && char !== char.toUpperCase()) {
+    // character is lower case
+    return false;
+  }
+  // character is punctuation
+  return false;
+}
+
+// returns the correct spacing for text in terms of sentence and cursorIndex
+export function setSpacing(sentence, text, cursorIndex) {
+  let newText = text;
+  if (shouldUpperCase(sentence, cursorIndex)) {
+    // modify the first letter of text
+    newText = upperFirstLetter(text);
+  } else {
+    // TODO: Decide on if capital letters should go to lower case
+    // newText = lowerFirstLetter(text);
+  }
+  if (shouldInsertSpace(sentence, cursorIndex)) {
+    if (shouldInsertBefore(sentence, cursorIndex)) {
+      newText = ` ${newText}`;
+    } else if (shouldInsertAfter(sentence, cursorIndex)) {
+      // insert space after
+      newText = `${newText} `;
+    } else {
+      // case where there may already be a space before and after
+    }
+  }
+  return newText;
+}
+
+
+// export function insertString(sentence, text, cursorIndex) {
+//   const spaced = setSpacing(sentence, text, cursorIndex);
+//   let formatted = sentence;
+//   if (cursorIndex === 0) formatted = sentence.charAt(cursorIndex).toLowerCase() + sentence.slice(cursorIndex);
+//   else if (isCapital(sentence.charAt(cursorIndex))) formatted = sentence.charAt(cursorIndex).toLowerCase() + sentence.slice(cursorIndex);
+// }

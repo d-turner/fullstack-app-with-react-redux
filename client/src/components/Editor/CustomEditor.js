@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
 
+import { setSpacing } from '../../utils/stringParser';
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.scss';
@@ -36,20 +37,18 @@ class CustomEditor extends React.Component {
   }
 
   endValue = (value) => {
-    // TODO: Add space before if no space at caret
-    // TODO: Add space after if no space before next character
-    // TODO: Capitalize if at the start of the sentence or after a full stop
-    // TODO: Lowercase if not at the start of a sentence
+    // TODO: Capitalize // decap next letter
     this.props.keyLogger.voiceInput(value);
     // selection holds the cursor position
     const selection = this.props.editorState.getSelection();
     // content state holds EditorState without undo/redo history
     const contentState = this.props.editorState.getCurrentContent();
-    const newContentState = Modifier.replaceText(contentState, selection, value);
+    const newValue = setSpacing(contentState.getPlainText(), value, selection.getAnchorOffset());
+    const newContentState = Modifier.replaceText(contentState, selection, newValue);
     const newEditorState = EditorState.push(this.props.editorState, newContentState, 'insert-characters');
     const updatedSelection = selection.merge({
-      focusOffset: selection.getAnchorOffset() + value.length,
-      anchorOffset: selection.getAnchorOffset() + value.length,
+      focusOffset: selection.getAnchorOffset() + newValue.length,
+      anchorOffset: selection.getAnchorOffset() + newValue.length,
     });
     this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
   }
@@ -74,6 +73,9 @@ class CustomEditor extends React.Component {
         }
         <div className={`${styles['RichEditor-editor']} ${style}`} >
           <Editor
+            autoCapitalize="sentences"
+            autoComplete="off"
+            autoCorrect="on"
             ariaLabel="Draft JS Editor"
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
