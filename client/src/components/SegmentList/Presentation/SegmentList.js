@@ -16,7 +16,7 @@ import Button from '../../ButtonList/Button';
 // general responsive view
 const responsive = 'flex one five-700';
 // width of a segment
-const responsiveWidth = 'full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow';
+const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft}`;
 
 class SegmentList extends React.Component {
   constructor(props) {

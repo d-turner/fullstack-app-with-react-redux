@@ -1,4 +1,7 @@
 @import  '../../constants/variables';
+.clearPadding {
+  padding: 0px;
+}
 
 .selected {
   @extend .clearPadding;
