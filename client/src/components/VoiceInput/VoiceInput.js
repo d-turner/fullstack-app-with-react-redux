@@ -52,6 +52,9 @@ export default class VoiceInput extends Component {
           }
         }
       };
+      this.recognition.onerror = (event) => {
+        console.log('Speech recognition error detected: ' + event.error);
+      };
       this.recognition.onend = (event) => {
         if (this.state.speaking) {
           // need to show stop and show an error that it did not detect anything
@@ -155,12 +158,14 @@ export default class VoiceInput extends Component {
 
   renderVoiceInput() {
     return (
-      <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`} >
-        {this.state.speaking || !this.state.isFirst ? this.renderEditor() :
-        <div className={styles.hideEditor} />}
-        {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}
-        <div className="full">
-          {this.renderButtons()}
+      <div className="full three-fifth-700 off-fifth-700 fifth-1200 off-none-1200">
+        <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`}>
+          {this.state.speaking || !this.state.isFirst ? this.renderEditor() :
+          <div className={styles.hideEditor} />}
+          {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}
+          <div className="full">
+            {this.renderButtons()}
+          </div>
         </div>
       </div>
     );
