@@ -1,3 +1,11 @@
+/* Media Widths */
+// table and mobile
+$small: 700px;
+// mobile
+$mobile: 500px;
+// desktop
+$desktop: 1000px;
+
 $font-stack: sans-serif;
 
 $white: white;
@@ -123,10 +131,6 @@ $targetTilePadding: 8px 6px 8px 4px;
 $tileMargin: 4px 2px;
 $tileColor: lighten(#e4eafa, 1%);
 $tileClose: 18px;
-
-.clearPadding {
-  padding: 0;
-}
 
 .faded {
   opacity: 0.35;
