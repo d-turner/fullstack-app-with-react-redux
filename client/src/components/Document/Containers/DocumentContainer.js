@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // TODO: Implement Sidebar Structure
+// TODO: Correctly implement document merge if document already exists (requestDocumentList on already existing docs)
 // import Sidebar from '../../SidebarLeft';
 import Dropzone from '../../Dropzone';
 import DocumentTable from '../Presentation/DocumentTable';
