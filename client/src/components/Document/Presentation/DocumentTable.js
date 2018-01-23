@@ -31,10 +31,13 @@ export default class DocumentTable extends React.Component {
 
   onEnd = (evt, event) => {
     const draggedIndex = evt.dragged.dataset.index;
-    const targetIndex = event.target.parentElement.dataset.index;
+    const targetIndex = event.target.dataset.index;
+    console.log(event);
     const doc1 = this.state.sortable[draggedIndex];
     const doc2 = this.state.sortable[targetIndex];
     // parameters: document, newIndex
+    console.log(doc1);
+    console.log(doc2);
     if (doc1 === undefined || doc2 === undefined) return;
     store.dispatch(setDocumentOrder(doc1, targetIndex));
     store.dispatch(setDocumentOrder(doc2, draggedIndex));
