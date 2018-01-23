@@ -80,8 +80,8 @@ class CustomEditor extends React.Component {
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
             keyBindingFn={this.myKeyBindingFn}
-            onFocus={() => this.setState({ hasFocus: true })}
-            onBlur={() => this.setState({ hasFocus: false })}
+            onFocus={(e) => { e.preventDefault(); this.setState({ hasFocus: true }); }}
+            onBlur={(e) => { e.preventDefault(); this.setState({ hasFocus: false }); }}
             onChange={this.props.handleChange}
             ref={(ref) => { this.Editor = ref; this.props.setRef('Editor', ref); }}
           />
