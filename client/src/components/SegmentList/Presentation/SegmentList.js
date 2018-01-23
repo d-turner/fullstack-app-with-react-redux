@@ -16,18 +16,14 @@ import Button from '../../ButtonList/Button';
 // general responsive view
 const responsive = 'flex one five-700';
 // width of a segment
-const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft}`;
+const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft} ${main.flex}`;
 
 class SegmentList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      renderTiles: false,
-      renderVoice: false,
-      help: true,
-    };
-    this.renderSegment = this.renderSegment.bind(this);
-  }
+  state = {
+    renderTiles: false,
+    renderVoice: false,
+    help: true,
+  };
 
   componentDidMount() {
     this.props.updateSelectedSegment(this.props.document.saved_name, 0);
@@ -37,8 +33,103 @@ class SegmentList extends React.Component {
     this.props.updateSelectedSegment(this.props.document.saved_name, -1);
   }
 
-  selected(index) {
+  selected = (index) => {
     this.props.updateSelectedSegment(this.props.document.saved_name, index);
+  }
+
+  voiceComponent = (index) => {
+    return (
+      <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
+        onEnd={value => this.CustomEditor.endValue(value)}
+        segmentId={index}
+        removeModal={this.renderVoice}
+        documentId={this.props.document.saved_name}
+        editor={this.Editor} />
+    );
+  }
+
+  undoRedo = () => {
+    const classNames = `${main.clearButtonLeft} ${main.button}`;
+    return (
+      <ButtonList>
+        <Button
+          classNames={`${classNames} ${main.greenButton}`}
+          label="Accept Translation"
+          icon="undo"
+          func={() => console.error('Need to implement')}
+          id="Accept Translation"
+          tooltip={false} />
+
+        <Button
+          classNames={`${classNames} ${main.redButton}`}
+          label="Reject Translation"
+          icon="redo"
+          func={() => console.error('Need to implement')}
+          id="Clear Translation"
+          tooltip={false} />
+      </ButtonList>
+    );
+  }
+  renderButtonList = () => {
+    const classNames = `${main.clearButtonLeft} ${main.button}`;
+    return (
+      <ButtonList>
+        <Button
+          classNames={classNames}
+          label="Add a Comment"
+          icon="chat_bubble"
+          func={this.renderComment}
+          id="Comments"
+          direction="right" />
+        {this.state.renderTiles ?
+          <Button
+            classNames={classNames}
+            label="Edit Mode"
+            icon="mode_edit"
+            func={this.renderTiles}
+            id="Edit Mode"
+            direction="right" /> :
+          <Button
+            classNames={classNames}
+            label="Tile Mode"
+            icon="view_comfy"
+            func={this.renderTiles}
+            id="Tile Mode"
+            direction="right" />
+        }
+        {this.state.renderVoice ?
+          <Button
+            classNames={`${classNames} ${styles.micActive}`}
+            label="Voice Mode"
+            icon="mic"
+            func={this.renderVoice}
+            id="Deactivate Voice Mode"
+            direction="right" /> :
+          <Button
+            classNames={classNames}
+            label="Voice Mode"
+            icon="mic"
+            func={this.renderVoice}
+            id="Activate Voice Mode"
+            direction="right" />
+        }
+        <Button
+          classNames={`${classNames} ${main.greenButton}`}
+          label="Accept Translation"
+          icon="done"
+          func={() => console.error('Need to implement')}
+          id="Accept Translation"
+          direction="right" />
+
+        <Button
+          classNames={`${classNames} ${main.redButton}`}
+          label="Reject Translation"
+          icon="clear"
+          func={() => this.CustomEditor.clearText()}
+          id="Clear Translation"
+          direction="right" />
+      </ButtonList>
+    );
   }
 
   renderTiles = () => {
@@ -49,7 +140,7 @@ class SegmentList extends React.Component {
     this.setState({ renderVoice: !this.state.renderVoice });
   }
 
-  renderSegment(segment, index) {
+  renderSegment = (segment, index) => {
     const { selectedSegment } = this.props;
     let selectedStyle = styles.normalPadding;
     if (index === selectedSegment) selectedStyle = styles.selectedPadding;
@@ -63,16 +154,16 @@ class SegmentList extends React.Component {
     );
   }
 
-  renderSelected(segment, index) {
+  renderSelected = (segment, index) => {
     const { xliff } = this.props.document;
     if (this.props.editorState === '') {
       return null;
     }
-    const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
       <div id="selectedSegment" style={{ paddingTop: '62px' }}>
         <div className={`${responsive} ${styles.selected}`}>
           <div className={responsiveWidth}>
+            
             <SelectedSegment
               className="four-fifth"
               documentId={this.props.document.saved_name}
@@ -85,68 +176,8 @@ class SegmentList extends React.Component {
               ref={(ref) => { this.SelectedSegment = ref; }}
               setRef={(name, ref) => { this[name] = ref; }} />
           </div>
-          <ButtonList>
-            <Button
-              classNames={classNames}
-              label="Add a Comment"
-              icon="chat_bubble"
-              func={this.renderComment}
-              id="Comments"
-              direction="right" />
-            {this.state.renderTiles ?
-              <Button
-                classNames={classNames}
-                label="Edit Mode"
-                icon="mode_edit"
-                func={this.renderTiles}
-                id="Edit Mode"
-                direction="right" /> :
-              <Button
-                classNames={classNames}
-                label="Tile Mode"
-                icon="view_comfy"
-                func={this.renderTiles}
-                id="Tile Mode"
-                direction="right" />
-            }
-            {this.state.renderVoice ?
-              <Button
-                classNames={`${classNames} ${styles.micActive}`}
-                label="Voice Mode"
-                icon="mic"
-                func={this.renderVoice}
-                id="Deactivate Voice Mode"
-                direction="right" /> :
-              <Button
-                classNames={classNames}
-                label="Voice Mode"
-                icon="mic"
-                func={this.renderVoice}
-                id="Activate Voice Mode"
-                direction="right" />
-            }
-            <Button
-              classNames={`${classNames} ${main.greenButton}`}
-              label="Accept Translation"
-              icon="done"
-              func={() => console.error('Need to implement')}
-              id="Accept Translation"
-              direction="right" />
-
-            <Button
-              classNames={`${classNames} ${main.redButton}`}
-              label="Reject Translation"
-              icon="clear"
-              func={() => this.CustomEditor.clearText()}
-              id="Clear Translation"
-              direction="right" />
-          </ButtonList>
-          <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
-            onEnd={value => this.CustomEditor.endValue(value)}
-            segmentId={index}
-            removeModal={this.renderVoice}
-            documentId={this.props.document.saved_name}
-            editor={this.Editor} />
+          {this.renderButtonList()}
+          {this.voiceComponent(index)}
         </div>
       </div>
     );
@@ -155,10 +186,11 @@ class SegmentList extends React.Component {
   renderButton(segment, index) {
     return (
       <button
-        onClick={() => this.selected(index)}
+        onTouchEnd={(e) => { e.preventDefault(); console.log(e); }}
+        onClick={(e) => { e.preventDefault(); this.selected(index); }}
         className={`${responsiveWidth} ${styles.block}`}
         aria-label={`Activate segment ${index}`}
-        role={'textbox'}>
+        role="textbox">
         <PlainSegment
           segment={segment}
           segmentId={index} />
@@ -168,15 +200,15 @@ class SegmentList extends React.Component {
 
   render() {
     let message =
-    "To activate voice input click the microphone icon and begin dictating\n\
-    You can edit the input once you are finished\n\
-    Select the position in the editor to insert the text and click the tick\n\
-    Click the X to clear the input";
+    `To activate voice input click the microphone icon and begin dictating
+    You can edit the input once you are finished
+    Select the position in the editor to insert the text and click the tick
+    Click the X to clear the input`;
     if (this.state.renderTiles) {
       message =
-      "Double tap a tile to edit and press 'Enter' to accept or 'Esc' to cancel.\n\
-      Tiles can be dragged from the source to the target or can be rearranged in the target.\n\
-      Multiple tiles can be dragged by first selecting and highlighting the desired tiles.";
+      `Double tap a tile to edit and press 'Enter' to accept or 'Esc' to cancel.
+      Tiles can be dragged from the source to the target or can be rearranged in the target.
+      Multiple tiles can be dragged by first selecting and highlighting the desired tiles.`;
     }
     return (
       <div className={`full grow ${styles.listMargin}`}>
