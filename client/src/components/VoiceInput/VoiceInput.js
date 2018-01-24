@@ -11,9 +11,6 @@ import TextError from '../Error/TextError';
 export default class VoiceInput extends Component {
   constructor(props) {
     super(props);
-    this.say = this.say.bind(this);
-    this.stop = this.stop.bind(this);
-    this.changeValue = this.changeValue.bind(this);
     this.state = {
       inputValue: '',
       interimValue: '',
@@ -65,13 +62,13 @@ export default class VoiceInput extends Component {
     }
   }
 
-  changeValue(event) {
+  changeValue = (event) => {
     this.setState({
       inputValue: event.target.value,
     });
   }
 
-  stop() {
+  stop = () => {
     if (this.state.supportVoice) {
       this.recognition.stop();
       this.finalTranscript = '';
@@ -79,12 +76,11 @@ export default class VoiceInput extends Component {
       this.setState({
         speaking: false,
         isFirst: false,
-        inputValue: '',
       });
     }
   }
 
-  say() {
+  say = () => {
     if (this.state.supportVoice) {
       if (!this.state.speaking) {
         this.recognition.start();
@@ -112,48 +108,50 @@ export default class VoiceInput extends Component {
   }
 
   renderButtons = () => {
-    return (<div className={`flex one center ${styles.buttons} ${this.props.className}`}>
-      <button
-        data-tip data-for="Toggle Recording"
-        aria-label="Start Recoding"
-        className={`${styles.removeStyles} two-third ${styles.button}`}
-        onClick={(e) => {
-          e.preventDefault();
-          this.say();
-          this.props.editor.focus();
-        }}>
-        <img
-          alt="Microphone for voice input"
-          src={this.state.speaking ? micAnimate : mic}
-          className={styles.micImg} />
-        <ReactToolTip place="right" id="Toggle Recording" effect="solid">
-          <span>Toggle Recording</span>
-        </ReactToolTip>
-      </button>
-      <Button classNames={`shyButton success two-third ${styles.button}`}
-        label="Accept Voice Input"
-        icon="done"
-        func={(e) => {
-          e.preventDefault();
-          this.props.editor.focus();
-          this.props.onEnd(this.state.inputValue.trim());
-          this.stop();
-        }}
-        id="Accept Voice Input"
-        direction="right" />
+    return (
+      <div className={`flex one center ${styles.buttons} ${this.props.className}`}>
+        <button
+          data-tip
+          data-for="Toggle Recording"
+          aria-label="Start Recoding"
+          className={`${styles.removeStyles} two-third ${styles.button}`}
+          onClick={(e) => {
+            e.preventDefault();
+            this.say();
+            this.props.editor.focus();
+          }}>
+          <img
+            alt="Microphone for voice input"
+            src={this.state.speaking ? micAnimate : mic}
+            className={styles.micImg} />
+          <ReactToolTip place="right" id="Toggle Recording" effect="solid">
+            <span>Toggle Recording</span>
+          </ReactToolTip>
+        </button>
+        <Button classNames={`shyButton success two-third ${styles.button}`}
+          label="Accept Voice Input"
+          icon="done"
+          func={(e) => {
+            e.preventDefault();
+            this.props.editor.focus();
+            this.props.onEnd(this.state.inputValue.trim());
+            this.stop();
+          }}
+          id="Accept Voice Input"
+          direction="right" />
 
-      <Button classNames={`shyButton error two-third ${styles.button}`}
-        label="Reject Voice Input"
-        icon="clear"
-        func={(e) => {
-          e.preventDefault();
-          this.props.editor.focus();
-          this.stop();
-        }}
-        id="Reject Voice Input"
-        direction="right" />
-
-    </div>);
+        <Button classNames={`shyButton error two-third ${styles.button}`}
+          label="Reject Voice Input"
+          icon="clear"
+          func={(e) => {
+            e.preventDefault();
+            this.props.editor.focus();
+            this.stop();
+          }}
+          id="Reject Voice Input"
+          direction="right" />
+      </div>
+    );
   }
 
   renderVoiceInput() {
