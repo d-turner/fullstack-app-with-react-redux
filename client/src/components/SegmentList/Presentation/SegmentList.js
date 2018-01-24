@@ -186,7 +186,6 @@ class SegmentList extends React.Component {
   renderButton(segment, index) {
     return (
       <button
-        onTouchEnd={(e) => { e.preventDefault(); this.selected(index); }}
         onClick={(e) => { e.preventDefault(); this.selected(index); }}
         className={`${responsiveWidth} ${styles.block}`}
         aria-label={`Activate segment ${index}`}
