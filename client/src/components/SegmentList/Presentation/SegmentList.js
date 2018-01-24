@@ -34,6 +34,7 @@ class SegmentList extends React.Component {
   }
 
   selected = (index) => {
+    this.Editor.blur();
     this.props.updateSelectedSegment(this.props.document.saved_name, index);
   }
 
@@ -186,7 +187,7 @@ class SegmentList extends React.Component {
   renderButton(segment, index) {
     return (
       <button
-        onClick={(e) => { e.preventDefault(); this.selected(index); }}
+        onClick={(e) => { e.preventDefault(); this.Editor.blur(); this.selected(index); }}
         className={`${responsiveWidth} ${styles.block}`}
         aria-label={`Activate segment ${index}`}
         role="textbox">
