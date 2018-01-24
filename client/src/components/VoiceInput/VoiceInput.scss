@@ -5,6 +5,7 @@
   border-radius: 8px;
   border: 1px solid #c7d6f1;
   padding: 12px;
+  margin: 10px 0 0 0;
   transition: background 0.2s linear 0s, box-shadow 0.2s linear 0s;
   outline: 0;
   box-sizing: border-box;
@@ -46,7 +47,7 @@
 }
 
 .hideEditor {
-  display: none;
+  visibility: hidden;
   min-width: 250px;
   width: 80%;
   height: 120px;
