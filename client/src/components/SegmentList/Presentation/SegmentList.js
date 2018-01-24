@@ -177,7 +177,7 @@ class SegmentList extends React.Component {
               setRef={(name, ref) => { this[name] = ref; }} />
           </div>
           {this.renderButtonList()}
-          {this.voiceComponent(index)}
+          {this.state.renderVoice ? this.voiceComponent(index) : null }
         </div>
       </div>
     );
@@ -186,7 +186,6 @@ class SegmentList extends React.Component {
   renderButton(segment, index) {
     return (
       <button
-        onTouchEnd={(e) => { e.preventDefault(); console.log(e); }}
         onClick={(e) => { e.preventDefault(); this.selected(index); }}
         className={`${responsiveWidth} ${styles.block}`}
         aria-label={`Activate segment ${index}`}
