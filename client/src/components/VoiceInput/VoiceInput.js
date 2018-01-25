@@ -7,6 +7,7 @@ import mic from './mic.gif';
 import micAnimate from './mic-animate.gif';
 import Button from '../ButtonList/Button';
 import TextError from '../Error/TextError';
+import { setTimeout } from 'timers';
 
 export default class VoiceInput extends Component {
   constructor(props) {
@@ -96,9 +97,11 @@ export default class VoiceInput extends Component {
   }
 
   renderEditor = () => {
+    let hide = '';
+    if (!this.state.speaking && this.state.isFirst) hide = styles.hideEditor;
     return (
       <textarea
-        className={`${styles.editor} ${styles.chatMessageInput}`}
+        className={`${styles.editor} ${hide}`}
         value={this.state.inputValue}
         onChange={e => this.changeValue(e)}
         aria-label="Voice Recognition Input"
@@ -118,7 +121,9 @@ export default class VoiceInput extends Component {
           onClick={(e) => {
             e.preventDefault();
             this.say();
-            this.props.editor.focus();
+            setTimeout(() => {
+              this.textarea.focus();
+            }, 100);
           }}>
           <img
             alt="Microphone for voice input"
@@ -145,6 +150,8 @@ export default class VoiceInput extends Component {
           icon="clear"
           func={(e) => {
             e.preventDefault();
+            const event = { target: { value: '' }};
+            this.changeValue(event);
             this.props.editor.focus();
             this.stop();
           }}
@@ -158,8 +165,7 @@ export default class VoiceInput extends Component {
     return (
       <div className="full three-fifth-700 off-fifth-700 fifth-1200 off-none-1200">
         <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`}>
-          {this.state.speaking || !this.state.isFirst ? this.renderEditor() :
-          <div className={styles.hideEditor} />}
+          {this.renderEditor()}
           {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}
           <div className="full">
             {this.renderButtons()}
