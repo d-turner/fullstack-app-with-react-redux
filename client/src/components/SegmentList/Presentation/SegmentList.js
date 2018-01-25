@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import update from 'immutability-helper';
+import _ from 'lodash';
+
 import main from '../../../constants/main.scss';
 import styles from '../segmentList.scss';
 
@@ -16,7 +19,7 @@ import Button from '../../ButtonList/Button';
 // general responsive view
 const responsive = 'flex one five-700';
 // width of a segment
-const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft} ${main.flex}`;
+const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft}`;
 
 class SegmentList extends React.Component {
   state = {
@@ -27,6 +30,7 @@ class SegmentList extends React.Component {
 
   componentDidMount() {
     this.props.updateSelectedSegment(this.props.document.saved_name, 0);
+    this.props.requestSegments(this.props.document);
   }
 
   componentWillUnmount() {
@@ -71,7 +75,7 @@ class SegmentList extends React.Component {
       </ButtonList>
     );
   }
-  renderButtonList = () => {
+  renderButtonList = (index) => {
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
       <ButtonList>
@@ -118,7 +122,12 @@ class SegmentList extends React.Component {
           classNames={`${classNames} ${main.greenButton}`}
           label="Accept Translation"
           icon="done"
-          func={() => console.error('Need to implement')}
+          func={() => {
+            let data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
+            data = _.mapKeys(data, (v, k) => _.camelCase(k));
+            this.props.updateSegment(this.props.document, data);
+            this.selected(index + 1);
+          }}
           id="Accept Translation"
           direction="right" />
 
@@ -126,7 +135,12 @@ class SegmentList extends React.Component {
           classNames={`${classNames} ${main.redButton}`}
           label="Reject Translation"
           icon="clear"
-          func={() => this.CustomEditor.clearText()}
+          func={() => {
+            this.CustomEditor.clearText();
+            let data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
+            data = _.mapKeys(data, (v, k) => _.camelCase(k));
+            this.props.updateSegment(this.props.document, data);
+          }}
           id="Clear Translation"
           direction="right" />
       </ButtonList>
@@ -156,10 +170,12 @@ class SegmentList extends React.Component {
   }
 
   renderSelected = (segment, index) => {
-    const { xliff } = this.props.document;
+    const { xliff, segments } = this.props.document;
     if (this.props.editorState === '') {
       return null;
     }
+    let mt = '';
+    if (segments) mt = segments[index].machine_translation;
     return (
       <div id="selectedSegment" style={{ paddingTop: '62px' }}>
         <div className={`${responsive} ${styles.selected}`}>
@@ -168,7 +184,7 @@ class SegmentList extends React.Component {
             <SelectedSegment
               className="four-fifth"
               documentId={this.props.document.saved_name}
-              mt={this.props.d}
+              mt={mt}
               segment={segment}
               segmentId={index}
               editorState={this.props.editorState}
@@ -177,14 +193,14 @@ class SegmentList extends React.Component {
               ref={(ref) => { this.SelectedSegment = ref; }}
               setRef={(name, ref) => { this[name] = ref; }} />
           </div>
-          {this.renderButtonList()}
+          {this.renderButtonList(index)}
           {this.state.renderVoice ? this.voiceComponent(index) : null }
         </div>
       </div>
     );
   }
 
-  renderButton(segment, index) {
+  renderButton = (segment, index) => {
     return (
       <button
         onClick={(e) => { e.preventDefault(); this.Editor.blur(); this.selected(index); }}
@@ -232,7 +248,7 @@ SegmentList.propTypes = {
   selectedSegment: PropTypes.number.isRequired,
   mergeSegment: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
-  documents: PropTypes.objectOf(PropTypes.any).isRequired,
+  document: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default SegmentList;
