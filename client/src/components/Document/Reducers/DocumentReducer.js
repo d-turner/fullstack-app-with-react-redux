@@ -366,6 +366,28 @@ const DocumentReducer = function(state = initialState, action) {
       return Object.assign({}, state, {
         editorState: '',
       });
+    case actions.SEGMENTS_SUCCESS:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            segments: {
+              $set: action.segments,
+            },
+          },
+        },
+      });
+    case actions.UPDATE_SEGMENT:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            segments: {
+              [action.data.segmentIndex]: {
+                $set: action.data,
+              },
+            },
+          },
+        },
+      });
     // extracting all FindReplace actions to separate file
     case actions.FIND:
     case actions.FIND_NEXT:
