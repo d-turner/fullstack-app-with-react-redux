@@ -9,8 +9,7 @@ import SortableTiles from '../../DraggableTiles/Container/SortableTiles';
 class Segment extends React.Component {
   constructor(props) {
     super(props);
-    const { segment } = props;
-    this.state = { target: segment.target, dragging: false };
+    this.state = { dragging: false };
   }
 
   componentDidMount() {
@@ -68,7 +67,7 @@ class Segment extends React.Component {
     return (
       <div className={`${styles.wrapper} ${styles.selected}`}>
         <h5>Machine Translation</h5>
-        {this.state.target}
+        {this.props.mt}
       </div>
     );
   }
