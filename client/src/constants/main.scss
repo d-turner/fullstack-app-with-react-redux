@@ -473,3 +473,8 @@ label > h4 {
 .clickable:hover {
   cursor: pointer;
 }
+
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+}
