@@ -69,6 +69,7 @@ class SelectedSegment extends React.Component {
     return (
       <SegmentPresentation
         segment={this.props.segment}
+        mt={this.props.mt}
         documentId={this.props.documentId}
         editorState={this.props.editorState}
         toggleBlockType={this.toggleBlockType}
