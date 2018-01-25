@@ -137,6 +137,33 @@ const api = {
   updateSegment: (docId, data, callback) => {
     apiCall({ data, endpoint: `${SEGMENT}${docId}`, method: 'put' }, callback);
   },
+
+  /* Sample features for testing */
+  setSeg: (docId, data) => {
+    return apiPromise({ data, endpoint: `${SEGMENT}${docId}`, method: 'post' });
+  },
 };
 
 export default api;
+
+// apiCall(options, callback)
+export function apiPromise({ data, endpoint, method, headers }) {
+  /*
+  * Expects Data to be:
+  * { name, email, password } - register
+  * { email, password} - login
+  * null - logout
+  * Responses:
+  * { error: 'Email or password is invalid' }
+  * { error: 'not a valid X' }
+  * { success: 'Login successful!' }
+  * { failed: 'something went wrong' }
+  */
+  return axios({
+    method,
+    url: `${API_HOSTNAME}${endpoint}`,
+    withCredentials: true,
+    data,
+    headers,
+  });
+}
