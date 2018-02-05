@@ -1,3 +1,5 @@
+// All the functions in the file should not mutate inputs and must return new objects
+
 export function splitTextIntoArray(text) {
   let prep = text.replace(/\./g, '.');
   // prep = prep.replace(/,/g, ' ,');
