@@ -11,6 +11,7 @@ import SelectedSegment from '../../Segment/Containers/SelectedSegment';
 import PlainSegment from '../../Segment/Presentation/PlainSegment';
 import VoiceInput from '../../VoiceInput/VoiceInput';
 
+import VoiceAssistant from '../../VoiceAssistant';
 import Info from '../../Notifications/Info';
 
 import ButtonList from '../../ButtonList';
@@ -38,8 +39,30 @@ class SegmentList extends React.Component {
   }
 
   selected = (index) => {
-    this.Editor.blur();
+    if (this.Editor) this.Editor.blur();
     this.props.updateSelectedSegment(this.props.document.saved_name, index);
+  }
+
+  acceptTranslation = (index) => {
+    let data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
+    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    this.props.updateSegment(this.props.document, data);
+    this.selected(index + 1);
+  }
+
+  rejectTranslation = (index) => {
+    this.CustomEditor.clearText();
+    let data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
+    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    this.props.updateSegment(this.props.document, data);
+  }
+
+  undoTileAction = (index) => {
+    this.props.undoTileAction(this.props.document.saved_name, index);
+  }
+
+  redoTileAction = (index) => {
+    this.props.redoTileAction(this.props.document.saved_name, index);
   }
 
   voiceComponent = (index) => {
@@ -53,28 +76,32 @@ class SegmentList extends React.Component {
     );
   }
 
-  undoRedo = () => {
+  undoRedo = (index) => {
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
-      <ButtonList>
-        <Button
-          classNames={`${classNames} ${main.greenButton}`}
-          label="Accept Translation"
-          icon="undo"
-          func={() => console.error('Need to implement')}
-          id="Accept Translation"
-          tooltip={false} />
-
-        <Button
-          classNames={`${classNames} ${main.redButton}`}
-          label="Reject Translation"
-          icon="redo"
-          func={() => console.error('Need to implement')}
-          id="Clear Translation"
-          tooltip={false} />
-      </ButtonList>
+      <div>
+        {this.state.renderTiles ? (
+          <div>
+            <Button
+              classNames={classNames}
+              label="Undo"
+              icon="undo"
+              func={() => this.undoTileAction(index)}
+              id="Undo"
+              tooltip={false} />
+            <Button
+              classNames={classNames}
+              label="Redo"
+              icon="redo"
+              func={() => this.redoTileAction(index)}
+              id="Redo"
+              tooltip={false} />
+          </div>)
+          : null}
+      </div>
     );
   }
+
   renderButtonList = (index) => {
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
@@ -83,7 +110,7 @@ class SegmentList extends React.Component {
           classNames={classNames}
           label="Add a Comment"
           icon="chat_bubble"
-          func={this.renderComment}
+          func={() => this.renderComment()}
           id="Comments"
           direction="right" />
         {this.state.renderTiles ?
@@ -118,16 +145,12 @@ class SegmentList extends React.Component {
             id="Activate Voice Mode"
             direction="right" />
         }
+        {this.undoRedo(index)}
         <Button
           classNames={`${classNames} ${main.greenButton}`}
           label="Accept Translation"
           icon="done"
-          func={() => {
-            let data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
-            data = _.mapKeys(data, (v, k) => _.camelCase(k));
-            this.props.updateSegment(this.props.document, data);
-            this.selected(index + 1);
-          }}
+          func={() => this.acceptTranslation(index)}
           id="Accept Translation"
           direction="right" />
 
@@ -135,12 +158,7 @@ class SegmentList extends React.Component {
           classNames={`${classNames} ${main.redButton}`}
           label="Reject Translation"
           icon="clear"
-          func={() => {
-            this.CustomEditor.clearText();
-            let data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
-            data = _.mapKeys(data, (v, k) => _.camelCase(k));
-            this.props.updateSegment(this.props.document, data);
-          }}
+          func={() => this.rejectTranslation(index)}
           id="Clear Translation"
           direction="right" />
       </ButtonList>
@@ -180,7 +198,7 @@ class SegmentList extends React.Component {
       <div id="selectedSegment" style={{ paddingTop: '62px' }}>
         <div className={`${responsive} ${styles.selected}`}>
           <div className={responsiveWidth}>
-            
+
             <SelectedSegment
               className="four-fifth"
               documentId={this.props.document.saved_name}
@@ -203,7 +221,7 @@ class SegmentList extends React.Component {
   renderButton = (segment, index) => {
     return (
       <button
-        onClick={(e) => { e.preventDefault(); this.Editor.blur(); this.selected(index); }}
+        onClick={(e) => { e.preventDefault(); this.selected(index); }}
         className={`${responsiveWidth} ${styles.block}`}
         aria-label={`Activate segment ${index}`}
         role="textbox">
@@ -236,6 +254,12 @@ class SegmentList extends React.Component {
           </div> :
           (null)
         }
+        <VoiceAssistant
+          acceptTranslation={this.acceptTranslation}
+          rejectTranslation={this.rejectTranslation}
+          updateSelected={this.selected}
+          {...this.props}
+        />
         {this.props.document.xliff.segments.map(this.renderSegment)}
       </div>
     );
@@ -248,6 +272,10 @@ SegmentList.propTypes = {
   selectedSegment: PropTypes.number.isRequired,
   mergeSegment: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
+  requestSegments: PropTypes.func.isRequired,
+  updateSegment: PropTypes.func.isRequired,
+  undoTileAction: PropTypes.func.isRequired,
+  redoTileAction: PropTypes.func.isRequired,
   document: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
