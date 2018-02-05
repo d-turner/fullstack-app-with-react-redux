@@ -1,63 +1,77 @@
 import React from 'react';
+import Sortable from 'sortablejs';
 import PropTypes from 'prop-types';
-import { arrayMove } from 'react-sortable-hoc';
 
-import store from '../../../store';
-import * as actions from '../TileActions';
-import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
-// import SourceTile from '../Presentation/SourceTile';
-// import SortableList from '../Presentation/SortableList';
-import Multiple from './Multiple';
+import SortableListItem from '../Presentation/SortableListItem';
+import styles from '../tile.scss';
 
 class SortableTiles extends React.Component {
+  onEnd = (event) => {
+    // need to move from oldIndex to new index
+    if (event.from === event.to && event.from.id !== 'non-sortable-list') {
+      this.props.onSortEnd({ oldIndex: event.oldIndex, newIndex: event.newIndex });
+    }
+    this.props.setDragging(false);
+  };
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
-    const targetWords = splitTextIntoArray(cleanText(this.props.segment.target));
-    const newArray = arrayMove(targetWords, oldIndex, newIndex);
-    store.dispatch(
-      actions.updateWordOrder(
-        this.props.documentId,
-        this.props.segmentId,
-        newArray,
-      ),
-    );
+  onAdd = (event) => {
+    const itemEl = event.item; // dragged HTMLElement
+    this.props.insertSourceWord(event.newIndex, itemEl.firstChild.childNodes[1].innerText);
+    itemEl.parentNode.removeChild(itemEl);
   }
 
-  insertSourceWord = (index, text) => {
-    store.dispatch(
-      actions.insertSourceWord(
-        index,
-        text,
-        true,
-        this.props.segmentId,
-        this.props.documentId,
-      ),
-    );
+  onMove = (event) => {
+    event.preventDefault();
+    this.props.setDragging(true);
   }
 
-  updateWord = (index, text) => {
-    store.dispatch(
-      actions.updateWord(
-        this.props.documentId,
-        this.props.segmentId,
-        index,
-        text,
-      ),
+  sortableGroupDecorator = (componentBackingInstance) => {
+    // check if backing instance not null
+    if (componentBackingInstance) {
+      const options = {
+        draggable: 'li', // Specifies which items inside the element should be sortable
+        group: this.props.sortable ? // specifies how the sorting should work for that list
+        { name: 'shared', pull: false, put: true }
+          : { name: 'shared', pull: 'clone', put: false },
+        sort: this.props.sortable,
+        animation: 300,
+        ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
+        chosenClass: styles.sortableChosen || 'sortable-chosen', // Class name for the chosen item
+        onEnd: this.onEnd,
+        onAdd: this.onAdd,
+        onStart: this.onMove,
+      };
+      Sortable.create(componentBackingInstance, options);
+    }
+  };
+
+  renderTile = (word, index) => {
+    return (
+      <SortableListItem
+        key={`${word}${index}${this.props.sortable}`}
+        value={word}
+        index={index}
+        itemIndex={index}
+        updateWord={this.props.updateWord}
+        editable={this.props.sortable}
+      />
     );
-    const event = { index, text };
-    this.props.keyLogger.updateWord(event);
   }
 
   render() {
+    let id = 'non-sortable-list';
+    let backgroundClass = null;
+    if (this.props.sortable) id = 'sortable-list';
+    if (this.props.sortable && this.props.dragging) backgroundClass = styles.canDrag;
+    if (!this.props.sortable && this.props.dragging) backgroundClass = styles.dragging;
     return (
-      <Multiple
-        words={this.props.words}
-        sortable={this.props.sortable}
-        insertSourceWord={this.insertSourceWord}
-        updateWord={this.updateWord}
-        onSortEnd={this.onSortEnd}
-        setDragging={this.props.setDragging}
-        dragging={this.props.dragging} />
+      <div className="container" ref={this.sortableContainersDecorator}>
+        <div className={styles.group}>
+          <div className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={this.sortableGroupDecorator}>
+            {this.props.words.map((word, index) => this.renderTile(word, index))}
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -65,10 +79,11 @@ class SortableTiles extends React.Component {
 SortableTiles.propTypes = {
   words: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortable: PropTypes.bool.isRequired,
-  segment: PropTypes.objectOf(PropTypes.any).isRequired,
-  segmentId: PropTypes.number.isRequired,
-  documentId: PropTypes.string.isRequired,
-  keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
+  updateWord: PropTypes.func.isRequired,
+  onSortEnd: PropTypes.func.isRequired,
+  insertSourceWord: PropTypes.func.isRequired,
+  dragging: PropTypes.bool.isRequired,
+  setDragging: PropTypes.func.isRequired,
 };
 
 export default SortableTiles;
