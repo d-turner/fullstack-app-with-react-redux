@@ -212,7 +212,7 @@ const KeyLoggerReducer = function(state = initialState, action) {
         },
       });
     case actions.BUILD:
-    case actions.SYNC:
+    case actions.SYNC: {
       if (state.loggerRecordings[action.documentId] === undefined) {
         return state;
       }
@@ -222,6 +222,7 @@ const KeyLoggerReducer = function(state = initialState, action) {
         // console.log(result);
       });
       return state;
+    }
     default:
       return state;
   }

@@ -6,23 +6,17 @@ import * as types from '../../../constants/actionTypes';
 
 describe('segmentActions', () => {
   it('should have an action to update the target of a translation segment', () => {
-    const target = 'New target translation text';
     const documentId = 0;
     const segmentId = 0;
-    const editorState = '';
-    const plainText = '';
+    const editorState = 'New Editor State';
     const expectedAction = {
       type: types.UPDATE_TARGET,
-      segment: {
-        documentId,
-        segmentId,
-        editorState,
-        plainText,
-        target,
-      },
+      documentId,
+      editorState,
+      segmentId,
     };
 
-    expect(segmentActions.updateSegment(documentId, segmentId, editorState, plainText, target)).toEqual(expectedAction);
+    expect(segmentActions.updateSegment(documentId, segmentId, editorState)).toEqual(expectedAction);
   });
 
 

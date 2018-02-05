@@ -43,6 +43,80 @@ export function segmentsFailed(response) {
   };
 }
 
+export function requestSegmentsSuccess(id, response) {
+  return {
+    type: actions.SEGMENTS_SUCCESS,
+    documentId: id,
+    segments: response.data,
+  };
+}
+
+export function requestSegmentsFail(id, response) {
+  return {
+    type: actions.SEGMENTS_FAILED,
+    error: response.error,
+  };
+}
+
+function buildSegments(id, doc, dispatch) {
+  const { segments } = doc.xliff;
+  const promiseArray = [];
+  for (let i = 0; i < segments.length; i++) {
+    const resultObj = {
+      segmentIndex: i,
+      machineTranslation: segments[i].target,
+      editTime: 0,
+      tileTime: 0,
+      voiceTime: 0,
+      totalTime: 0,
+      charactersEntered: 0,
+      wordsEntered: 0,
+      mode: 'none',
+    };
+    promiseArray.push(apiWrapper.setSeg(id, resultObj));
+    // apiWrapper.setSegment(id, resultObj, (response) => {
+    //   console.log('Segments response: ', response);
+    // });
+  }
+  Promise.all(promiseArray)
+    .then(() => requestSegments(doc))
+    .catch(error => console.log('Error', error));
+}
+
+/* eslint no-lonely-if: 0 */
+export function requestSegments(doc) {
+  return (dispatch) => {
+    return apiWrapper.getSegments(doc.id)
+      .then((response) => {
+        if (response.data.length < doc.xliff.segments.length) {
+          // need to build the segment data
+          buildSegments(doc.id, doc, dispatch);
+        } else {
+          dispatch(requestSegmentsSuccess(doc.saved_name, response));
+        }
+      })
+      .catch((error) => {
+        dispatch(requestSegmentsFail(doc.saved_name, error.response));
+      });
+  };
+}
+
+export function updateSegmentSuccess(id, data) {
+  return {
+    type: actions.UPDATE_SEGMENT,
+    documentId: id,
+    data,
+  };
+}
+
+export function updateSegment(doc, data) {
+  return (dispatch) => {
+    return apiWrapper.updateSegment(doc.id, data)
+      .then((response) => {
+        dispatch(updateSegmentSuccess(doc.saved_name, data));
+      });
+  };
+}
 // // update the completed segment count
 // // dont want to update the same one twice
 // // need to get all segment data
@@ -58,3 +132,19 @@ export function segmentsFailed(response) {
 //     });
 //   };
 // }
+
+export function undoTileAction(documentId, segmentId) {
+  return {
+    type: actions.UNDO_TILE,
+    documentId,
+    segmentId,
+  };
+}
+
+export function redoTileAction(documentId, segmentId) {
+  return {
+    type: actions.REDO_TILE,
+    documentId,
+    segmentId,
+  };
+}

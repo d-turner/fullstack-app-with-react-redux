@@ -21,26 +21,15 @@ export default class Login extends React.Component {
       email: email1,
       password,
     };
-    api.login(data, (response) => {
-      if (!response || response.onerror) {
-        // no response from the server or internal error
-        const emailError = 'Something went wrong, please try again later';
-        this.setState({ emailError });
-      } else if (response.data.error || response.status === 409) {
-        // login details are not valid
-        this.setState({ emailError: response.data.error });
-      } else if (response.status !== 200) {
-        // catch all other responses
-        const emailError = 'Something went wrong, please try again later';
-        this.setState({ emailError });
-      } else {
-        // login successful redirect to home/profile page
-        // const feedbackMessage = 'Login Successful';
-        const { user_id, email, name } = response.data;
-        store.dispatch(this.props.login(user_id, email, name));
+    api.login(data)
+      .then((response) => {
+        const { user_id: userId, email, name } = response.data;
+        store.dispatch(this.props.login(userId, email, name));
         this.setState({ redirectToReferrer: true });
-      }
-    });
+      })
+      .catch((error) => {
+        this.setState({ emailError: error.response.data.error });
+      });
   }
 
   validateState(event) {

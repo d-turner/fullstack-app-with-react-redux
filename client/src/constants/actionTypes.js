@@ -39,11 +39,16 @@ export const INSERT_SOURCE_WORD = 'INSERT_SOURCE_WORD';
 export const VOICE_INPUT = 'VOICE_INPUT';
 export const UPDATE_WORD = 'UPDATE_WORD';
 export const UPDATE_WORD_ORDER = 'UPDATE_WORD_ORDER';
+export const UNDO_TILE = 'UNDO_TILE_ACTION';
+export const REDO_TILE = 'REDO_TILE_ACTION';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
 export const SET_SEGMENTS = 'SET_SEGMENTS';
 export const SET_SEGMENTS_FAILED = 'SET_SEGMENTS_FAILED';
+export const SEGMENTS_SUCCESS = 'GET_SEGMENTS_SUCCESS';
+export const SEGMENTS_FAILED = 'GET_SEGMENTS_FAILED';
+export const UPDATE_SEGMENT = 'UPDATE_SEGMENT_STATE';
 
 // Project Actions
 export const ADD_PROJECT = 'ADD_PROJECT';

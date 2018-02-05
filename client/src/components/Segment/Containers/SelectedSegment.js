@@ -8,7 +8,7 @@ import { RichUtils } from 'draft-js';
 // we do not need a separate reducer of this component
 import * as actionCreators from '../ActionCreators/SegmentActions';
 
-import SegmentPresentation from '../Presentation/Segment';
+import Segment from '../Presentation/Segment';
 
 import KeyLogger from '../../KeyLogger/KeyLogger';
 
@@ -67,8 +67,9 @@ class SelectedSegment extends React.Component {
 
   render() {
     return (
-      <SegmentPresentation
+      <Segment
         segment={this.props.segment}
+        mt={this.props.mt}
         documentId={this.props.documentId}
         editorState={this.props.editorState}
         toggleBlockType={this.toggleBlockType}
@@ -97,8 +98,13 @@ SelectedSegment.propTypes = {
   email: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   renderTiles: PropTypes.bool.isRequired,
+  setRef: PropTypes.func.isRequired,
+  mt: PropTypes.string,
 };
 
+SelectedSegment.defaultProps = {
+  mt: '',
+};
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state

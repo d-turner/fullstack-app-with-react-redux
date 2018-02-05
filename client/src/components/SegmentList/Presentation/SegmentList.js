@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import update from 'immutability-helper';
+import _ from 'lodash';
+
 import main from '../../../constants/main.scss';
 import styles from '../segmentList.scss';
 
@@ -8,6 +11,7 @@ import SelectedSegment from '../../Segment/Containers/SelectedSegment';
 import PlainSegment from '../../Segment/Presentation/PlainSegment';
 import VoiceInput from '../../VoiceInput/VoiceInput';
 
+import VoiceAssistant from '../../VoiceAssistant';
 import Info from '../../Notifications/Info';
 
 import ButtonList from '../../ButtonList';
@@ -16,7 +20,7 @@ import Button from '../../ButtonList/Button';
 // general responsive view
 const responsive = 'flex one five-700';
 // width of a segment
-const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft} ${main.flex}`;
+const responsiveWidth = `full three-fifth-700 off-fifth-700 half-1200 two-fifth-1500 grow ${main.clearPaddingLeft}`;
 
 class SegmentList extends React.Component {
   state = {
@@ -27,6 +31,7 @@ class SegmentList extends React.Component {
 
   componentDidMount() {
     this.props.updateSelectedSegment(this.props.document.saved_name, 0);
+    this.props.requestSegments(this.props.document);
   }
 
   componentWillUnmount() {
@@ -34,7 +39,30 @@ class SegmentList extends React.Component {
   }
 
   selected = (index) => {
+    if (this.Editor) this.Editor.blur();
     this.props.updateSelectedSegment(this.props.document.saved_name, index);
+  }
+
+  acceptTranslation = (index) => {
+    let data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
+    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    this.props.updateSegment(this.props.document, data);
+    this.selected(index + 1);
+  }
+
+  rejectTranslation = (index) => {
+    this.CustomEditor.clearText();
+    let data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
+    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    this.props.updateSegment(this.props.document, data);
+  }
+
+  undoTileAction = (index) => {
+    this.props.undoTileAction(this.props.document.saved_name, index);
+  }
+
+  redoTileAction = (index) => {
+    this.props.redoTileAction(this.props.document.saved_name, index);
   }
 
   voiceComponent = (index) => {
@@ -48,29 +76,33 @@ class SegmentList extends React.Component {
     );
   }
 
-  undoRedo = () => {
+  undoRedo = (index) => {
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
-      <ButtonList>
-        <Button
-          classNames={`${classNames} ${main.greenButton}`}
-          label="Accept Translation"
-          icon="undo"
-          func={() => console.error('Need to implement')}
-          id="Accept Translation"
-          tooltip={false} />
-
-        <Button
-          classNames={`${classNames} ${main.redButton}`}
-          label="Reject Translation"
-          icon="redo"
-          func={() => console.error('Need to implement')}
-          id="Clear Translation"
-          tooltip={false} />
-      </ButtonList>
+      <div>
+        {this.state.renderTiles ? (
+          <div>
+            <Button
+              classNames={classNames}
+              label="Undo"
+              icon="undo"
+              func={() => this.undoTileAction(index)}
+              id="Undo"
+              tooltip={false} />
+            <Button
+              classNames={classNames}
+              label="Redo"
+              icon="redo"
+              func={() => this.redoTileAction(index)}
+              id="Redo"
+              tooltip={false} />
+          </div>)
+          : null}
+      </div>
     );
   }
-  renderButtonList = () => {
+
+  renderButtonList = (index) => {
     const classNames = `${main.clearButtonLeft} ${main.button}`;
     return (
       <ButtonList>
@@ -78,7 +110,7 @@ class SegmentList extends React.Component {
           classNames={classNames}
           label="Add a Comment"
           icon="chat_bubble"
-          func={this.renderComment}
+          func={() => this.renderComment()}
           id="Comments"
           direction="right" />
         {this.state.renderTiles ?
@@ -113,11 +145,12 @@ class SegmentList extends React.Component {
             id="Activate Voice Mode"
             direction="right" />
         }
+        {this.undoRedo(index)}
         <Button
           classNames={`${classNames} ${main.greenButton}`}
           label="Accept Translation"
           icon="done"
-          func={() => console.error('Need to implement')}
+          func={() => this.acceptTranslation(index)}
           id="Accept Translation"
           direction="right" />
 
@@ -125,7 +158,7 @@ class SegmentList extends React.Component {
           classNames={`${classNames} ${main.redButton}`}
           label="Reject Translation"
           icon="clear"
-          func={() => this.CustomEditor.clearText()}
+          func={() => this.rejectTranslation(index)}
           id="Clear Translation"
           direction="right" />
       </ButtonList>
@@ -155,19 +188,21 @@ class SegmentList extends React.Component {
   }
 
   renderSelected = (segment, index) => {
-    const { xliff } = this.props.document;
+    const { xliff, segments } = this.props.document;
     if (this.props.editorState === '') {
       return null;
     }
+    let mt = '';
+    if (segments) mt = segments[index].machine_translation;
     return (
       <div id="selectedSegment" style={{ paddingTop: '62px' }}>
         <div className={`${responsive} ${styles.selected}`}>
           <div className={responsiveWidth}>
-            
+
             <SelectedSegment
               className="four-fifth"
               documentId={this.props.document.saved_name}
-              mt={this.props.d}
+              mt={mt}
               segment={segment}
               segmentId={index}
               editorState={this.props.editorState}
@@ -176,14 +211,14 @@ class SegmentList extends React.Component {
               ref={(ref) => { this.SelectedSegment = ref; }}
               setRef={(name, ref) => { this[name] = ref; }} />
           </div>
-          {this.renderButtonList()}
+          {this.renderButtonList(index)}
           {this.state.renderVoice ? this.voiceComponent(index) : null }
         </div>
       </div>
     );
   }
 
-  renderButton(segment, index) {
+  renderButton = (segment, index) => {
     return (
       <button
         onClick={(e) => { e.preventDefault(); this.selected(index); }}
@@ -219,6 +254,12 @@ class SegmentList extends React.Component {
           </div> :
           (null)
         }
+        <VoiceAssistant
+          acceptTranslation={this.acceptTranslation}
+          rejectTranslation={this.rejectTranslation}
+          updateSelected={this.selected}
+          {...this.props}
+        />
         {this.props.document.xliff.segments.map(this.renderSegment)}
       </div>
     );
@@ -231,7 +272,11 @@ SegmentList.propTypes = {
   selectedSegment: PropTypes.number.isRequired,
   mergeSegment: PropTypes.func.isRequired,
   splitSegment: PropTypes.func.isRequired,
-  documents: PropTypes.objectOf(PropTypes.any).isRequired,
+  requestSegments: PropTypes.func.isRequired,
+  updateSegment: PropTypes.func.isRequired,
+  undoTileAction: PropTypes.func.isRequired,
+  redoTileAction: PropTypes.func.isRequired,
+  document: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default SegmentList;

@@ -1,20 +1,7 @@
 import update from 'immutability-helper';
 import * as actions from '../../../constants/actionTypes';
 
-const blankDocument = {
-  id: '',
-  name: '',
-  saved_name: '',
-  description: '',
-  created_at: '',
-  isFetching: false,
-  didInvalidate: true,
-  xliff: {},
-  meta: null,
-  segments: null,
-};
-
-const createNewDocumentEntry = (state = blankDocument, doc) => {
+const createNewDocumentEntry = (state, doc) => {
   let meta = null;
   if (doc.segment_count !== null) {
     meta = {
@@ -35,6 +22,7 @@ const createNewDocumentEntry = (state = blankDocument, doc) => {
     didInvalidate: doc.didInvalidate !== undefined ? doc.didInvalidate : true,
     isFetching: doc.isFetching !== undefined ? doc.isFetching : false,
     meta,
+    history: { prev: [], next: [] },
   });
 };
 

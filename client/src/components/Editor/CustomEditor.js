@@ -37,6 +37,7 @@ class CustomEditor extends React.Component {
   }
 
   endValue = (value) => {
+    if (value === undefined || value === '') return;
     // TODO: Capitalize // decap next letter
     this.props.keyLogger.voiceInput(value);
     // selection holds the cursor position

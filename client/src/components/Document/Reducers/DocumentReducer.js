@@ -6,6 +6,7 @@ import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
 import { splitTextIntoArray, joinTextArray, cleanText } from '../../../utils/stringParser';
 
+/* eslint function-paren-newline: 0 */
 const initialState = {
   documents: {},
   selectedSegment: -1,
@@ -13,10 +14,17 @@ const initialState = {
 };
 
 const blankDocument = {
+  id: '',
   name: '',
+  saved_name: '',
+  description: '',
+  created_at: '',
   isFetching: false,
-  didInvalidate: false,
+  didInvalidate: true,
   xliff: {},
+  history: { prev: [], next: [] },
+  meta: null,
+  segments: null,
 };
 
 const createNewDocumentEntry = (state = blankDocument) => {
@@ -113,7 +121,7 @@ const mergeSegment = function(state, action) {
 
 const updateFromVoiceInput = function(state, action) {
   const { documentId, segmentId, text } = action;
-  let editorState = state.editorState;
+  let { editorState } = state;
   if (segmentId === state.selectedSegment) {
     editorState = EditorState.createWithContent(ContentState.createFromText(text));
   }
@@ -137,52 +145,10 @@ const updateFromVoiceInput = function(state, action) {
   });
 };
 
-const insertWord = function(state, action) {
-  const segments = state.xliff.segments;
-  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
-  // need to remove other words
-  for (let i = 0; i < action.indexArr.length; i++) {
-    if (action.indexArr[i] !== action.dragIndex) {
-      newTarget[action.indexArr[i]] = '';
-    }
-  }
-  // if dragIndex == 0 have to set word to lower case and set the dragIndex + 1 word to upper case
-  // if hoverIndex == 0 have to set word to upper case and set hoverIndex + 1 word to lower case
-  // if neither above and hoverIndex - 1 == '.' need to set to upper case and set hover index to lower case
-  // word has same case for all other scenarios
-  const word = action.word;
-  // TODO: Character Capital After Insert
-  // if (action.hoverIndex === 0 || newTarget[action.hoverIndex - 1] === '.') {
-  //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
-  // }
-  const newData = update(newTarget, {
-    $splice: [
-      [action.dragIndex, 1],
-      [action.hoverIndex, 0, word],
-    ],
-  });
-  // if (action.dragIndex === 0) {
-  //   newData[action.hoverIndex].charAt(0).toLowerCase();
-  // }
-  return {
-    ...state,
-    xliff: {
-      ...state.xliff,
-      segments: segments.map((item, index) => {
-        if (index !== action.segmentId) return item;
-        return {
-          ...item,
-          target: joinTextArray(newData),
-        };
-      }),
-    },
-  };
-};
-
 const insertSourceWord = function(state, action) {
-  const segments = state.xliff.segments;
-  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
-  const word = action.word; // .toLowerCase();
+  const { segments } = state.xliff;
+  const { word, segmentId } = action; // .toLowerCase();
+  const newTarget = splitTextIntoArray(segments[segmentId].target);
   // TODO: Character Capital After Insert
   // if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
   //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
@@ -193,57 +159,127 @@ const insertSourceWord = function(state, action) {
   } else {
     newTarget.splice(action.index + 1, 0, word);
   }
-  return {
-    ...state,
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: segments.map((item, index) => {
-        if (index !== action.segmentId) return item;
-        return {
-          ...item,
-          target: joinTextArray(newTarget),
-        };
-      }),
+      segments: {
+        [segmentId]: {
+          target: {
+            $set: joinTextArray(newTarget),
+          },
+        },
+      },
     },
-  };
+    history: {
+      prev: {
+        $push: [segments[segmentId].target],
+      },
+      next: {
+        $set: [],
+      },
+    },
+  });
 };
 
 const updateWord = function(state, action) {
-  const segments = state.xliff.segments;
-  const newTarget = splitTextIntoArray(segments[action.segmentId].target);
-  const text = action.text;
+  const { segments } = state.xliff;
+  const { text, segmentId } = action;
+  const newTarget = splitTextIntoArray(segments[segmentId].target);
   newTarget[action.index] = text;
-  return {
-    ...state,
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: segments.map((item, index) => {
-        if (index !== action.segmentId) return item;
-        return {
-          ...item,
-          target: joinTextArray(newTarget),
-        };
-      }),
+      segments: {
+        [segmentId]: {
+          target: {
+            $set: joinTextArray(newTarget),
+          },
+        },
+      },
     },
-  };
+    history: {
+      prev: {
+        $push: (segments[segmentId].target === state.history.prev[state.history.prev.length - 1] ? [] : [segments[segmentId].target]),
+      },
+      next: {
+        $set: [],
+      },
+    },
+  });
 };
 
 const updateWordOrder = function(state, action) {
-  const segments = state.xliff.segments;
-  return {
-    ...state,
+  const { segments } = state.xliff;
+  const { wordArray, segmentId } = action;
+  return update(state, {
     xliff: {
-      ...state.xliff,
-      segments: segments.map((item, index) => {
-        if (index !== action.segmentId) return item;
-        return {
-          ...item,
-          target: joinTextArray(action.wordArray),
-        };
-      }),
+      segments: {
+        [segmentId]: {
+          target: {
+            $set: joinTextArray(wordArray),
+          },
+        },
+      },
     },
-  };
+    history: {
+      prev: {
+        $push: [segments[segmentId].target],
+      },
+      next: {
+        $set: [],
+      },
+    },
+  });
 };
+
+const undoTileAction = (state, action) => {
+  const { history, xliff } = state;
+  const { segmentId } = action;
+  if (history.prev.length === 0) return state;
+  return update(state, {
+    xliff: {
+      segments: {
+        [segmentId]: {
+          target: {
+            $set: history.prev[history.prev.length - 1],
+          },
+        },
+      },
+    },
+    history: {
+      prev: {
+        $splice: [[history.prev.length - 1, 1]],
+      },
+      next: {
+        $push: [xliff.segments[segmentId].target],
+      },
+    },
+  });
+};
+
+const redoTileAction = (state, action) => {
+  const { history, xliff } = state;
+  const { segmentId } = action;
+  if (history.next.length === 0) return state;
+  return update(state, {
+    xliff: {
+      segments: {
+        [segmentId]: {
+          target: {
+            $set: history.next[history.next.length - 1],
+          },
+        },
+      },
+    },
+    history: {
+      prev: {
+        $push: [xliff.segments[segmentId].target],
+      },
+      next: {
+        $splice: [[history.next.length - 1, 1]],
+      },
+    },
+  });
+};
+
 
 const DocumentReducer = function(state = initialState, action) {
   switch (action.type) {
@@ -307,64 +343,108 @@ const DocumentReducer = function(state = initialState, action) {
         });
       }
       const text = cleanText(state.documents[action.documentId].xliff.segments[action.segmentId].target);
-      return Object.assign({}, state, {
-        selectedSegment: action.segmentId,
-        editorState: EditorState.createWithContent(ContentState.createFromText(text)),
-      });
-    }
-    case actions.INSERT_WORD: {
-      const updatedState = insertWord(state.documents[action.documentId], action);
-      return Object.assign({}, state, {
-        editorState:
-          EditorState.createWithContent(
-            ContentState.createFromText(updatedState.xliff.segments[action.segmentId].target)),
+      return update(state, {
+        selectedSegment: { $set: action.segmentId },
+        editorState: { $set: EditorState.createWithContent(ContentState.createFromText(text)) },
         documents: {
-          ...state.documents,
-          [action.documentId]: updatedState,
+          [action.documentId]: {
+            history: {
+              prev: {
+                $set: [],
+              },
+              next: {
+                $set: [],
+              },
+            },
+          },
         },
       });
     }
     case actions.INSERT_SOURCE_WORD: {
-      const updatedState1 = insertSourceWord(state.documents[action.documentId], action);
-      return Object.assign({}, state, {
-        editorState:
-          EditorState.createWithContent(
-            ContentState.createFromText(updatedState1.xliff.segments[action.segmentId].target)),
+      const updatedState = insertSourceWord(state.documents[action.documentId], action);
+      const { target } = updatedState.xliff.segments[action.segmentId];
+      return update(state, {
+        editorState: {
+          $set: EditorState.createWithContent(ContentState.createFromText(target)),
+        },
         documents: {
-          ...state.documents,
-          [action.documentId]: updatedState1,
+          [action.documentId]: {
+            $set: updatedState,
+          },
         },
       });
     }
     case actions.UPDATE_WORD: {
-      const updatedState2 = updateWord(state.documents[action.documentId], action);
-      return Object.assign({}, state, {
-        editorState:
-          EditorState.createWithContent(
-            ContentState.createFromText(updatedState2.xliff.segments[action.segmentId].target)),
+      const updatedState = updateWord(state.documents[action.documentId], action);
+      const { target } = updatedState.xliff.segments[action.segmentId];
+      return update(state, {
+        editorState: {
+          $set: EditorState.createWithContent(ContentState.createFromText(target)),
+        },
         documents: {
-          ...state.documents,
-          [action.documentId]: updatedState2,
+          [action.documentId]: {
+            $set: updatedState,
+          },
         },
       });
     }
     case actions.UPDATE_WORD_ORDER: {
-      const updatedState3 = updateWordOrder(state.documents[action.documentId], action);
-      return Object.assign({}, state, {
-        editorState:
-        EditorState.createWithContent(
-          ContentState.createFromText(updatedState3.xliff.segments[action.segmentId].target)),
+      const updatedState = updateWordOrder(state.documents[action.documentId], action);
+      const { target } = updatedState.xliff.segments[action.segmentId];
+      return update(state, {
+        editorState: {
+          $set: EditorState.createWithContent(ContentState.createFromText(target)),
+        },
         documents: {
-          ...state.documents,
-          [action.documentId]: updatedState3,
+          [action.documentId]: {
+            $set: updatedState,
+          },
         },
       });
     }
+    case actions.UNDO_TILE:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            $set: undoTileAction(state.documents[action.documentId], action),
+          },
+        },
+      });
+    case actions.REDO_TILE:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            $set: redoTileAction(state.documents[action.documentId], action),
+          },
+        },
+      });
     case actions.VOICE_INPUT:
       return updateFromVoiceInput(state, action);
     case actions.RESET_EDITOR:
       return Object.assign({}, state, {
         editorState: '',
+      });
+    case actions.SEGMENTS_SUCCESS:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            segments: {
+              $set: action.segments,
+            },
+          },
+        },
+      });
+    case actions.UPDATE_SEGMENT:
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            segments: {
+              [action.data.segmentIndex]: {
+                $set: action.data,
+              },
+            },
+          },
+        },
       });
     // extracting all FindReplace actions to separate file
     case actions.FIND:

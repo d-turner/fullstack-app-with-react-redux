@@ -19,7 +19,7 @@ const SegmentWrapper = {
   },
 
   updateSegment(segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode, cb) {
-    return mariaDB.query('UPDATE Segment SET machine_translation = :machineTranslation, edit_mode_time = :editTime, tile_mode_time = :tileTime, voice_mode_time = :voiceTime, total_edit_time = :totalTime, characters_entered = :charactersEntered, words_entered = :wordsEntered WHERE document_id = :documentId AND segment_index = :segmentIndex',
+    return mariaDB.query('UPDATE Segment SET machine_translation = :machineTranslation, edit_mode_time = :editTime, tile_mode_time = :tileTime, voice_mode_time = :voiceTime, total_edit_time = :totalTime, characters_entered = :charactersEntered, words_entered = :wordsEntered, mode = :mode WHERE document_id = :documentId AND segment_index = :segmentIndex',
     { segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode }, cb);
   },
 

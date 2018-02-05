@@ -38,20 +38,20 @@ class Drop extends React.Component {
       const parser = xliffParser(reader, $q, console);
       const func = parser.readFile(file);
       func.then((result) => {
-        api.uploadDocument(formData, (response) => {
-          if (response.status === 200) {
+        api.uploadDocument(formData)
+          .then((response) => {
             this.setState({
               messages: this.state.messages.concat('Upload Successful'),
               types: this.state.types.concat('success'),
             });
             this.props.buildMeta(response.data.result[0], result, this.props.length);
-          } else {
+          })
+          .catch((error) => {
             this.setState({
               messages: this.state.messages.concat('Upload Failed'),
               types: this.state.types.concat('fail'),
             });
-          }
-        });
+          });
       }).catch((error) => {
         this.setState({
           messages: this.state.messages.concat('Upload Failed: There was an issue parsing the document, please confirm the document is a valid xliff/xlf document'),

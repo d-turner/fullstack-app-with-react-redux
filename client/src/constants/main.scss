@@ -473,3 +473,12 @@ label > h4 {
 .clickable:hover {
   cursor: pointer;
 }
+
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#skitt-ui {
+  height: 50px !important;
+}

@@ -55,6 +55,7 @@ setupUserRoutes(app);
 app.use((err, req, res, next) => {
   logger.error(`Error message: ${err.message}`);
   logger.error(`Error stack: ${err.stack}`);
+  if (err.message.startsWith('Duplicate entry')) err.status = resp.conflict;
   res.status(err.status || resp.error).json({ error: err.message });
   next();
 });
