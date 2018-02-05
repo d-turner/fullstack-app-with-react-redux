@@ -131,3 +131,19 @@ export function updateSegment(doc, data) {
 //     });
 //   };
 // }
+
+export function undoTileAction(documentId, segmentId) {
+  return {
+    type: actions.UNDO_TILE,
+    documentId,
+    segmentId,
+  };
+}
+
+export function redoTileAction(documentId, segmentId) {
+  return {
+    type: actions.REDO_TILE,
+    documentId,
+    segmentId,
+  };
+}
