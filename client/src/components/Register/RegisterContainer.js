@@ -22,24 +22,14 @@ export default class Register extends React.Component {
       email: email1,
       password,
     };
-    api.register(data, (response) => {
-      if (!response || response.onerror) {
-        // no response from the server or internal error
-        const emailError = 'Something went wrong, please try again later';
-        this.setState({ emailError });
-      } else if (response.data.error || response.status === 409) {
-        // register details are not valid
-        this.setState({ emailError: response.data.error });
-      } else if (response.status !== 200) {
-        // catch all other responses
-        const emailError = 'Something went wrong, please try again later';
-        this.setState({ emailError });
-      } else {
-        // registration successful redirect to login page
+    api.register(data)
+      .then((response) => {
         const feedbackMessage = 'Registration Successful, please login to continue';
         this.setState({ emailError: null, feedbackMessage });
-      }
-    });
+      })
+      .catch((error) => {
+        this.setState({ emailError: error.response.data.error });
+      });
   }
 
   validateState(event) {
