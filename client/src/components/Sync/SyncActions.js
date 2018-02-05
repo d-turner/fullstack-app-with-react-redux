@@ -71,12 +71,12 @@ export function save(doc, documentId, userId, email) {
     const reader = fileReader($q);
     const parser = xliffParser(reader, $q, console);
     const domString = parser.getDOMString(DOM);
-    return apiWrapper.sync(domString, documentId, (response) => {
-      if (response && response.status === 200) {
+    return apiWrapper.sync(domString, documentId)
+      .then((response) => {
         dispatch(saveSuccess(response));
-      } else {
-        dispatch(saveFail(response));
-      }
-    });
+      })
+      .catch((error) => {
+        dispatch(saveFail(error.response));
+      });
   };
 }
