@@ -9,13 +9,14 @@ import styles from './Editor.scss';
 import main from '../../constants/main.scss';
 
 class CustomEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasFocus: false, renderStyles: false };
-  }
+  state = { hasFocus: false, renderStyles: false };
 
   componentDidMount() {
     this.Editor.focus();
+    this.props.keyLogger.setTimer('editStart');
+  }
+  componentWillUnmount() {
+    this.props.keyLogger.setEditTotal();
   }
 
   myKeyBindingFn = (e) => {
