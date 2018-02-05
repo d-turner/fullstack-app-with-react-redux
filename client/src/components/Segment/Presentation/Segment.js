@@ -4,13 +4,10 @@ import PropTypes from 'prop-types';
 import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
 import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
-import SortableTiles from '../../DraggableTiles/Container/SortableTiles';
+import SortableTilesContainer from '../../DraggableTiles/Container/SortableTilesContainer';
 
 class Segment extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { dragging: false };
-  }
+  state = { dragging: false };
 
   componentDidMount() {
     if (this.props.segmentId !== 0 && this.props.segmentId !== -1) {
@@ -31,7 +28,7 @@ class Segment extends React.Component {
     if (sortable) words = splitTextIntoArray(cleanText(segment.target));
     return (
       <div id={sortable ? 'targetTiles' : 'sourceTiles'}>
-        <SortableTiles
+        <SortableTilesContainer
           words={words}
           segment={this.props.segment}
           segmentId={this.props.segmentId}
@@ -105,6 +102,12 @@ Segment.propTypes = {
   xliff: PropTypes.objectOf(PropTypes.any).isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
   renderTiles: PropTypes.bool.isRequired,
+  setRef: PropTypes.func.isRequired,
+  mt: PropTypes.string,
+};
+
+Segment.defaultProps = {
+  mt: '',
 };
 
 export default Segment;
