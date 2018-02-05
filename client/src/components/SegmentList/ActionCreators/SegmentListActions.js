@@ -86,18 +86,18 @@ function buildSegments(id, doc, dispatch) {
 /* eslint no-lonely-if: 0 */
 export function requestSegments(doc) {
   return (dispatch) => {
-    return apiWrapper.getSegments(doc.id, (response) => {
-      if (response && response.data.length < doc.xliff.segments.length) {
-        // need to build the segment data
-        buildSegments(doc.id, doc, dispatch);
-      } else {
-        if (response && response.status === 200) {
-          dispatch(requestSegmentsSuccess(doc.saved_name, response));
+    return apiWrapper.getSegments(doc.id)
+      .then((response) => {
+        if (response.data.length < doc.xliff.segments.length) {
+          // need to build the segment data
+          buildSegments(doc.id, doc, dispatch);
         } else {
-          dispatch(requestSegmentsFail(doc.saved_name, response));
+          dispatch(requestSegmentsSuccess(doc.saved_name, response));
         }
-      }
-    });
+      })
+      .catch((error) => {
+        dispatch(requestSegmentsFail(doc.saved_name, error.response));
+      });
   };
 }
 
@@ -111,9 +111,10 @@ export function updateSegmentSuccess(id, data) {
 
 export function updateSegment(doc, data) {
   return (dispatch) => {
-    return apiWrapper.updateSegment(doc.id, data, (response) => {
-      dispatch(updateSegmentSuccess(doc.saved_name, data));
-    });
+    return apiWrapper.updateSegment(doc.id, data)
+      .then((response) => {
+        dispatch(updateSegmentSuccess(doc.saved_name, data));
+      });
   };
 }
 // // update the completed segment count
