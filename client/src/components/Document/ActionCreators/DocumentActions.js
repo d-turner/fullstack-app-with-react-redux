@@ -34,7 +34,7 @@ export function fetchDocumentSuc(documentId, xliff) {
   };
 }
 
-const shouldFetchDocument = (state, documentId) => {
+export const shouldFetchDocument = (state, documentId) => {
   const doc = state.documentReducer.documents[documentId];
   if (!doc || doc.didInvalidate) {
     return true;
@@ -67,25 +67,31 @@ export function requestDocument(documentId) {
   return (dispatch, getState) => {
     if (shouldFetchDocument(getState(), documentId)) {
       dispatch(fetchDocument(documentId));
-      apiWrapper.getDocumentById(documentId, (response) => {
-        dispatch(documentListSuccess([response.data]));
-        apiWrapper.getDocument(documentId, (res) => {
+      return apiWrapper.getDocumentById(documentId)
+        .catch((error) => {
+          // the request fails
+          dispatch(documentListFail(error));
+        })
+        .then((response) => {
+          // insert the document into the list and then try fetch the actual document
+          dispatch(documentListSuccess([response.data]));
+          return apiWrapper.getDocument(documentId);
+        })
+        .then((response) => {
+          // try parse the xliff document
           const reader = fileReader($q);
           const parser = xliffParser(reader, $q, console);
-          const file = new File([res.data], { type: 'application/xml' });
-          const func = parser.readFile(file);
-          func
-            .then((result) => {
-              dispatch(fetchDocumentSuc(documentId, result));
-            })
-            .catch((error) => {
-              dispatch(fetchDocumentFail(documentId, error));
-            })
-            .done(() => {
-              //  console.log('done dispatching...');
-            });
+          const file = new File([response.data], { type: 'application/xml' });
+          return parser.readFile(file);
+        })
+        .then((result) => {
+          // insert the document into the store
+          dispatch(fetchDocumentSuc(documentId, result));
+        })
+        .catch((error) => {
+          // if the document parsing failed or fetching the actual document fails
+          dispatch(fetchDocumentFail(documentId, error));
         });
-      });
     }
     return Promise.resolve();
   };
@@ -94,13 +100,13 @@ export function requestDocument(documentId) {
 export function requestDocumentList() {
   return (dispatch) => {
     dispatch(fetchDocumentList());
-    return apiWrapper.getDocuments((response) => {
-      if (response && response.status === 200) {
+    return apiWrapper.getDocuments()
+      .then((response) => {
         dispatch(documentListSuccess(response.data));
-      } else {
-        dispatch(documentListFail());
-      }
-    });
+      })
+      .catch((error) => {
+        dispatch(documentListFail(error));
+      });
   };
 }
 
@@ -119,13 +125,13 @@ export function documentDeleteFail() {
 
 export function deleteDocument(documentId, documentKey) {
   return (dispatch) => {
-    return apiWrapper.deleteDocument(documentId, (response) => {
-      if (response && response.status === 200) {
-        dispatch(documentDeleteSuccess(documentKey));
-      } else {
-        dispatch(documentDeleteFail());
-      }
-    });
+    return apiWrapper.deleteDocument(documentId)
+      .then((response) => {
+        dispatch(documentDeleteSuccess(documentKey, response));
+      })
+      .catch((error) => {
+        dispatch(documentDeleteFail(error));
+      });
   };
 }
 
@@ -150,12 +156,12 @@ export function setDocumentOrder(doc, index) {
   return (dispatch) => {
     const meta = Object.assign({}, doc.meta);
     meta.listOrder = index;
-    return apiWrapper.updateDocument(doc.id, meta, (response) => {
-      if (response && response.status === 200) {
+    return apiWrapper.updateDocument(doc.id, meta)
+      .then((response) => {
         dispatch(documentOrderSuccess(doc, index, response));
-      } else {
-        dispatch(documentOrderFail(doc, response.error));
-      }
-    });
+      })
+      .catch((error) => {
+        dispatch(documentOrderFail(doc, error));
+      });
   };
 }
