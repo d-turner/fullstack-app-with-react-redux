@@ -7,7 +7,6 @@ import mic from './mic.gif';
 import micAnimate from './mic-animate.gif';
 import Button from '../ButtonList/Button';
 import TextError from '../Error/TextError';
-import { setTimeout } from 'timers';
 
 export default class VoiceInput extends Component {
   constructor(props) {
