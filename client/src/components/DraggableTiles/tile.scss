@@ -101,8 +101,13 @@ span.grippy::after {
 
 .text {
   display: inline;
-  border: 1px dashed lighten(#363636, 60%);
-  padding:  2px;
+  border: 1px dotted lighten(#363636, 60%);
+  padding:  2px 2px 2px 6px;
+  max-width: 93%;
+  min-height: 30px;
+  max-height: 30px;
+  resize: auto;
+  overflow:auto
 }
 
 .text::before {
@@ -116,6 +121,10 @@ span.grippy::after {
 
 .text:hover {
   cursor: text;
+}
+
+.maxWidth {
+  max-width: 100%;
 }
 
 .dragging {
