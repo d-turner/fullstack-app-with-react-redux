@@ -39,6 +39,8 @@ export const INSERT_SOURCE_WORD = 'INSERT_SOURCE_WORD';
 export const VOICE_INPUT = 'VOICE_INPUT';
 export const UPDATE_WORD = 'UPDATE_WORD';
 export const UPDATE_WORD_ORDER = 'UPDATE_WORD_ORDER';
+export const UNDO_TILE = 'UNDO_TILE_ACTION';
+export const REDO_TILE = 'REDO_TILE_ACTION';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';
