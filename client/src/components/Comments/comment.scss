@@ -6,10 +6,6 @@
   margin-bottom: 10px;
 }
 
-.commentButtons {
-  float: left;
-  display: flex;
-}
 
 .commentButton {
   margin-right: 20px;
@@ -49,6 +45,8 @@
 }
 
 .modal {
-  margin-top: 20px;
-  width: 250px;
+  background-color: $white;
+  padding: 15px;
+  border-radius: $segmentRadius;
+  border: $selectedSegmentBorder;
 }

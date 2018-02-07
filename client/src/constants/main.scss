@@ -257,7 +257,7 @@ label > h4 {
   padding: 10px;
   top: 5px;
   left: 0px;
-  background-color: white;
+  background-color: $white;
   color: black;
 
 }
@@ -477,8 +477,4 @@ label > h4 {
 .flex {
   display: flex;
   flex-flow: row wrap;
-}
-
-#skitt-ui {
-  height: 50px !important;
 }

@@ -8,7 +8,7 @@ $desktop: 1000px;
 
 $font-stack: sans-serif;
 
-$white: white;
+$white: #fff;
 $black: black;
 $background: #eeeeee;
 
@@ -80,6 +80,9 @@ $selectedSegmentMargin: 0 0 62px 0;
 $segmentBorderHover: 1px solid $borderHover;
 
 $segmentRadius: 8px;
+@media only screen and (max-width: $small) {
+  $segmentRadius: 0px
+}
 $segmentPadding: 15px;
 // used for authentication form
 $cardPadding: 40px;

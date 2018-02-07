@@ -15,13 +15,13 @@
 
 .checkable {
   @extend .checkable;
-  background-color: white;
+  background-color: $white;
 }
 
 form {
   label {
     span::before {
-      background-color: white;
+      background-color: $white;
     }
   }
   input {

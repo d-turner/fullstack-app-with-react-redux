@@ -1,11 +1,10 @@
 @import  '../../constants/variables';
 
 .chatInputWrapper {
-  background-color: white;
+  background-color: $white;
   border-radius: 8px;
   border: 1px solid #c7d6f1;
   padding: 12px;
-  margin: 10px 0 0 0;
   transition: background 0.2s linear 0s, box-shadow 0.2s linear 0s;
   outline: 0;
   box-sizing: border-box;
@@ -40,7 +39,6 @@
 .editor {
   border: 1px solid #ddd;
   scroll-behavior: smooth;
-  height: 120px;
 }
 .editor:focus {
   border: 1px solid darken($borderSelected, 12%);
@@ -50,7 +48,6 @@
   visibility: hidden;
   min-width: 250px;
   width: 80%;
-  height: 120px;
 }
 
 .removeStyles {
