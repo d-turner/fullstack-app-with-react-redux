@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import SegmentList from '../Presentation/SegmentList';
 import { isEmpty } from '../../../utils/stringParser';
 // TODO: Implement Sidebar
-// import Sidebar from '../../Sidebar/Containers/Sidebar';
+import Sidebar from '../../Sidebar';
 
 
 import styles from '../segmentList.scss';
@@ -59,6 +59,7 @@ class SegmentListContainer extends React.Component {
             document={documents[this.state.id]}
             editorState={editorState}
             {...this.props} />
+          <Sidebar documentId={this.state.id} />
         </div>
       );
     }
