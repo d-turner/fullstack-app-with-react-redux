@@ -5,6 +5,7 @@ repos=(
 )
 
 echo ""
+pm2 kill
 echo "Pulling latest from git"
 
 for repo in "${repos[@]}"
@@ -19,8 +20,6 @@ do
     echo "Need to Update..."
     echo "Pulling from GIT..."
     git pull
-    echo "Restarting PM2"
-    pm2 kill
     echo "Starting Server"
     cd server
     npm run prod
