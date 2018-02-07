@@ -1,40 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Lexicon from '../../Lexicon/';
 import Comments from '../../Comments/Containers';
 import FindReplace from '../../FindReplace/Containers';
 import styles from '../sidebar.scss';
-import ButtonList from '../../ButtonList';
+import Button from '../../ButtonList/Button';
 
 class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      width: '0',
-      height: '0',
-      renderComment: false,
-      renderLexicon: false,
-      renderSearch: false,
-    };
-    this.renderComment = this.renderComment.bind(this);
-    this.renderLexicon = this.renderLexicon.bind(this);
-    this.renderSearch = this.renderSearch.bind(this);
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-  }
-
-  componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
-
-  updateWindowDimensions() {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
-  }
+  state = { active: false };
 
   renderComment() {
     this.setState({
@@ -59,6 +34,27 @@ class Sidebar extends React.Component {
       renderSearch: true,
     });
   }
+  renderTabs = () => {
+    return (
+      <Tabs>
+        <TabList>
+          <Tab>Comments</Tab>
+          <Tab>Lexicon Lookup</Tab>
+          <Tab>Search</Tab>
+        </TabList>
+
+        <TabPanel>
+          <Comments documentId={this.props.documentId} />
+        </TabPanel>
+        <TabPanel>
+          <Lexicon documentId={this.props.documentId} />
+        </TabPanel>
+        <TabPanel>
+          <FindReplace documentId={this.props.documentId} />
+        </TabPanel>
+      </Tabs>
+    );
+  }
 
   renderSwitch() {
     const { documentId } = this.props;
@@ -72,13 +68,22 @@ class Sidebar extends React.Component {
     return null;
   }
   render() {
+    let view = styles.menu;
+    if (this.state.active) view = `${styles.active} ${styles.menu}`;
     return (
-      <div className={`none fourth-900 fifth-1200 ${styles.parent} ${styles.content}`} >
-        <div
-          className={`${styles.fixedPosition} ${styles.paddingInlineWithNavRight}`}
-          style={{ height: this.state.height - 48 }}>
-          {this.renderSwitch()}
+      <div className={view}>
+        <div>
+          <Button
+            classNames={styles.menuButton}
+            label="menu"
+            icon="menu"
+            func={() => this.setState({ active: !this.state.active})}
+            id="menu"
+            direction="left"
+            tooltip={false}
+          />
         </div>
+        {this.renderTabs()}
       </div>
     );
   }
