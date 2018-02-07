@@ -79,7 +79,7 @@ function buildSegments(id, doc, dispatch) {
     // });
   }
   Promise.all(promiseArray)
-    .then(() => requestSegments(doc))
+    .then(() => dispatch(requestSegments(doc)))
     .catch(error => console.log('Error', error));
 }
 

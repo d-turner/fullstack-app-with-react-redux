@@ -33,13 +33,12 @@ export function saveFail(response) {
     response,
   };
 }
-
+/* eslint { no-lonely-if: off } */
 export function save(doc, documentId, userId, email) {
   return (dispatch) => {
     dispatch(saveDocument());
     dispatch(saveLogger(documentId, userId, email));
-    const DOM = doc.xliff.DOM;
-    const segments = doc.xliff.segments;
+    const { DOM, segments } = doc.xliff;
     let found = false;
     for (let i = 0; i < segments.length; i++) {
       found = false;

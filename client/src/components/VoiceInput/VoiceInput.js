@@ -162,7 +162,7 @@ export default class VoiceInput extends Component {
 
   renderVoiceInput() {
     return (
-      <div className="full three-fifth-700 off-fifth-700 fifth-1200 off-none-1200">
+      <div className="full half-500 three-fifth-700 off-fifth-700 two-fifth-800 fifth-1200 off-none-1200">
         <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`}>
           {this.renderEditor()}
           {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}

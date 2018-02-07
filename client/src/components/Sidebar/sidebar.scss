@@ -11,3 +11,31 @@
 .fixedPosition {
   position: fixed;
 }
+
+@media only screen and (max-width: 900px) {
+  .menu {
+    display: none;
+  }
+}
+
+.menu {
+  box-shadow: -2px 2px 4px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  position: fixed;
+  top: $padding-header;
+  right: -438px;
+  background: $white;
+  width: 500px;
+  max-width: 100%;
+  height: 100%;
+  -webkit-transition: right 1.5s;
+}
+
+.active {
+  right: 0px;
+  -webkit-transition: right 1.5s;
+}
+
+.menuButton {
+  color: blue;
+  background: $white;
+}

@@ -7,7 +7,7 @@
 .home {
   padding: $padding-header $padding-med $padding-large $padding-med;
   background-color: $darkslategrey;
-  color: white;
+  color: $white;
 }
 @media (max-width: 600px) {
   .home {

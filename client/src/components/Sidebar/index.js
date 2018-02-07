@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Sidebar from './Containers/Sidebar';
+import Sidebar from './Containers/new';
 
 const mapStateToProps = function(state) {
   // get the required reducer(s) from the state

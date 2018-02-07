@@ -1,7 +1,7 @@
 @import '../../constants/variables';
 
 .card {
-  color: white;
+  color: $white;
   display: block;
   background-color: $darkslategrey;
   padding: $cardPadding;
@@ -9,7 +9,7 @@
 
 @media only screen and (min-width: 700px) {
   .card {
-    color: white;
+    color: $white;
     display: block;
     background-color: $darkslategrey;
     margin: $segmentMargin;
@@ -19,7 +19,7 @@
 }
 
 .link {
-  color: white;
+  color: $white;
 }
 
 .link:hover {

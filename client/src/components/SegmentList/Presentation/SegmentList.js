@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import update from 'immutability-helper';
-import _ from 'lodash';
 
 import main from '../../../constants/main.scss';
 import styles from '../segmentList.scss';
@@ -13,7 +12,7 @@ import VoiceInput from '../../VoiceInput/VoiceInput';
 
 import VoiceAssistant from '../../VoiceAssistant';
 import Info from '../../Notifications/Info';
-
+import CommentModal from '../../Comments/Presentation/CommentModal';
 import ButtonList from '../../ButtonList';
 import Button from '../../ButtonList/Button';
 
@@ -26,6 +25,7 @@ class SegmentList extends React.Component {
   state = {
     renderTiles: false,
     renderVoice: false,
+    renderComment: false,
     help: true,
   };
 
@@ -44,16 +44,18 @@ class SegmentList extends React.Component {
   }
 
   acceptTranslation = (index) => {
-    let data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
-    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    const data = update(this.props.document.segments[index], { mode: { $set: 'accept' } });
+    // data = _.mapKeys(data, (v, k) => _.camelCase(k));
     this.props.updateSegment(this.props.document, data);
     this.selected(index + 1);
   }
 
   rejectTranslation = (index) => {
-    this.CustomEditor.clearText();
-    let data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
-    data = _.mapKeys(data, (v, k) => _.camelCase(k));
+    if (!this.state.renderTiles) {
+      this.CustomEditor.clearText();
+    }
+    const data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
+    // data = _.mapKeys(data, (v, k) => _.camelCase(k));
     this.props.updateSegment(this.props.document, data);
   }
 
@@ -73,6 +75,17 @@ class SegmentList extends React.Component {
         removeModal={this.renderVoice}
         documentId={this.props.document.saved_name}
         editor={this.Editor} />
+    );
+  }
+
+  commentComponent = (index) => {
+    return (
+      <CommentModal
+        index={index}
+        documentId={this.props.document.saved_name}
+        name={this.props.email}
+        render={this.state.renderComment}
+        unrender={() => this.setState({ renderComment: false })} />
     );
   }
 
@@ -107,11 +120,11 @@ class SegmentList extends React.Component {
     return (
       <ButtonList>
         <Button
-          classNames={classNames}
-          label="Add a Comment"
-          icon="chat_bubble"
-          func={() => this.renderComment()}
-          id="Comments"
+          classNames={this.state.renderVoice ? `${classNames} ${styles.micActive}` : classNames}
+          label="Voice Mode"
+          icon="mic"
+          func={this.renderVoice}
+          id={this.state.renderVoice ? 'Deactivate Voice Mode' : 'Activate Voice Mode'}
           direction="right" />
         {this.state.renderTiles ?
           <Button
@@ -129,22 +142,13 @@ class SegmentList extends React.Component {
             id="Tile Mode"
             direction="right" />
         }
-        {this.state.renderVoice ?
-          <Button
-            classNames={`${classNames} ${styles.micActive}`}
-            label="Voice Mode"
-            icon="mic"
-            func={this.renderVoice}
-            id="Deactivate Voice Mode"
-            direction="right" /> :
-          <Button
-            classNames={classNames}
-            label="Voice Mode"
-            icon="mic"
-            func={this.renderVoice}
-            id="Activate Voice Mode"
-            direction="right" />
-        }
+        <Button
+          classNames={this.state.renderComment ? `${classNames} ${styles.micActive}` : classNames}
+          label="Add a Comment"
+          icon="chat_bubble"
+          func={this.renderComment}
+          id="Comments"
+          direction="right" />
         {this.undoRedo(index)}
         <Button
           classNames={`${classNames} ${main.greenButton}`}
@@ -153,7 +157,6 @@ class SegmentList extends React.Component {
           func={() => this.acceptTranslation(index)}
           id="Accept Translation"
           direction="right" />
-
         <Button
           classNames={`${classNames} ${main.redButton}`}
           label="Reject Translation"
@@ -171,6 +174,10 @@ class SegmentList extends React.Component {
 
   renderVoice = () => {
     this.setState({ renderVoice: !this.state.renderVoice });
+  }
+
+  renderComment = () => {
+    this.setState({ renderComment: !this.state.renderComment });
   }
 
   renderSegment = (segment, index) => {
@@ -213,6 +220,7 @@ class SegmentList extends React.Component {
           </div>
           {this.renderButtonList(index)}
           {this.state.renderVoice ? this.voiceComponent(index) : null }
+          {this.state.renderComment ? this.commentComponent(index) : null}
         </div>
       </div>
     );

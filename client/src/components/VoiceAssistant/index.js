@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './VoiceAssistant.scss';
-import main from '../../constants/main.scss';
+import style from './VoiceAssistant.scss';
 
 class VoiceAssistant extends React.Component {
   state = { };
@@ -38,7 +37,7 @@ class VoiceAssistant extends React.Component {
       SpeechKITT.annyang();
 
       // Define a stylesheet for KITT to use
-      SpeechKITT.setStylesheet('http://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+      SpeechKITT.setStylesheet('/assets/flat.css');
 
       // Render KITT's interface
       SpeechKITT.vroom({ debug: true });
