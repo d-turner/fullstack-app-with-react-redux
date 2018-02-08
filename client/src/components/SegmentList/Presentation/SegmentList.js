@@ -266,6 +266,8 @@ class SegmentList extends React.Component {
           acceptTranslation={this.acceptTranslation}
           rejectTranslation={this.rejectTranslation}
           updateSelected={this.selected}
+          Editor={this.Editor}
+          CustomEditor={this.CustomEditor}
           {...this.props}
         />
         {this.props.document.xliff.segments.map(this.renderSegment)}

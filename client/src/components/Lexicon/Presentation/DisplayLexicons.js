@@ -9,14 +9,19 @@ function DisplayLexicon(props) {
     <div style={{ height: '100%' }}>
       <h3 className={main.clearMarginLeft}>Lexicon</h3>
       <form className={styles.form} onSubmit={props.onSubmit}>
-        <label htmlFor="searchCheckbox"><span>{props.sourceLang}</span></label>
-        <label className={styles.switch} htmlFor="searchCheckbox">
-          <input type="checkbox" id="searchCheckbox" name="searchCheckbox"
-            aria-label="language selector switch"
-          />
-          <div className={`${styles.slider} ${styles.round}`} />
+        <label htmlFor="searchCheckbox">
+          {props.sourceLang}
+          <div className={styles.switch}>
+            <input
+              id="searchCheckbox"
+              type="checkbox"
+              name="searchCheckbox"
+              aria-label="language selector switch"
+            />
+            <div className={`${styles.slider} ${styles.round}`} />
+          </div>
+          {props.targetLang}
         </label>
-        <label htmlFor="searchCheckbox"><span>{props.targetLang}</span></label>
         <input
           type="text" className={styles.input}
           autoComplete="off" placeholder="Enter a word to search..."

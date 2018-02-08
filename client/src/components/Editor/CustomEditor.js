@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
 
-import { setSpacing } from '../../utils/stringParser';
+import { setSpacing, getWordAt } from '../../utils/stringParser';
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.scss';
 import main from '../../constants/main.scss';
 
 class CustomEditor extends React.Component {
-  state = { hasFocus: false, renderStyles: false };
+  state = { hasFocus: false, renderStyles: false, clipboard: '' };
 
   componentDidMount() {
     this.Editor.focus();
@@ -24,6 +24,92 @@ class CustomEditor extends React.Component {
       return 'next-segment';
     }
     return getDefaultKeyBinding(e);
+  }
+
+  nextWord = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const plainText = contentState.getPlainText();
+    const charArray = plainText.split('');
+    const index = charArray.indexOf(' ', anchorOffset);
+    const updatedSelection = selection.merge({
+      focusOffset: index + 1,
+      anchorOffset: index + 1,
+    });
+    this.props.handleChange(EditorState.forceSelection(this.props.editorState, updatedSelection));
+  }
+
+  previousWord = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    let anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const plainText = contentState.getPlainText();
+    const charArray = plainText.split('');
+    if (charArray[anchorOffset - 1] === ' ') anchorOffset -= 2;
+    const index = charArray.lastIndexOf(' ', anchorOffset);
+    const updatedSelection = selection.merge({
+      focusOffset: index + 1,
+      anchorOffset: index + 1,
+    });
+    this.props.handleChange(EditorState.forceSelection(this.props.editorState, updatedSelection));
+  }
+
+  selectWord = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const plainText = contentState.getPlainText();
+    const charArray = plainText.split('');
+    const index = charArray.indexOf(' ', anchorOffset);
+    const updatedSelection = selection.merge({
+      focusOffset: index,
+      anchorOffset,
+    });
+    this.props.handleChange(EditorState.forceSelection(this.props.editorState, updatedSelection));
+  }
+
+  copyWord = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const lower = (anchorOffset <= focusOffset ? anchorOffset : focusOffset);
+    const upper = (anchorOffset > focusOffset ? anchorOffset : focusOffset);
+    const plainText = contentState.getPlainText();
+    const selected = plainText.slice(lower, upper);
+    this.setState({ clipboard: selected });
+  }
+
+  cutWord = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const lower = (anchorOffset <= focusOffset ? anchorOffset : focusOffset);
+    const upper = (anchorOffset > focusOffset ? anchorOffset : focusOffset);
+    const plainText = contentState.getPlainText();
+    const selected = plainText.slice(lower, upper);
+    this.setState({ clipboard: selected });
+    const newText = plainText.substring(0, lower) + plainText.substring(upper);
+    const updatedSelection = selection.merge({
+      focusOffset: anchorOffset,
+      anchorOffset,
+    });
+    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(newText), 'delete-character');
+    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
+  }
+
+  pasteWord = () => {
+    this.endValue(this.state.clipboard);
   }
 
   clearText = () => {

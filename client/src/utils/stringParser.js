@@ -140,3 +140,21 @@ export function setSpacing(sentence, text, cursorIndex) {
 //   if (cursorIndex === 0) formatted = sentence.charAt(cursorIndex).toLowerCase() + sentence.slice(cursorIndex);
 //   else if (isCapital(sentence.charAt(cursorIndex))) formatted = sentence.charAt(cursorIndex).toLowerCase() + sentence.slice(cursorIndex);
 // }
+
+export function getWordAt(sentence, position) {
+  // Perform type conversions.
+  const str = String(sentence);
+  const pos = Number(position) >>> 0;
+
+  // Search for the word's beginning and end.
+  const left = str.slice(0, pos + 1).search(/\S+\s*/);
+  const right = str.slice(pos).search(/\s/);
+
+  // The last word in the string is a special case.
+  if (right < 0) {
+    return str.slice(left);
+  }
+
+  // Return the word, using the located bounds to extract it from the string.
+  return str.slice(left, right + pos);
+}
