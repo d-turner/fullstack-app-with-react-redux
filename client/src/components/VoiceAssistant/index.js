@@ -10,15 +10,21 @@ class VoiceAssistant extends React.Component {
     if (window.annyang && window.SpeechKITT) {
       const { annyang, SpeechKITT } = window;
       const commands = {
+        'next word': this.nextWord,
+        'previous word': this.previousWord,
+        'select word': this.selectWord,
+        'copy word': this.copyWord,
+        'cut word': this.cutWord,
+        'paste word': this.pasteWord,
         accept: this.acceptTranslation,
         reject: this.rejectTranslation,
-        next: this.nextSegment,
-        previous: this.prevSegment,
+        'next segment': this.nextSegment,
+        'previous segment': this.prevSegment,
         undo: this.undo,
         redo: this.redo,
         'copy :source to :destination': this.copyText,
         'clear :number': this.clearText,
-        'move :number': this.focus,
+        'focus editor': this.focus,
         'hello world': () => alert('Hello world!'),
       };
 
@@ -43,7 +49,35 @@ class VoiceAssistant extends React.Component {
       SpeechKITT.vroom({ debug: true });
     }
   }
-  componentWillUnmount() {
+
+  nextWord = () => {
+    console.log('Moving to the next word');
+    this.props.CustomEditor.nextWord();
+  }
+
+  previousWord = () => {
+    console.log('Moving to the previous word');
+    this.props.CustomEditor.previousWord();
+  }
+
+  selectWord = () => {
+    console.log('Selecting the current word');
+    this.props.CustomEditor.selectWord();
+  }
+
+  copyWord = () => {
+    console.log('Copying the current word');
+    this.props.CustomEditor.copyWord();
+  }
+
+  cutWord = () => {
+    console.log('Cutting the current word');
+    this.props.CustomEditor.cutWord();
+  }
+
+  pasteWord = () => {
+    console.log('Pasting the current clipboard');
+    this.props.CustomEditor.pasteWord();
   }
 
   acceptTranslation = () => {
@@ -68,6 +102,12 @@ class VoiceAssistant extends React.Component {
     }
     // need to move to the previous segment
   }
+  undo = () => {
+    console.log('Undo not Ready Ye');
+  }
+  redo = () => {
+    console.log('Redo not Ready Yet');
+  }
   copyText = (source, destination) => {
     console.log(`Copying text from ${source} to ${destination}`);
     // need to copy text from the source to the target
@@ -76,8 +116,9 @@ class VoiceAssistant extends React.Component {
     console.log('Clearing text', number);
     // need to clear the editor
   }
-  focus = (number) => {
-    console.log(`Focusing ${number}`);
+  focus = () => {
+    console.log('Focusing editor');
+    this.props.Editor.focus();
     // if in tile mode need to focus to that tile
   }
 
