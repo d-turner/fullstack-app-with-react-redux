@@ -43,8 +43,8 @@ class Lexicon extends React.Component {
     event.preventDefault();
     // if checked searching in target language
     // if not checked searching in source language
-    const value = encodeURI(event.target[1].value.trim());
-    if (event.target.childNodes[1].childNodes[0].checked) {
+    const value = encodeURI(event.target.childNodes[1].value.trim());
+    if (event.target.childNodes[0].childNodes[1].childNodes[0].checked) {
       this.lookup(value);
     } else {
       this.lookup(value, this.state.sourceCode, this.state.targetCode);
