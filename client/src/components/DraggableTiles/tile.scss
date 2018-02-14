@@ -186,16 +186,45 @@ span.grippy::after {
 }
 
 .sortableChosen {
-  color: $darkAccept;
+
   @extend .faded;
 }
 
 .sortableGhost {
   background-color: $darkAccept;
-  color: $darkAccept;
   opacity: 1;
 }
 
 .trashGhost {
   display: none;
+}
+
+.trash {
+  border: 1px solid;
+  color: blue;
+  padding: 0;
+  height: 42px;
+  display: inline-block;
+}
+.trash > li {
+  margin: 0;
+  padding: 4px 12px 6px 6px;
+}
+
+.overTrash {
+  border: 1px solid;
+  color: red;
+  padding: 0;
+  height: 42px;
+  display: inline-block;
+}
+.overTrash > li {
+  margin: 0;
+  padding: 4px 12px 6px 6px;
+}
+
+.bin {
+  padding: 0px 4px;
+  position: relative;
+  top: 7px;
 }
