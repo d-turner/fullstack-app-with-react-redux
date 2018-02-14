@@ -40,7 +40,7 @@ export default class Document extends React.Component {
           <span><strong>{document.created_at.split(' ')[0].split('-').reverse().join('/')}</strong></span>
         </td>
         <td>
-          <span><strong>Placeholder</strong></span>
+          <span><strong>--</strong></span>
         </td>
         <td>
           <span><strong>{document.meta ? document.meta.totalWords : null}</strong></span>
