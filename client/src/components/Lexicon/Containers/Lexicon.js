@@ -6,31 +6,12 @@ import BabelApi from '../../../utils/babelnet';
 import Display from '../Presentation/DisplayLexicons';
 import Loader from '../../Loader/Loader';
 
-function findFirstLemma(lang, array) {
-  for (let x = 0; x < array.length; x++) {
-    if (array[x].language === lang) return array[x].lemma.split('_').join(' ');
-  }
-  return '';
-}
-
-function findFirstGloss(lang, array) {
-  for (let x = 0; x < array.length; x++) {
-    if (array[x].language === lang) return array[x].gloss;
-  }
-  return '';
-}
-
 class Lexicon extends React.Component {
   constructor(props) {
     super(props);
     const { documents, documentId } = props;
-    const sourceLang = documents[documentId].xliff.sourceLang;
-    const targetLang = documents[documentId].xliff.targetLang;
+    const { sourceLang, targetLang } = documents[documentId].xliff;
     this.parseLangs(sourceLang, targetLang);
-
-    this.onSubmit = this.onSubmit.bind(this);
-    this.lookup = this.lookup.bind(this);
-    this.renderSpinner = this.renderSpinner.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -39,12 +20,12 @@ class Lexicon extends React.Component {
     }
   }
 
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     // if checked searching in target language
     // if not checked searching in source language
-    const value = encodeURI(event.target.childNodes[1].value.trim());
-    if (event.target.childNodes[0].childNodes[1].childNodes[0].checked) {
+    const value = encodeURI(event.target[1].value.trim());
+    if (!event.target[0].checked) {
       this.lookup(value);
     } else {
       this.lookup(value, this.state.sourceCode, this.state.targetCode);
@@ -64,30 +45,59 @@ class Lexicon extends React.Component {
       targetLang: obj2.name,
       targetCode: code2.toUpperCase(),
       loading: false,
-      status: '',
+      result: null,
       lexicon: this.props.lexicon,
     };
   }
 
-  lookup(lexicon, sourceLang = this.state.targetCode, targetLang = this.state.sourceCode) {
+  lookup = (lexicon, sourceLang = this.state.targetCode, targetLang = this.state.sourceCode) => {
     const selectedText = lexicon.trim();
-    let loading = true;
-    this.setState({ loading, lexicon: selectedText });
-    BabelApi.lookupWord(selectedText, sourceLang, targetLang, ((res) => {
-      console.log(res);
-      loading = false;
-      let sourceLemma = findFirstLemma(this.state.sourceCode, res.data);
-      let targetLemma = findFirstLemma(this.state.targetCode, res.data);
-      if (!res.data || !sourceLemma) {
-        sourceLemma = 'Sense not found';
-      }
-      if (!res.data || !targetLemma) {
-        targetLemma = 'Sense not found';
-      }
-      this.setState({ loading, sourceLemma, targetLemma });
-    }));
+    const loading = true;
+    this.setState({ loading });
+    BabelApi.lookup(selectedText, sourceLang, targetLang)
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        if (data.message) throw new Error(data.message);
+        const promises = data.map(json => BabelApi.find(json.id, sourceLang, targetLang));
+        return Promise.all(promises);
+      })
+      .then((values) => {
+        let result = null;
+        let results = [];
+        values.map((response) => {
+          results.push(response.data);
+          return 1;
+        });
+        return results;
+      })
+      .then((result) => {
+        if (result !== null) {
+          this.setState({ loading: false, result });
+        }
+        else {
+          this.setState({ loading: false, result: null });
+        }
+      })
+      .catch((error) => {
+        this.setState({ loading: false, result: null });
+      });
+    // BabelApi.lookupWord(selectedText, sourceLang, targetLang, ((res) => {
+    //   console.log(res);
+    //   loading = false;
+    //   let sourceLemma = findFirstLemma(this.state.sourceCode, res.data);
+    //   let targetLemma = findFirstLemma(this.state.targetCode, res.data);
+    //   if (!res.data || !sourceLemma) {
+    //     sourceLemma = 'Sense not found';
+    //   }
+    //   if (!res.data || !targetLemma) {
+    //     targetLemma = 'Sense not found';
+    //   }
+    //   this.setState({ loading, sourceLemma, targetLemma });
+    // }));
   }
-  renderSpinner() {
+  renderSpinner = () => {
     if (this.state.loading) {
       return (<Loader />);
     }
@@ -99,10 +109,11 @@ class Lexicon extends React.Component {
       <Display
         onSubmit={this.onSubmit}
         sourceLang={this.state.sourceLang}
+        sourceCode={this.state.sourceCode}
         targetLang={this.state.targetLang}
-        sourceLemma={this.state.sourceLemma}
-        targetLemma={this.state.targetLemma}
+        targetCode={this.state.targetCode}
         renderSpinner={this.renderSpinner}
+        result={this.state.result}
       />
     );
   }
