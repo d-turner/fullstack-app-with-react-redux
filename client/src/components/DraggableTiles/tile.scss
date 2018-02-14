@@ -201,7 +201,7 @@ span.grippy::after {
 
 .trash {
   border: 1px solid;
-  color: blue;
+  color: #ccc;
   padding: 0;
   height: 42px;
   display: inline-block;
@@ -213,7 +213,7 @@ span.grippy::after {
 
 .overTrash {
   border: 1px solid;
-  color: red;
+  color: $darkReject;
   padding: 0;
   height: 42px;
   display: inline-block;
