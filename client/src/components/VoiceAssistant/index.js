@@ -10,12 +10,13 @@ class VoiceAssistant extends React.Component {
     if (window.annyang && window.SpeechKITT) {
       const { annyang, SpeechKITT } = window;
       const commands = {
-        'next word': this.nextWord,
-        'previous word': this.previousWord,
-        'select word': this.selectWord,
-        'copy word': this.copyWord,
-        'cut word': this.cutWord,
-        'paste word': this.pasteWord,
+        next: this.nextWord,
+        previous: this.previousWord,
+        select: this.selectWord,
+        copy: this.copyWord,
+        cut: this.cutWord,
+        paste: this.pasteWord,
+        'insert :word': this.insertWord,
         accept: this.acceptTranslation,
         reject: this.rejectTranslation,
         'next segment': this.nextSegment,
@@ -80,6 +81,11 @@ class VoiceAssistant extends React.Component {
     this.props.CustomEditor.pasteWord();
   }
 
+  insertWord = (word) => {
+    console.log('Inserting word', word);
+    this.props.CustomEditor.insertWord(word);
+  }
+
   acceptTranslation = () => {
     console.log('Accepting translation');
     this.props.acceptTranslation(this.props.selectedSegment);
@@ -103,10 +109,10 @@ class VoiceAssistant extends React.Component {
     // need to move to the previous segment
   }
   undo = () => {
-    console.log('Undo not Ready Ye');
+    this.props.CustomEditor.undo();
   }
   redo = () => {
-    console.log('Redo not Ready Yet');
+    this.props.CustomEditor.redo();
   }
   copyText = (source, destination) => {
     console.log(`Copying text from ${source} to ${destination}`);
@@ -118,7 +124,7 @@ class VoiceAssistant extends React.Component {
   }
   focus = () => {
     console.log('Focusing editor');
-    this.props.Editor.focus();
+    this.props.CustomEditor.focusEditor();
     // if in tile mode need to focus to that tile
   }
 
