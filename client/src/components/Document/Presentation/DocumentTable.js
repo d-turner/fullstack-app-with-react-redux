@@ -78,6 +78,14 @@ export default class DocumentTable extends React.Component {
         this.setState({ sortable });
         break;
       }
+      case ('date_1'): {
+        const { sortable } = this.state;
+        sortable.sort((a, b) => {
+          return Date.parse(a.created_at) - Date.parse(b.created_at);
+        });
+        this.setState({ sortable });
+        break;
+      }
       default:
         break;
     }
@@ -114,7 +122,7 @@ export default class DocumentTable extends React.Component {
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Completed Segments</div>
             </th>
-            <th scope="col">
+            <th scope="col" className={main.clickable} onClick={() => this.sortTable('date_1')}>
               <div className="document-list-utility" />
               <div className="th-document-ellipsis">Created Date</div>
             </th>

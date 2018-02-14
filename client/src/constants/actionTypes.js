@@ -41,6 +41,7 @@ export const UPDATE_WORD = 'UPDATE_WORD';
 export const UPDATE_WORD_ORDER = 'UPDATE_WORD_ORDER';
 export const UNDO_TILE = 'UNDO_TILE_ACTION';
 export const REDO_TILE = 'REDO_TILE_ACTION';
+export const CLEAR_TARGET = 'CLEAR_TARGET';
 
 // SegmentList Actions
 export const UPDATE_SELECTED = 'UPDATE_SELECTED_SEGMENT';

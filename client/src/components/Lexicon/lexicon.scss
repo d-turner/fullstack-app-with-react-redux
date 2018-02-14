@@ -98,3 +98,11 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+.results {
+  overflow-y: scroll;
+  height: -webkit-calc(100% - 345px);
+  height:    -moz-calc(100% - 345px);
+  height:         calc(100% - 345px);
+}

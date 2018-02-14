@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-const key = 'ad58eca6-d462-4f61-8f11-cc07f82590c0';
+const key = '9af54edb-9a10-45f7-a780-9e714e33b411';
+// secondary_key = 'ad58eca6-d462-4f61-8f11-cc07f82590c0';
 const headers = new Headers({
   Origin: '/',
   'Access-Control-Allow-Origin': '*',
@@ -16,18 +17,14 @@ export const BabelNet = {
   // { "version": "V3_7" }
   getVersion: `https://babelnet.io/v4/getVersion?key=${key}`,
 
-
-
   // returns babelnet synset ids for word
   // [ { "id": "bn:00615676n" }, { "id": "bn:03740610n" }, ... ]
   // Word   => Word to lookup
   // lang   => language of the source word
   // pos    => 'NOUN', 'VERB', etc
   // source => 'WIKT', 'WIKIDATA', etc
-  getSynsetIds:
-  (word, sourceLang, lang2) => `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
-
-
+  getSynsetIds: (word, sourceLang, lang2) =>
+    `https://babelnet.io/v4/getSynsetIds?word=${word}&langs=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
 
   // returns babelnet senses for synset id
   /*
@@ -41,8 +38,6 @@ export const BabelNet = {
   getSynset: (synsetId, lang1, lang2) =>
   `https://babelnet.io/v4/getSynset?id=${synsetId}&filterLangs=${lang1}&filterLangs=${lang2}&key=${key}`,
 
-
-
   // return babelnet senses of a given word
   /*
    [ { "lemma": "BabelNet", "simpleLemma": "BabelNet", "source": "WIKI", "sensekey": "", "sensenumber": 0,
@@ -52,14 +47,14 @@ export const BabelNet = {
        "freebaseId": "0n5v3cj"
   }, ... ]
   */
-  getSenses: (word, sourceLang, lang2) => `https://babelnet.io/v4/getSenses?word=${word}&lang=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
-
+  getSenses: (word, sourceLang, lang2) =>
+    `https://babelnet.io/v4/getSenses?word=${word}&lang=${sourceLang}&filterLangs=${sourceLang}&filterLangs=${lang2}&key=${key}`,
 
 
   // return babelnet ids for resource identifier
   // [ { "id": "bn:03083790n", "pos": "NOUN", "source": "BABELNET" }, ...]
   getSynsetIdsFromResourceID: (word, lang, pos, source) =>
-  `https://babelnet.io/v4/getSynsetIdsFromResourceID?id=${word}&lang=${lang}&pos=${pos}&source=${source}&key=${key}`,
+    `https://babelnet.io/v4/getSynsetIdsFromResourceID?id=${word}&lang=${lang}&pos=${pos}&source=${source}&key=${key}`,
 
 
   // return all neighbours of a specific BabelSynset
@@ -96,38 +91,37 @@ export function test() {
 }
 
 const BabelApi = {
-  lookup: (word, source, target, cb) => {
+  lookup: (word, source, target) => {
     const url = BabelNet.getSynsetIds(word, target, source);
-    axios({
+    return axios({
       url,
       mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    }).then(response => cb(response));
+    });
   },
 
-  find: (json, source, target, cb) => {
-    const url = BabelNet.getSynset(json[0].id, target, source);
-    axios({
+  find: (id, source, target) => {
+    const url = BabelNet.getSynset(id, target, source);
+    return axios({
       url,
       mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    }).then(response => cb(response));
+    });
   },
 
-  lookupWord: (word, target, source, cb) => {
+  lookupWord: (word, target, source) => {
     const url = BabelNet.getSenses(word, target, source);
-    console.log(url);
-    axios({
+    return axios({
       url,
       mode: 'no-cors',
       method: 'GET',
       compress: true,
       headers,
-    }).then(response => cb(response));
+    });
   },
 };
 

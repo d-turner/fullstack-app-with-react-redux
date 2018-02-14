@@ -148,3 +148,11 @@ export function redoTileAction(documentId, segmentId) {
     segmentId,
   };
 }
+
+export function clearTarget(documentId, segmentId) {
+  return {
+    type: actions.CLEAR_TARGET,
+    documentId,
+    segmentId,
+  };
+}

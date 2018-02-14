@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import styles from '../tile.scss';
 
 class SortableListItem extends React.Component {
-  state = { doubleClick: false, word: this.props.value, backup: this.props.value };
+  state = { doubleClick: false, word: this.props.value, backup: this.props.value, element: null };
+
+  componentDidMount() {
+    if (this.props.focus) {
+      this.tile.focus();
+    }
+  }
 
   componentDidUpdate() {
     if (this.state.doubleClick) {
@@ -56,24 +62,76 @@ class SortableListItem extends React.Component {
     this.setState({ word: event.target.value });
   }
 
+  onDragStart = (event) => {
+    if (this.props.editable) {
+      const data = {
+        index: this.props.itemIndex,
+        value: this.props.value,
+      };
+      event.dataTransfer.setData('text', JSON.stringify(data));
+    }
+  }
+
   render() {
     let closeButton = null;
     if (this.props.editable) {
       closeButton = (
-        <button className={styles.closeButton} onClick={this.removeWord}>
-          <i className="material-icons">highlight_off</i>
+        <button className={styles.add}
+          onClick={() => {
+            this.props.addTile(this.props.itemIndex);
+        }}>
+          <i className="material-icons">add</i>
         </button>
       );
     }
+    // return (
+    //   <div className={`${styles.format1} ${styles.noselect} ${styles.maxWidth}`}
+    //     style={{display: 'inline-block', cursor: 'move' }}
+    //     onDragStart={this.onDragStart}
+    //     data-list-item={this.props.editable}>
+    //     <div className={styles.wrapper}>
+    //       <li className={styles.item}>
+    //         <span class="my-handle">::</span>
+    //         <div className={styles.tile}>
+    //           {this.props.editable ?
+    //             <input className={styles.text}
+    //               style={{ width: `${this.state.word.length * 10 + 10}px` }}
+    //               type="text"
+    //               spellCheck="false"
+    //               cols="1"
+    //               rows="1"
+    //               onChange={event => this.onChange(event)}
+    //               onKeyDown={event => this.keyDown(event)}
+    //               onBlur={event => this.handleBlur(event)}
+    //               value={this.state.word}
+    //               ref={(tile) => { this.tile = tile; }} /> :
+    //             <span>{this.props.value}</span>
+    //           }
+    //           {closeButton}
+    //           &nbsp;
+    //         </div>
+    //       </li>
+    //       {this.props.editable ? (
+    //         <button className={styles.addButton} onClick={this.removeWord}>
+    //           <i className="material-icons">add_circle_outline</i>
+    //         </button>
+    //       ) : null}
+    //     </div>
+    //   </div>
+    // );
+    let format = styles.format;
+    if (this.props.editable) format = styles.format1;
     return (
-      <li className={`${styles.format1} ${styles.noselect} ${styles.maxWidth}`}
+      <li className={`${format} ${styles.noselect} ${styles.maxWidth}`}
+        onDragStart={this.onDragStart}
         data-list-item={this.props.editable}
-        style={{ cursor: 'move' }}>
+        style={{ cursor: 'move' }}
+        ref={(ref) => { this.listItem = ref; }}>
         <div className={styles.tile}>
           <span className={styles.grippy} />
           {this.props.editable ?
             <input className={styles.text}
-              style={{ width: `${this.state.word.length * 10 + 10}px` }}
+              style={{ width: `${this.state.word.length * 10 + 10}px`, minWidth: '40px' }}
               type="text"
               spellCheck="false"
               cols="1"
@@ -86,8 +144,8 @@ class SortableListItem extends React.Component {
             <span>{this.props.value}</span>
           }
           {closeButton}
-          &nbsp;
         </div>
+        {this.state.element}
       </li>
     );
   }
