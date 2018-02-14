@@ -6,7 +6,7 @@ import SortableListItem from '../Presentation/SortableListItem';
 import styles from '../tile.scss';
 
 class SortableTiles extends React.Component {
-  state = { tempTile: null }
+  state = { tempTile: null, overTrash: false }
 
   onEnd = (event) => {
     // need to move from oldIndex to new index
@@ -24,6 +24,7 @@ class SortableTiles extends React.Component {
 
   onMove = (event) => {
     event.preventDefault();
+    this.setState({ dragWord: event.item.children[0].children[1].value });
     this.props.setDragging(true);
   }
 
@@ -37,6 +38,7 @@ class SortableTiles extends React.Component {
 
   _drop = (event) => {
     event.preventDefault();
+    this.setState({ overTrash: false });
     let data = null;
     try {
       data = JSON.parse(event.dataTransfer.getData('text'));
@@ -49,7 +51,15 @@ class SortableTiles extends React.Component {
 
   _preventDefault = (event) => {
     event.preventDefault();
+    console.log(event);
+    this.setState({ overTrash: true });
   }
+
+  _onLeave = (event) => {
+    event.preventDefault();
+    this.setState({ overTrash: false });
+  }
+
   sortableGroupDecorator = (componentBackingInstance) => {
     // check if backing instance not null
     if (componentBackingInstance) {
@@ -126,16 +136,15 @@ class SortableTiles extends React.Component {
             })}
           </ol>
           {this.props.sortable ? (
-            <ol
+            <span
+              className={this.state.overTrash ? styles.overTrash : styles.trash}
               id="trash"
               onDragOver={this._preventDefault}
-              onDrop={this._drop}
-              style={{ backgroundColor: 'red',
-                  color: 'blue',
-                  width: '250px',
-                  padding: '4px 5px 0px 5px' }}>
-              <i className="material-icons">delete</i>
-            </ol>
+              onDragLeave={this._onLeave}
+              onDrop={this._drop}>
+              <i className={`material-icons ${styles.bin}`}>delete</i>
+              {this.state.overTrash ? fakeTilePresentation(this.state.dragWord) : null}
+            </span>
           ) : null}
         </div>
       </div>
@@ -143,6 +152,24 @@ class SortableTiles extends React.Component {
   }
 }
 
+function fakeTilePresentation(word) {
+  // if (word === undefined || word === null) return null;
+  // return (
+  //   <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth}`}>
+  //     <div className={styles.tile}>
+  //       <span className={styles.grippy} />
+  //       <input className={styles.text}
+  //         style={{ width: `${word.length * 10 + 10}px`, minWidth: '40px' }}
+  //         type="text"
+  //         spellCheck="false"
+  //         cols="1"
+  //         rows="1"
+  //         defaultValue={word} />
+  //     </div>
+  //   </li>
+  // );
+  return null;
+}
 SortableTiles.propTypes = {
   words: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortable: PropTypes.bool.isRequired,
