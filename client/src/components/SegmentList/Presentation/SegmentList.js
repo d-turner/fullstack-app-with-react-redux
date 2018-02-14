@@ -54,6 +54,9 @@ class SegmentList extends React.Component {
     if (!this.state.renderTiles) {
       this.CustomEditor.clearText();
     }
+    if (this.state.renderTiles) {
+      this.props.clearTarget(this.props.document.saved_name, index);
+    }
     const data = update(this.props.document.segments[index], { mode: { $set: 'reject' } });
     // data = _.mapKeys(data, (v, k) => _.camelCase(k));
     this.props.updateSegment(this.props.document, data);
