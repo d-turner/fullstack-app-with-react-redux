@@ -446,6 +446,35 @@ const DocumentReducer = function(state = initialState, action) {
           },
         },
       });
+    case actions.CLEAR_TARGET: {
+      const oldTarget = state.documents[action.documentId].xliff.segments[action.segmentId].target;
+      return update(state, {
+        documents: {
+          [action.documentId]: {
+            xliff: {
+              segments: {
+                [action.segmentId]: {
+                  target: {
+                    $set: '',
+                  },
+                },
+              },
+            },
+            history: {
+              prev: {
+                $push: [oldTarget],
+              },
+              next: {
+                $set: [],
+              },
+            },
+          },
+        },
+        editorState: {
+          $set: EditorState.createWithContent(ContentState.createFromText('')),
+        },
+      });
+    }
     // extracting all FindReplace actions to separate file
     case actions.FIND:
     case actions.FIND_NEXT:
