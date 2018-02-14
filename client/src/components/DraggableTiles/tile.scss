@@ -13,7 +13,7 @@
 // Source Tile format
 .format {
   padding: $sourceTilePadding;
-  margin: $tileMargin;
+  margin: $sourceTileMargin;
   display: inline-block;
   background-color: $tileColor;
 };
@@ -21,10 +21,18 @@
 // Target Tile format
 .format1 {
   padding: $targetTilePadding;
-  margin: $tileMargin;
+  margin: $targetTileMargin;
   display: inline-block;
   background-color: $tileColor;
 };
+
+.item {
+  background-color: $tileColor;
+  list-style: none;
+}
+.wrapper {
+  display: flex;
+}
 
 .inlineBlock {
   display: inline-block;
@@ -62,7 +70,7 @@ span.grippy {
   display: inline-block;
   overflow: hidden;
   line-height: 4px;
-  padding: 3px 0px;
+  padding: 3px 5px;
   cursor: move;
   vertical-align: middle;
   margin-top: -.7em;
@@ -97,6 +105,31 @@ span.grippy::after {
 .closeButton:hover {
   color: $error;
   @extend .solid;
+}
+
+.add {
+  width: 0px;
+  height: 0px;
+  display: inline-block;
+  position: relative;
+  top: -12px;
+  left: 18px;
+  padding: 0px;
+  margin: 0px;
+  background: none;
+  color: #7e7e7e;
+  @extend .faded;
+}
+
+.addButton {
+  background: none;
+  color: #7e7e7e;
+  @extend .faded;
+}
+
+.add:hover {
+  color: $darkAccept;
+  opacity: 1;
 }
 
 .text {
@@ -153,11 +186,16 @@ span.grippy::after {
 }
 
 .sortableChosen {
-  color: green;
-  opacity: .4;
+  color: $darkAccept;
+  @extend .faded;
 }
 
 .sortableGhost {
-  color: green;
+  background-color: $darkAccept;
+  color: $darkAccept;
   opacity: 1;
+}
+
+.trashGhost {
+  display: none;
 }
