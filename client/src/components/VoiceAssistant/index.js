@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import style from './VoiceAssistant.scss';
 
+// TODO: Add undo/redo for tile actions
 class VoiceAssistant extends React.Component {
   state = { };
 
