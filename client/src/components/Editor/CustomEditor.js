@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
+import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState, SelectionState } from 'draft-js';
 
 import { setSpacing, getWordAt } from '../../utils/stringParser';
 import BlockStyleControls from '../Editor/BlockStyleControls';
@@ -91,25 +91,41 @@ class CustomEditor extends React.Component {
   cutWord = () => {
     this.Editor.focus();
     const selection = this.props.editorState.getSelection();
-    const contentState = this.props.editorState.getCurrentContent();
-    const anchorOffset = selection.getAnchorOffset();
-    const focusOffset = selection.getFocusOffset();
-    const lower = (anchorOffset <= focusOffset ? anchorOffset : focusOffset);
-    const upper = (anchorOffset > focusOffset ? anchorOffset : focusOffset);
-    const plainText = contentState.getPlainText();
-    const selected = plainText.slice(lower, upper);
-    this.setState({ clipboard: selected });
-    const newText = plainText.substring(0, lower) + plainText.substring(upper);
-    const updatedSelection = selection.merge({
-      focusOffset: anchorOffset,
-      anchorOffset,
-    });
-    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(newText), 'delete-character');
-    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
+    if (!selection.isCollapsed()) {
+      const contentState = this.props.editorState.getCurrentContent();
+      const anchorOffset = selection.getAnchorOffset();
+      const focusOffset = selection.getFocusOffset();
+      const lower = (anchorOffset <= focusOffset ? anchorOffset : focusOffset);
+      const upper = (anchorOffset > focusOffset ? anchorOffset : focusOffset);
+      const plainText = contentState.getPlainText();
+      const selected = plainText.slice(lower, upper);
+      const newContentState = Modifier.removeRange(contentState, selection, 'forward');
+      const newEditorState = EditorState.push(this.props.editorState, newContentState, 'remove-range');
+      this.props.handleChange(newEditorState);
+      this.setState({ clipboard: selected });
+    }
   }
 
   pasteWord = () => {
     this.endValue(this.state.clipboard);
+  }
+
+  insertWord = (word) => {
+    this.endValue(word);
+  }
+
+  undo = () => {
+    const lastEditorState = EditorState.undo(this.props.editorState);
+    this.props.handleChange(lastEditorState);
+  }
+
+  redo = () => {
+    const nextEditorState = EditorState.redo(this.props.editorState);
+    this.props.handleChange(nextEditorState);
+  }
+
+  focusEditor = () => {
+    this.Editor.focus();
   }
 
   clearText = () => {
