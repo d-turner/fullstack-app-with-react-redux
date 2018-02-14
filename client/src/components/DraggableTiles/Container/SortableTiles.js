@@ -6,6 +6,8 @@ import SortableListItem from '../Presentation/SortableListItem';
 import styles from '../tile.scss';
 
 class SortableTiles extends React.Component {
+  state = { tempTile: null }
+
   onEnd = (event) => {
     // need to move from oldIndex to new index
     if (event.from === event.to && event.from.id !== 'non-sortable-list') {
@@ -25,13 +27,36 @@ class SortableTiles extends React.Component {
     this.props.setDragging(true);
   }
 
+  removeWord = (index) => {
+    this.props.updateWord(index, '');
+  }
+
+  addTile = (index) => {
+    this.setState({ tempTile: index });
+  }
+
+  _drop = (event) => {
+    event.preventDefault();
+    let data = null;
+    try {
+      data = JSON.parse(event.dataTransfer.getData('text'));
+      this.removeWord(data.index);
+    } catch (e) {
+      // If the text data isn't parsable we'll just ignore it.
+      return;
+    }
+  }
+
+  _preventDefault = (event) => {
+    event.preventDefault();
+  }
   sortableGroupDecorator = (componentBackingInstance) => {
     // check if backing instance not null
     if (componentBackingInstance) {
       const options = {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: this.props.sortable ? // specifies how the sorting should work for that list
-        { name: 'shared', pull: false, put: true }
+          { name: 'shared', pull: 'clone', put: true }
           : { name: 'shared', pull: 'clone', put: false },
         sort: this.props.sortable,
         animation: 300,
@@ -43,7 +68,26 @@ class SortableTiles extends React.Component {
       };
       Sortable.create(componentBackingInstance, options);
     }
-  };
+  }
+
+  fakeEnter = (index, text) => {
+    this.props.insertSourceWord(index + 1, text);
+    this.setState({ tempTile: null });
+  }
+  fakeTile = (word, index) => {
+    return (
+      <SortableListItem
+        key={`${word}${index}${this.props.sortable}`}
+        value={word}
+        index={index}
+        itemIndex={index}
+        updateWord={this.fakeEnter}
+        editable
+        addTile={this.addTile}
+        focus
+      />
+    );
+  }
 
   renderTile = (word, index) => {
     return (
@@ -54,6 +98,7 @@ class SortableTiles extends React.Component {
         itemIndex={index}
         updateWord={this.props.updateWord}
         editable={this.props.sortable}
+        addTile={this.addTile}
       />
     );
   }
@@ -67,9 +112,31 @@ class SortableTiles extends React.Component {
     return (
       <div className="container" ref={this.sortableContainersDecorator}>
         <div className={styles.group}>
-          <div className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={this.sortableGroupDecorator}>
-            {this.props.words.map((word, index) => this.renderTile(word, index))}
-          </div>
+          <ol className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={this.sortableGroupDecorator}>
+            {this.props.words.map((word, index) => {
+              if (this.state.tempTile !== null && index === this.state.tempTile) {
+                return (
+                  <div key={`${word}${index}${this.props.sortable}123`} style={{ display: 'inline-block' }}>
+                    {this.renderTile(word, index)}
+                    {this.fakeTile('', index)}
+                  </div>
+                );
+              }
+              return this.renderTile(word, index);
+            })}
+          </ol>
+          {this.props.sortable ? (
+            <ol
+              id="trash"
+              onDragOver={this._preventDefault}
+              onDrop={this._drop}
+              style={{ backgroundColor: 'red',
+                  color: 'blue',
+                  width: '250px',
+                  padding: '4px 5px 0px 5px' }}>
+              <i className="material-icons">delete</i>
+            </ol>
+          ) : null}
         </div>
       </div>
     );
