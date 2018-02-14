@@ -101,7 +101,7 @@ class Lexicon extends React.Component {
     if (this.state.loading) {
       return (<Loader />);
     }
-    return (<div />);
+    return null;
   }
 
   render() {

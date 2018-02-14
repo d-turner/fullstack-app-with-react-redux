@@ -43,16 +43,10 @@ function DisplayLexicon(props) {
           <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
             {props.sourceLang}
           </div>
-          <div className={styles.lexiconTranslation}>
-            {props.sourceLemma}
-          </div>
         </div>
         <div className="half">
           <div className={`${styles.lexiconItem} ${styles.lexiconHeading}`}>
             {props.targetLang}
-          </div>
-          <div className={styles.lexiconTranslation}>
-            {props.targetLemma}
           </div>
         </div>
         {props.renderSpinner()}
@@ -102,8 +96,8 @@ function RenderResult(sourceLang, targetLang, data, index) {
       <div className="half">
         {sourceGloss !== null ? (
           <div>
-            <p>{sourceGloss.sourceSense.split('_').join(' ')}</p>
-            <p>{sourceLemma}</p>
+            {/* <p>{sourceGloss.sourceSense.split('_').join(' ')}</p> */}
+            <p style={{ marginTop: '0px' }}>{sourceLemma}</p>
             <p>{sourceGloss.gloss}</p>
           </div>
         ) : null}
@@ -111,8 +105,8 @@ function RenderResult(sourceLang, targetLang, data, index) {
       <div className="half">
         {targetGloss !== null ? (
           <div>
-            <p>{targetGloss.sourceSense.split('_').join(' ')}</p>
-            <p>{targetLemma}</p>
+            {/* <p>{targetGloss.sourceSense.split('_').join(' ')}</p> */}
+            <p style={{ marginTop: '0px' }}>{targetLemma}</p>
             <p>{targetGloss.gloss}</p>
           </div>
         ) : null}
@@ -130,8 +124,6 @@ DisplayLexicon.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   sourceLang: PropTypes.string.isRequired,
   targetLang: PropTypes.string.isRequired,
-  sourceLemma: PropTypes.string,
-  targetLemma: PropTypes.string,
   renderSpinner: PropTypes.func.isRequired,
 };
 
