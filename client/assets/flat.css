@@ -179,8 +179,13 @@ label#skitt-toggle-button__label {
 
 .react-tabs__tab-panel {
   display: none;
+  height: 100%;
 }
 
 .react-tabs__tab-panel--selected {
   display: block;
+}
+
+.react-tabs {
+  height: 100%;
 }
