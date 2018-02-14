@@ -4,7 +4,7 @@ import { arrayMove } from 'react-sortable-hoc';
 
 import store from '../../../store';
 import * as actions from '../TileActions';
-import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
+import { splitTextIntoArray, cleanText, upperFirstLetter, lowerFirstLetter } from '../../../utils/stringParser';
 import SortableTiles from './SortableTiles';
 
 class SortableTilesContainer extends React.Component {
@@ -17,8 +17,17 @@ class SortableTilesContainer extends React.Component {
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
+    console.log('old index', oldIndex);
+    console.log('new index', newIndex);
     const targetWords = splitTextIntoArray(cleanText(this.props.segment.target));
     const newArray = arrayMove(targetWords, oldIndex, newIndex);
+    // need to capitalize word at newIndex
+    if (newIndex === 0) newArray[newIndex] = upperFirstLetter(newArray[newIndex]);
+    // need to decapitalize word
+    if (oldIndex === 0) {
+      newArray[newIndex] = lowerFirstLetter(newArray[newIndex]);
+      newArray[oldIndex] = upperFirstLetter(newArray[oldIndex]);
+    }
     store.dispatch(
       actions.updateWordOrder(
         this.props.documentId,
