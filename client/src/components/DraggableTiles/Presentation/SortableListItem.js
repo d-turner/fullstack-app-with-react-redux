@@ -84,42 +84,7 @@ class SortableListItem extends React.Component {
         </button>
       );
     }
-    // return (
-    //   <div className={`${styles.format1} ${styles.noselect} ${styles.maxWidth}`}
-    //     style={{display: 'inline-block', cursor: 'move' }}
-    //     onDragStart={this.onDragStart}
-    //     data-list-item={this.props.editable}>
-    //     <div className={styles.wrapper}>
-    //       <li className={styles.item}>
-    //         <span class="my-handle">::</span>
-    //         <div className={styles.tile}>
-    //           {this.props.editable ?
-    //             <input className={styles.text}
-    //               style={{ width: `${this.state.word.length * 10 + 10}px` }}
-    //               type="text"
-    //               spellCheck="false"
-    //               cols="1"
-    //               rows="1"
-    //               onChange={event => this.onChange(event)}
-    //               onKeyDown={event => this.keyDown(event)}
-    //               onBlur={event => this.handleBlur(event)}
-    //               value={this.state.word}
-    //               ref={(tile) => { this.tile = tile; }} /> :
-    //             <span>{this.props.value}</span>
-    //           }
-    //           {closeButton}
-    //           &nbsp;
-    //         </div>
-    //       </li>
-    //       {this.props.editable ? (
-    //         <button className={styles.addButton} onClick={this.removeWord}>
-    //           <i className="material-icons">add_circle_outline</i>
-    //         </button>
-    //       ) : null}
-    //     </div>
-    //   </div>
-    // );
-    let format = styles.format;
+    let { format } = styles;
     if (this.props.editable) format = styles.format1;
     return (
       <li className={`${format} ${styles.noselect} ${styles.maxWidth}`}
