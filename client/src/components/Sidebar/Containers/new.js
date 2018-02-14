@@ -11,32 +11,11 @@ import Button from '../../ButtonList/Button';
 class Sidebar extends React.Component {
   state = { active: false };
 
-  renderComment() {
-    this.setState({
-      renderComment: true,
-      renderLexicon: false,
-      renderSearch: false,
-    });
-  }
-
-  renderLexicon() {
-    this.setState({
-      renderComment: false,
-      renderLexicon: true,
-      renderSearch: false,
-    });
-  }
-
-  renderSearch() {
-    this.setState({
-      renderComment: false,
-      renderLexicon: false,
-      renderSearch: true,
-    });
-  }
   renderTabs = () => {
+    let hide = {};
+    if (!this.state.active) hide = { visibility: 'hidden' };
     return (
-      <Tabs>
+      <Tabs style={hide}>
         <TabList>
           <Tab>Comments</Tab>
           <Tab>Lexicon Lookup</Tab>
@@ -56,18 +35,9 @@ class Sidebar extends React.Component {
     );
   }
 
-  renderSwitch() {
-    const { documentId } = this.props;
-    if (this.state.renderComment) {
-      return <Comments documentId={documentId} />;
-    } else if (this.state.renderLexicon) {
-      return <Lexicon documentId={documentId} />;
-    } else if (this.state.renderSearch) {
-      return <FindReplace documentId={documentId} />;
-    }
-    return null;
-  }
   render() {
+    let icon = 'arrow_back';
+    if (this.state.active) icon = 'arrow_forward';
     let view = styles.menu;
     if (this.state.active) view = `${styles.active} ${styles.menu}`;
     return (
@@ -76,7 +46,7 @@ class Sidebar extends React.Component {
           <Button
             classNames={styles.menuButton}
             label="menu"
-            icon="menu"
+            icon={icon}
             func={() => this.setState({ active: !this.state.active})}
             id="menu"
             direction="left"
