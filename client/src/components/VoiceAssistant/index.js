@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import style from './VoiceAssistant.scss';
 
 // TODO: Add undo/redo for tile actions
+// TODO: Test delete
 class VoiceAssistant extends React.Component {
   state = { };
 
@@ -17,7 +18,12 @@ class VoiceAssistant extends React.Component {
         copy: this.copyWord,
         cut: this.cutWord,
         paste: this.pasteWord,
+        delete: this.deleteCharacter,
         'insert :word': this.insertWord,
+        upper: this.upperWord,
+        lower: this.lowerWord,
+        bold: this.bold,
+        italic: this.italic,
         accept: this.acceptTranslation,
         reject: this.rejectTranslation,
         'next segment': this.nextSegment,
@@ -82,9 +88,33 @@ class VoiceAssistant extends React.Component {
     this.props.CustomEditor.pasteWord();
   }
 
+  deleteCharacter = () => {
+    console.log('Deleting a character');
+    this.props.CustomEditor.delete();
+  }
   insertWord = (word) => {
     console.log('Inserting word', word);
     this.props.CustomEditor.insertWord(word);
+  }
+
+  upperWord = () => {
+    console.log('Capitalise');
+    this.props.CustomEditor.upperCase(); // TODO: need to add some code here
+  }
+
+  lowerWord = () => {
+    console.log('Decapitalise');
+    this.props.CustomEditor.lowerCase(); // TODO: need to add some code here
+  }
+
+  bold = () => {
+    console.log('Bold');
+    this.props.CustomEditor.bold(); // TODO: need to add some code here
+  }
+
+  italic = () => {
+    console.log('Italic');
+    this.props.CustomEditor.italic(); // TODO: need to add some code here
   }
 
   acceptTranslation = () => {
@@ -137,7 +167,7 @@ class VoiceAssistant extends React.Component {
 }
 
 VoiceAssistant.propTypes = {
-
+  CustomEditor: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default VoiceAssistant;
