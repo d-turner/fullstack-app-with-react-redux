@@ -8,6 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const config = require('./webpack.config.js');
 
+const port = 3000;
 const app = express();
 
 // get the environment
@@ -95,9 +96,9 @@ app.get('*.js', (req, res, next) => {
 
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(3000, (err) => {
+app.listen(port, (err) => {
   if (err) {
     console.log(err);
   }
-  console.info('===> Listening on port 3000');
+  console.info(`===> Listening on port ${port}`);
 });
