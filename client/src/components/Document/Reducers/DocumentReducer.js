@@ -148,7 +148,7 @@ const updateFromVoiceInput = function(state, action) {
 const insertSourceWord = function(state, action) {
   const { segments } = state.xliff;
   const { word, segmentId } = action; // .toLowerCase();
-  const newTarget = splitTextIntoArray(segments[segmentId].target);
+  const newTarget = splitTextIntoArray(cleanText(segments[segmentId].target));
   // TODO: Character Capital After Insert
   // if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
   //   word = action.word.charAt(0).toUpperCase() + action.word.slice(1);
@@ -183,7 +183,7 @@ const insertSourceWord = function(state, action) {
 const updateWord = function(state, action) {
   const { segments } = state.xliff;
   const { text, segmentId } = action;
-  const newTarget = splitTextIntoArray(segments[segmentId].target);
+  const newTarget = splitTextIntoArray(cleanText(segments[segmentId].target));
   newTarget[action.index] = text;
   return update(state, {
     xliff: {
