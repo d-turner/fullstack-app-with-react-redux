@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState, SelectionState } from 'draft-js';
+import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
 
 import { setSpacing, getWordAt } from '../../utils/stringParser';
 import BlockStyleControls from '../Editor/BlockStyleControls';
@@ -9,7 +9,7 @@ import styles from './Editor.scss';
 import main from '../../constants/main.scss';
 
 class CustomEditor extends React.Component {
-  state = { hasFocus: false, renderStyles: false, clipboard: '' };
+  state = { hasFocus: false, renderStyles: true, clipboard: '' };
 
   componentDidMount() {
     this.Editor.focus();
@@ -110,8 +110,83 @@ class CustomEditor extends React.Component {
     this.endValue(this.state.clipboard);
   }
 
+  delete = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    if (selection.isCollapsed()) {
+      const contentState = this.props.editorState.getCurrentContent();
+      const anchorOffset = selection.getAnchorOffset();
+      if (anchorOffset === 0) return;
+      const plainText = contentState.getPlainText();
+      const lower = plainText.slice(0, anchorOffset - 1);
+      const upper = plainText.slice(anchorOffset);
+      console.log(lower, upper);
+      const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(lower.concat(upper)), 'delete-character');
+      const newSelection = newEditorState.getSelection();
+      const updatedSelection = newSelection.merge({
+        focusOffset: anchorOffset - 1,
+        anchorOffset: anchorOffset - 1,
+      });
+      this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
+    }
+  }
+
   insertWord = (word) => {
     this.endValue(word);
+  }
+
+  upperCase = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const plainText = contentState.getPlainText();
+    const charArray = plainText.split('');
+    charArray[anchorOffset] = charArray[anchorOffset].toUpperCase();
+    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data');
+    const newSelection = newEditorState.getSelection();
+    const updatedSelection = newSelection.merge({
+      focusOffset,
+      anchorOffset,
+    });
+    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
+  }
+
+  lowerCase = () => {
+    this.Editor.focus();
+    const selection = this.props.editorState.getSelection();
+    const contentState = this.props.editorState.getCurrentContent();
+    const anchorOffset = selection.getAnchorOffset();
+    const focusOffset = selection.getFocusOffset();
+    const plainText = contentState.getPlainText();
+    const charArray = plainText.split('');
+    charArray[anchorOffset] = charArray[anchorOffset].toLowerCase();
+    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data');
+    const newSelection = newEditorState.getSelection();
+    const updatedSelection = newSelection.merge({
+      focusOffset,
+      anchorOffset,
+    });
+    this.props.handleChange(EditorState.forceSelection(newEditorState, updatedSelection));
+  }
+
+  bold = () => {
+    // TODO: set the current selection to be bold or activate it if not
+    this.Editor.focus();
+    this.props.toggleInlineStyle('BOLD');
+  }
+
+  italic = () => {
+    // TODO: set the current formatting to be italic or word style if selected
+    this.Editor.focus();
+    this.props.toggleInlineStyle('ITALIC');
+  }
+
+  underline = () => {
+    // TODO: set the current formatting to be underline or word style if selected
+    this.Editor.focus();
+    this.props.toggleInlineStyle('UNDERLINE');
   }
 
   undo = () => {
@@ -175,7 +250,7 @@ class CustomEditor extends React.Component {
             toggleInlineStyle={this.props.toggleInlineStyle} /> :
           null
         }
-        <div className={`${styles['RichEditor-editor']} ${style}`} >
+        <div className={`${styles['RichEditor-editor']} ${style}`}>
           <Editor
             autoCapitalize="sentences"
             autoComplete="off"
