@@ -18,6 +18,7 @@ export default class VoiceInput extends Component {
       speaking: false,
       isFirst: true,
       error: false,
+      message: '',
     };
     this.finalTranscript = '';
     this.interimTranscript = '';
@@ -59,6 +60,38 @@ export default class VoiceInput extends Component {
           this.stop();
         }
       };
+    }
+  }
+
+  printMousePos = (event) => {
+    let element = null;
+    if (event.type === 'touchstart') {
+      element = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    } else {
+      element = document.elementFromPoint(event.clientX, event.clientY);
+    }
+    let index = element.dataset.index;
+    let tile = element.dataset.listItem;
+    if (!tile) {
+      element = element.parentElement;
+      index = element.dataset.index;
+      tile = element.dataset.listItem;
+    }
+    if (!tile) {
+      element = element.parentElement;
+      index = element.dataset.index;
+      tile = element.dataset.listItem;
+    }
+    if (tile) {
+      this.setState({ message: null });
+      const list = document.getElementById('sortable-list');
+      list.removeEventListener('click', this.printMousePos);
+      list.removeEventListener('touchstart', this.printMousePos);
+      this.props.insertAfterTile(index, this.state.inputValue.trim());
+      // clean up here, clear the text area, any interum values and call this.props.insertAfterTile(index);
+    } else {
+      // failed try again
+      this.setState({ message: 'Tile not detected, please try again' });
     }
   }
 
@@ -137,8 +170,16 @@ export default class VoiceInput extends Component {
           icon="done"
           func={(e) => {
             e.preventDefault();
-            this.props.editor.focus();
-            this.props.onEnd(this.state.inputValue.trim());
+            if (this.props.renderTiles) {
+              this.setState({ message: 'Select a tile to insert the text after' });
+              const element = document.getElementById('sortable-list');
+              // TODO: only add if not added before
+              element.addEventListener('click', this.printMousePos);
+              element.addEventListener('touchstart', this.printMousePos);
+            } else {
+              this.props.editor.focus();
+              this.props.onEnd(this.state.inputValue.trim());
+            }
             this.stop();
           }}
           id="Accept Voice Input"
@@ -149,9 +190,12 @@ export default class VoiceInput extends Component {
           icon="clear"
           func={(e) => {
             e.preventDefault();
-            const event = { target: { value: '' }};
+            const event = { target: { value: '' } };
             this.changeValue(event);
             this.props.editor.focus();
+            // determine if its in tile mode or not
+            // find the tile it needs to insert into/after
+            // focus back to the tile
             this.stop();
           }}
           id="Reject Voice Input"
@@ -165,7 +209,8 @@ export default class VoiceInput extends Component {
       <div className="full half-500 three-fifth-700 off-fifth-700 two-fifth-800 fifth-1200 off-none-1200">
         <div className={`flex one ${styles.chatInputWrapper} ${this.props.className}`}>
           {this.renderEditor()}
-          {this.state.error ? <TextError error="No speech recognised, please try again..." /> : null}
+          {this.state.error ? <TextError error=" No speech recognised, please try again..." /> : null}
+          {this.state.message ? <span className={styles.infoMessage}>{this.state.message}</span> : null}
           <div className="full">
             {this.renderButtons()}
           </div>
