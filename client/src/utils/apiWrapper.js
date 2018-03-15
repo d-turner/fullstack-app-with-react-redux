@@ -14,9 +14,12 @@ const SYNC = '/api/syncDocument/';
 const LOGGER = '/api/uploadLog/';
 const META = '/api/documentMeta/';
 const SEGMENT = '/api/segment/';
+const TOKENIZER = '/api/tokenizer';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
-let API_HOSTNAME = 'http://localhost:8080';
+// let API_HOSTNAME = 'http://localhost:8080';
+let API_HOSTNAME = 'http://192.168.1.17:8080';
+// let API_HOSTNAME = 'http://10.42.0.1:8080';
 if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = '';
 }
@@ -154,6 +157,11 @@ const api = {
   /* Sample features for testing */
   setSeg: (docId, data) => {
     return apiPromise({ data, endpoint: `${SEGMENT}${docId}`, method: 'post' });
+  },
+
+  getTokens: (data) => {
+    const headers = { 'Content-Type': 'application/json' };
+    return apiPromise({ data, endpoint: TOKENIZER, method: 'post', headers });
   },
 };
 
