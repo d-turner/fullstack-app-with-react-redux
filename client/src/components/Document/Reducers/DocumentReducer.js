@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import * as actions from '../../../constants/actionTypes';
 import FindReplaceReducer from '../../FindReplace/Reducers/FindReplaceReducer';
 import DocumentList from './DocumentListReducer';
-import { splitTextIntoArray, joinTextArray, cleanText } from '../../../utils/stringParser';
+import { splitTextIntoArray, joinTextArray, cleanText, insertIntoArray } from '../../../utils/stringParser';
 
 /* eslint function-paren-newline: 0 */
 const initialState = {
@@ -148,6 +148,7 @@ const updateFromVoiceInput = function(state, action) {
 const insertSourceWord = function(state, action) {
   const { segments } = state.xliff;
   const { word, segmentId } = action; // .toLowerCase();
+  console.log('inserting source word');
   const newTarget = splitTextIntoArray(cleanText(segments[segmentId].target));
   // TODO: Character Capital After Insert
   // if ((action.index === 0 && action.isBefore) || (newTarget[action.index] === '.' && !action.isBefore)) {
@@ -182,9 +183,10 @@ const insertSourceWord = function(state, action) {
 
 const updateWord = function(state, action) {
   const { segments } = state.xliff;
-  const { text, segmentId } = action;
+  const { text, segmentId, index } = action;
+  console.log('updating word');
   const newTarget = splitTextIntoArray(cleanText(segments[segmentId].target));
-  newTarget[action.index] = text;
+  newTarget[index] = text;
   return update(state, {
     xliff: {
       segments: {
