@@ -18,14 +18,17 @@ const BLOCK_TYPES = [
 const BlockStyleControls = (props) => {
   const { editorState } = props;
   const selection = editorState.getSelection();
-  const blockType = editorState
+  const block = editorState
     .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
+    .getBlockForKey(selection.getStartKey());
+  let blockType = null;
+  if (block !== undefined) {
+    blockType = block.getType();
+  }
   return (
     <div style={{ marginBottom: '10px' }}>
-      {BLOCK_TYPES.map(type =>
-        <StyleButton
+      {BLOCK_TYPES.map((type) => {
+        return (<StyleButton
           key={type.label}
           className={props.className}
           active={type.style === blockType}
@@ -33,7 +36,8 @@ const BlockStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
-        />,
+        />);
+      },
       )}
     </div>
   );

@@ -11,11 +11,18 @@ const INLINE_STYLES = [
 ];
 const InlineStyleControls = (props) => {
   const { editorState } = props;
-  const currentStyle = editorState.getCurrentInlineStyle();
+  const selection = editorState.getSelection();
+  const startKey = selection.getStartKey();
+  const content = editorState.getCurrentContent();
+  const startBlock = content.getBlockForKey(startKey);
+  let currentStyle = new Map();
+  if (startBlock !== undefined) {
+    currentStyle = editorState.getCurrentInlineStyle();
+  }
   return (
     <div>
-      {INLINE_STYLES.map(type =>
-        <StyleButton
+      {INLINE_STYLES.map((type) => {
+        return (<StyleButton
           className={props.className}
           key={type.label}
           active={currentStyle.has(type.style)}
@@ -23,7 +30,8 @@ const InlineStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
-        />,
+        />);
+      },
       )}
     </div>
   );
