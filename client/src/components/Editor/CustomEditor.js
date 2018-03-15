@@ -241,8 +241,7 @@ class CustomEditor extends React.Component {
       <div className={styles['RichEditor-root']} id="editorWrapper"
         onClick={() => { this.Editor.focus(); }}
         aria-label="Editor"
-        tabIndex={0}
-        role="textbox">
+        role="navigation">
         {this.state.renderStyles ?
           <Styles
             editorState={this.props.editorState}
