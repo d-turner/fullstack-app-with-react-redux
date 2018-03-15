@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import styles from '../segment.scss';
 import CustomEditor from '../../Editor/CustomEditor';
-import { splitTextIntoArray, cleanText } from '../../../utils/stringParser';
 import SortableTilesContainer from '../../DraggableTiles/Container/SortableTilesContainer';
+import UnsortableTilesContainer from '../../DraggableTiles/Container/UnsortableTilesContainer';
 
 class Segment extends React.Component {
   state = { dragging: false };
@@ -22,21 +22,28 @@ class Segment extends React.Component {
     this.setState({ dragging: bool });
   }
 
-  renderTiles(sortable) {
-    const { segment } = this.props;
-    let words = splitTextIntoArray(cleanText(segment.source));
-    if (sortable) words = splitTextIntoArray(cleanText(segment.target));
+  renderTiles(text) {
     return (
-      <div id={sortable ? 'targetTiles' : 'sourceTiles'}>
+      <div id="sourceTiles">
+        <UnsortableTilesContainer
+          text={text}
+          setDragging={this.setDragging}
+          dragging={this.state.dragging} />
+      </div>
+    );
+  }
+  renderSortableTiles(text) {
+    return (
+      <div id="targetTiles">
         <SortableTilesContainer
-          words={words}
-          segment={this.props.segment}
+          text={text}
           segmentId={this.props.segmentId}
           documentId={this.props.documentId}
-          sortable={sortable}
           setDragging={this.setDragging}
           dragging={this.state.dragging}
-          keyLogger={this.props.keyLogger} />
+          keyLogger={this.props.keyLogger}
+          insertTiles={this.props.insertTiles}
+          ref={(ref) => { this.Sortable = ref; this.props.setRef('Sortable', ref); }} />
       </div>
     );
   }
@@ -70,18 +77,18 @@ class Segment extends React.Component {
   }
 
   render() {
-    const { renderTiles } = this.props;
+    const { renderTiles, segmentId, segment, keyLogger } = this.props;
     return (
       <div>
         <div className={`${styles.wrapper} ${styles.selected}`}>
-          <div className={styles.number}><h5># {this.props.segmentId}</h5></div>
+          <div className={styles.number}><h5># {segmentId}</h5></div>
           <h5>Source</h5>
-          {renderTiles ? this.renderTiles(false) : this.renderSource()}
+          {renderTiles ? this.renderTiles(segment.source) : this.renderSource()}
           <h5 className={styles.targetSpacing}>Target Window</h5>
           <div
             aria-label="Key Logger"
-            onKeyDown={e => this.props.keyLogger.record(e)} role="Main">
-            {renderTiles ? this.renderTiles(true) : this.renderEditor()}
+            onKeyDown={e => keyLogger.record(e)} role="Main">
+            {renderTiles ? this.renderSortableTiles(segment.target) : this.renderEditor()}
           </div>
         </div>
         {this.renderMT()}
@@ -103,6 +110,7 @@ Segment.propTypes = {
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
   renderTiles: PropTypes.bool.isRequired,
   setRef: PropTypes.func.isRequired,
+  insertTiles: PropTypes.bool.isRequired,
   mt: PropTypes.string,
 };
 
