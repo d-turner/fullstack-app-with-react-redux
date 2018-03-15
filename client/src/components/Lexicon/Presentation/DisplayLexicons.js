@@ -30,7 +30,7 @@ function DisplayLexicon(props) {
         />
         <div style={{ textAlign: 'left', margin: '0 0 10px 0' }}>
           <input type="submit"
-            text="Search"
+            value="Search"
             style={{
               background: 'white',
               color: 'black',
