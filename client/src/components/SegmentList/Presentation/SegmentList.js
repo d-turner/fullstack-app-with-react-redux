@@ -26,15 +26,18 @@ class SegmentList extends React.Component {
     renderTiles: false,
     renderVoice: false,
     renderComment: false,
+    insertTiles: false,
     help: true,
   };
 
   componentDidMount() {
+    window.addEventListener('keyup', this.escapeTiles);
     this.props.updateSelectedSegment(this.props.document.saved_name, 0);
     this.props.requestSegments(this.props.document);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('keyup', this.escapeTiles);
     this.props.updateSelectedSegment(this.props.document.saved_name, -1);
   }
 
@@ -62,12 +65,22 @@ class SegmentList extends React.Component {
     this.props.updateSegment(this.props.document, data);
   }
 
+  escapeTiles = (e) => {
+    if ((e.key === 'Escape' || e.keyCode === 27) && this.state.renderTiles) {
+      this.setState({ renderTiles: false });
+    } else if ((e.ctrlKey && e.keyCode === 13) && this.state.renderTiles) {
+      this.acceptTranslation(this.props.selectedSegment);
+    }
+  };
+
   undoTileAction = (index) => {
-    this.props.undoTileAction(this.props.document.saved_name, index);
+    this.Sortable.undo();
+    // this.props.undoTileAction(this.props.document.saved_name, index);
   }
 
   redoTileAction = (index) => {
-    this.props.redoTileAction(this.props.document.saved_name, index);
+    this.Sortable.redo();
+    // this.props.redoTileAction(this.props.document.saved_name, index);
   }
 
   voiceComponent = (index) => {
@@ -98,6 +111,13 @@ class SegmentList extends React.Component {
       <div>
         {this.state.renderTiles ? (
           <div>
+            <Button
+              classNames={classNames}
+              label="toggle"
+              icon="playlist_add"
+              func={() => this.setState({ insertTiles: !this.state.insertTiles })}
+              id="toggle"
+              tooltip={false} />
             <Button
               classNames={classNames}
               label="Undo"
@@ -217,6 +237,7 @@ class SegmentList extends React.Component {
               segmentId={index}
               editorState={this.props.editorState}
               renderTiles={this.state.renderTiles}
+              insertTiles={this.state.insertTiles}
               xliff={xliff}
               ref={(ref) => { this.SelectedSegment = ref; }}
               setRef={(name, ref) => { this[name] = ref; }} />
@@ -265,14 +286,14 @@ class SegmentList extends React.Component {
           </div> :
           (null)
         }
-        <VoiceAssistant
+        {/* <VoiceAssistant
           acceptTranslation={this.acceptTranslation}
           rejectTranslation={this.rejectTranslation}
           updateSelected={this.selected}
           Editor={this.Editor}
           CustomEditor={this.CustomEditor}
           {...this.props}
-        />
+        /> */}
         {this.props.document.xliff.segments.map(this.renderSegment)}
       </div>
     );
