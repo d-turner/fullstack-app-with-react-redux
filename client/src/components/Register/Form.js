@@ -18,7 +18,8 @@ export default function Form(props) {
         name="name"
         aria-label="name input"
         placeholder="Name"
-        autoComplete="off" />
+        autoComplete="off"
+        autoFocus />
       <TextError error={props.nameError} />
 
       {/* Email Input */}
