@@ -361,12 +361,11 @@ label > h4 {
 
 .responsiveTable {
   overflow: auto;
-  overflow-y: hidden;
 }
 
 @media (min-width: 800px) {
   .responsiveTable {
-    overflow: hidden;
+    overflow: auto;
   }
 }
 
