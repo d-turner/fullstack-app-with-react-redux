@@ -42,6 +42,10 @@ class SortableTilesContainer extends React.Component {
     this.updateWordArray(newArray);
   }
 
+  insertAfter = (index, value) => {
+    this.insertSourceWord(index + 1, value);
+  }
+
   undo = () => {
     const { prev, words } = this.state;
     if (prev.length === 0) return;
