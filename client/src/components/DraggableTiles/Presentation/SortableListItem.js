@@ -43,40 +43,36 @@ const touchEnd = (touchEvent, index) => {
 };
 
 class SortableListItem extends React.Component {
-  state = { doubleClick: false, word: this.props.value, backup: this.props.value, element: null };
+  state = { word: this.props.value, backup: this.props.value };
 
   componentDidMount() {
-    if (this.props.focus) {
-      this.tile.focus();
-    }
+    if (this.props.focus) this.tile.focus();
+    const { listItem } = this;
+    addEvent(listItem, 'touchstart', e => touchStart(e, this.props.itemIndex));
+    addEvent(listItem, 'touchmove', touchMove);
+    addEvent(listItem, 'touchend', e => touchEnd(e, this.props.itemIndex));
   }
 
-  componentDidUpdate() {
-    if (this.state.doubleClick) {
-      this.tile.focus();
-      const range = document.createRange();
-      const sel = window.getSelection();
-      const el = document.getElementById('editable');
-      range.setStart(el.childNodes[0], this.tile.innerHTML.length);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
+  componentWillUnmount() {
+    const { listItem } = this;
+    removeEvent(listItem, 'touchstart', touchStart);
+    removeEvent(listItem, 'touchmove', touchMove);
+    removeEvent(listItem, 'touchend', touchEnd);
   }
 
-  // handleDoubleClick = (event) => {
-  //   // if (this.state.doubleClick) return;
-  //   // if (event.nativeEvent.type === 'dblclick' || event.key === 'Enter' || event.key === 'Space') {
-  //   //   this.setState({ doubleClick: true });
-  //   // }
-  // }
-
-  handleFocus = () => {
-    document.execCommand('selectAll', false, null);
+  onChange = (event) => {
+    this.setState({ word: event.target.value });
   }
 
   removeWord = () => {
     this.props.updateWord(this.props.itemIndex, '');
+  }
+
+  handleFocus = (e) => {
+    // this.execCommand('selectAll', false, null);
+    const tempValue = e.target.value;
+    e.target.value = '';
+    e.target.value = tempValue;
   }
 
   handleBlur = (event) => {
@@ -84,7 +80,7 @@ class SortableListItem extends React.Component {
       let text = this.state.word.trim();
       this.props.updateWord(this.props.itemIndex, text);
       if (text.split(' ')[0] === this.state.backup) text = this.state.backup;
-      this.setState({ doubleClick: false, word: text });
+      this.setState({ word: text });
     }
   }
 
@@ -93,28 +89,14 @@ class SortableListItem extends React.Component {
       this.handleBlur(event);
     } else if (event.key === 'Escape') {
       // reset the word if Escape was pressed
-      this.setState({ word: this.state.backup, doubleClick: false });
-    }
-  }
-
-  onChange = (event) => {
-    this.setState({ word: event.target.value });
-  }
-
-  onDragStart = (event) => {
-    if (this.props.editable) {
-      const data = {
-        index: this.props.itemIndex,
-        value: this.props.value,
-      };
-      event.dataTransfer.setData('text', JSON.stringify(data));
+      this.setState({ word: this.state.backup });
     }
   }
 
   render() {
-    let closeButton = null;
-    if (this.props.editable) {
-      closeButton = (
+    let plusButton = null, before = null, style = { cursor: 'move' };
+    if (!this.props.focus && this.props.insertTiles) {
+      plusButton = (
         <button className={styles.add}
           onClick={() => {
             this.props.addTile(this.props.itemIndex);
@@ -124,32 +106,50 @@ class SortableListItem extends React.Component {
       );
     }
     let { format } = styles;
-    if (this.props.editable) format = styles.format1;
+    if (this.props.insertTiles) format = styles.format1;
+    if (this.props.itemIndex === 0 && !this.props.focus && this.props.insertTiles) {
+      style = { cursor: 'move', marginLeft: '22px' };
+      before = (
+        <button
+          className={styles.add}
+          style={{ left: '-32px' }}
+          onClick={() => {
+            this.props.addTile(-1);
+        }}>
+          <i className="material-icons">add</i>
+        </button>
+      );
+    }
     return (
       <li className={`${format} ${styles.noselect} ${styles.maxWidth}`}
-        onDragStart={this.onDragStart}
-        data-list-item={this.props.editable}
-        style={{ cursor: 'move' }}
+        data-list-item
+        data-index={this.props.itemIndex}
+        data-value={this.props.value}
+        style={style}
+        onTouchStart={(e) => {
+          if (this.tile) {
+            this.tile.focus();
+          }
+          this.props.setPosition(this.props.itemIndex);
+          this.handleFocus(e);
+        }}
         ref={(ref) => { this.listItem = ref; }}>
+        {before}
         <div className={styles.tile}>
           <span className={styles.grippy} />
-          {this.props.editable ?
-            <input className={styles.text}
-              style={{ width: `${this.state.word.length * 10 + 10}px`, minWidth: '40px' }}
-              type="text"
-              spellCheck="false"
-              cols="1"
-              rows="1"
-              onChange={event => this.onChange(event)}
-              onKeyDown={event => this.keyDown(event)}
-              onBlur={event => this.handleBlur(event)}
-              value={this.state.word}
-              ref={(tile) => { this.tile = tile; }} /> :
-            <span>{this.props.value}</span>
-          }
-          {closeButton}
+          <input className={styles.text}
+            style={{ width: `${this.state.word.length * 10 + 17}px`, minWidth: '50px' }}
+            type="text"
+            spellCheck="false"
+            cols="1"
+            rows="1"
+            onChange={event => this.onChange(event)}
+            onKeyDown={event => this.keyDown(event)}
+            onBlur={event => this.handleBlur(event)}
+            value={this.state.word}
+            ref={(tile) => { this.tile = tile; }} />
+          {plusButton}
         </div>
-        {this.state.element}
       </li>
     );
   }
@@ -159,7 +159,6 @@ SortableListItem.propTypes = {
   value: PropTypes.string.isRequired,
   itemIndex: PropTypes.number.isRequired,
   updateWord: PropTypes.func.isRequired,
-  editable: PropTypes.bool.isRequired,
 };
 
 export default SortableListItem;
