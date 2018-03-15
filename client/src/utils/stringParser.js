@@ -1,17 +1,32 @@
 // All the functions in the file should not mutate inputs and must return new objects
-
+// TODO: Add exception for numbers
 export function splitTextIntoArray(text) {
-  let prep = text.replace(/\./g, '.');
+  // let prep = text.replace(/\./g, '.');
   // prep = prep.replace(/,/g, ' ,');
-  prep = prep.replace(/ +/g, ' ');
-  const wordArray = prep.split(' ').filter((e) => { return e === 0 || e; });
-  // for (let i = 1; i < wordArray.length; i++) {
-  //   if (!isNaN(wordArray[i - 1]) && !isNaN(wordArray[i + 1]) && isNaN(wordArray[i])) {
-  //     wordArray[i - 1] = wordArray[i - 1] + wordArray[i] + wordArray[i + 1];
-  //     wordArray[i] = '';
-  //     wordArray[i + 1] = '';
-  //   }
-  // }
+  // prep = prep.replace(/ +/g, ' ');
+  let wordArray = text.split(' '); //.filter((e) => { return e === 0 || e; });
+  console.log(wordArray);
+  /* */
+  for (let i = 0; i < wordArray.length; i++) {
+    if (i === wordArray.length - 1) break;
+    if (
+      (Number.isFinite(wordArray[i]) || (Number.isFinite(Number(wordArray[i])) && typeof wordArray[i] === 'string'))
+      &&
+      (Number.isFinite(wordArray[i + 1]) || (Number.isFinite(Number(wordArray[i + 1])) && typeof wordArray[i + 1] === 'string') ||
+      wordArray[i + 1].endsWith('%'))
+    ) {
+      console.log('joining elements');
+      const temp = joinElements(wordArray, '', i, i + 1);
+      console.log(temp);
+      const temp2 = wordArray.slice(0, i).concat(temp).concat(wordArray.slice(i + 2, wordArray.length));
+      console.log(temp2);
+      wordArray = temp2;
+    }
+    // if (!isNaN(wordArray[i]) && !isNaN(wordArray[i + 1]) && isNaN(wordArray[i])) {
+    //   wordArray = joinElements(wordArray, '', i, i+1);
+    // }
+  }
+  /* */
   return wordArray;
 }
 
@@ -24,18 +39,27 @@ export function joinTextArray(array) {
     .trim();
 }
 
+export function joinElements(array, seperator, start, end) {
+  if (!start) start = 0;
+  if (!end) end = this.length - 1;
+  end++;
+  return array.slice(start, end).join(seperator);
+}
+
 export function cleanText(text, lowercaseBefore) {
   let newText = (text === undefined || text === null) ? '' : text;
   if (lowercaseBefore) { newText = newText.toLowerCase(); }
   newText = newText.replace(/\r?\n|\r/g, '');
   newText = newText.replace(/\./g, '. ');
   newText = newText.replace(/,/g, ', ');
-  newText = newText.replace(/ +/g, ' ');
+  newText = newText.replace(/ \./g, '.');
+  newText = newText.replace(/ ,/g, ',');
   newText = newText.replace(/(<([^>]+)>)/ig, '');
   newText = newText.split('.').map(data => data.trim()).join('. ');
+  newText = newText.replace(/ +/g, ' ');
   newText = newText.trim();
-  return newText.toString().replace(/(^|\. *)([a-z])/g, (match, separator, char) => {
-    return separator + char;
+  return newText.toString().replace(/(^|\. *)([a-z])/g, (match, seperator, char) => {
+    return seperator + char;
   });
 }
 
@@ -47,22 +71,27 @@ export function isEmpty(obj) {
 }
 
 export function upperFirstLetter(string) {
+  if (!string || string.length <= 0) return string;
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function upperLetterAt(string, index) {
+  if (!string || string.length <= index || index < 0) return string;
   return string.charAt(index).toUpperCase() + string.slice(1);
 }
 
 export function lowerFirstLetter(string) {
+  if (!string || string.length <= 0) return string;
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
 export function lowerLetterAt(string, index) {
+  if (!string || string.length <= index || index < 0) return string;
   return string.slice(0, index) + string.charAt(index).toLowerCase() + string.slice(index + 1);
 }
 
 export function shouldUpperCase(string, index) {
+  if (!string || string.length < index) return false;
   if (index === 0) return true;
   if (['.', '!', '?'].indexOf(string.charAt(index - 1)) + 1 ||
       ['.', '!', '?'].indexOf(string.charAt(index - 2)) + 1) return true;
@@ -158,3 +187,18 @@ export function getWordAt(sentence, position) {
   // Return the word, using the located bounds to extract it from the string.
   return str.slice(left, right + pos);
 }
+
+export const insertIntoArray = (array, index, values) => {
+  return array.slice(0, index).concat(values).concat(array.slice(index));
+};
+
+export const insertAndReplace = (array, index, values) => {
+  return array.slice(0, index).concat(values).concat(array.slice(index + 1));
+};
+
+export const removeIndex = (array, index) => {
+  index = parseInt(index, 10);
+  const part1 = array.slice(0, index);
+  const part2 = array.slice(index + 1, array.length + 1);
+  return part1.concat(part2);
+};
