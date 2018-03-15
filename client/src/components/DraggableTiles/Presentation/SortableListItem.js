@@ -1,7 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { addEvent, removeEvent, touchDndCustomEvents, syntheticEvent } from '../../../utils/eventsHelper';
+
 import styles from '../tile.scss';
+
+const touchStart = (touchEvent) => {
+  touchEvent.preventDefault();
+  const { target } = touchEvent;
+  const type = 'dragstart';
+  const event = syntheticEvent(type, touchEvent, null, target);
+  target.dispatchEvent(event);
+};
+
+const touchMove = (touchEvent) => {
+  touchEvent.preventDefault();
+  const x = touchEvent.changedTouches[0].clientX;
+  const y = touchEvent.changedTouches[0].clientY;
+
+  const draggedOver = document.elementFromPoint(x, y);
+  const { lastDraggedOver } = touchDndCustomEvents;
+
+  if (lastDraggedOver !== draggedOver) {
+    touchDndCustomEvents.lastDraggedOver = draggedOver;
+  }
+  const { target } = touchEvent;
+  const type = 'touchdrag';
+  const event = syntheticEvent(type, touchEvent, null, target);
+  target.dispatchEvent(event);
+};
+
+const touchEnd = (touchEvent, index) => {
+  touchEvent.preventDefault();
+  let { target } = touchEvent;
+  const type = 'drop';
+  const event = syntheticEvent(type, touchEvent, null, target);
+  if (touchDndCustomEvents.lastDraggedOver === document.getElementById('trash') ||
+      touchDndCustomEvents.lastDraggedOver === document.querySelector('#trash > i')) {
+    target = document.querySelector('#trash');
+  }
+  target.dispatchEvent(event);
+};
 
 class SortableListItem extends React.Component {
   state = { doubleClick: false, word: this.props.value, backup: this.props.value, element: null };
