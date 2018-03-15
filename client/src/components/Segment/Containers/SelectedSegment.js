@@ -80,6 +80,7 @@ class SelectedSegment extends React.Component {
         keyLogger={this.keyLogger}
         xliff={this.props.xliff}
         renderTiles={this.props.renderTiles}
+        insertTiles={this.props.insertTiles}
         ref={(ref) => { this.SegmentPresentation = ref; }}
         setRef={this.props.setRef}
       />
@@ -99,6 +100,7 @@ SelectedSegment.propTypes = {
   userId: PropTypes.string.isRequired,
   renderTiles: PropTypes.bool.isRequired,
   setRef: PropTypes.func.isRequired,
+  insertTiles: PropTypes.bool.isRequired,
   mt: PropTypes.string,
 };
 
