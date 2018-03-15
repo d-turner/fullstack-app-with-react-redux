@@ -1,6 +1,7 @@
 node_modules/
 dist/
 client/src/data/
+pythonDependencies/
 *.log
 coverage
 .vscode
