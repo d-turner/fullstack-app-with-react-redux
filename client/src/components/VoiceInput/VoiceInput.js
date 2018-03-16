@@ -87,7 +87,7 @@ export default class VoiceInput extends Component {
       const list = document.getElementById('sortable-list');
       list.removeEventListener('click', this.printMousePos);
       list.removeEventListener('touchstart', this.printMousePos);
-      this.props.insertAfterTile(index, this.state.inputValue.trim());
+      this.props.insertAfterTile(parseInt(index, 10), this.state.inputValue.trim());
       // clean up here, clear the text area, any interum values and call this.props.insertAfterTile(index);
     } else {
       // failed try again
