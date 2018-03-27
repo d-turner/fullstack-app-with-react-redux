@@ -55,10 +55,9 @@ class Alerts extends React.Component {
               }),
             });
           }, 8500);
-          const key = `${message} ${index}`;
           return (
             <Alert
-              key={key}
+              key={message}
               message={message}
               type={types[index]}
               state={this.state.states[index]}
