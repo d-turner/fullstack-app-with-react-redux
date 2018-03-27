@@ -45,17 +45,14 @@ class Tiles extends React.Component {
   }
 
   renderTile = (word, index) => {
-    const { format } = styles;
-    const style = { cursor: 'move' };
     return (
-      <li className={`${format} ${styles.noselect} ${styles.maxWidth}`}
+      <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth}`}
         key={`${word}${index}unsortable`}
         data-list-item={false}
         data-index={index}
-        data-value={word}
-        style={style}>
-        <div className={styles.tile}>
-          <span className={styles.grippy} />
+        data-value={word}>
+        <div className={styles.tile1}>
+          <span />
           <span>{word}</span>
         </div>
       </li>
