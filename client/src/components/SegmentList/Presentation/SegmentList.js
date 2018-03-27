@@ -210,7 +210,7 @@ class SegmentList extends React.Component {
     let selectedStyle = styles.normalPadding;
     if (index === selectedSegment) selectedStyle = styles.selectedPadding;
     return (
-      <div className={`full ${selectedStyle}`} key={index} value={index}>
+      <div className={`full ${selectedStyle} segment`} key={segment.source} value={index}>
         { index === this.props.selectedSegment ?
           this.renderSelected(segment, index) :
           this.renderButton(segment, index)
@@ -268,18 +268,22 @@ class SegmentList extends React.Component {
 
   render() {
     let message =
-    `To activate voice input click the microphone icon and begin dictating
-    You can edit the input once you are finished
-    Select the position in the editor to insert the text and click the tick
-    Click the X to clear the input`;
+    `To activate voice input click the microphone icon, this will bring up the voice menu.
+    Click the large microphone to begin voice detection, you can begin dictating once the icon starts flashing.
+    If needed you can edit the result or try again. When you are happy with the result select
+    the position in the editor to insert the text and click the 'Accept Voice Input' button.
+    Use the 'Reject Voice Input' button to clear the input. To accept the translation click the green tick or use the keyboard shortcut 'Ctrl + Enter'
+    Undo and redo keyboard shortcuts are available with 'Ctrl + z' and 'Ctrl + y'`;
     if (this.state.renderTiles) {
       message =
-      `Double tap a tile to edit and press 'Enter' to accept or 'Esc' to cancel.
-      Tiles can be dragged from the source to the target or can be rearranged in the target.
-      Multiple tiles can be dragged by first selecting and highlighting the desired tiles.`;
+      `Tap a tile once to focus and edit the tile. Press 'Enter' to accept the changes or 'Esc' to cancel and return to the
+       original editor mode.
+       Tiles can be dragged from the source to the target or can be rearranged in the target.
+       Tiles can be removed by dragging them into the bin or by deleting the text.
+       If you make a mistake there are undo and redo buttons available`;
     }
     return (
-      <div className={`full grow ${styles.listMargin}`}>
+      <div className={`four-fifth ${styles.listMargin}`} id="segmentList">
         {this.state.help ?
           <div className={responsiveWidth}>
             <Info
