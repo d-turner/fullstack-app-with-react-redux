@@ -47,7 +47,7 @@ class SegmentListContainer extends React.Component {
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex five">
-          {/*
+          
           <div className="full">
             <Sync
               documentId={this.state.id}
@@ -56,7 +56,7 @@ class SegmentListContainer extends React.Component {
               document={documents[this.state.id]}
             />
           </div>
-          */}
+          
           <Minimap
             segments={documents[this.state.id].xliff.segments}
             selectedSegment={this.props.selectedSegment}
