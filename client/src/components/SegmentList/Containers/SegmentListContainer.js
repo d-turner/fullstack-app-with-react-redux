@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 
 import SegmentList from '../Presentation/SegmentList';
 import { isEmpty } from '../../../utils/stringParser';
-// TODO: Implement Sidebar
+import Minimap from '../../Minimap';
 import Sidebar from '../../Sidebar';
 
 
@@ -46,7 +46,8 @@ class SegmentListContainer extends React.Component {
     // if the document exists and is not loading display
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
-        <div className="flex four">
+        <div className="flex five">
+          {/*
           <div className="full">
             <Sync
               documentId={this.state.id}
@@ -55,6 +56,12 @@ class SegmentListContainer extends React.Component {
               document={documents[this.state.id]}
             />
           </div>
+          */}
+          <Minimap
+            segments={documents[this.state.id].xliff.segments}
+            selectedSegment={this.props.selectedSegment}
+            savedName={this.state.id}
+            updateSelectedSegment={this.props.updateSelectedSegment} />
           <SegmentList
             document={documents[this.state.id]}
             editorState={editorState}
