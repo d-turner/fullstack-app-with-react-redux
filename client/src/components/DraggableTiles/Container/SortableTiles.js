@@ -12,48 +12,38 @@ import { upperFirstLetter } from '../../../utils/stringParser';
 class SortableTiles extends React.Component {
   state = { tempTile: null, overTrash: false, newPosition: undefined }
 
-  componentDidMount() {
-    const bin = document.querySelector('#trash');
-    addEvent(bin, 'dragenter', (e) => {
-      // need to set the style for the bin
-      console.log('add style');
-      e.preventDefault();
-      e.stopPropagation(); // stop it here to prevent it bubble up
-      this._onEnter(e);
-    });
-    addEvent(bin, 'dragover', (e) => {
-      console.log('bin dragover');
-      e.preventDefault(); // allows us to drop
-      e.stopPropagation(); // stop it here to prevent it bubble up
-    });
-    addEvent(bin, 'dragexit', (e) => {
-      console.log('bin dragexit');
-      e.stopPropagation(); // stop it here to prevent it bubble up
-      this._onLeave(e);
-    });
-    addEvent(bin, 'dragleave', (e) => {
-      console.log('remove style');
-      e.stopPropagation(); // stop it here to prevent it bubble up
-    });
-    addEvent(bin, 'drop', (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // stop it here to prevent it bubble up
-      console.log('New position: ', this.state.newPosition);
-      if (this.state.newPosition) {
-        e.index = this.state.newPosition;
-      }
-      this._drop(e);
-      this.setState({ newPosition: undefined });
-    });
+  componentDidUpdate(prevProps) {
+    if (prevProps.loading && !this.props.loading) {
+      const bin = this.trash;
+      addEvent(bin, 'dragenter', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._onEnter();
+      });
+      addEvent(bin, 'dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._onEnter();
+      });
+      addEvent(bin, 'dragexit', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._onLeave();
+      });
+      addEvent(bin, 'dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._onLeave();
+      });
+    }
   }
 
   componentWillUnmount() {
-    const bin = document.querySelector('#trash');
+    const bin = this.trash;
     removeEvent(bin, 'dragenter');
     removeEvent(bin, 'dragover');
     removeEvent(bin, 'dragexit');
     removeEvent(bin, 'dragleave');
-    removeEvent(bin, 'drop');
   }
 
   onEnd = (event) => {
@@ -84,8 +74,8 @@ class SortableTiles extends React.Component {
 
   _drop = (event) => {
     if (this.state.newPosition !== undefined) {
-      this.props.removeIndex( this.state.newPosition);
-      this.setState({ newPosition: undefined });
+      this.props.removeIndex(this.state.newPosition);
+      this.setState({ newPosition: undefined, overTrash: false });
       return;
     }
     this.setState({ overTrash: false });
@@ -99,11 +89,11 @@ class SortableTiles extends React.Component {
     }
   }
 
-  _onEnter = (event) => {
+  _onEnter = () => {
     if (!this.state.overTrash) this.setState({ overTrash: true });
   }
 
-  _onLeave = (event) => {
+  _onLeave = () => {
     if (this.state.overTrash) this.setState({ overTrash: false });
   }
 
@@ -114,8 +104,8 @@ class SortableTiles extends React.Component {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: { name: 'shared', pull: false, put: true },
         sort: true,
-        touchStartThreshold: 20,
         animation: 300,
+        handle: '.handle',
         ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
         chosenClass: styles.sortableChosen || 'sortable-chosen', // Class name for the chosen item
         setData: (dataTransfer, dragEl) => {
@@ -133,21 +123,6 @@ class SortableTiles extends React.Component {
     }
   }
 
-  trashDecorator = (componentBackingInstance) => {
-    // check if backing instance not null
-    if (componentBackingInstance) {
-      const options = {
-        draggable: 'li', // Specifies which items inside the element should be sortable
-        group: { name: 'shared', pull: false, put: false },
-        sort: false,
-        animation: 300,
-        ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
-        chosenClass: styles.sortableChosen || 'sortable-chosen', // Class name for the chosen item
-      };
-      Sortable.create(componentBackingInstance, options);
-    }
-  }
-
   loading = () => {
     return (
       <div className="container">
@@ -159,6 +134,10 @@ class SortableTiles extends React.Component {
   }
 
   fakeEnter = (index, text) => {
+    if (text === '') {
+      this.setState({ tempTile: null });
+      return;
+    }
     this.props.insertSourceWord(index + 1, text);
     this.setState({ tempTile: null });
   }
@@ -177,6 +156,10 @@ class SortableTiles extends React.Component {
     );
   }
   firstFakeEnter = (_, text) => {
+    if (text === '') {
+      this.setState({ tempTile: null });
+      return;
+    }
     this.props.insertSourceWord(0, upperFirstLetter(text));
     this.setState({ tempTile: null });
   }
@@ -191,6 +174,8 @@ class SortableTiles extends React.Component {
         updateWord={this.firstFakeEnter}
         addTile={() => {}}
         insertTiles={this.props.insertTiles}
+        onEnter={this._onEnter}
+        onLeave={this._onLeave}
         focus
       />
     );
@@ -219,6 +204,18 @@ class SortableTiles extends React.Component {
       <div className="container">
         <div className={styles.group}>
           <ol className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={(ref) => { this.Tiles = ref; this.sortableGroupDecorator(ref);}}>
+            { this.props.words.length === 0 ?
+            (
+              <button
+                className={styles.add}
+                onClick={() => {
+                  this.addTile(0);
+                }}>
+                <i className="material-icons">add</i>
+              </button>
+            ) : null}
+            { (this.props.words.length === 0 && this.state.tempTile !== null) ?
+              (this.fakeTile('', 0)) : null}
             {this.props.words.map((word, index) => {
               if (this.state.tempTile !== null && index === this.state.tempTile) {
                 return (
@@ -242,7 +239,7 @@ class SortableTiles extends React.Component {
             className={this.state.overTrash ? styles.overTrash : styles.trash}
             id="trash"
             onDrop={this._drop}
-            ref={this.trashDecorator}>
+            ref={(trash) => { this.trash = trash; }}>
             <i className={`material-icons ${styles.bin}`}>delete</i>
           </span>
         </div>
@@ -252,12 +249,15 @@ class SortableTiles extends React.Component {
 }
 
 SortableTiles.propTypes = {
+  loading: PropTypes.bool.isRequired,
   words: PropTypes.arrayOf(PropTypes.string).isRequired,
   updateWord: PropTypes.func.isRequired,
   onSortEnd: PropTypes.func.isRequired,
   insertSourceWord: PropTypes.func.isRequired,
   dragging: PropTypes.bool.isRequired,
   setDragging: PropTypes.func.isRequired,
+  removeIndex: PropTypes.func.isRequired,
+  insertTiles: PropTypes.bool.isRequired,
 };
 
 export default SortableTiles;
