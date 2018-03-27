@@ -24,16 +24,27 @@ const touchMove = (touchEvent) => {
   if (lastDraggedOver !== draggedOver) {
     touchDndCustomEvents.lastDraggedOver = draggedOver;
   }
+  const bin = document.getElementById('trash');
+  if (draggedOver === bin || draggedOver === bin.firstChild) {
+    // console.log('Over');
+    // this.props.onEnter();
+    bin.dispatchEvent(syntheticEvent('dragenter', touchEvent, null, bin));
+  } else {
+    // console.log('Not over');
+    bin.dispatchEvent(syntheticEvent('dragleave', touchEvent, null, bin));
+  }
   const { target } = touchEvent;
   const type = 'touchdrag';
   const event = syntheticEvent(type, touchEvent, null, target);
   target.dispatchEvent(event);
 };
 
-const touchEnd = (touchEvent, index) => {
+const touchEnd = (touchEvent) => {
   touchEvent.preventDefault();
   let { target } = touchEvent;
   const type = 'drop';
+  const bin = document.getElementById('trash');
+  bin.dispatchEvent(syntheticEvent('dragleave', touchEvent, null, bin));
   const event = syntheticEvent(type, touchEvent, null, target);
   if (touchDndCustomEvents.lastDraggedOver === document.getElementById('trash') ||
       touchDndCustomEvents.lastDraggedOver === document.querySelector('#trash > i')) {
@@ -48,9 +59,9 @@ class SortableListItem extends React.Component {
   componentDidMount() {
     if (this.props.focus) this.tile.focus();
     const { listItem } = this;
-    addEvent(listItem, 'touchstart', e => touchStart(e, this.props.itemIndex));
+    addEvent(listItem, 'touchstart', touchStart);
     addEvent(listItem, 'touchmove', touchMove);
-    addEvent(listItem, 'touchend', e => touchEnd(e, this.props.itemIndex));
+    addEvent(listItem, 'touchend', touchEnd);
   }
 
   componentWillUnmount() {
@@ -94,38 +105,33 @@ class SortableListItem extends React.Component {
   }
 
   render() {
-    let plusButton = null, before = null, style = { cursor: 'move' };
+    let plusButton = null;
+    let before = null;
     if (!this.props.focus && this.props.insertTiles) {
       plusButton = (
-        <button className={styles.add}
-          onClick={() => {
-            this.props.addTile(this.props.itemIndex);
-        }}>
+        <button
+          className={styles.add}
+          onClick={() => this.props.addTile(this.props.itemIndex)}
+          onTouchStart={() => this.props.addTile(this.props.itemIndex)}>
           <i className="material-icons">add</i>
         </button>
       );
     }
-    let { format } = styles;
-    if (this.props.insertTiles) format = styles.format1;
     if (this.props.itemIndex === 0 && !this.props.focus && this.props.insertTiles) {
-      style = { cursor: 'move', marginLeft: '22px' };
       before = (
         <button
           className={styles.add}
-          style={{ left: '-32px' }}
-          onClick={() => {
-            this.props.addTile(-1);
-        }}>
+          onClick={() => this.props.addTile(-1)}
+          onTouchStart={() => this.props.addTile(-1)}>
           <i className="material-icons">add</i>
         </button>
       );
     }
     return (
-      <li className={`${format} ${styles.noselect} ${styles.maxWidth}`}
+      <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth}`}
         data-list-item
         data-index={this.props.itemIndex}
         data-value={this.props.value}
-        style={style}
         onTouchStart={(e) => {
           if (this.tile) {
             this.tile.focus();
@@ -135,10 +141,10 @@ class SortableListItem extends React.Component {
         }}
         ref={(ref) => { this.listItem = ref; }}>
         {before}
-        <div className={styles.tile}>
+        <div className={`${styles.tile} handle`}>
           <span className={styles.grippy} />
           <input className={styles.text}
-            style={{ width: `${this.state.word.length * 10 + 17}px`, minWidth: '50px' }}
+            style={{ width: `${this.state.word.length * 10 + 17}px` }}
             type="text"
             spellCheck="false"
             cols="1"
@@ -148,17 +154,21 @@ class SortableListItem extends React.Component {
             onBlur={event => this.handleBlur(event)}
             value={this.state.word}
             ref={(tile) => { this.tile = tile; }} />
-          {plusButton}
         </div>
+        {plusButton}
       </li>
     );
   }
 }
 
 SortableListItem.propTypes = {
+  insertTiles: PropTypes.bool,
   value: PropTypes.string.isRequired,
   itemIndex: PropTypes.number.isRequired,
   updateWord: PropTypes.func.isRequired,
+  setPosition: PropTypes.func,
+  addTile: PropTypes.func.isRequired,
+  focus: PropTypes.bool,
 };
 
 export default SortableListItem;
