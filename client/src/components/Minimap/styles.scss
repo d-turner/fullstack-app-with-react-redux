@@ -1,0 +1,27 @@
+.container {
+  height: calc(100vh - 48px);
+}
+
+.fixed {
+  position: fixed;
+  width: inherit;
+  overflow-y: scroll;
+  padding: 0 10px;
+  height: inherit;
+}
+
+.segment {
+  font-size: 11px;
+  box-shadow: none;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.selected {
+  font-size: 11px;
+  box-shadow: none;
+  background: none;
+  text-align: left;
+  color: green;
+}
