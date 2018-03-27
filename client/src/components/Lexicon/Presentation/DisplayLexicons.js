@@ -89,8 +89,6 @@ function RenderResult(sourceLang, targetLang, data, index) {
   const targetGloss = findFirstGloss(targetLang, data.glosses);
   const sourceLemma = findFirstLemma(sourceLang, data.senses);
   const targetLemma = findFirstLemma(targetLang, data.senses);
-  console.log(sourceLang, targetLang);
-  console.log(sourceGloss, sourceLemma, targetGloss, targetLemma);
   return (
     <div className="flex two" key={index}>
       <div className="half">
