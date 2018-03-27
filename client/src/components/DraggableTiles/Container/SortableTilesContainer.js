@@ -24,6 +24,12 @@ class SortableTilesContainer extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.text === '' && this.state.words.length !== 0) {
+      this.setState({ words: [] });
+    }
+  }
+
   componentWillUnmount() {
     this.props.keyLogger.setTileTotal();
   }
@@ -106,6 +112,10 @@ class SortableTilesContainer extends React.Component {
   }
 
   updateWord = (index, text) => {
+    if (text === '') {
+      this.removeIndex(index);
+      return;
+    }
     const newWords = insertAndReplace(this.state.words, index, text.split(' '));
     const event = { index, text };
     this.props.keyLogger.updateWord(event);
