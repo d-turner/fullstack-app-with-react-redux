@@ -48,7 +48,7 @@ class SegmentListContainer extends React.Component {
       return (
         <div className="flex five">
           
-          <div className="full">
+          <div className="full" style={{ padding: 0 }}>
             <Sync
               documentId={this.state.id}
               userId={this.props.userId}

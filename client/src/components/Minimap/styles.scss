@@ -1,5 +1,7 @@
+@import '../../constants/variables';
+
 .container {
-  height: calc(100vh - 48px);
+  height: calc(100vh - #{$padding-header});
 }
 
 .fixed {
@@ -10,18 +12,21 @@
   height: inherit;
 }
 
-.segment {
-  font-size: 11px;
+.button {
+  font: inherit;
+  width: 100%;
+  font-size: 13px;
   box-shadow: none;
   background: none;
   color: inherit;
   text-align: left;
+  
+}
+.segment {
+  @extend .button;
 }
 
 .selected {
-  font-size: 11px;
-  box-shadow: none;
-  background: none;
-  text-align: left;
-  color: green;
+  @extend .button;
+  color: $greenText;
 }
