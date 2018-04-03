@@ -149,6 +149,8 @@ class SortableListItem extends React.Component {
             spellCheck="false"
             cols="1"
             rows="1"
+            data-index={this.props.itemIndex}
+            onFocus={event => this.props.setTile(event)}
             onChange={event => this.onChange(event)}
             onKeyDown={event => this.keyDown(event)}
             onBlur={event => this.handleBlur(event)}
