@@ -481,3 +481,19 @@ label > h4 {
   display: flex;
   flex-flow: row wrap;
 }
+
+.noBorder {
+  border: none;
+  outline: none;
+}
+.noBorder::-moz-focus-inner {
+  border: 0;
+}
+.noBorder:focus {
+  border: none;
+  outline: none;
+}
+.noBorder:active {
+  border: none;
+  outline: none;
+}
