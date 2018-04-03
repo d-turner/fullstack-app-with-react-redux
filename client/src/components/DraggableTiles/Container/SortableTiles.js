@@ -4,13 +4,15 @@ import PropTypes from 'prop-types';
 
 import SortableListItem from '../Presentation/SortableListItem';
 import styles from '../tile.scss';
+import main from '../../../constants/main.scss';
 import Loader from '../../Loader/Loader';
 
 import { addEvent, removeEvent } from '../../../utils/eventsHelper';
-import { upperFirstLetter } from '../../../utils/stringParser';
+import { upperFirstLetter, lowerFirstLetter } from '../../../utils/stringParser';
+import Button from '../../ButtonList/Button';
 
 class SortableTiles extends React.Component {
-  state = { tempTile: null, overTrash: false, newPosition: undefined }
+  state = { tempTile: null, overTrash: false, newPosition: undefined, currentIndex: 0 }
 
   componentDidUpdate(prevProps) {
     if (prevProps.loading && !this.props.loading) {
@@ -184,6 +186,7 @@ class SortableTiles extends React.Component {
   renderTile = (word, index) => {
     return (
       <SortableListItem
+        setTile={e => this.setState({ currentIndex: e.target.dataset.index}) }
         key={`${word}${index}sortable`}
         setPosition={this.setPosition}
         value={word}
@@ -195,6 +198,30 @@ class SortableTiles extends React.Component {
     );
   }
 
+  renderCapitalizeButtons = () => {
+    const classNames = `${main.clearButtonLeft} ${main.button} ${main.noBorder}`;
+    return (
+      <div className="flex one" style={{ width: '60px', height: '0px'}}>
+        <div className="flex one" style={{ position: 'relative', padding: '7px', marginTop: '1em', left: '-50px' }}>
+          <Button
+            classNames={classNames}
+            label="Uppercase"
+            icon="format_size"
+            func={() => this.props.updateWord(this.state.currentIndex, upperFirstLetter(this.props.words[this.state.currentIndex]))}
+            id="Uppercase"
+            direction="left" />
+          <Button
+            classNames={classNames}
+            label="Lowercase"
+            icon="text_fields"
+            func={() => this.props.updateWord(this.state.currentIndex, lowerFirstLetter(this.props.words[this.state.currentIndex]))}
+            id="Lowercase"
+            direction="left" />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     if (this.props.loading) return this.loading();
     const id = 'sortable-list';
@@ -203,7 +230,10 @@ class SortableTiles extends React.Component {
     return (
       <div className="container">
         <div className={styles.group}>
-          <ol className={`${styles['group-list']} ${backgroundClass}`} id={id} ref={(ref) => { this.Tiles = ref; this.sortableGroupDecorator(ref);}}>
+          {this.renderCapitalizeButtons()}
+          <ol className={`${styles['group-list']} ${backgroundClass}`}
+            id={id}
+            ref={(ref) => { this.Tiles = ref; this.sortableGroupDecorator(ref); }}>
             { this.props.words.length === 0 ?
             (
               <button
