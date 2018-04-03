@@ -8,7 +8,7 @@ import Document from './Document';
 import main from '../../../constants/main.scss';
 
 export default class DocumentTable extends React.Component {
-  state = { sortable: [] };
+  state = { sortable: [], forward: true };
 
   componentWillReceiveProps(nextProps) {
     const sortable = [];
@@ -61,29 +61,49 @@ export default class DocumentTable extends React.Component {
   sortTable = (type) => {
     switch (type) {
       case ('id'): {
-        const { sortable } = this.state;
-        sortable.sort((a, b) => {
-          return a.id - b.id;
-        });
-        this.setState({ sortable });
+        const { sortable, forward } = this.state;
+        if (forward) {
+          sortable.sort((a, b) => {
+            return b.id - a.id;
+          });
+        } else {
+          sortable.sort((a, b) => {
+            return a.id - b.id;
+          });
+        }
+        this.setState({ sortable, forward: !forward });
         break;
       }
       case ('name'): {
-        const { sortable } = this.state;
-        sortable.sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
-        this.setState({ sortable });
+        const { sortable, forward } = this.state;
+        if (forward) {
+          sortable.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+          });
+        } else {
+          sortable.sort((a, b) => {
+            if (b.name < a.name) return -1;
+            if (b.name > a.name) return 1;
+            return 0;
+          });
+        }
+        this.setState({ sortable, forward: !forward });
         break;
       }
       case ('date_1'): {
-        const { sortable } = this.state;
-        sortable.sort((a, b) => {
-          return Date.parse(a.created_at) - Date.parse(b.created_at);
-        });
-        this.setState({ sortable });
+        const { sortable, forward } = this.state;
+        if (forward) {
+          sortable.sort((a, b) => {
+            return Date.parse(a.created_at) - Date.parse(b.created_at);
+          });
+        } else {
+          sortable.sort((a, b) => {
+            return Date.parse(b.created_at) - Date.parse(a.created_at);
+          });
+        }
+        this.setState({ sortable, forward: !forward });
         break;
       }
       default:
