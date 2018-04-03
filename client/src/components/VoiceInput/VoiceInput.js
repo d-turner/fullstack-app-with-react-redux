@@ -136,8 +136,8 @@ export default class VoiceInput extends Component {
         className={`${styles.editor} ${hide}`}
         value={this.state.inputValue}
         onChange={e => this.changeValue(e)}
-        aria-label="Voice Recognition Input"
-        placeholder="Voice Recognition Input"
+        aria-label="Voice Recognition Output"
+        placeholder="Voice Recognition Output"
         ref={(ref) => { this.textarea = ref; }} />
     );
   }
