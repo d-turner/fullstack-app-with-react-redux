@@ -193,6 +193,7 @@ export const insertIntoArray = (array, index, values) => {
 };
 
 export const insertAndReplace = (array, index, values) => {
+  index = parseInt(index, 10);
   return array.slice(0, index).concat(values).concat(array.slice(index + 1));
 };
 
