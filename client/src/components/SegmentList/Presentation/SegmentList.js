@@ -270,9 +270,10 @@ class SegmentList extends React.Component {
     let message =
     `To activate voice input click the microphone icon, this will bring up the voice menu.
     Click the large microphone to begin voice detection, you can begin dictating once the icon starts flashing.
-    If needed you can edit the result or try again. When you are happy with the result select
-    the position in the editor to insert the text and click the 'Accept Voice Input' button.
-    Use the 'Reject Voice Input' button to clear the input. To accept the translation click the green tick or use the keyboard shortcut 'Ctrl + Enter'
+    If you need you can make edits to the output or you can try again before inserting.
+    When you are happy with the result select the position in the editor to insert the text and click the 'Accept Voice Input' button.
+    Use the 'Reject Voice Input' button to clear the input.
+    To accept the translation click the green tick or use the keyboard shortcut 'Ctrl + Enter'
     Undo and redo keyboard shortcuts are available with 'Ctrl + z' and 'Ctrl + y'`;
     if (this.state.renderTiles) {
       message =
@@ -280,6 +281,8 @@ class SegmentList extends React.Component {
        original editor mode.
        Tiles can be dragged from the source to the target or can be rearranged in the target.
        Tiles can be removed by dragging them into the bin or by deleting the text.
+       You can use the voice input to add words to any location in the tile mode, first use the voice detection and make any changes if needed,
+       then click the tick, the voice menu will then ask you to select a tile to insert the text after.
        If you make a mistake there are undo and redo buttons available`;
     }
     return (
