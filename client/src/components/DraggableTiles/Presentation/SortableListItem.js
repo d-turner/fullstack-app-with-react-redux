@@ -132,8 +132,10 @@ class SortableListItem extends React.Component {
         data-list-item
         data-index={this.props.itemIndex}
         data-value={this.props.value}
+        onDragStart={(e) => { this.tile.blur(); this.tile.focus(); }}
         onTouchStart={(e) => {
           if (this.tile) {
+            this.tile.blur();
             this.tile.focus();
           }
           this.props.setPosition(this.props.itemIndex);
@@ -154,6 +156,8 @@ class SortableListItem extends React.Component {
             onChange={event => this.onChange(event)}
             onKeyDown={event => this.keyDown(event)}
             onBlur={event => this.handleBlur(event)}
+            onDragStart={(e) => { this.tile.blur(); this.tile.focus(); }}
+            onTouchStart={(e) => { this.tile.blur(); this.tile.focus(); }}
             value={this.state.word}
             ref={(tile) => { this.tile = tile; }} />
         </div>
