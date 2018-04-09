@@ -146,6 +146,7 @@ class SortableTiles extends React.Component {
   fakeTile = (word, index) => {
     return (
       <SortableListItem
+        setTile={e => this.setState({ currentIndex: e.target.dataset.index})}
         key={`${word}${index}sortable`}
         value={word}
         index={index}
@@ -168,6 +169,7 @@ class SortableTiles extends React.Component {
   firstFakeTile = (word) => {
     return (
       <SortableListItem
+        setTile={e => this.setState({ currentIndex: e.target.dataset.index})}
         key={`${word}${0}sortable`}
         setPosition={this.setPosition}
         value={word}
@@ -186,7 +188,7 @@ class SortableTiles extends React.Component {
   renderTile = (word, index) => {
     return (
       <SortableListItem
-        setTile={e => this.setState({ currentIndex: e.target.dataset.index}) }
+        setTile={e => this.setState({ currentIndex: e.target.dataset.index})}
         key={`${word}${index}sortable`}
         setPosition={this.setPosition}
         value={word}
