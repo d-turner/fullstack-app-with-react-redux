@@ -99,6 +99,45 @@ class KeyLogger {
     this.buffer.push(stroke);
   }
 
+  removeTile = (index) => {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'DeleteTile',
+      index,
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
+  addTile = (index, text) => {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'AddTile',
+      index,
+      word: text,
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
+  undo = () => {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'Undo',
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
+  redo = () => {
+    const timestamp = Date.now() || 0;
+    const stroke = {
+      type: 'Redo',
+      t: timestamp,
+    };
+    this.buffer.push(stroke);
+  }
+
   save = () => {
     this.endTime = Date.now();
     store.dispatch(actions.addLogger(this));
@@ -112,9 +151,9 @@ class KeyLogger {
     const timestamp = Date.now() || 0;
     const stroke = {
       type: 'drag',
-      sourceIndex: e.dragIndex,
-      targetIndex: e.hoverIndex,
-      sourceWord: e.word,
+      sourceIndex: e.sourceIndex,
+      targetIndex: e.targetIndex,
+      sourceWord: e.sourceWord,
       targetWord: e.targetWord,
       t: timestamp,
     };

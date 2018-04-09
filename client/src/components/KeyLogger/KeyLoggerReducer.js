@@ -109,7 +109,8 @@ function buildXML({ loggerRecordings }, action) {
   xmlDoc.getElementsByTagName('root')[0].appendChild(job);
 
   for (let x = 0; x < loggerRecordings[action.documentId].length; x++) {
-    const { buffer, segmentId, source, target, translation } = loggerRecordings[action.documentId][x];
+    const logger = loggerRecordings[action.documentId][x];
+    const { buffer, segmentId, source, target, translation } = logger;
     let startTime = 0;
     let endTime = 0;
     if (buffer.length > 0) {
@@ -142,6 +143,14 @@ function buildXML({ loggerRecordings }, action) {
     translationNode.appendChild(translationText);
     xmlDoc.getElementsByTagName('unit')[x].appendChild(translationNode);
 
+    // build the times
+    const editTime = createNode(xmlDoc, 'timer', 'edit-mode-time', logger.editTotal);
+    const tileTime = createNode(xmlDoc, 'timer', 'tile-mode-time', logger.tileTotal);
+    const voiceTime = createNode(xmlDoc, 'timer', 'voice-mode-time', logger.voiceTotal);
+    xmlDoc.getElementsByTagName('unit')[x].appendChild(editTime);
+    xmlDoc.getElementsByTagName('unit')[x].appendChild(tileTime);
+    xmlDoc.getElementsByTagName('unit')[x].appendChild(voiceTime);
+  
     // generate the annotations
     const annotations = generateAnnotations(xmlDoc, buffer, length);
     xmlDoc.getElementsByTagName('unit')[x].appendChild(annotations);
@@ -180,6 +189,20 @@ function buildXML({ loggerRecordings }, action) {
       } else if (buffer[y].type === 'TileEdit') {
         const event = xmlDoc.createElement(buffer[y].type);
         const eventText = xmlDoc.createTextNode(buffer[y].word);
+        event.appendChild(eventText);
+        event.setAttribute('time', buffer[y].t - startTime);
+        event.setAttribute('index', buffer[y].index);
+        xmlDoc.getElementsByTagName('events')[x].appendChild(event);
+      } else if (buffer[y].type === 'AddTile') {
+        const event = xmlDoc.createElement(buffer[y].type);
+        const eventText = xmlDoc.createTextNode(buffer[y].word);
+        event.appendChild(eventText);
+        event.setAttribute('time', buffer[y].t - startTime);
+        event.setAttribute('index', buffer[y].index);
+        xmlDoc.getElementsByTagName('events')[x].appendChild(event);
+      } else if (buffer[y].type === 'DeleteTile') {
+        const event = xmlDoc.createElement(buffer[y].type);
+        const eventText = xmlDoc.createTextNode('DELETE');
         event.appendChild(eventText);
         event.setAttribute('time', buffer[y].t - startTime);
         event.setAttribute('index', buffer[y].index);
