@@ -184,7 +184,6 @@ const insertSourceWord = function(state, action) {
 const updateWord = function(state, action) {
   const { segments } = state.xliff;
   const { text, segmentId, index } = action;
-  console.log('updating word');
   const newTarget = splitTextIntoArray(cleanText(segments[segmentId].target));
   newTarget[index] = text;
   return update(state, {
