@@ -9,7 +9,7 @@ import styles from './Editor.scss';
 import main from '../../constants/main.scss';
 
 class CustomEditor extends React.Component {
-  state = { hasFocus: false, renderStyles: true, clipboard: '' };
+  state = { hasFocus: false, renderStyles: false, clipboard: '' };
 
   componentDidMount() {
     this.Editor.focus();
