@@ -5,7 +5,7 @@ export function splitTextIntoArray(text) {
   // prep = prep.replace(/,/g, ' ,');
   // prep = prep.replace(/ +/g, ' ');
   let wordArray = text.split(' '); //.filter((e) => { return e === 0 || e; });
-  console.log(wordArray);
+  // console.log(wordArray);
   /* */
   for (let i = 0; i < wordArray.length; i++) {
     if (i === wordArray.length - 1) break;
@@ -33,9 +33,11 @@ export function splitTextIntoArray(text) {
 export function joinTextArray(array) {
   return array
     .join(' ')
-    .replace(/[ ]{1,},/g, ',')
-    .replace(/[ ]{1,}\./g, '.')
-    .replace(/[ ]{1,}/g, ' ')
+    .replace(/`` {1,}/g, '"') // replace all '`` ' with '"'
+    .replace(/ {1,}''/g, '"') // replace all  " ''" with '"'
+    .replace(/[ ]{1,},/g, ',') // replace all ' ,' with ','
+    .replace(/[ ]{1,}\./g, '.') // replace all ' .' with '.'
+    .replace(/[ ]{1,}/g, ' ') // replace all '  ' with ' '
     .trim();
 }
 
