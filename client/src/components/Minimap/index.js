@@ -9,20 +9,32 @@ export default class Minimap extends React.Component {
     const { selectedSegment } = this.props;
     if (selectedSegment === 0 || selectedSegment === -1) {
       scroll.scrollBy(0, 0);
-    }
-    else if (selectedSegment !== prevProps.selectedSegment) {
+    } else if (selectedSegment !== prevProps.selectedSegment) {
       const node = document.getElementById(`${selectedSegment}-minimap`);
       node.scrollIntoView({ behavior: 'smooth', block: 'start' });
       const rect = node.getClientRects()[0];
       scroll.scrollBy(0, rect.top - 96);
     }
   }
+
+  renderSelected = (segment, index) => {
+    return (
+      <div
+        className={styles.selected}
+        key={index}
+        value={index}
+        id={`${index}-minimap`}>
+        <p>{segment.source}</p>
+        <p>{segment.target}</p>
+      </div>
+    );
+  }
+
   renderSegment = (segment, index) => {
-    let style = styles.segment;
-    if (index === this.props.selectedSegment) style = styles.selected;
+    if (index === this.props.selectedSegment) return this.renderSelected(segment, index);
     return (
       <button
-        className={style}
+        className={styles.segment}
         key={index}
         value={index}
         id={`${index}-minimap`}
