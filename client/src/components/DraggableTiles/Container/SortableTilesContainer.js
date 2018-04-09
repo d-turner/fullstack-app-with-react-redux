@@ -35,6 +35,8 @@ class SortableTilesContainer extends React.Component {
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
+    oldIndex = parseInt(oldIndex, 10);
+    newIndex = parseInt(newIndex, 10);
     if (newIndex === oldIndex) return;
     const targetWords = this.state.words;
     const newArray = arrayMove(targetWords, parseInt(oldIndex, 10), parseInt(newIndex, 10));
@@ -45,6 +47,13 @@ class SortableTilesContainer extends React.Component {
       newArray[newIndex] = lowerFirstLetter(newArray[newIndex]);
       newArray[oldIndex] = upperFirstLetter(newArray[oldIndex]);
     }
+    const event = {
+      sourceIndex: oldIndex,
+      targetIndex: newIndex,
+      sourceWord: newArray[newIndex],
+      targetWord: newArray[oldIndex],
+    };
+    this.props.keyLogger.tileDrag(event);
     this.updateWordArray(newArray);
   }
 
@@ -53,6 +62,7 @@ class SortableTilesContainer extends React.Component {
   }
 
   undo = () => {
+    // gets called by ref from higher component
     const { prev, words } = this.state;
     if (prev.length === 0) return;
     const newState = update(this.state, {
@@ -66,10 +76,12 @@ class SortableTilesContainer extends React.Component {
         $push: [words],
       },
     });
+    this.props.keyLogger.undo();
     this.setState(newState);
   }
 
   redo = () => {
+    // gets called by ref from higher component
     const { next, words } = this.state;
     if (next.length === 0) return;
     const newState = update(this.state, {
@@ -83,6 +95,7 @@ class SortableTilesContainer extends React.Component {
         $splice: [[next.length - 1, 1]],
       },
     });
+    this.props.keyLogger.redo();
     this.setState(newState);
   }
 
@@ -96,18 +109,20 @@ class SortableTilesContainer extends React.Component {
     );
     const a1 = wordArray;
     const a2 = this.state.words;
-    if (a1.length === a2.length && a1.every((v, i) => v === a2[i])) return;
+    if (a1.length === a2.length && a1.every((v, i) => v === a2[i])) return; // don't update if the state is the same
     this.setState({ words: wordArray, prev: [...this.state.prev, this.state.words], next: [] });
   }
 
   insertSourceWord = (index, text) => {
     if (shouldUpperCase(text, index)) text = upperFirstLetter(text);
     const newArray = insertIntoArray(this.state.words, index, text.split(' '));
+    this.props.keyLogger.addTile(index, text);
     this.updateWordArray(newArray);
   }
 
   removeIndex = (index) => {
     const newArray = removeIndex(this.state.words, index);
+    this.props.keyLogger.removeTile(index);
     this.updateWordArray(newArray);
   }
 
