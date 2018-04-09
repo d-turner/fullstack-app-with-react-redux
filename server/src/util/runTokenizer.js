@@ -5,8 +5,8 @@ export const tokenizeString = (sentence, callback) => {
 
   pythonProcess.stdout.on('data', (data) => {
     let dataString = data.toString();
-    dataString = dataString.replace(/``/g, '"');
-    dataString = dataString.replace(/''/g, '"');
+    // dataString = dataString.replace(/``/g, '"');
+    // dataString = dataString.replace(/''/g, '"');
     if (dataString === 'ZZZXXXZZZXXX') return callback([]);
     return callback(dataString.split('ZZZXXXZZZXXX'));
   });

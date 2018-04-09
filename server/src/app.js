@@ -15,6 +15,8 @@ import passport from './config/passport';
 const app = express();
 // prod: const APP_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
 const APP_HOSTNAME = 'http://localhost:3000';
+// const APP_HOSTNAME = 'http://192.168.1.17:3000';
+// const APP_HOSTNAME = 'http://10.42.0.1:3000';
 
 // setup logging
 // morgan logs every request that comes into express in a nice format
