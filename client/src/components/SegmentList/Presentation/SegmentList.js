@@ -210,7 +210,7 @@ class SegmentList extends React.Component {
     let selectedStyle = styles.normalPadding;
     if (index === selectedSegment) selectedStyle = styles.selectedPadding;
     return (
-      <div className={`full ${selectedStyle} segment`} key={segment.source} value={index}>
+      <div className={`full ${selectedStyle} segment`} key={`${segment.source}${index}`} value={index}>
         { index === this.props.selectedSegment ?
           this.renderSelected(segment, index) :
           this.renderButton(segment, index)
