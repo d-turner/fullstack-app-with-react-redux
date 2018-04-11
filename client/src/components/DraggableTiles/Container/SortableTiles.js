@@ -105,6 +105,7 @@ class SortableTiles extends React.Component {
       const options = {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: { name: 'shared', pull: false, put: true },
+	delay: 50,
         sort: true,
         animation: 300,
         handle: '.handle',
@@ -115,6 +116,12 @@ class SortableTiles extends React.Component {
         },
         onEnd: this.onEnd,
         onAdd: this.onAdd,
+        onChoose: (evt) => {
+          if (this.tile) {
+            this.tile.blur();
+            this.tile.focus();
+          }
+        },
         onStart: this.onStart,
         onUpdate: (evt) => {
           this.setState({ newPosition: evt.newIndex });
