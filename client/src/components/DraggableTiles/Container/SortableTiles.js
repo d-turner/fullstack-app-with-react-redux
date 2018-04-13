@@ -109,7 +109,8 @@ class SortableTiles extends React.Component {
       const options = {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: { name: 'shared', pull: false, put: true },
-        sort: !this.state.edited,
+        sort: true,
+        disabled: this.state.edited,
         animation: 300,
         handle: '.handle',
         ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
