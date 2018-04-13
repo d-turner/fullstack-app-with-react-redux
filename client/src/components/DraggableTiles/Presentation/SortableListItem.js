@@ -5,6 +5,9 @@ import { addEvent, removeEvent, touchDndCustomEvents, syntheticEvent } from '../
 
 import styles from '../tile.scss';
 
+const leftQuote = '&#8220;';
+const rightQuote = '&#8221;';
+
 const touchStart = (touchEvent) => {
   touchEvent.preventDefault();
   const { target } = touchEvent;
@@ -55,6 +58,14 @@ const touchEnd = (touchEvent) => {
 
 class SortableListItem extends React.Component {
   state = { word: this.props.value, backup: this.props.value, class: '' };
+
+  componentWillMount() {
+    if (this.props.value === '``') {
+      this.setState({ word: leftQuote });
+    } else if (this.props.value === "''") {
+      this.setState({ word: rightQuote });
+    }
+  }
 
   componentDidMount() {
     if (this.props.focus) this.tile.focus();
@@ -127,6 +138,34 @@ class SortableListItem extends React.Component {
         </button>
       );
     }
+    let input = (
+      <input className={styles.text}
+        style={{ width: `${this.state.word.length * 10 + 17}px` }}
+        type="text"
+        spellCheck="false"
+        cols="1"
+        rows="1"
+        data-index={this.props.itemIndex}
+        onFocus={event => this.props.setTile(this.props.itemIndex, this.tile)}
+        onChange={event => this.onChange(event)}
+        onKeyDown={event => this.keyDown(event)}
+        onBlur={event => this.handleBlur(event)}
+        value={this.state.word}
+        ref={(tile) => { this.tile = tile; }} />
+    );
+    if (this.state.word === leftQuote) {
+      input = (
+        <span className={styles.comma}
+          ref={(tile) => { this.tile = tile; }}>
+          &#8220;
+        </span>);
+    } else if (this.state.word === rightQuote) {
+      input = (
+        <span className={styles.comma}
+          ref={(tile) => { this.tile = tile; }}>
+          &#8221;
+        </span>);
+    }
     return (
       <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth} ${this.state.class}`}
         data-list-item
@@ -145,21 +184,7 @@ class SortableListItem extends React.Component {
         {before}
         <div className={`${styles.tile} handle`}>
           <span className={styles.grippy} />
-          <input className={styles.text}
-            style={{ width: `${this.state.word.length * 10 + 17}px` }}
-            type="text"
-            spellCheck="false"
-            cols="1"
-            rows="1"
-            data-index={this.props.itemIndex}
-            onFocus={event => this.props.setTile(event)}
-            onChange={event => this.onChange(event)}
-            onKeyDown={event => this.keyDown(event)}
-            onBlur={event => this.handleBlur(event)}
-            onDragStart={(e) => { this.tile.blur(); this.tile.focus(); }}
-            onTouchStart={(e) => { this.tile.blur(); this.tile.focus(); }}
-            value={this.state.word}
-            ref={(tile) => { this.tile = tile; }} />
+          {input}
         </div>
         {plusButton}
       </li>
