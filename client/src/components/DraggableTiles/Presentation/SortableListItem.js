@@ -54,7 +54,7 @@ const touchEnd = (touchEvent) => {
 };
 
 class SortableListItem extends React.Component {
-  state = { word: this.props.value, backup: this.props.value };
+  state = { word: this.props.value, backup: this.props.value, class: '' };
 
   componentDidMount() {
     if (this.props.focus) this.tile.focus();
@@ -72,8 +72,7 @@ class SortableListItem extends React.Component {
   }
 
   onChange = (event) => {
-    this.props.setEdited();
-    this.setState({ word: event.target.value });
+    this.setState({ word: event.target.value, class: 'edited' });
   }
 
   removeWord = () => {
@@ -92,7 +91,7 @@ class SortableListItem extends React.Component {
       let text = this.state.word.trim();
       this.props.updateWord(this.props.itemIndex, text);
       if (text.split(' ')[0] === this.state.backup) text = this.state.backup;
-      this.setState({ word: text });
+      this.setState({ word: text, class: '' });
     }
   }
 
@@ -129,7 +128,7 @@ class SortableListItem extends React.Component {
       );
     }
     return (
-      <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth}`}
+      <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth} ${this.state.class}`}
         data-list-item
         data-index={this.props.itemIndex}
         data-value={this.props.value}

@@ -12,7 +12,7 @@ import { upperFirstLetter, lowerFirstLetter } from '../../../utils/stringParser'
 import Button from '../../ButtonList/Button';
 
 class SortableTiles extends React.Component {
-  state = { tempTile: null, overTrash: false, newPosition: undefined, currentIndex: 0, edited: false }
+  state = { tempTile: null, overTrash: false, newPosition: undefined, currentIndex: 0 }
 
   componentDidUpdate(prevProps) {
     if (prevProps.loading && !this.props.loading) {
@@ -70,10 +70,6 @@ class SortableTiles extends React.Component {
     this.setState({ newPosition });
   }
 
-  setEdited = () => {
-    this.setState({ edited: true });
-  }
-
   addTile = (index) => {
     this.setState({ tempTile: index });
   }
@@ -110,7 +106,7 @@ class SortableTiles extends React.Component {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: { name: 'shared', pull: false, put: true },
         sort: true,
-        disabled: this.state.edited,
+        filter: '.edited',
         animation: 300,
         handle: '.handle',
         ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
@@ -193,14 +189,13 @@ class SortableTiles extends React.Component {
   renderTile = (word, index) => {
     return (
       <SortableListItem
-        setEdited={this.setEdited}
         setTile={e => this.setState({ currentIndex: e.target.dataset.index})}
         key={`${word}${index}sortable`}
         setPosition={this.setPosition}
         value={word}
         index={index}
         itemIndex={index}
-        updateWord={(i, w) => { this.setState({ edited: false }); this.props.updateWord(i, w); }}
+        updateWord={this.props.updateWord}
         addTile={this.addTile}
         insertTiles={this.props.insertTiles} />
     );
