@@ -17,16 +17,36 @@ class SortableTilesContainer extends React.Component {
   componentDidMount() {
     this.props.keyLogger.setTimer('tileStart');
     apiWrapper.getTokens({ data: this.props.text }).then((res) => {
-      this.setState({
-        loading: false,
-        words: res.data.tokens,
+      const newState = update(this.state, {
+        loading: { $set: false },
+        words: {
+          $set: res.data.tokens,
+        },
+        prev: {
+          $set: [res.data.tokens],
+        },
+        next: {
+          $set: [],
+        },
       });
+      this.setState(newState);
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.text === '' && this.state.words.length !== 0) {
-      this.setState({ words: [] });
+      const newState = update(this.state, {
+        words: {
+          $set: [],
+        },
+        prev: {
+          $push: [this.state.words],
+        },
+        next: {
+          $set: [],
+        },
+      });
+      this.setState(newState);
     }
   }
 
@@ -78,6 +98,13 @@ class SortableTilesContainer extends React.Component {
     });
     this.props.keyLogger.undo();
     this.setState(newState);
+    store.dispatch(
+      actions.updateWordOrder(
+        this.props.documentId,
+        this.props.segmentId,
+        newState.words,
+      ),
+    );
   }
 
   redo = () => {
@@ -97,6 +124,13 @@ class SortableTilesContainer extends React.Component {
     });
     this.props.keyLogger.redo();
     this.setState(newState);
+    store.dispatch(
+      actions.updateWordOrder(
+        this.props.documentId,
+        this.props.segmentId,
+        newState.words,
+      ),
+    );
   }
 
   updateWordArray = (wordArray) => {
