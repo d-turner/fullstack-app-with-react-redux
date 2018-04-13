@@ -72,6 +72,7 @@ class SortableListItem extends React.Component {
   }
 
   onChange = (event) => {
+    this.props.setEdited();
     this.setState({ word: event.target.value });
   }
 

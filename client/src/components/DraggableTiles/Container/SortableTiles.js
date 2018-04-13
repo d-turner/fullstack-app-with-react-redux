@@ -12,7 +12,7 @@ import { upperFirstLetter, lowerFirstLetter } from '../../../utils/stringParser'
 import Button from '../../ButtonList/Button';
 
 class SortableTiles extends React.Component {
-  state = { tempTile: null, overTrash: false, newPosition: undefined, currentIndex: 0 }
+  state = { tempTile: null, overTrash: false, newPosition: undefined, currentIndex: 0, edited: false }
 
   componentDidUpdate(prevProps) {
     if (prevProps.loading && !this.props.loading) {
@@ -70,6 +70,10 @@ class SortableTiles extends React.Component {
     this.setState({ newPosition });
   }
 
+  setEdited = () => {
+    this.setState({ edited: true });
+  }
+
   addTile = (index) => {
     this.setState({ tempTile: index });
   }
@@ -105,8 +109,7 @@ class SortableTiles extends React.Component {
       const options = {
         draggable: 'li', // Specifies which items inside the element should be sortable
         group: { name: 'shared', pull: false, put: true },
-	delay: 50,
-        sort: true,
+        sort: !this.state.edited,
         animation: 300,
         handle: '.handle',
         ghostClass: styles.sortableGhost || 'sortable-ghost', // Class name for the drop placeholder
@@ -116,12 +119,6 @@ class SortableTiles extends React.Component {
         },
         onEnd: this.onEnd,
         onAdd: this.onAdd,
-        onChoose: (evt) => {
-          if (this.tile) {
-            this.tile.blur();
-            this.tile.focus();
-          }
-        },
         onStart: this.onStart,
         onUpdate: (evt) => {
           this.setState({ newPosition: evt.newIndex });
@@ -195,13 +192,14 @@ class SortableTiles extends React.Component {
   renderTile = (word, index) => {
     return (
       <SortableListItem
+        setEdited={this.setEdited}
         setTile={e => this.setState({ currentIndex: e.target.dataset.index})}
         key={`${word}${index}sortable`}
         setPosition={this.setPosition}
         value={word}
         index={index}
         itemIndex={index}
-        updateWord={this.props.updateWord}
+        updateWord={(i, w) => { this.setState({ edited: false }); this.props.updateWord(i, w); }}
         addTile={this.addTile}
         insertTiles={this.props.insertTiles} />
     );
