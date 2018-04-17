@@ -10,7 +10,7 @@ export const touchDndCustomEvents = {
 export const addEvent = (el, type, fn) => {
   if (document.addEventListener) {
     if (el && el.nodeName || el === window) {
-      el.addEventListener(type, fn, true);
+      el.addEventListener(type, fn, { passive: true, capture: true });
     } else if (el && el.length) {
       for (let i = 0; i < el.length; i++) {
         addEvent(el[i], type, fn);
