@@ -18,22 +18,18 @@ class SortableTiles extends React.Component {
     if (prevProps.loading && !this.props.loading) {
       const bin = this.trash;
       addEvent(bin, 'dragenter', (e) => {
-        e.preventDefault();
         e.stopPropagation();
         this._onEnter();
       });
       addEvent(bin, 'dragover', (e) => {
-        e.preventDefault();
         e.stopPropagation();
         this._onEnter();
       });
       addEvent(bin, 'dragexit', (e) => {
-        e.preventDefault();
         e.stopPropagation();
         this._onLeave();
       });
       addEvent(bin, 'dragleave', (e) => {
-        e.preventDefault();
         e.stopPropagation();
         this._onLeave();
       });
@@ -125,7 +121,9 @@ class SortableTiles extends React.Component {
         onUpdate: (evt) => {
           this.setState({ newPosition: evt.newIndex });
         },
+        scroll: true,
         scrollSensitivity: 100,
+        scrollSpeed: 10,
       };
       Sortable.create(componentBackingInstance, options);
     }
