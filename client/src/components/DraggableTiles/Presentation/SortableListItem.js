@@ -9,7 +9,6 @@ const leftQuote = '&#8220;';
 const rightQuote = '&#8221;';
 
 const touchStart = (touchEvent) => {
-  touchEvent.preventDefault();
   const { target } = touchEvent;
   const type = 'dragstart';
   const event = syntheticEvent(type, touchEvent, null, target);
@@ -17,7 +16,6 @@ const touchStart = (touchEvent) => {
 };
 
 const touchMove = (touchEvent) => {
-  touchEvent.preventDefault();
   const x = touchEvent.changedTouches[0].clientX;
   const y = touchEvent.changedTouches[0].clientY;
 
@@ -43,7 +41,6 @@ const touchMove = (touchEvent) => {
 };
 
 const touchEnd = (touchEvent) => {
-  touchEvent.preventDefault();
   let { target } = touchEvent;
   const type = 'drop';
   const bin = document.getElementById('trash');
