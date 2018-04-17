@@ -48,12 +48,12 @@ class Tiles extends React.Component {
     let tile = (<span>{word}</span>);
     if (word === '``') {
       tile = (
-        <span className={styles.comma}>
+        <span>
           &#8220;
         </span>);
     } else if (word === "''") {
       tile = (
-        <span className={styles.comma}>
+        <span>
           &#8221;
         </span>);
     }
