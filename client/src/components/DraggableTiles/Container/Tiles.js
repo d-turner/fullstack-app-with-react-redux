@@ -45,6 +45,18 @@ class Tiles extends React.Component {
   }
 
   renderTile = (word, index) => {
+    let tile = (<span>{word}</span>);
+    if (word === '``') {
+      tile = (
+        <span className={styles.comma}>
+          &#8220;
+        </span>);
+    } else if (word === "''") {
+      tile = (
+        <span className={styles.comma}>
+          &#8221;
+        </span>);
+    }
     return (
       <li className={`${styles.format} ${styles.noselect} ${styles.maxWidth}`}
         key={`${word}${index}unsortable`}
@@ -53,7 +65,7 @@ class Tiles extends React.Component {
         data-value={word}>
         <div className={styles.tile1}>
           <span />
-          <span>{word}</span>
+          <span>{tile}</span>
         </div>
       </li>
     );
