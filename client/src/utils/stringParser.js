@@ -33,11 +33,11 @@ export function splitTextIntoArray(text) {
 export function joinTextArray(array) {
   return array
     .join(' ')
+    .replace(/[ ]{1,}/g, ' ') // replace all '  ' with ' '
     .replace(/`` {1,}/g, '"') // replace all '`` ' with '"'
     .replace(/ {1,}''/g, '"') // replace all  " ''" with '"'
     .replace(/[ ]{1,},/g, ',') // replace all ' ,' with ','
     .replace(/[ ]{1,}\./g, '.') // replace all ' .' with '.'
-    .replace(/[ ]{1,}/g, ' ') // replace all '  ' with ' '
     .trim();
 }
 
@@ -204,4 +204,40 @@ export const removeIndex = (array, index) => {
   const part1 = array.slice(0, index);
   const part2 = array.slice(index + 1, array.length + 1);
   return part1.concat(part2);
+};
+
+export const setCaretPosition = (elem, caretPos) => {
+  if (elem !== null) {
+    if (elem.createTextRange) {
+      const range = elem.createTextRange();
+      range.move('character', caretPos);
+      range.select();
+    } else if (elem.selectionStart) {
+      elem.focus();
+      elem.setSelectionRange(caretPos, caretPos);
+    } else {
+      elem.focus();
+    }
+  }
+};
+
+export const getCaretPosition = (elem) => {
+  let caretPos = 0;
+  if (elem !== null) {
+    // IE Support
+    if (document.selection) {
+      // Set focus on the element
+      elem.focus();
+      // To get cursor position, get empty selection range
+      const range = document.selection.createRange();
+      // Move selection start to 0 position
+      range.moveStart('character', -elem.value.length);
+      // The caret position is selection length
+      caretPos = range.text.length - 1;
+    } else if (elem.selectionStart || elem.selectionStart == '0') {
+      caretPos = elem.selectionStart;
+    }
+  }
+  // Return results
+  return caretPos;
 };
