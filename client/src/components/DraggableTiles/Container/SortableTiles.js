@@ -3,6 +3,7 @@ import Sortable from 'sortablejs';
 import PropTypes from 'prop-types';
 
 import SortableListItem from '../Presentation/SortableListItem';
+import FakeTile from '../Presentation/FakeTile';
 import styles from '../tile.scss';
 import main from '../../../constants/main.scss';
 import Loader from '../../Loader/Loader';
@@ -139,54 +140,27 @@ class SortableTiles extends React.Component {
     );
   }
 
+  fakeTile = (index) => {
+    if (!index) index = -1;
+    return (
+      <FakeTile
+        setTile={this.setTile}
+        key={`fake${index}sortable`}
+        value=""
+        index={index}
+        itemIndex={index}
+        updateWord={this.fakeEnter}
+      />
+    );
+  }
   fakeEnter = (index, text) => {
+    if (index === -1) text = upperFirstLetter(text);
     if (text === '') {
       this.setState({ tempTile: null });
       return;
     }
     this.props.insertSourceWord(index + 1, text);
     this.setState({ tempTile: null });
-  }
-  fakeTile = (word, index) => {
-    return (
-      <SortableListItem
-        setTile={this.setTile}
-        key={`${word}${index}sortable`}
-        value={word}
-        index={index}
-        itemIndex={index}
-        updateWord={this.fakeEnter}
-        editable
-        addTile={this.addTile}
-        focus
-      />
-    );
-  }
-  firstFakeEnter = (_, text) => {
-    if (text === '') {
-      this.setState({ tempTile: null });
-      return;
-    }
-    this.props.insertSourceWord(0, upperFirstLetter(text));
-    this.setState({ tempTile: null });
-  }
-  firstFakeTile = (word) => {
-    return (
-      <SortableListItem
-        setTile={this.setTile}
-        key={`${word}${0}sortable`}
-        setPosition={this.setPosition}
-        value={word}
-        index={-1}
-        itemIndex={-1}
-        updateWord={this.firstFakeEnter}
-        addTile={() => {}}
-        insertTiles={this.props.insertTiles}
-        onEnter={this._onEnter}
-        onLeave={this._onLeave}
-        focus
-      />
-    );
   }
 
   renderTile = (word, index) => {
@@ -251,19 +225,19 @@ class SortableTiles extends React.Component {
               </button>
             ) : null}
             { (this.props.words.length === 0 && this.state.tempTile !== null) ?
-              (this.fakeTile('', 0)) : null}
+              (this.fakeTile(-1)) : null}
             {this.props.words.map((word, index) => {
               if (this.state.tempTile !== null && index === this.state.tempTile) {
                 return (
                   <div key={`${word}sortable123`} style={{ display: 'inline-block' }}>
                     {this.renderTile(word, index)}
-                    {this.fakeTile('', index)}
+                    {this.fakeTile(index)}
                   </div>
                 );
               } else if (this.state.tempTile !== null && this.state.tempTile === -1 && index === 0) {
                 return (
                   <div key={`${word}sortable123`} style={{ display: 'inline-block' }}>
-                    {this.firstFakeTile('')}
+                    {this.fakeTile(index)}
                     {this.renderTile(word, index)}
                   </div>
                 );
