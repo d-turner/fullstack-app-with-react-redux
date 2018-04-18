@@ -12,13 +12,6 @@ class FakeTile extends React.Component {
 
   onChange = (event) => {
     this.setState({ word: event.target.value });
-    // this.props.updateWord(this.props.itemIndex, event.target.value);
-  }
-
-  handleFocus = (e) => {
-    const tempValue = e.target.value;
-    e.target.value = '';
-    e.target.value = tempValue;
   }
 
   handleBlur = (event) => {
@@ -48,8 +41,6 @@ class FakeTile extends React.Component {
         ref={(ref) => { this.listItem = ref; }}>
         <div className={`${styles.tile} handle`}>
           <span className={styles.grippy} />
-          +{input}
-
           <input className={styles.text}
             style={{ width: `${this.state.word.length * 10 + 17}px` }}
             type="text"
