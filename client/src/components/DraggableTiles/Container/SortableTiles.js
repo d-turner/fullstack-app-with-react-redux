@@ -141,7 +141,7 @@ class SortableTiles extends React.Component {
   }
 
   fakeTile = (index) => {
-    if (!index) index = -1;
+    if (index === undefined) index = -1;
     return (
       <FakeTile
         setTile={this.setTile}
@@ -225,7 +225,7 @@ class SortableTiles extends React.Component {
               </button>
             ) : null}
             { (this.props.words.length === 0 && this.state.tempTile !== null) ?
-              (this.fakeTile(-1)) : null}
+              (this.fakeTile()) : null}
             {this.props.words.map((word, index) => {
               if (this.state.tempTile !== null && index === this.state.tempTile) {
                 return (
@@ -237,7 +237,7 @@ class SortableTiles extends React.Component {
               } else if (this.state.tempTile !== null && this.state.tempTile === -1 && index === 0) {
                 return (
                   <div key={`${word}sortable123`} style={{ display: 'inline-block' }}>
-                    {this.fakeTile(index)}
+                    {this.fakeTile()}
                     {this.renderTile(word, index)}
                   </div>
                 );
