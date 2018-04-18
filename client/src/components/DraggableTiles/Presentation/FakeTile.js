@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from '../tile.scss';
 
 class FakeTile extends React.Component {
-  state = { word: this.props.value, backup: this.props.value };
+  state = { word: this.props.value };
 
   componentDidMount() {
     this.tile.focus();
@@ -18,8 +18,6 @@ class FakeTile extends React.Component {
     if (event !== undefined) {
       let text = this.state.word.trim();
       this.props.updateWord(this.props.itemIndex, text);
-      if (text.split(' ')[0] === this.state.backup) text = this.state.backup;
-      this.setState({ word: text });
     }
   }
 
@@ -28,7 +26,7 @@ class FakeTile extends React.Component {
       this.handleBlur(event);
     } else if (event.key === 'Escape') {
       // reset the word if Escape was pressed
-      this.setState({ word: this.state.backup });
+      this.tile.blur();
     }
   }
 
