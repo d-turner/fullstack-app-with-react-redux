@@ -123,7 +123,7 @@ class SortableTiles extends React.Component {
         },
         scroll: true,
         scrollSensitivity: 100,
-        scrollSpeed: 10,
+        scrollSpeed: 5,
       };
       Sortable.create(componentBackingInstance, options);
     }
