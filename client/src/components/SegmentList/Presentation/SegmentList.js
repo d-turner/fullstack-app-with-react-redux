@@ -67,7 +67,7 @@ class SegmentList extends React.Component {
 
   escapeTiles = (e) => {
     if ((e.key === 'Escape' || e.keyCode === 27) && this.state.renderTiles) {
-      this.setState({ renderTiles: false });
+      // TODO: can add some shortcuts here
     } else if ((e.ctrlKey && e.keyCode === 13) && this.state.renderTiles) {
       this.acceptTranslation(this.props.selectedSegment);
     }
