@@ -101,7 +101,7 @@ class SortableListItem extends React.Component {
       this.handleBlur(event);
     } else if (event.key === 'Escape') {
       // reset the word if Escape was pressed
-      this.setState({ word: this.state.backup });
+      this.setState({ word: this.state.backup }, () => { this.tile.blur(); });
     }
   }
 
