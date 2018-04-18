@@ -12,7 +12,7 @@ import styles from '../segmentList.scss';
 import Loader from '../../Loader/Loader';
 import store from '../../../store';
 import { requestDocument, resetEditorState } from '../../Document/ActionCreators/DocumentActions';
-import Sync from '../../Sync/Save';
+// import Sync from '../../Sync/Save';
 
 class SegmentListContainer extends React.Component {
   constructor(props) {
@@ -49,12 +49,12 @@ class SegmentListContainer extends React.Component {
         <div className="flex five">
           
           <div className="full" style={{ padding: 0 }}>
-            <Sync
+            {/* <Sync
               documentId={this.state.id}
               userId={this.props.userId}
               email={this.props.email}
               document={documents[this.state.id]}
-            />
+            /> */}
           </div>
           
           <Minimap

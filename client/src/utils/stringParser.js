@@ -34,10 +34,13 @@ export function joinTextArray(array) {
   return array
     .join(' ')
     .replace(/[ ]{1,}/g, ' ') // replace all '  ' with ' '
-    .replace(/`` {1,}/g, '"') // replace all '`` ' with '"'
-    .replace(/ {1,}''/g, '"') // replace all  " ''" with '"'
-    .replace(/[ ]{1,},/g, ',') // replace all ' ,' with ','
-    .replace(/[ ]{1,}\./g, '.') // replace all ' .' with '.'
+    .replace(/``[ ]{0,}/g, '"') // replace all '`` ' with '"'
+    .replace(/[ ]{0,}''/g, '"') // replace all  " ''" with '"'
+    .replace(/[ ]{0,},/g, ',') // replace all ' ,' with ','
+    .replace(/[ ]{0,}\./g, '.') // replace all ' .' with '.'
+    .replace(/[ ]{0,}!/g, '!') // replace all ' !' with '!'
+    .replace(/[ ]{0,}\?/g, '?') // replace all ' ?' with '?'
+    .replace(/[ ]{0,}:/g, ':') // replace all  ' :' with ':'
     .trim();
 }
 
