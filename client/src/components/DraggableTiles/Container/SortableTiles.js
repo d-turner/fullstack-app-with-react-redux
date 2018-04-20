@@ -19,12 +19,12 @@ class SortableTiles extends React.Component {
     if (prevProps.loading && !this.props.loading) {
       const bin = this.trash;
       addEvent(bin, 'dragenter', (e) => {
-        e.stopPropagation();
         this._onEnter();
+        return false;
       });
       addEvent(bin, 'dragover', (e) => {
-        e.stopPropagation();
         this._onEnter();
+        return false;
       });
       addEvent(bin, 'dragexit', (e) => {
         e.stopPropagation();
@@ -77,6 +77,7 @@ class SortableTiles extends React.Component {
   }
 
   _drop = (event) => {
+    if (!this.state.overTrash) return;
     if (this.state.newPosition !== undefined) {
       this.props.removeIndex(this.state.newPosition);
       this.setState({ newPosition: undefined, overTrash: false });
@@ -85,11 +86,13 @@ class SortableTiles extends React.Component {
     this.setState({ overTrash: false });
     let data = null;
     try {
-      data = JSON.parse(event.dataTransfer.getData('text'));
+      const x = event.dataTransfer.getData('text');
+      data = JSON.parse(x);
       this.props.removeIndex(data);
     } catch (e) {
       // If the text data isn't parsable we'll just ignore it.
       console.log('failed', e);
+      return;
     }
   }
 
@@ -249,6 +252,7 @@ class SortableTiles extends React.Component {
             className={this.state.overTrash ? styles.overTrash : styles.trash}
             id="trash"
             onDrop={this._drop}
+            onDragOver={e => e.preventDefault()}
             ref={(trash) => { this.trash = trash; }}>
             <i className={`material-icons ${styles.bin}`}>delete</i>
           </span>
