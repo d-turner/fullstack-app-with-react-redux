@@ -37,6 +37,8 @@ export function joinTextArray(array) {
     .replace(/''/g, '"') // replace all  "''" with '"'
     .replace(/&#8220;/g, '"') // replace all  ascii curly quotes with '"'
     .replace(/&#8221;/g, '"') // replace all  ascii curly quotes with '"'
+    .replace(/”/g, '"') // replace all literal curly quotes with '"'
+    .replace(/“/g, '"') // replace all literal curly quotes with '"'
     .replace(/[ ]{0,},/g, ',') // replace all ' ,' with ','
     .replace(/[ ]{0,}\./g, '.') // replace all ' .' with '.'
     .replace(/[ ]{0,}!/g, '!') // replace all ' !' with '!'
