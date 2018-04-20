@@ -1,7 +1,7 @@
 import passport from '../config/passport';
 import segment from '../db/segment';
 import * as resp from '../config/Responses';
-import { tokenizeString } from '../util/runTokenizer';
+import tokenizeString from '../util/runTokenizer';
 
 export default (app) => {
   // get segment data

@@ -1,6 +1,6 @@
 const spawn = require('child_process').spawn;
 
-export const tokenizeString = (sentence, callback) => {
+const tokenizeString = (sentence, callback) => {
   const pythonProcess = spawn('/home/adapt/Documents/git/kanjingo-react-redux/server/pythonDependencies/bin/python', ['/home/adapt/Documents/git/kanjingo-react-redux/server/src/util/tokenizer.py', sentence]);
 
   pythonProcess.stdout.on('data', (data) => {
@@ -11,3 +11,5 @@ export const tokenizeString = (sentence, callback) => {
     return callback(dataString.split('ZZZXXXZZZXXX'));
   });
 };
+
+export default tokenizeString;
