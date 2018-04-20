@@ -31,17 +31,20 @@ export function splitTextIntoArray(text) {
 }
 
 export function joinTextArray(array) {
-  return array
-    .join(' ')
+  const joined = array.join(' ')
     .replace(/[ ]{1,}/g, ' ') // replace all '  ' with ' '
-    .replace(/``[ ]{0,}/g, '"') // replace all '`` ' with '"'
-    .replace(/[ ]{0,}''/g, '"') // replace all  " ''" with '"'
+    .replace(/``/g, '"') // replace all '``' with '"'
+    .replace(/''/g, '"') // replace all  "''" with '"'
+    .replace(/&#8220;/g, '"') // replace all  ascii curly quotes with '"'
+    .replace(/&#8221;/g, '"') // replace all  ascii curly quotes with '"'
     .replace(/[ ]{0,},/g, ',') // replace all ' ,' with ','
     .replace(/[ ]{0,}\./g, '.') // replace all ' .' with '.'
     .replace(/[ ]{0,}!/g, '!') // replace all ' !' with '!'
     .replace(/[ ]{0,}\?/g, '?') // replace all ' ?' with '?'
     .replace(/[ ]{0,}:/g, ':') // replace all  ' :' with ':'
+    .replace(/[ ]{0,};/g, ';') // replace all  ' ;' with ';'
     .trim();
+  return cleanText(joined, false);
 }
 
 export function joinElements(array, seperator, start, end) {
@@ -59,15 +62,59 @@ export function cleanText(text, lowercaseBefore) {
   newText = newText.replace(/,/g, ', ');
   newText = newText.replace(/ \./g, '.');
   newText = newText.replace(/ ,/g, ',');
+  newText = newText.replace(/, "/g, ',"');
+  newText = newText.replace(/ 's/g, "'s");
+  newText = newText.replace(/ 'll/g, "'ll");
+  newText = newText.replace(/(\d)\s*([,.])\s*(\d)/g, '$1$2$3'); // removes space in '123, 000' & '123 . 456' & '123 ,456' etc.
+  newText = newText.replace(/\( /g, '(');
+  newText = newText.replace(/ \)/g, ')');
   newText = newText.replace(/(<([^>]+)>)/ig, '');
   newText = newText.split('.').map(data => data.trim()).join('. ');
+  newText = newText.replace(/\. "/g, '."');
+  newText = newText.replace(/\. \. \./g, '...');
   newText = newText.replace(/ +/g, ' ');
+  const quoteStack = [];
+  newText = newText.split('').map((data, index, arr) => {
+    if (isQuote(data)) {
+      const x = quoteStack.pop();
+      if (x === undefined) {
+        // data: is the left quote and needs to be pushed
+        // x   : is undefined
+        quoteStack.push(data); // if '" chars" <- need to remove space at index +1
+        return data;
+      } else {
+        // data: is the right quote and needs to be pushed against the closest previous character
+        // x   : is the left quote and needs to pushed against the closest next character
+        // if 'chars "' <- need to remove space at index - 1
+        return data;
+      }
+    } else if (data === ' ') {
+      if (quoteStack.length === 1 && isQuote(arr[index - 1])) {
+        return null;
+      } else if (quoteStack.length === 1 && isQuote(arr[index + 1])) {
+        return null;
+      }
+    }
+    return data;
+  }).join('');
   newText = newText.trim();
   return newText.toString().replace(/(^|\. *)([a-z])/g, (match, seperator, char) => {
     return seperator + char;
   });
 }
 
+function isLeftQuote(char) {
+  if (char === '"' || char === '``' || char === '&#8220;') return true;
+  return false;
+}
+function isRightQuote(char) {
+  if (char === '"' || char === "''" || char === '&#8221;') return true;
+  return false;
+}
+function isQuote(char) {
+  if (isLeftQuote(char) || isRightQuote(char)) return true;
+  return false;
+}
 export function isEmpty(obj) {
   for (const prop in obj) {
     if (Object.hasOwnProperty(prop)) return false;
@@ -194,6 +241,7 @@ export function getWordAt(sentence, position) {
 }
 
 export const insertIntoArray = (array, index, values) => {
+  index = parseInt(index, 10);
   return array.slice(0, index).concat(values).concat(array.slice(index));
 };
 
