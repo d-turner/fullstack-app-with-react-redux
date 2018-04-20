@@ -17,8 +17,8 @@ const SEGMENT = '/api/segment/';
 const TOKENIZER = '/api/tokenizer';
 
 // prod: const API_HOSTNAME = 'http://kanjingo.adaptcentre.ie';
-// let API_HOSTNAME = 'http://localhost:8080';
-let API_HOSTNAME = 'http://192.168.1.17:8080';
+let API_HOSTNAME = 'http://localhost:8080';
+// let API_HOSTNAME = 'http://192.168.1.17:8080';
 // let API_HOSTNAME = 'http://10.42.0.1:8080';
 if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = '';
