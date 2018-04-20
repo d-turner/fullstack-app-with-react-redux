@@ -12,7 +12,7 @@ import styles from '../segmentList.scss';
 import Loader from '../../Loader/Loader';
 import store from '../../../store';
 import { requestDocument, resetEditorState } from '../../Document/ActionCreators/DocumentActions';
-// import Sync from '../../Sync/Save';
+import Sync from '../../Sync/Save';
 
 class SegmentListContainer extends React.Component {
   constructor(props) {
@@ -47,16 +47,14 @@ class SegmentListContainer extends React.Component {
     if (documents[this.state.id] && (!documents[this.state.id].isFetching && !documents[this.state.id].didInvalidate)) {
       return (
         <div className="flex five">
-          
           <div className="full" style={{ padding: 0 }}>
-            {/* <Sync
+            <Sync
               documentId={this.state.id}
               userId={this.props.userId}
               email={this.props.email}
               document={documents[this.state.id]}
-            /> */}
+            />
           </div>
-          
           <Minimap
             segments={documents[this.state.id].xliff.segments}
             selectedSegment={this.props.selectedSegment}
