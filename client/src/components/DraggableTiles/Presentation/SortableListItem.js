@@ -50,8 +50,8 @@ const touchEnd = (touchEvent) => {
       touchDndCustomEvents.lastDraggedOver === document.querySelector('#trash > i')) {
     target = document.getElementById('trash');
   }
+  target.dispatchEvent(new Event('drop', { bubbles: true, cancelable: false, composed: true }));
   touchDndCustomEvents.lastDraggedOver = null;
-  target.dispatchEvent(event);
 };
 
 class SortableListItem extends React.Component {
