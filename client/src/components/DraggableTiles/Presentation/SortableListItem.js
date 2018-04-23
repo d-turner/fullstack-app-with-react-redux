@@ -48,7 +48,7 @@ const touchEnd = (touchEvent) => {
   const event = syntheticEvent(type, touchEvent, null, target);
   if (touchDndCustomEvents.lastDraggedOver === document.getElementById('trash') ||
       touchDndCustomEvents.lastDraggedOver === document.querySelector('#trash > i')) {
-    target = document.querySelector('#trash');
+    target = document.getElementById('trash');
   }
   touchDndCustomEvents.lastDraggedOver = null;
   target.dispatchEvent(event);
