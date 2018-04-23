@@ -77,7 +77,6 @@ class SortableTiles extends React.Component {
   }
 
   _drop = (event) => {
-    if (!this.state.overTrash) return;
     if (this.state.newPosition !== undefined) {
       this.props.removeIndex(this.state.newPosition);
       this.setState({ newPosition: undefined, overTrash: false });
