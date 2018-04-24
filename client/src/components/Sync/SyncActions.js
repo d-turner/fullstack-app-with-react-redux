@@ -53,12 +53,19 @@ export function save(doc, documentId, userId, email) {
             // it does not have to change in the store just the file on the server
             targetTags[y].innerHTML = segments[i].target;
             found = true;
+          } else if (currentSource.innerHTML === segments[i].sourceDOM.innerHTML) {
+            targetTags[y].innerHTML = segments[i].target;
+            found = true;
           } else {
             const segSource = currentSource.nextElementSibling;
             const mrk = segSource.getElementsByTagName('mrk');
             for (let z = 0; z < mrk.length && !found; z++) {
-              if (mrk[z].innerHTML === segments[i].source) {
+              if (mrk[z].innerHTML === segments[i].source) { // need to add a compare for textContent here also
                 targetTags[y].getElementsByTagName('mrk')[z].innerHTML = segments[i].target;
+                found = true;
+                break;
+              } else if (mrk[z].innerHTML === segments[i].sourceDOM.innerHTML) {
+                targetTags[y].getElementsByTagName('mrk')[z].textContent = segments[i].target;
                 found = true;
                 break;
               }
