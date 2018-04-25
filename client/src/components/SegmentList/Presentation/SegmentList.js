@@ -27,7 +27,7 @@ class SegmentList extends React.Component {
     renderVoice: false,
     renderComment: false,
     insertTiles: false,
-    help: true,
+    help: false,
   };
 
   componentDidMount() {
