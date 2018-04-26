@@ -53,6 +53,7 @@ class SegmentList extends React.Component {
 
   eof = () => {
     this.setState({ messages: [].concat('End of segments reached'), types: [].concat('success') });
+    this.props.updateSelectedSegment(this.props.document.saved_name, -1);
   }
 
   acceptTranslation = (index) => {
