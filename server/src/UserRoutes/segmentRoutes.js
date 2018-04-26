@@ -26,7 +26,16 @@ export default (app) => {
   // insert segment data
   app.post('/api/segment/:documentId', passport.ensureAuthenticated, (req, res, next) => {
     // body: { segmentIndex, mt, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode }
-    const { segmentIndex, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode } = req.body;
+    const {
+      segment_index: segmentIndex,
+      machine_translation: machineTranslation,
+      edit_mode_time: editTime,
+      tile_mode_time: tileTime,
+      voice_mode_time: voiceTime,
+      total_edit_time: totalTime,
+      characters_entered: charactersEntered,
+      words_entered: wordsEntered,
+      mode } = req.body;
     const documentId = req.params.documentId;
     segment.create(segmentIndex, documentId, machineTranslation, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode, (err, result) => {
       if (err) { next(err); return; }
@@ -37,8 +46,18 @@ export default (app) => {
   // update segment data
   app.put('/api/segment/:documentId', passport.ensureAuthenticated, (req, res, next) => {
     // body: { segmentIndex, mt, editTime, tileTime, voiceTime, totalTime, charactersEntered, wordsEntered, mode }
-    const { segmentIndex, machineTranslation, editModeTime, tileModeTime, voiceModeTime, totalEditTime, charactersEntered, wordsEntered, mode } = req.body;
+    const {
+      segment_index: segmentIndex,
+      machine_translation: machineTranslation,
+      edit_mode_time: editModeTime,
+      tile_mode_time: tileModeTime,
+      voice_mode_time: voiceModeTime,
+      total_edit_time: totalEditTime,
+      characters_entered: charactersEntered,
+      words_entered: wordsEntered,
+      mode } = req.body;
     const documentId = req.params.documentId;
+    console.log(segmentIndex, documentId, machineTranslation, editModeTime, tileModeTime, voiceModeTime, totalEditTime, charactersEntered, wordsEntered, mode);
     segment.updateSegment(segmentIndex, documentId, machineTranslation, editModeTime, tileModeTime, voiceModeTime, totalEditTime, charactersEntered, wordsEntered, mode, (err, result) => {
       if (err) { next(err); return; }
       res.status(resp.good).send(result);
