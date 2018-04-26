@@ -66,6 +66,8 @@ export function cleanText(text, lowercaseBefore) {
   newText = newText.replace(/ ,/g, ',');
   newText = newText.replace(/, "/g, ',"');
   newText = newText.replace(/ 's/g, "'s");
+  newText = newText.replace(/ - /g, '-');
+  newText = newText.replace(/(\d)\s*(['])\s*(s)/g, '$1$2$3');
   newText = newText.replace(/ 'll/g, "'ll");
   newText = newText.replace(/(\d)\s*([,.])\s*(\d)/g, '$1$2$3'); // removes space in '123, 000' & '123 . 456' & '123 ,456' etc.
   newText = newText.replace(/\( /g, '(');
