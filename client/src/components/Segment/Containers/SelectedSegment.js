@@ -37,6 +37,10 @@ class SelectedSegment extends React.Component {
   handleKeyCommand = (command) => {
     if (command === 'next-segment') {
       this.props.updateSelectedSegment(this.props.documentId, this.props.segmentId + 1);
+      // need to add it in here
+      if (this.props.segmentId + 1 >= this.props.xliff.segments.length) {
+        this.props.eof();
+      }
       return 'handled';
     }
     const newState = RichUtils.handleKeyCommand(this.props.editorState, command);

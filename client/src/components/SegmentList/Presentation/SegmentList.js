@@ -12,6 +12,7 @@ import VoiceInput from '../../VoiceInput/VoiceInput';
 
 import VoiceAssistant from '../../VoiceAssistant';
 import Info from '../../Notifications/Info';
+import Alerts from '../../Notifications/Alerts';
 import CommentModal from '../../Comments/Presentation/CommentModal';
 import ButtonList from '../../ButtonList';
 import Button from '../../ButtonList/Button';
@@ -27,6 +28,8 @@ class SegmentList extends React.Component {
     renderVoice: false,
     renderComment: false,
     insertTiles: false,
+    messages: [],
+    types: [],
     help: false,
   };
 
@@ -43,7 +46,13 @@ class SegmentList extends React.Component {
 
   selected = (index) => {
     if (this.Editor) this.Editor.blur();
+    // pop notification in here if index is bigger then segment length
+    if (index >= this.props.document.xliff.segments.length) this.eof();
     this.props.updateSelectedSegment(this.props.document.saved_name, index);
+  }
+
+  eof = () => {
+    this.setState({ messages: [].concat('End of segments reached'), types: [].concat('success') });
   }
 
   acceptTranslation = (index) => {
@@ -69,6 +78,7 @@ class SegmentList extends React.Component {
     if ((e.key === 'Escape' || e.keyCode === 27) && this.state.renderTiles) {
       // TODO: can add some shortcuts here
     } else if ((e.ctrlKey && e.keyCode === 13) && this.state.renderTiles) {
+      console.log('Accepting');
       this.acceptTranslation(this.props.selectedSegment);
     }
   };
@@ -241,6 +251,7 @@ class SegmentList extends React.Component {
               renderTiles={this.state.renderTiles}
               insertTiles={this.state.insertTiles}
               xliff={xliff}
+              eof={this.eof}
               ref={(ref) => { this.SelectedSegment = ref; }}
               setRef={(name, ref) => { this[name] = ref; }} />
           </div>
@@ -287,6 +298,7 @@ class SegmentList extends React.Component {
     }
     return (
       <div className={`four-fifth ${styles.listMargin}`} id="segmentList">
+        <Alerts messages={this.state.messages} types={this.state.types} />
         {this.state.help ?
           <div className={responsiveWidth}>
             <Info
