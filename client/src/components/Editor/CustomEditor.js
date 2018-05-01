@@ -254,6 +254,7 @@ class CustomEditor extends React.Component {
             autoCapitalize="sentences"
             autoComplete="off"
             autoCorrect="on"
+            spellCheck
             ariaLabel="Draft JS Editor"
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
