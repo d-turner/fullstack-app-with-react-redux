@@ -2,19 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, getDefaultKeyBinding, Modifier, ContentState } from 'draft-js';
 
-import { setSpacing, getWordAt } from '../../utils/stringParser';
+import { setSpacing } from '../../utils/stringParser';
 import BlockStyleControls from '../Editor/BlockStyleControls';
 import InlineStyleControls from '../Editor/InlineStyleControls';
 import styles from './Editor.scss';
 import main from '../../constants/main.scss';
 
-class CustomEditor extends React.Component {
+class CustomEditor extends React.PureComponent {
   state = { hasFocus: false, renderStyles: false, clipboard: '' };
 
   componentDidMount() {
     this.Editor.focus();
     this.props.keyLogger.setTimer('editStart');
   }
+
   componentWillUnmount() {
     this.props.keyLogger.setEditTotal();
   }
@@ -31,7 +32,6 @@ class CustomEditor extends React.Component {
     const selection = this.props.editorState.getSelection();
     const contentState = this.props.editorState.getCurrentContent();
     const anchorOffset = selection.getAnchorOffset();
-    const focusOffset = selection.getFocusOffset();
     const plainText = contentState.getPlainText();
     const charArray = plainText.split('');
     const index = charArray.indexOf(' ', anchorOffset);
@@ -47,7 +47,6 @@ class CustomEditor extends React.Component {
     const selection = this.props.editorState.getSelection();
     const contentState = this.props.editorState.getCurrentContent();
     let anchorOffset = selection.getAnchorOffset();
-    const focusOffset = selection.getFocusOffset();
     const plainText = contentState.getPlainText();
     const charArray = plainText.split('');
     if (charArray[anchorOffset - 1] === ' ') anchorOffset -= 2;
@@ -64,7 +63,6 @@ class CustomEditor extends React.Component {
     const selection = this.props.editorState.getSelection();
     const contentState = this.props.editorState.getCurrentContent();
     const anchorOffset = selection.getAnchorOffset();
-    const focusOffset = selection.getFocusOffset();
     const plainText = contentState.getPlainText();
     const charArray = plainText.split('');
     const index = charArray.indexOf(' ', anchorOffset);
@@ -120,8 +118,9 @@ class CustomEditor extends React.Component {
       const plainText = contentState.getPlainText();
       const lower = plainText.slice(0, anchorOffset - 1);
       const upper = plainText.slice(anchorOffset);
-      console.log(lower, upper);
-      const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(lower.concat(upper)), 'delete-character');
+      const newEditorState = EditorState.push(
+        this.props.editorState, ContentState.createFromText(lower.concat(upper)), 'delete-character',
+      );
       const newSelection = newEditorState.getSelection();
       const updatedSelection = newSelection.merge({
         focusOffset: anchorOffset - 1,
@@ -144,7 +143,9 @@ class CustomEditor extends React.Component {
     const plainText = contentState.getPlainText();
     const charArray = plainText.split('');
     charArray[anchorOffset] = charArray[anchorOffset].toUpperCase();
-    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data');
+    const newEditorState = EditorState.push(
+      this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data',
+    );
     const newSelection = newEditorState.getSelection();
     const updatedSelection = newSelection.merge({
       focusOffset,
@@ -162,7 +163,9 @@ class CustomEditor extends React.Component {
     const plainText = contentState.getPlainText();
     const charArray = plainText.split('');
     charArray[anchorOffset] = charArray[anchorOffset].toLowerCase();
-    const newEditorState = EditorState.push(this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data');
+    const newEditorState = EditorState.push(
+      this.props.editorState, ContentState.createFromText(charArray.join('')), 'change-block-data',
+    );
     const newSelection = newEditorState.getSelection();
     const updatedSelection = newSelection.merge({
       focusOffset,
@@ -239,7 +242,7 @@ class CustomEditor extends React.Component {
     }
     return (
       <div className={styles['RichEditor-root']} id="editorWrapper"
-        onClick={() => { this.Editor.focus(); }}
+        onClick={(e) => { e.preventDefault(); this.Editor.focus(); }}
         aria-label="Editor"
         role="navigation">
         {this.state.renderStyles ?
@@ -255,7 +258,7 @@ class CustomEditor extends React.Component {
             autoComplete="off"
             autoCorrect="on"
             spellCheck
-            ariaLabel="Draft JS Editor"
+            ariaLabel="Segment Target Editor"
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
             keyBindingFn={this.myKeyBindingFn}
@@ -277,11 +280,12 @@ CustomEditor.propTypes = {
   handleKeyCommand: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   keyLogger: PropTypes.objectOf(PropTypes.any).isRequired,
+  setRef: PropTypes.func.isRequired,
 };
 
 export default CustomEditor;
 
-const Styles = function(props) {
+export const Styles = function(props) {
   return (
     <div className={`${styles.styleBox} `}>
       <BlockStyleControls
