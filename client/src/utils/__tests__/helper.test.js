@@ -5,6 +5,8 @@ import tokenizer from '../../../../server/src/util/runTokenizer';
 
 import * as StringParser from '../stringParser';
 
+jest.setTimeout(10000);
+
 describe('joinTextArray on segment set 1', () => {
   it('1 should join a text array with correct punctuation', () => {
     const inputString = 'The expected string should have quotes "in the correct place"';
@@ -645,6 +647,16 @@ describe('joinTextArray on segment set 3', () => {
   it('15 should join a text array with correct punctuation', () => {
     const inputString = '';
     const expectedString = '';
+    // const tokens = tokenizer(expectedString, (outputArray) => { return outputArray});
+    const tokensPromise = buildPromise(inputString);
+    return tokensPromise.then((array) => {
+      expect(StringParser.joinTextArray(array)).toEqual(expectedString);
+    });
+  });
+
+  it('16 should join a text array with correct punctuation', () => {
+    const inputString = 'According to Netflix, its most viewed original series on its platform in the first third of 2018 have been "Altered Carbon," "The End of the F***ing World," "Jessica Jones," "Grace and Frankie," "Santa Clarita Diet" and "A series of catastrophic misfortunes"';
+    const expectedString = 'According to Netflix, its most viewed original series on its platform in the first third of 2018 have been "Altered Carbon," "The End of the F***ing World," "Jessica Jones," "Grace and Frankie," "Santa Clarita Diet" and "A series of catastrophic misfortunes"';
     // const tokens = tokenizer(expectedString, (outputArray) => { return outputArray});
     const tokensPromise = buildPromise(inputString);
     return tokensPromise.then((array) => {
