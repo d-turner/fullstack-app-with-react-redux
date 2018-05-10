@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'cheap-module-source-map',
@@ -9,6 +10,9 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'app.min.js',
   },
+  plugins: [
+    new HtmlWebpackPlugin(),
+  ],
   resolve: {
     modules: [path.resolve(__dirname), 'node_modules'],
     extensions: ['.js', '.json'],
