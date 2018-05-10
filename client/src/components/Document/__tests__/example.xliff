@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" version="1.2" its:version="2.0">
+  <file original="http://en.wikipedia.org/wiki/Computer_science#History" source-language="en-us" target-language="de" datatype="html">
+    <body>
+      <trans-unit id="1">
+        <source xml:lang="en-us" xmlns:xml="http://www.w3.org/XML/1998/namespace">History</source>
+        <target xml:lang="de" xmlns:xml="http://www.w3.org/XML/1998/namespace">Geschichte</target>
+        <alt-trans mid="0" its:mtConfidence="0.4112">
+          <source xml:lang="en-us" xmlns:xml="http://www.w3.org/XML/1998/namespace">Machines for calculating fixed numerical tasks such as the abacus have existed since antiquity but they only supported
+          the human mind, aiding in computations as complex as multiplication and division.</source>
+          <target xml:lang="de" xmlns:xml="http://www.w3.org/XML/1998/namespace" its:provenanceRecordsRef="#pr1">Maschinen fÃ¼r die Berechnung der Zahlenwerte Aufgaben wie die abacus haben seit der Antike existierte aber nur
+            unterstÃ¼tzt den Geist menschlichen, Beihilfe in Berechnungen so komplex wie Multiplikation und Division.</target>
+        </alt-trans>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

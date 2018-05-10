@@ -30,6 +30,7 @@ import httpAdapter from 'axios/lib/adapters/http';
 import * as actions from '../ActionCreators/DocumentActions';
 import * as types from '../../../constants/actionTypes';
 
+const fs = require('fs');
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
@@ -40,7 +41,7 @@ axios.defaults.adapter = httpAdapter;
 const mock = new MockAdapter(axios);
 
 describe('Document Actions', () => {
-  it('should have an action to fetch a document', () => {
+  it.only('should have an action to fetch a document', () => {
     const documentId = 123456;
     const expectedAction = {
       type: types.FETCH_DOCUMENT,
@@ -50,7 +51,7 @@ describe('Document Actions', () => {
     expect(actions.fetchDocument(documentId)).toEqual(expectedAction);
   });
 
-  it('should have a success action', () => {
+  it.only('should have a success action', () => {
     const documentId = 123456;
     const xliff = 'placeholder xliff';
     const expectedAction = {
@@ -62,7 +63,7 @@ describe('Document Actions', () => {
     expect(actions.fetchDocumentSuc(documentId, xliff)).toEqual(expectedAction);
   });
 
-  it('should have a failed action', () => {
+  it.only('should have a failed action', () => {
     const documentId = 123456;
     const error = 'some error';
     const expectedAction = {
@@ -74,7 +75,7 @@ describe('Document Actions', () => {
     expect(actions.fetchDocumentFail(documentId, error)).toEqual(expectedAction);
   });
 
-  it('should have an action to reset the editor state', () => {
+  it.only('should have an action to reset the editor state', () => {
     const expectedAction = {
       type: types.RESET_EDITOR,
     };
@@ -82,7 +83,7 @@ describe('Document Actions', () => {
     expect(actions.resetEditorState()).toEqual(expectedAction);
   });
 
-  it('should have an action to check if a document needs to be fetched', () => {
+  it.only('should have an action to check if a document needs to be fetched', () => {
     const documentId = 12345;
     let state = { documentReducer: { documents: { } } };
     expect(actions.shouldFetchDocument(state, documentId)).toEqual(true);
@@ -104,8 +105,8 @@ describe('Document Actions', () => {
   });
 });
 
-
 describe('async document fetching', () => {
+  let xliff = null;
   afterEach(() => {
     // nock.cleanAll();
     // fetchMock.reset();
@@ -127,32 +128,27 @@ describe('async document fetching', () => {
       total_word_count: '504',
       user_id: '2',
     };
-    const exampleXLIFF = {
-      xliff: `<?xml version="1.0" encoding="UTF-8"?>
-        <xliff xmlns="" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" version="1.2" its:version="2.0">
-          <file original="http://en.wikipedia.org/wiki/Computer_science#History" source-language="en-us" target-language="de" datatype="html">
-            <body>
-              <trans-unit id="1">
-                <source xml:lang="en-us" xmlns:xml="http://www.w3.org/XML/1998/namespace">History</source>
-                <target xml:lang="de" xmlns:xml="http://www.w3.org/XML/1998/namespace">Geschichte</target>
-                <alt-trans mid="0" its:mtConfidence="0.4112">
-                  <source xml:lang="en-us" xmlns:xml="http://www.w3.org/XML/1998/namespace">Machines for calculating fixed numerical tasks such as the abacus have existed since antiquity but they only supported
-                  the human mind, aiding in computations as complex as multiplication and division.</source>
-                  <target xml:lang="de" xmlns:xml="http://www.w3.org/XML/1998/namespace" its:provenanceRecordsRef="#pr1">Maschinen fÃ¼r die Berechnung der Zahlenwerte Aufgaben wie die abacus haben seit der Antike existierte aber nur
-                    unterstÃ¼tzt den Geist menschlichen, Beihilfe in Berechnungen so komplex wie Multiplikation und Division.</target>
-                </alt-trans>
-              </trans-unit>
-            </body>
-          </file>
-        </xliff>`,
-    };
+
+    fs.readFile('./example.xliff', (err, data) => {
+      if (err) {
+        console.log(err);
+      }
+      xliff = data;
+    });
     mock // request to get the document data
       .onGet('http://localhost:8080/api/documents/123457')
       .reply(200, exampleDocumentData);
     // this is never going to work becuase it uses browser based function that you cannot mock
-    mock // request to get the actual document, should return xliff text
-      .onGet('http://localhost:8080/api/document/123457')
-      .reply(200, exampleXLIFF);
+    // mock // request to get the actual document, should return xliff text
+    //   .onGet('http://localhost:8080/api/document/123457')
+    //   .reply(200, { exampleXLIFF });
+    mock.onGet('http://localhost:8080/api/document/123457').reply((config) => {
+      // `config` is the axios config and contains things like the url
+      // return an array in the form of [status, data, headers]
+      return [200, { data: xliff }, {
+        'content-type': 'application/xml',
+      }];
+    });
     // nock('http://127.0.0.1:8080')
     //   .log(console.log)
     //   .get('/api/documents/123457')
@@ -188,7 +184,7 @@ describe('async document fetching', () => {
     });
   });
 
-  it(`it creates ${types.FETCH_DOCUMENT_LIST} and ${types.INSERT_DOCUMENTS} when fetching the document list succeeds`, () => {
+  it.only(`it creates ${types.FETCH_DOCUMENT_LIST} and ${types.INSERT_DOCUMENTS} when fetching the document list succeeds`, () => {
     mock // request to get all the documents
       .onGet('http://localhost:8080/api/documents')
       .reply(200, []);
@@ -211,7 +207,7 @@ describe('async document fetching', () => {
     });
   });
 
-  it(`it creates ${types.FETCH_DOCUMENT_LIST} and ${types.DOCUMENT_LIST_FAIL} when fetching the document list fails`, () => {
+  it.only(`it creates ${types.FETCH_DOCUMENT_LIST} and ${types.DOCUMENT_LIST_FAIL} when fetching the document list fails`, () => {
     mock // request to get all the documents
       .onGet('http://localhost:8080/api/documents')
       .reply(500);
