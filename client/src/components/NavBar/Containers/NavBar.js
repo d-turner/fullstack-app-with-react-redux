@@ -17,7 +17,7 @@ class NavBar extends React.Component {
     return (
       <nav>
         <NavPill to={'/'} label={'Kanjingo'} >
-          <img src={'/assets/kanj.png'} alt="kanjingo logo" className="img-responsive" />
+          <img src={'/assets/kanj.png'} alt="kanjingo home page" className="img-responsive" />
         </NavPill>
         <NavPill to={'/documents'} label={'Documents'} />
         { this.props.isLoggedIn ?

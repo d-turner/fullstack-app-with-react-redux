@@ -8,7 +8,7 @@ import apiWrapper from '../../../utils/apiWrapper';
 import { logout } from '../../Authentication/AuthActions';
 
 export default class NavPill extends React.Component {
-  logoutUser() {
+  logoutUser = () => {
     apiWrapper.logout((response) => {
       console.log(response);
     });
