@@ -9,6 +9,7 @@ const TEST = '/api/test';
 const DOCUMENT_ID = '/api/documents/';
 const DOCUMENTS = '/api/documents';
 const DOCUMENT_FILE = '/api/document/';
+const LOG_FILE = '/api/log/';
 const UPLOAD = '/api/uploadDocument';
 const SYNC = '/api/syncDocument/';
 const LOGGER = '/api/uploadLog/';
@@ -20,6 +21,7 @@ const TOKENIZER = '/api/tokenizer';
 let API_HOSTNAME = 'http://localhost:8080';
 // let API_HOSTNAME = 'http://192.168.1.17:8080';
 // let API_HOSTNAME = 'http://10.42.0.1:8080';
+// let API_HOSTNAME = 'http://192.168.43.93:8080';
 if (process.env.NODE_ENV === 'production') {
   API_HOSTNAME = '';
 }
@@ -120,6 +122,10 @@ const api = {
   uploadLog: (data, id, callback) => {
     const headers = { 'Content-Type': 'text/xml' };
     return apiPromise({ data, endpoint: `${LOGGER}${id}`, method: 'post', headers }, callback);
+  },
+  // get the actual log document (stored outside the database)
+  getLog: (savedName, callback) => {
+    return apiPromise({ endpoint: `${LOG_FILE}${savedName}`, method: 'get' }, callback);
   },
   // get the document meta from database
   getDocumentMeta: (docId, callback) => {
