@@ -107,7 +107,41 @@ export default class Document extends React.Component {
                   console.log(error);
                 })
               }
-              id="download"
+              id="download-button"
+              tooltip={false} />
+          </div>
+        </td>
+        <td>
+          <div id="log">
+            <Button
+              classNames={`${main.clearButtonLeft} ${main.downloadButton} ${styles.inherit}`}
+              label="Download document"
+              icon="file_download"
+              func={() => apiWrapper.getLog(document.saved_name)
+                .then((response) => {
+                  // Create a new Blob object using the
+                  // response data of the onload object
+                  const blob = new Blob([response.data], { type: 'application/xml' });
+                  // Create a link element, hide it, direct
+                  // it towards the blob, and then 'click' it programatically
+                  const a = window.document.createElement('a');
+                  a.style = 'display: none';
+                  window.document.body.appendChild(a);
+                  // Create a DOMString representing the blob
+                  // and point the link element towards it
+                  const url = window.URL.createObjectURL(blob);
+                  a.href = url;
+                  a.download = document.name + '-log';
+                  // programatically click the link to trigger the download
+                  a.click();
+                  // release the reference to the file by revoking the Object URL
+                  window.URL.revokeObjectURL(url);
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+              }
+              id="log-button"
               tooltip={false} />
           </div>
         </td>

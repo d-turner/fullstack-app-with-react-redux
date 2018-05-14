@@ -116,7 +116,7 @@ export default class DocumentTable extends React.Component {
 
   render() {
     return (
-      <table id="documentList" className={main.fullWidth} style={{ color: 'rgba(51,51,51,1)'}}>
+      <table id="documentList" className={main.fullWidth} style={{ color: 'rgba(51,51,51,1)'}} aria-live="assertive">
         <caption>
           <h3>Users Document List</h3>
         </caption>
@@ -160,11 +160,15 @@ export default class DocumentTable extends React.Component {
             </th>
             <th scope="col">
               <div className="document-list-utility" />
-              <div className="th-document-ellipsis">Download</div>
+              <div className="th-document-ellipsis">Download XLIFF</div>
+            </th>
+            <th scope="col">
+              <div className="document-list-utility" />
+              <div className="th-document-ellipsis">Download Log</div>
             </th>
           </tr>
         </thead>
-        <tbody ref={this.sortableGroupDecorator} id="items">
+        <tbody ref={this.sortableGroupDecorator} id="items" aria-live="assertive">
           { this.state.sortable.map((doc, index) => this.renderDocument(doc, doc.saved_name, index)) }
         </tbody>
       </table>
