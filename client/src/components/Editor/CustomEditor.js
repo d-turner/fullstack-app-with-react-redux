@@ -258,7 +258,8 @@ class CustomEditor extends React.PureComponent {
             autoComplete="off"
             autoCorrect="on"
             spellCheck
-            ariaLabel="Segment Target Editor"
+            ariaLabel="segment target editor"
+            ariaMultiline
             editorState={this.props.editorState}
             handleKeyCommand={this.props.handleKeyCommand}
             keyBindingFn={this.myKeyBindingFn}

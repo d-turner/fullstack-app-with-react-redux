@@ -68,6 +68,10 @@ class KeyLogger {
     this.translation = translation;
   }
 
+  setMT = (mt) => {
+    this.target = mt;
+  }
+
   record = (e) => {
     const timestamp = Date.now() || 0;
     const stroke = {
