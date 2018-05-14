@@ -38,6 +38,7 @@ export default class Minimap extends React.Component {
         key={index}
         value={index}
         id={`${index}-minimap`}
+        aria-label={`Display and focus segment ${index}`}
         onClick={() => this.props.updateSelectedSegment(this.props.savedName, index)}>
         <p>{segment.source}</p>
         <p>{segment.target}</p>
