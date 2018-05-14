@@ -6,6 +6,7 @@ import doc from '../db/document';
 import * as resp from '../config/Responses';
 
 const dest = '/home/adapt/Documents/git/kanjingo-react-redux/client/src/data/';
+const logDest = `${dest}logs/`;
 const uploads = multer({ dest });
 
 export default (app) => {
@@ -101,7 +102,7 @@ export default (app) => {
       data += chunk.toString('utf8');
     });
     req.on('end', () => {
-      const location = `${dest}logs/${documentId}`;
+      const location = logDest + documentId;
       doc.insertLog(documentId, location, user.user_id, (err, result) => {
         // TODO: fix when value already in table
         if (err) { next(err); return; }
@@ -110,6 +111,15 @@ export default (app) => {
           res.status(resp.good).send('Saved');
         });
       });
+    });
+  });
+
+  // return a single log document file
+  app.get('/api/log/:documentId', passport.ensureAuthenticated, (req, res, next) => {
+    const documentId = req.params.documentId;
+    res.sendFile(logDest + documentId, (err) => {
+      if (err) { next(err); return; }
+      next();
     });
   });
 };
