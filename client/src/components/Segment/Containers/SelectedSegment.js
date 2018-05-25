@@ -15,12 +15,13 @@ import KeyLogger from '../../KeyLogger/KeyLogger';
 class SelectedSegment extends React.Component {
   constructor(props) {
     super(props);
-    const { segmentId, documentId, userId, email, segment } = props;
-    this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, segment.target, userId, email);
+    const { segmentId, documentId, userId, email, segment, mt } = props;
+    this.keyLogger = new KeyLogger(documentId, segmentId, segment.source, mt, userId, email);
   }
 
   componentWillUnmount() {
     this.keyLogger.setTarget(this.props.editorState.getCurrentContent().getPlainText());
+    this.keyLogger.setMT(this.props.mt);
     this.keyLogger.save();
     this.keyLogger.build();
   }
