@@ -189,3 +189,33 @@ label#skitt-toggle-button__label {
 .react-tabs {
   height: 100%;
 }
+
+.star {
+}
+.star-enter>div{
+  background-color: #33B65A;
+}
+.star-enter-active>div {
+  background-color: #e8edfb;
+  -webkit-transition: all 3500ms ease;
+  -moz-transition: all 3500ms ease;
+  -ms-transition: all 3500ms ease;
+  -o-transition: all 3500ms ease;
+  transition: all 3500ms ease;
+}
+.star-exit>div {
+  -webkit-transition: all 1000ms ease;
+  -moz-transition: all 1000ms ease;
+  -ms-transition: all 1000ms ease;
+  -o-transition: all 1000ms ease;
+  transition: all 1000ms ease;
+}
+.star-exit-active>div {
+  -moz-opacity: 0;
+  opacity: 0;
+  -moz-transform: scale(0.01);
+  -webkit-transform: scale(0.01);
+  -o-transform: scale(0.01);
+  -ms-transform: scale(0.01);
+  transform: scale(0.01);
+}
