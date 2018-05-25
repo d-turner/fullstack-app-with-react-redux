@@ -9,7 +9,7 @@
     "dev": "NODE_ENV=development node serve.js",
     "prod": "NODE_ENV=production node serve.js",
     "test": "jest --coverage",
-    "test:nc": "jest",
+    "testnc": "jest",
     "test:watch": "npm test -- --watch",
     "build": "node node_modules/.bin/webpack --config webpack.config.prod.js"
   },
