@@ -165,7 +165,7 @@ class SortableListItem extends React.Component {
         ref={(ref) => { this.listItem = ref; }}>
         {before}
         <div className={`${styles.tile} handle`}>
-          <span className={styles.grippy} />
+          <span className={styles.grippy} aria-hidden />
           {input}
         </div>
         {plusButton}
