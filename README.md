@@ -34,7 +34,7 @@ Webpack uses 'cheap-module-source-map' to map the code in the single distributio
 2. Run `npm install` from the client directory (`kanjingo-react-redux/client/`) 
 3. start the production server with `npm run prod` from the server directory
 4. Run `npm install` from the server directory (`kanjingo-react-redux/server/`)
-5. Confirm that MariaDB is running and start the server with `npm run start`
+5. Confirm that MariaDB is running and start the server with `npm run prod`
 
 ### MariaDB
 
@@ -72,19 +72,5 @@ npm run start
 ### Language Codes
 
 ### TODO
-* Change editor controls from span tags to buttons for 'Accessible' reasons
-* Add 'Accessible' labels and attributes to tags
-* Extract components into Containers and Presentational
-* Restructure Folders + Add Description for each folder
-* Test UI
-* Handle upload XLIFF files (via form)
 * Concordance + Dictionary lookup
 * Control Spelling + Grammar Setting (Currently uses the browsers language setting)
-* Display list of Projects
-* Handle users
-* Database
-* Production level webpack and server
-* Build register / login page
-* link front-end to the backend
-* Add PET logging
-* Add server for Joss to access
