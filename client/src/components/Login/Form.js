@@ -32,7 +32,7 @@ export default function Form(props) {
         autoComplete="off" />
       <TextError error={props.passwordError} />
 
-      {/* Checkbox Input */}
+      {/* Checkbox Input
       <label htmlFor="remember">
         <input
           type="checkbox"
@@ -41,6 +41,7 @@ export default function Form(props) {
           aria-label="remember me" />
         <span className="checkable">Remember me</span>
       </label>
+      */}
 
       {/* Submit Button */}
       <input
