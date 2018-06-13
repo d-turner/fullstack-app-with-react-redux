@@ -7,6 +7,9 @@ body {
   background-color: $lightsilver;
   font-family: $font-stack;
   height: 100vh;
+  *:focus {
+    outline: 1px dotted gray;
+  }
 }
 
 nav {
