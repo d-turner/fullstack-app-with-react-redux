@@ -55,11 +55,11 @@ class SegmentListContainer extends React.Component {
               document={documents[this.state.id]}
             />
           </div>
-          <Minimap
+          {/*<Minimap
             segments={documents[this.state.id].xliff.segments}
             selectedSegment={this.props.selectedSegment}
             savedName={this.state.id}
-            updateSelectedSegment={this.props.updateSelectedSegment} />
+          updateSelectedSegment={this.props.updateSelectedSegment} />*/}
           <SegmentList
             document={documents[this.state.id]}
             editorState={editorState}
