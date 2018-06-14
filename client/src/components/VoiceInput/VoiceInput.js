@@ -148,7 +148,7 @@ export default class VoiceInput extends Component {
         <button
           data-tip
           data-for="Toggle Recording"
-          aria-label="Start Recoding"
+          aria-label={this.state.speaking ? 'Stop recording' : 'Start recording'}
           className={`${styles.removeStyles} two-third ${styles.button}`}
           onClick={(e) => {
             e.preventDefault();
@@ -166,7 +166,7 @@ export default class VoiceInput extends Component {
           </ReactToolTip>
         </button>
         <Button classNames={`shyButton success two-third ${styles.button}`}
-          label="Accept Voice Input"
+          label="Accept voice input"
           icon="done"
           func={(e) => {
             e.preventDefault();
@@ -186,7 +186,7 @@ export default class VoiceInput extends Component {
           direction="right" />
 
         <Button classNames={`shyButton error two-third ${styles.button}`}
-          label="Reject Voice Input"
+          label="Reject and clear voice input"
           icon="clear"
           func={(e) => {
             e.preventDefault();
