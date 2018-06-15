@@ -9,7 +9,7 @@ import styles from '../sidebar.scss';
 import Button from '../../ButtonList/Button';
 
 class Sidebar extends React.Component {
-  state = { active: true };
+  state = { active: false };
 
   renderTabs = () => {
     let hide = {};
@@ -19,7 +19,7 @@ class Sidebar extends React.Component {
         <TabList>
           <Tab>Comments</Tab>
           <Tab>Lexicon Lookup</Tab>
-          {/*<Tab>Search</Tab>*/}
+          <Tab>Search</Tab>
         </TabList>
 
         <TabPanel>
@@ -28,9 +28,9 @@ class Sidebar extends React.Component {
         <TabPanel>
           <Lexicon documentId={this.props.documentId} />
         </TabPanel>
-{/*        <TabPanel>
+        <TabPanel>
           <FindReplace documentId={this.props.documentId} />
-</TabPanel>*/}
+        </TabPanel>
       </Tabs>
     );
   }
@@ -41,8 +41,8 @@ class Sidebar extends React.Component {
     let view = styles.menu;
     if (this.state.active) view = `${styles.active} ${styles.menu}`;
     return (
-      <div className={view} style={{ marginTop: '20px'}}>
-        {/*<div>
+      <div className={view}>
+        <div>
           <Button
             classNames={styles.menuButton}
             label="menu"
@@ -52,7 +52,7 @@ class Sidebar extends React.Component {
             direction="left"
             tooltip={false}
           />
-        </div>*/}
+        </div>
         {this.renderTabs()}
       </div>
     );
