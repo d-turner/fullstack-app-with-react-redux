@@ -97,6 +97,7 @@ class SegmentList extends React.Component {
   voiceComponent = (index) => {
     return (
       <VoiceInput className={this.state.renderVoice ? `${main.fadeIn} ${main.show}` : main.fadeIn}
+        lang={this.props.document.xliff.targetLang}
         onEnd={value => this.CustomEditor.endValue(value)}
         insertAfterTile={(tileIndex, value) => this.Sortable.insertAfter(tileIndex, value)}
         segmentId={index}
