@@ -163,7 +163,7 @@ class SegmentList extends React.Component {
           func={this.renderVoice}
           id={this.state.renderVoice ? 'Deactivate Voice Mode' : 'Activate Voice Mode'}
           direction="right" />
-        {/* {this.state.renderTiles ?
+        {this.state.renderTiles ?
           <Button
             classNames={classNames}
             label="Edit Mode"
@@ -185,7 +185,7 @@ class SegmentList extends React.Component {
           icon="chat_bubble"
           func={this.renderComment}
           id="Comments"
-        direction="right" /> */}
+        direction="right" />
         {this.undoRedo(index)}
         <Button
           classNames={`${classNames} ${main.greenButton}`}
