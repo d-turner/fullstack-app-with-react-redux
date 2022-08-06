@@ -9,5 +9,5 @@ numpy==1.13.3
 pylint==1.7.4
 singledispatch==3.4.0.3
 six==1.11.0
-untangle==1.1.1
+untangle==1.2.1
 wrapt==1.10.11
